@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 #
 # May 2013, rkwee
@@ -20,6 +21,16 @@ def cv01():
 
     xarray, yarray = [], []
 
+    doX = 1
+
+    if doX:
+        xy = 'x'
+    else:
+        xy = 'y'
+
+    sigma_x = 0.4716E-03
+    sigma_y = 0.0755
+
     with open(f1) as myfile:
 
         for line in myfile:
@@ -31,8 +42,12 @@ def cv01():
             ycoor  = float(line.split()[2])
             ypcoor = float(line.split()[3])
 
-            xarray += [xcoor ]
-            yarray += [xpcoor]
+            if doX:
+                xarray += [xcoor ]
+                yarray += [xpcoor]
+            else:
+                xarray += [ycoor ]
+                yarray += [ypcoor]
 
 
     # plot
@@ -41,11 +56,12 @@ def cv01():
 
     gr = TGraph()
     gr.Set(len(xarray))
-
-    xtitle = 'x [m]'
-    ytitle = "x' [rad]"
-    #xtitle = 'y [m]'
-    #ytitle = "y' [rad]"
+    if doX:
+        xtitle = 'x [m]'
+        ytitle = "x' [rad]"
+    else:
+        xtitle = 'y [m]'
+        ytitle = "y' [rad]"
 
     gr.SetMarkerStyle(7)
     gr.SetLineWidth(2)
@@ -60,5 +76,5 @@ def cv01():
     gr.GetYaxis().SetTitle(ytitle)
     gr.Draw('ap')
     pname  = wwwpath
-    pname += 'phasespace_x.png'
+    pname += 'phasespace_'+xy+'.png'
     cv.Print(pname)
