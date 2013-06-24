@@ -3,7 +3,8 @@
 #
 # R Kwee, June 2013
 
-import os, math, time
+import os, math, time, ROOT
+from ROOT import TLatex
 # ------------------------------------------------------------------------------------------------
 
 workpath = '/afs/cern.ch/work/r/rkwee/HL-LHC/'
@@ -89,3 +90,12 @@ def count_npart(fname,index):
                 pass
 
     return len(npart)
+
+
+def rename(fullpattern, suppresspattern):
+
+    # remove suppresspattern from fullpattern
+
+    return fullpattern.split(suppresspattern)[0]+ fullpattern.split(suppresspattern)[-1]
+    
+

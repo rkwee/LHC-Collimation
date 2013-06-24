@@ -9,8 +9,8 @@ from helpers import *
 ## -------------------------------------------------------------------------------
 def cv03():
 
-    check_npart()
-    return
+    #check_npart()
+    #return
 
     print 'run cv03 : losses on collmator Danieles script'
 
@@ -165,21 +165,23 @@ def cv03():
 
 def check_npart():
 
-    fname = "/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/awkCollSum.dat"
+    #fname = "/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/awkCollSum.dat"
     index = 1
     
-    l = sum_npart(fname,index)
-    print("npart of " + fname + " is " + str(l))    
+    # l = sum_npart(fname,index)
+    #    print("npart of " + fname + " is " + str(l))    
 
     # ----
-    fname = "/afs/cern.ch/work/r/rkwee/HL-LHC/roderik/sixtrack_example.00/clean_input/tracks2.dat"
+    thispath = "/afs/cern.ch/work/r/rkwee/HL-LHC/SixTrack/SixTrack_4446_coll_gfortran_O4/checkNorm/"
+    thispath = "/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/"
+    fname = thispath + "tracks2.dat"
     index = 0
     
     l = count_npart(fname,index)
     print("npart of " + fname + " is " + str(l))    
 
     # ----
-    fname = "/afs/cern.ch/work/r/rkwee/HL-LHC/roderik/sixtrack_example.00/clean_input/survival.dat"
+    fname = thispath + "survival.dat"
     index = 1
     
     l = count_npart(fname,index)
@@ -187,31 +189,10 @@ def check_npart():
     print("npart of " + fname + " is " + str(l))    
     # ----
 
-    fname = "/afs/cern.ch/work/r/rkwee/HL-LHC/roderik/sixtrack_example.00/clean_input/FirstImpacts.dat"
+    fname = thispath + "FirstImpacts.dat"
     index = 0
     
     ll = count_npart(fname,index)
     print("npart of " + fname + " is " + str(ll))
 
-    fl    = file_len(fname)-1
-    print("file length of " + fname + " is " + str(fl))
-
-    print("sum = " + str(l+fl))
     # ----
-
-    fname = "/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/survival.dat"
-    index = 1
-    
-    l     = count_npart(fname,index)
-    print("npart of " + fname + " is " + str(l))    
-
-    fname = "/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/FirstImpacts.dat"
-    index = 0
-    
-    ll    = count_npart(fname,index)
-    print("npart of " + fname + " is " + str(ll))
-
-    fll   = file_len(fname)-1
-    print("file length of " + fname + " is " + str(fll))
-
-    print("sum = " + str(l+fll))
