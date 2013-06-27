@@ -4,7 +4,7 @@
 void loss_map(){
 
   char* filename;
-  Int_t nhead,dim,i,j,k;
+  Int_t nhead,dim,i,j,k, kval;
   Float_t *losses;
 
   /*------------*/
@@ -18,7 +18,7 @@ void loss_map(){
 
   /*-----------------*/
 
-  filename="LPI_BLP_out.s_total.dat";
+  filename="LPI_BLP_out.s";
   nhead=0;
 
   dim=count_line(filename);
@@ -26,6 +26,7 @@ void loss_map(){
   losses=(Float_t *)malloc((dim-nhead)*sizeof(Float_t));
 
   extr_var_float(filename,dim,losses,3,nhead);
+
 
   /*---------------*/
 
@@ -35,7 +36,7 @@ void loss_map(){
   Int_t *nabs;
   Float_t *pos,*length;
   
-  filename_c_s="coll_summary_cleaned.dat";
+  filename_c_s="coll_summary.dat";
   nhead_c_s=1;
 
   dim_c_s=count_line(filename_c_s);
@@ -57,7 +58,7 @@ void loss_map(){
   extr_var_float(filename_c_s,dim_c_s,length,7,nhead_c_s);
 
   
-  filename_c_p="CollPositions.V6503.cry.dat";
+  filename_c_p="CollPositions.b1.dat";
   nhead_c_p=1;
 
   dim_c_p=count_line(filename_c_p);
@@ -73,7 +74,7 @@ void loss_map(){
   extr_var_float(filename_c_p,dim_c_p,pos,3,nhead_c_p);
 
 
-  filename_f_i="FirstImpacts.dat_total.dat";
+  filename_f_i="FirstImpacts.dat";
   nhead_f_i=1;
 
   dim_f_i=count_line(filename_f_i);
@@ -129,7 +130,11 @@ void loss_map(){
 
       if(strcmp(names_c_s[i],names_c_p[j])==0){
 
-	for(k=0;k<(Int_t)(nabs[i]/length[i]);k++)
+	kval = (Int_t)(nabs[i]/length[i]);
+
+	//	cout << "kval =" << kval << "nabs["<< i<< "] = " << nabs[i] << "length[i] = " << length[i] << endl;
+
+	for(k=0;k<kval;k++)
 	  //for(k=0;k<nabs[i];k++)
 	  coll_loss->Fill(pos[j]);
 
@@ -173,6 +178,8 @@ void loss_map(){
   leg->SetTextFont(132);
 
   leg->Draw();
+
+  los->Print("/afs/cern.ch/user/r/rkwee/public/www/HL-LHC/losses_example_01.png");
 
   /*---------------*/
 
