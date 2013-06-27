@@ -9,9 +9,6 @@ from helpers import *
 ## -------------------------------------------------------------------------------
 def cv03():
 
-    #check_npart()
-    #return
-
     print 'run cv03 : losses on collmator Danieles script'
 
     debug = False
@@ -29,7 +26,17 @@ def cv03():
     f3    = path + 'CollPositions.b1.dat'
     f4    = path + 'FirstImpacts.dat'
 
-    rel = '_example'
+    path  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/exampleRuns/'
+    f1    = path + 'LPI_BLP_out_merged.s'
+    f2    = path + 'coll_summary_merged.dat'
+    f3    = source_dir + 'CollPositions.b1.dat'
+    f4    = path + 'FirstImpacts_merged.dat'
+
+
+    check_npart(path,'_merged')
+    #return
+
+    rel = '_example_batch'
 
     # loss positions
     losses = []
@@ -54,7 +61,7 @@ def cv03():
                 continue
 
             names_sum  += [ line.split()[1] ]
-            nabs   += [ int(line.split()[3]) ]
+            nabs   += [ float(line.split()[3]) ]
             length += [ float(line.split()[6]) ]
 
 
@@ -81,9 +88,9 @@ def cv03():
     pad_l.Draw()
     pad_l.cd()
 
-    YurMin, YurMax = 0., 3e2
+    YurMin, YurMax = 1.2e-6, 3.
 
-    # -- meaning of FirstImpacts ?
+    # -- the number of lines in FirstImpact-1 (for header) is the total number of particles hitting a collimator
     maxval = file_len(f4)-1
 
     length_LHC = 26659
@@ -96,7 +103,6 @@ def cv03():
     xtitle = 's [m]'
     ytitle = "losses"
 
-    coll_loss.GetYaxis().SetRangeUser(YurMin, YurMax)
     coll_loss.SetLineWidth(2)
     coll_loss.SetLineColor(kBlack)
     warm_loss.SetLineColor(kOrange)
@@ -143,10 +149,16 @@ def cv03():
     coll_loss.Scale(1.0/maxval)
     cold_loss.Scale(1.0/maxval)
     warm_loss.Scale(1.0/maxval)
+    coll_loss.GetYaxis().SetRangeUser(YurMin, YurMax)
 
     coll_loss.Draw('hist')
     cold_loss.Draw('same')
     warm_loss.Draw('same')
+
+    lx, ly = TLine(),TLine()
+    lx.SetLineWidth(2)
+    lx.SetLineStyle(3)
+    lx.DrawLine(0,1,26985,1)
 
     # x1, y1, x2, y2a
     thelegend = TLegend(0.2, 0.7, 0.24, 0.8) 
@@ -163,25 +175,31 @@ def cv03():
     pname += 'losses'+rel+'.png'
     cv.Print(pname)
 
-def check_npart():
+def check_npart(thispath,appendix):
 
-    #fname = "/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/awkCollSum.dat"
     index = 1
     
     # l = sum_npart(fname,index)
     #    print("npart of " + fname + " is " + str(l))    
 
     # ----
-    thispath = "/afs/cern.ch/work/r/rkwee/HL-LHC/SixTrack/SixTrack_4446_coll_gfortran_O4/checkNorm/"
-    thispath = "/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/"
-    fname = thispath + "tracks2.dat"
+
+    # fname = thispath + "tracks2.dat"
     index = 0
     
+    #l = count_npart(fname,index)
+    #print("npart of " + fname + " is " + str(l))    
+
+    # ----
+    fname = thispath + "survival"+appendix+".dat"
+    index = 1
+    
     l = count_npart(fname,index)
+   
     print("npart of " + fname + " is " + str(l))    
 
     # ----
-    fname = thispath + "survival.dat"
+    fname = thispath + "LPI_BLP_out"+appendix+".s"
     index = 1
     
     l = count_npart(fname,index)
@@ -189,7 +207,7 @@ def check_npart():
     print("npart of " + fname + " is " + str(l))    
     # ----
 
-    fname = thispath + "FirstImpacts.dat"
+    fname = thispath + "FirstImpacts"+appendix+".dat"
     index = 0
     
     ll = count_npart(fname,index)

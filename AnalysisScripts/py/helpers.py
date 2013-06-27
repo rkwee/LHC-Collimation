@@ -9,7 +9,7 @@ from ROOT import TLatex
 
 workpath = '/afs/cern.ch/work/r/rkwee/HL-LHC/'
 wwwpath  = '/afs/cern.ch/user/r/rkwee/public/www/HL-LHC/'
-
+source_dir  = "/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/save/"
 # ------------------------------------------------------------------------------------------------
 def mylabel(font):
 

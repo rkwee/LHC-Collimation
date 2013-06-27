@@ -110,7 +110,7 @@ for job in newrange:
     run_job.write('./' + cleancoll + '\n')
 
     # copy back
-    cmd = 'cp amplitude.dat efficiency.dat coll_summary.dat screen* survival.dat LPI* FLUKA* FirstImpacts.dat sigmasettings.out impacts* ' + subdir
+    cmd = 'cp amplitude.dat efficiency.dat coll_summary.dat screen* survival.dat LP* FLUKA* FirstImpacts.dat sigmasettings.out impacts* ' + subdir
     #cmd = "cp * " + subdir + "\n"
     run_job.write(cmd)
 
