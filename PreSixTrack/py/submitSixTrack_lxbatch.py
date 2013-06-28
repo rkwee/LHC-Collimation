@@ -55,7 +55,7 @@ occupiedDirs = []
 for subdir in os.listdir(afs_run_dir):
     if showInfo:
         print "cheking", subdir
-    if os.path.exists(afs_run_dir+subdir):
+    if os.path.isdir(afs_run_dir+subdir):
         occupiedDirs += [int(subdir.split('_')[-1])]
 
 startjob = 0
