@@ -5,9 +5,10 @@
 import ROOT, sys, glob, os
 from ROOT import *
 import helpers
-from helpers import *
 ## -------------------------------------------------------------------------------
 def cv03():
+
+    from helpers import *
 
     print 'run cv03 : losses on collmator Danieles script'
 
@@ -26,17 +27,22 @@ def cv03():
     f3    = path + 'CollPositions.b1.dat'
     f4    = path + 'FirstImpacts.dat'
 
-    path  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/exampleRuns/'
+    path  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/oldExe/'
     f1    = path + 'LPI_BLP_out_merged.s'
     f2    = path + 'coll_summary_merged.dat'
     f3    = source_dir + 'CollPositions.b1.dat'
     f4    = path + 'FirstImpacts_merged.dat'
 
 
-    check_npart(path,'_merged')
+    #check_npart(path,'_merged')
     #return
 
-    rel = '_example_batch'
+    rel = '_oldExe_zoom'
+
+    XurMin, XurMax = 18e3, 22e3
+    #XurMin, XurMax = 0., length_LHC
+    YurMin, YurMax = 3.2e-9, 3.
+
 
     # loss positions
     losses = []
@@ -81,19 +87,13 @@ def cv03():
 
 
     # -- plot 
+
     cv = TCanvas( 'cv_ap', 'cv_ap', 1200, 700)
     #cv.SetRightMargin(0.12)
-
-    pad_l = TPad("pad_l","",0,0,1,1)
-    pad_l.Draw()
-    pad_l.cd()
-
-    YurMin, YurMax = 1.2e-6, 3.
 
     # -- the number of lines in FirstImpact-1 (for header) is the total number of particles hitting a collimator
     maxval = file_len(f4)-1
 
-    length_LHC = 26659
     nbins, xmin, xmax = 10*length_LHC,0., length_LHC
 
     coll_loss = TH1F("coll_loss","coll_loss",nbins, xmin, xmax)
@@ -103,7 +103,7 @@ def cv03():
     xtitle = 's [m]'
     ytitle = "losses"
 
-    coll_loss.SetLineWidth(2)
+    #coll_loss.SetLineWidth(2)
     coll_loss.SetLineColor(kBlack)
     warm_loss.SetLineColor(kOrange)
     cold_loss.SetLineColor(kBlue)
@@ -141,7 +141,7 @@ def cv03():
                     coll_loss.Fill(coll_pos[j])                
 
 
-    pad_l.SetLogy(1)
+    #pad_l.SetLogy(1)
     coll_loss.GetXaxis().SetTitleOffset(.9)
     coll_loss.GetYaxis().SetTitleOffset(1.06)
     coll_loss.GetXaxis().SetTitle(xtitle)
@@ -149,19 +149,58 @@ def cv03():
     coll_loss.Scale(1.0/maxval)
     cold_loss.Scale(1.0/maxval)
     warm_loss.Scale(1.0/maxval)
+    coll_loss.GetXaxis().SetRangeUser(XurMin, XurMax)
     coll_loss.GetYaxis().SetRangeUser(YurMin, YurMax)
 
     coll_loss.Draw('hist')
     cold_loss.Draw('same')
     warm_loss.Draw('same')
 
-    lx, ly = TLine(),TLine()
-    lx.SetLineWidth(2)
-    lx.SetLineStyle(3)
-    lx.DrawLine(0,1,26985,1)
+    lh = []
+    # YurMin = 3.2e-9
+    lhRange  = [3e-9+i*1e-9 for i in range(3,7)]
+    lhRange += [i*1.e-8 for i in range(1,11)]
+    lhRange += [i*1.e-7 for i in range(1,11)]
+    lhRange += [i*1.e-6 for i in range(1,11)]
+    lhRange += [i*1.e-5 for i in range(1,11)]
+    lhRange += [i*1.e-4 for i in range(1,11)]
+    lhRange += [i*1.e-3 for i in range(1,11)]
+    lhRange += [i*1.e-2 for i in range(1,11)]
+    lhRange += [i*1.e-1 for i in range(1,11)]
+    lhRange += [i*1. for i in range(1,int(YurMax))]
+
+    for i in lhRange:
+
+        lh += [TLine()]
+        lh[-1].SetLineStyle(1)
+        lh[-1].SetLineColor(kGray)
+        lh[-1].DrawLine(XurMin,i,XurMax,i)
+
+
+    lv = []
+    lvRange = [1000*i for i in range(0,int(length_LHC*1e-3))]
+    for s in lvRange:
+
+        if s > XurMin and s < XurMax:
+            lv += [TLine()]
+            lv[-1].SetLineStyle(1)
+            lv[-1].SetLineColor(kGray)
+            lv[-1].DrawLine(s,YurMin,s,YurMax)
+
+
+    # lx, ly = TLine(),TLine()
+    # lx.SetLineWidth(2)
+    # lx.SetLineStyle(3)
+    # lx.DrawLine(XurMin,1,XurMax,1)
+
+    coll_loss.Draw('same')
+    cold_loss.Draw('same')
+    warm_loss.Draw('same')
+
+    gPad.RedrawAxis()
 
     # x1, y1, x2, y2a
-    thelegend = TLegend(0.2, 0.7, 0.24, 0.8) 
+    thelegend = TLegend(0.18, 0.78, 0.42, 0.9) 
     thelegend.SetFillColor(0)
     thelegend.SetLineColor(0)
     thelegend.SetTextSize(0.035)
@@ -170,6 +209,12 @@ def cv03():
     thelegend.AddEntry(cold_loss,'cold losses', "L")
     thelegend.AddEntry(warm_loss,'warm losses', "L")
     thelegend.Draw()
+
+    #gPad.SetRightMargin(1.2)
+    #gStyle.SetStatX(0.9)
+    #gStyle.SetStatY(0.95)
+    gPad.SetGrid(0,1)
+    gPad.SetLogy(1)
 
     pname  = wwwpath
     pname += 'losses'+rel+'.png'
@@ -191,12 +236,12 @@ def check_npart(thispath,appendix):
     #print("npart of " + fname + " is " + str(l))    
 
     # ----
-    fname = thispath + "survival"+appendix+".dat"
-    index = 1
+    #fname = thispath + "survival"+appendix+".dat"
+    #index = 1
     
-    l = count_npart(fname,index)
+    #l = count_npart(fname,index)
    
-    print("npart of " + fname + " is " + str(l))    
+    #print("npart of " + fname + " is " + str(l))    
 
     # ----
     fname = thispath + "LPI_BLP_out"+appendix+".s"
