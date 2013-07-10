@@ -14,39 +14,94 @@
 # 2013, June
 #
 # -----------------------------------------------------------
-
 import os, stat, sys
+from optparse import OptionParser
 
-njobs=10
-queuename='8nh'
-npacks='50'
+parser = OptionParser()
+parser.add_option("-r", dest="run_dir", type="string",
+                  help="put name for run directory")
+parser.add_option("-n", dest="njobs", type="int",
+                  help="number of jobs")
+parser.add_option("-q", dest="queuename", type="string",
+                  help="put queuename")
+parser.add_option("-p", dest="npacks", type="string",
+                  help="put number of packs")
+parser.add_option("-k", dest="ckey", type="string",
+                  help="put key dictionary (similar as run_dir)")
+parser.add_option("-t", dest="tcs", type="string",
+                  help="put name of TCS as in collDB")
+
+(options, args) = parser.parse_args()
+
+njobs = options.njobs
+queuename = options.queuename
+npacks = options.npacks
+run_dir = options.run_dir
+ckey = options.ckey
+tcs  = '.'+options.tcs
+
+# use the agruments
+#njobs=10
+#queuename='8nh'
+#npacks='50'
+doTest=0
 doRun=1
 showInfo=0
-# -----------------------------------------------------------
-afsRunMain  = "/afs/cern.ch/work/r/rkwee/HL-LHC/runs/"
-run_dir     = "exampleRuns/"
-source_dir  = "/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/save/"
-afs_run_dir = afsRunMain + run_dir
+mailOpt = '-u Regina.Kwee@gmail.com'
 # -----------------------------------------------------------
 
+sourcepath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/sourcedirs/'
+
+# assume all exectutables are in sourcepath + 'common/'
+cList  = [[ '3.5TeVExample',[sourcepath + '3.5TeVExample/' ,'SixTrack_4411_coll_gfortran_O4', '3500000' ]]]
+cList += [[ '3.5TeVOldExe', [sourcepath + '3.5TeVOldExe/'  ,'SixTrackwColl'                 , '3500000' ]]]
+cList += [[ 'NewColl7TeVB1',[sourcepath + 'NewColl7TeVB1/' ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
+cList += [[ 'NewColl7TeVB2',[sourcepath + 'NewColl7TeVB2/' ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
+
+cDict = dict(cList)
+
+afsRunMain  = "/afs/cern.ch/work/r/rkwee/HL-LHC/runs/"
+run_dir     = run_dir + "/"
+afs_run_dir = afsRunMain + run_dir
+source_dir  = cDict[ckey][0]
+energy      = cDict[ckey][2]
+# -----------------------------------------------------------
+beam        = 'b1'
+if source_dir.count('B2') or source_dir.count('b2'):
+    beam = 'b2'
+
+thissource  = sourcepath + 'postLS1/' + beam + '/'
+# -----------------------------------------------------------
 if not os.path.exists(afs_run_dir):
     print 'making dir', afs_run_dir
     os.mkdir(afs_run_dir)
 
 # prepare runfiles: these files should be present in source_dir
 
-sixtrackExe = 'SixTrack_4411_coll_gfortran_O4'
-fort2       = 'fort.2'
-fort3       = 'fort.3'
-collDB      = 'CollDB_V6.503_lowb_st.b1.data'
-collPos     = 'CollPositions.b1.dat'
-apertfile   = 'allapert.b1'
-surveyfile  = 'SurveyWithCrossing_XP_lowb.dat'
-beamlossExe = 'BeamLossPattern_2005-04-30_gcc2.9'
-cleanIneExe = 'CleanInelastic'
-cleancoll   = 'correct_coll_summary.sh'
+sixtrackExe = sourcepath +'common/' + cDict[ckey][1]
+fort2       = source_dir +'fort.2'
+fort3       = source_dir +'fort.3'
+collDB      = thissource +'CollDB_V6.503_lowb_st.'+beam+'.data' + tcs
+collPos     = source_dir +'CollPositions.'+beam+'.dat'
+apertfile   = source_dir +'allapert.' + beam
+surveyfile  = source_dir +'SurveyWithCrossing_XP_lowb_'+beam+'.dat'
+beamlossExe = sourcepath +'common/' +'BeamLossPattern_2005-04-30_gcc2.9'
+cleanIneExe = sourcepath +'common/' +'CleanInelastic'
+cleancoll   = sourcepath +'common/' +'correct_coll_summary.sh'
 
-inputFiles  = [sixtrackExe,beamlossExe,cleanIneExe,fort2,collDB,collPos,apertfile,surveyfile,cleancoll]
+inputFiles  = [sixtrackExe,beamlossExe,cleanIneExe,fort2,collPos,apertfile,surveyfile,cleancoll]
+
+cnt = 0
+for i in inputFiles:
+
+    inpfile = i
+    if not os.path.exists(inpfile):
+        print('This input file ' + inpfile + ' does not exists!')
+        cnt += 1
+
+if cnt:
+    print("Missing inputfile(s)! Exiting.")
+    sys.exit()
 
 # -----------------------------------------------------------
 
@@ -54,7 +109,7 @@ occupiedDirs = []
 
 for subdir in os.listdir(afs_run_dir):
     if showInfo:
-        print "cheking", subdir
+        print "checking", subdir
     if os.path.isdir(afs_run_dir+subdir):
         occupiedDirs += [int(subdir.split('_')[-1])]
 
@@ -73,8 +128,13 @@ if showInfo:
 # -----------------------------------------------------------
 for job in newrange:
 
+    index = str(job)
+
+    if len(index) < 4:
+        index = '0'*(4-len(str(job)))+str(job)
+
     # for each job create a subdir
-    subdir = afs_run_dir + 'run_' + str(job) + '/'
+    subdir = afs_run_dir + 'run_' + index + '/'
     
     os.mkdir(subdir)
 
@@ -94,25 +154,36 @@ for job in newrange:
     # copy the inputfiles
     for inpfile in inputFiles:
         
-        inpfile = source_dir + inpfile
-
         # copy to the local, randomly attributed path on the lxbatch
         cmd =  'cp ' + inpfile + ' . \n'
         run_job.write(cmd)
 
-    # now fort3 file
-    cmd = "sed 's\\100 3500000\\" + npacks + " 3500000\\' " + source_dir+fort3 + " > " + fort3 + '\n'
+    # hardcoded in BeamLossPattern
+    cmd = 'cp ' + surveyfile + ' SurveyWithCrossing_XP_lowb.dat \n'
     run_job.write(cmd)
 
-    run_job.write('./' +sixtrackExe + ' >| screenout\n' ) 
-    run_job.write('./' +beamlossExe + ' lowb tracks2.dat BLP_out ' + apertfile  + '\n')
-    run_job.write('./' +cleanIneExe + ' FLUKA_impacts.dat LPI_BLP_out.s '+ collPos + ' coll_summary.dat\n')
-    run_job.write('./' + cleancoll + '\n')
+    # collDB
+    cmd =  'cp ' + collDB + ' ' +collDB.split('/')[-1].rstrip(tcs)+ ' \n'
+    run_job.write(cmd)
+
+    # now fort3 file
+    cmd_npacks = "sed 's\\1 "+energy+"\\" + npacks + " "+energy+"\\' " + fort3 + " > " + fort3.split('/')[-1] + '\n'
+    run_job.write(cmd_npacks)
+
+    run_job.write('./'+sixtrackExe.split('/')[-1] + ' >| screenout\n' ) 
+    run_job.write('./'+beamlossExe.split('/')[-1] + ' lowb tracks2.dat BLP_out ' + apertfile.split('/')[-1]  + '\n')
+    run_job.write('./'+cleanIneExe.split('/')[-1] + ' FLUKA_impacts.dat LPI_BLP_out.s '+ collPos.split('/')[-1] + ' coll_summary.dat\n')
+    run_job.write('./'+cleancoll.split('/')[-1] + '\n')
 
     # copy back
-    cmd = 'cp amplitude.dat efficiency.dat coll_summary.dat screen* survival.dat LP* FLUKA* FirstImpacts.dat sigmasettings.out impacts* ' + subdir
-    #cmd = "cp * " + subdir + "\n"
-    run_job.write(cmd)
+    # cmd_copy = "cp * " + subdir + '\\n'
+    # cmd_copy = 'cp amplitude.dat efficiency.dat coll_summary.dat screen* survival.dat LP* FLUKA* FirstImpacts.dat sigmasettings.out impacts* ' + subdir
+    if doTest:
+        cmd_copy = 'cp coll_summary.dat collgaps* screen* LP* FLUKA* FirstImpacts.dat sigmasettings.out impacts* ' + subdir
+    else:
+        cmd_copy = 'cp coll_summary.dat LP* FLUKA* FirstImpacts.dat impacts* ' + subdir
+
+    run_job.write(cmd_copy)
 
     run_job.close()
 
@@ -121,7 +192,7 @@ for job in newrange:
     os.system(cmd)
 
     # submit to batch
-    cmd = 'bsub -q ' + queuename + ' -R "rusage[pool=30000]" < ' + run_job_fname
+    cmd = 'bsub '+mailOpt+' -q ' + queuename + ' -R "rusage[pool=30000]" < ' + run_job_fname
     print cmd
 
     if doRun:        
