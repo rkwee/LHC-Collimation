@@ -30,43 +30,69 @@ fApp = ['LPI_BLP_out.s',
 fAdd = ['coll_summary.dat',
         ]
 
-debug = 0
 # -----------------------------------------------------------------
-def findGoodFiles(targetfile):
+def findGoodFiles(targetfile,rundir):
+
+    debug = 0
 
     # all goodfiles
     resFiles = []
 
+    if not rundir.endswith('/'):
+        rundir += '/'
+
     # find the correct path 
     subdirs = os.listdir(rundir)
+
+
+    # exclude dirs
+    excludeDirs =  [ 'run_000'+str(i) for i in range(1,10)]
+    excludeDirs += [ 'run_00'+str(i) for i in range(10,21)]
 
     # ------------
     # get all good files into a list
 
     for subdir in subdirs:
 
-        if debug:        
+        if subdir in excludeDirs:
+            continue
+
+        if debug: 
             print("Finding " + subdir)
 
         # directory with results 
         rdir = rundir + subdir + "/"
+
+        if debug:
+            print("Using this dir " + rdir )
 
         if not os.path.isdir(rdir):
             continue
 
         thisfile = rdir + targetfile
 
+        if debug:
+            print("adding file " + thisfile)
+
         if not os.path.exists(thisfile):
             continue
 
         resFiles += [thisfile]
 
+    if debug:
+        print("Returning " + str(len(resFiles)) + " files.")
+
     return resFiles
 
 # -----------------------------------------------------------------
-def doAppend(fApp):
+def doAppend(fApp,rundir):
 
-    print("Am in " + rundir)
+    debug = 0 
+
+    if not rundir.endswith('/'):
+        rundir += '/'
+
+    print("Using " + rundir)
 
     for targetfile in fApp:
 
@@ -77,7 +103,7 @@ def doAppend(fApp):
         # open one new file for merged info
         fileout  = open(foutname,'w')
 
-        resFiles = findGoodFiles(targetfile)
+        resFiles = findGoodFiles(targetfile,rundir)
         cnt      = 0
 
         # ------------
@@ -102,11 +128,16 @@ def doAppend(fApp):
 
 # -----------------------------------------------------------------
                     
-def doAddup(fAdd):
+def doAddup(fAdd,rundir):
 
     # ---------------
     # this is for coll_summary.dat only!
     # ---------------
+
+    debug = 0
+
+    if not rundir.endswith('/'):
+        rundir += '/'
 
     for targetfile in fAdd:
 
@@ -117,18 +148,19 @@ def doAddup(fAdd):
         # open one new file for merged info
         fileout  = open(foutname,'w')
 
-        resFiles = findGoodFiles(targetfile)
+        resFiles = findGoodFiles(targetfile,rundir)
         cnt      = 0
         icoll, collname, length = '','',''
         nimp, nabs, imp_av, imp_sig = -9999.,-9999.,-9999.,-9999.
         
         # ------------
+
         for rFile in resFiles:
 
             cnt += 1
 
-            # if debug:
-            print("opening file" + rFile)
+            if debug:
+                print("opening file # " + str(cnt) + ": " + rFile)
             
             if cnt == 1:
                 # create dict while reading first file
@@ -199,5 +231,5 @@ def doAddup(fAdd):
 # -----------------------------------------------------------------
 if __name__ == "__main__":
 
-    doAppend(fApp)
-    doAddup(fAdd)
+    doAppend(fApp,rundir)
+    doAddup(fAdd,rundir)
