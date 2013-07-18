@@ -14,7 +14,7 @@ import ROOT, sys, glob, os
 from ROOT import *
 import lossmap
 import helpers
-from helpers import wwwpath
+from helpers import wwwpath, file_len
 import math
 ## -------------------------------------------------------------------------------
 
@@ -27,6 +27,17 @@ TCS = [
     'TCSG.B4L7.B1',
     ]
 
+# same order as TCS, not used as it is negligable, use once for check
+NORM = [
+    6009748,    
+    4488443,    
+    6006612,    
+    5958153,
+    5796669,    
+    5828267,
+    ]
+
+    
 def cv03():
 
     doWriteRFile = 0
@@ -70,10 +81,18 @@ def cv03():
 
         for tcs in TCS:
 
-            tag = '_'+ tcs
+            tag  = '_'+ tcs
             cold_loss = rf.Get('cold_loss' + tag)
-            print "-"*20, tag, "-"*20
- 
+            print "-"*20, tcs, "-"*20
+
+            # -- the number of lines in FirstImpact-1 (for header) is the total number of particles hitting a collimator
+            f4   = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/FirstImpacts' + tag + '.dat'           
+            # -- takes ages, do only once for check
+            # norm = file_len(f4)-1
+
+            # print 'norm =', norm
+            norm = 1.
+
             p1_bin_start = cold_loss.FindBin(p1_cold_loss_start)
             p1_bin_end   = cold_loss.FindBin(p1_cold_loss_end)
             p1_cold_loss = cold_loss.Integral(p1_bin_start,p1_bin_end)/(p1_bin_end - p1_bin_start)
@@ -86,9 +105,12 @@ def cv03():
             p1_stat, p2_stat = 0.,0.
 
             for i in range(p1_bin_start, p1_bin_end+1):
-                p1_stat += cold_loss.GetBinError(i)**2
+                p1_err   = cold_loss.GetBinError(i)/norm
+                p1_stat += math.pow(p1_err,2)
+
             for i in range(p2_bin_start, p2_bin_end+1):
-                p2_stat += cold_loss.GetBinError(i)**2
+                p2_err   = cold_loss.GetBinError(i)/norm                
+                p2_stat += math.pow(p2_err,2)
 
             Q8_losses  += [(tcs, p1_cold_loss, math.sqrt(p1_stat))]
             Q10_losses += [(tcs, p2_cold_loss, math.sqrt(p2_stat))]
@@ -121,7 +143,7 @@ def bmPlotA(Q8_losses,Q10_losses,rel,maxval,minval):
 
     hist1 = TH1F(hname, hname, nbins, 1, nbins+1)
     hist1.GetYaxis().SetRangeUser(minval*.95, maxval*1.13)
-    hist1.GetYaxis().SetRangeUser(1e-9,1e-4)
+
     hist1.SetMarkerStyle(22)
     hist1.SetMarkerColor(kMagenta-3)
     hist1.SetLineColor(kMagenta-3)
@@ -137,14 +159,14 @@ def bmPlotA(Q8_losses,Q10_losses,rel,maxval,minval):
         cnt +=1 
         hist1.GetXaxis().SetBinLabel(cnt, tcs)
         hist1.SetBinContent(cnt, val)
-        hist1.SetBinError(cnt, err)
+        #hist1.SetBinError(cnt, err)
 
     cnt = 0
 
     for tcs,val,err in Q10_losses:
         cnt +=1 
         hist2.SetBinContent(cnt, val)
-        hist2.SetBinError(cnt, err)
+        #hist2.SetBinError(cnt, err)
 
     hist1.Draw('P')
     hist2.Draw('PSAME')
