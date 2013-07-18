@@ -1,5 +1,13 @@
 #!/usr/bin/python
 #
+# if doWriteRFile = 1
+#    writes out root file 
+#    plots lossmap for every tcs
+# if doAvLoss = 1
+#    uses rootfile 
+#    plots losses at Q8 and Q10 
+# 
+#
 # May 2013, rkwee
 ## -------------------------------------------------------------------------------
 import ROOT, sys, glob, os
@@ -54,7 +62,6 @@ def cv03():
         p2_cold_loss_start, p2_cold_loss_end  = 20380., 20430.
 
         rf = TFile.Open(rfname)
-        q8, q10 = 0., 0.
         Q8_losses, Q10_losses = [],[]
 
         maxval = -1.;
@@ -65,25 +72,15 @@ def cv03():
             tag = '_'+ tcs
             cold_loss = rf.Get('cold_loss' + tag)
             print "-"*20, tag, "-"*20
-            #p1_cold_loss
+ 
+           #p1_cold_loss
             p1_bin_start = cold_loss.FindBin(p1_cold_loss_start)
             p1_bin_end   = cold_loss.FindBin(p1_cold_loss_end)
             p1_cold_loss = cold_loss.Integral(p1_bin_start,p1_bin_end)/(p1_bin_end - p1_bin_start)
 
-            for i in range(p1_bin_start, p1_bin_end+1):
-                q8 += cold_loss.GetBinContent(i)
-
             p2_bin_start = cold_loss.FindBin(p2_cold_loss_start)
             p2_bin_end   = cold_loss.FindBin(p2_cold_loss_end)
             p2_cold_loss = cold_loss.Integral(p2_bin_start,p2_bin_end)/(p2_bin_end - p2_bin_start)
-
-            for i in range(p2_bin_start, p2_bin_end+1):
-               q10 += cold_loss.GetBinContent(i)
-
-            #print "cold loss at Q8:", p1_cold_loss, q8/(p1_bin_end - p1_bin_start)
-            #print "cold loss at Q10:", p2_cold_loss, q10/(p2_bin_end - p2_bin_start)
-
-            q8, q10 = 0., 0.
 
             Q8_losses  += [(tcs, p1_cold_loss)]
             Q10_losses += [(tcs, p2_cold_loss)]
