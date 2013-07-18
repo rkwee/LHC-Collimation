@@ -4,258 +4,151 @@
 ## -------------------------------------------------------------------------------
 import ROOT, sys, glob, os
 from ROOT import *
+import lossmap
 import helpers
+from helpers import wwwpath
 ## -------------------------------------------------------------------------------
+
+TCS = [
+    'nominal',
+    'TCSG.A6L7.B1',     
+    'TCSG.B5L7.B1',     
+    'TCSG.A5L7.B1',     
+    'TCSG.D4L7.B1',     
+    'TCSG.B4L7.B1',
+    ]
+
 def cv03():
 
-    from helpers import *
+    doWriteRFile = 0
+    doAvLoss     = 1
 
-    print 'run cv03 : losses on collmator Danieles script'
+    rfname = "7TeVPostLS1_scan.root"
 
-    debug = False
+    if doWriteRFile:
+        print "Writing " + rfname
 
-    path  = workpath + 'HL-LHC-Collimation/AnalysisScripts/C/danielesExample/forRegina/'
-
-    f1    = path + 'LPI_BLP_out.s_total.dat'
-    f2    = path + 'coll_summary_cleaned.dat'
-    f3    = path + 'CollPositions.V6503.cry.dat'
-    f4    = path + 'FirstImpacts.dat_total.dat'
-
-    path  = '/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/' 
-    f1    = path + 'LPI_BLP_out.s'
-    f2    = path + 'coll_summary.dat'
-    f3    = path + 'CollPositions.b1.dat'
-    f4    = path + 'FirstImpacts.dat'
-
-    path  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/oldExe/'
-    f1    = path + 'LPI_BLP_out_merged.s'
-    f2    = path + 'coll_summary_merged.dat'
-    f3    = source_dir + 'CollPositions.b1.dat'
-    f4    = path + 'FirstImpacts_merged.dat'
-
-
-    #check_npart(path,'_merged')
-    #return
-
-    rel = '_oldExe_zoom'
-
-    XurMin, XurMax = 18e3, 22e3
-    #XurMin, XurMax = 0., length_LHC
-    YurMin, YurMax = 3.2e-9, 3.
-
-
-    # loss positions
-    losses = []
-   
-    with open(f1) as myfile:
+        # create a root file
+        rf = TFile(rfname, 'recreate')
         
-        for line in myfile:
+        for tcs in TCS:
             
-            line  = line.rstrip()
+            tag      = '_' + tcs
+            thispath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/'
+            doZoom   = 0
             
-            losses += [float(line.split()[2])]
+            h_tot_loss, h_cold, h_warm =  lossmap.lossmap(thispath,tag,doZoom) 
+            h_tot_loss.Write()
+            h_cold.Write()
+            h_warm.Write()            
 
-
-    names_sum, nabs, length = [],[],[]
-    
-    with open(f2) as myfile:
-        for line in myfile:
+            doZoom   = 1
+            lossmap.lossmap(thispath,tag,doZoom) 
             
-            line = line.rstrip()
-            
-            if line.count("nabs"):
-                continue
+        rf.Close()
 
-            names_sum  += [ line.split()[1] ]
-            nabs   += [ float(line.split()[3]) ]
-            length += [ float(line.split()[6]) ]
+    if doAvLoss:
+        print "Calculating losses at Q8 and Q10"
 
+        p1_cold_loss_start, p1_cold_loss_end  = 20290., 20340.
+        p2_cold_loss_start, p2_cold_loss_end  = 20380., 20430.
 
-    names_pos, coll_pos = [],[]
-    
-    with open(f3) as myfile:
+        rf = TFile.Open(rfname)
+        q8, q10 = 0., 0.
+        Q8_losses, Q10_losses = [],[]
 
-        for line in myfile:
+        maxval = -1.;
+        minval = 10.;
 
-            line = line.rstrip()
+        for tcs in TCS:
 
-            if line.count("Pos"):
-                continue
+            tag = '_'+ tcs
+            cold_loss = rf.Get('cold_loss' + tag)
+            print "-"*20, tag, "-"*20
+            #p1_cold_loss
+            p1_bin_start = cold_loss.FindBin(p1_cold_loss_start)
+            p1_bin_end   = cold_loss.FindBin(p1_cold_loss_end)
+            p1_cold_loss = cold_loss.Integral(p1_bin_start,p1_bin_end)/(p1_bin_end - p1_bin_start)
 
-            names_pos  += [ line.split()[1] ]
-            coll_pos   += [ float(line.split()[2]) ]
+            for i in range(p1_bin_start, p1_bin_end+1):
+                q8 += cold_loss.GetBinContent(i)
 
+            p2_bin_start = cold_loss.FindBin(p2_cold_loss_start)
+            p2_bin_end   = cold_loss.FindBin(p2_cold_loss_end)
+            p2_cold_loss = cold_loss.Integral(p2_bin_start,p2_bin_end)/(p2_bin_end - p2_bin_start)
 
-    # -- plot 
+            for i in range(p2_bin_start, p2_bin_end+1):
+               q10 += cold_loss.GetBinContent(i)
 
-    cv = TCanvas( 'cv_ap', 'cv_ap', 1200, 700)
-    #cv.SetRightMargin(0.12)
+            #print "cold loss at Q8:", p1_cold_loss, q8/(p1_bin_end - p1_bin_start)
+            #print "cold loss at Q10:", p2_cold_loss, q10/(p2_bin_end - p2_bin_start)
 
-    # -- the number of lines in FirstImpact-1 (for header) is the total number of particles hitting a collimator
-    maxval = file_len(f4)-1
+            q8, q10 = 0., 0.
 
-    nbins, xmin, xmax = 10*length_LHC,0., length_LHC
+            Q8_losses  += [(tcs, p1_cold_loss)]
+            Q10_losses += [(tcs, p2_cold_loss)]
 
-    coll_loss = TH1F("coll_loss","coll_loss",nbins, xmin, xmax)
-    cold_loss = coll_loss.Clone("cold_loss")
-    warm_loss = coll_loss.Clone("warm_loss")
+            if p1_cold_loss > maxval:
+                maxval = p1_cold_loss
 
-    xtitle = 's [m]'
-    ytitle = "losses"
+            if p2_cold_loss > maxval:
+                maxval = p2_cold_loss
 
-    #coll_loss.SetLineWidth(2)
-    coll_loss.SetLineColor(kBlack)
-    warm_loss.SetLineColor(kOrange)
-    cold_loss.SetLineColor(kBlue)
+            if p1_cold_loss < minval:
+                minval = p1_cold_loss 
 
-    meter  = range(10)
-    n_warm = len(warm)
-    k_warm = [2*k for k in range(n_warm/2)]
+            if p2_cold_loss < minval:
+                minval = p2_cold_loss 
 
-    f1_nlines = len(losses)
-    f2_nlines = len(names_sum)
-    f3_nlines = len(names_pos)
+        # plot the benchmark plots
+        bmPlot(Q8_losses,Q10_losses,'comp',maxval,minval)
 
-    # -- cold and warm losses for 10th of 1 meter
-    for j in range(10):                                                                                                              
-        for i in range(f1_nlines):
-            for k in k_warm:
-                
-                if losses[i] >= warm[k] and losses[i] <= warm[k+1]:
-                    warm_loss.Fill(losses[i])                                                                   
-                if k<n_warm-1 and losses[i] >= warm[k+1] and losses[i] <= warm[k+2]:
-                    cold_loss.Fill(losses[i])                                                 
+def bmPlot(Q8_losses,Q10_losses,rel,maxval,minval):
 
-    # -- losses on collimator
-    # f2_nlines = 0 
-    for i in range(f2_nlines):
+    nbins = len(Q8_losses)
+    hname = rel
 
-        for j in range(f3_nlines):
+    cv = TCanvas( 'cv' + hname, 'cv' + hname, 800, 600)
+    cv.SetLeftMargin(0.15)
+    cv.SetRightMargin(0.15)
+    cv.SetTopMargin(0.15)
 
-            if names_sum[i] == names_pos[j]:
+    hist1 = TH1F(hname, hname, nbins, 1, nbins+1)
+    hist1.GetYaxis().SetRangeUser(minval*.95, maxval*1.13)
+    hist1.SetMarkerStyle(22)
+    hist1.SetMarkerColor(kMagenta-3)
+    hist1.GetYaxis().SetTitle('Cleaning Inefficiency #eta')
+    hist2 = TH1F(hname+'d', hname+'d', nbins, 1, nbins+1)
+    hist2.SetMarkerStyle(23)
+    hist2.SetMarkerColor(kGreen-3)
 
-                kval = int(nabs[i]/length[i])
-                
-                for k in range(kval):
-                    
-                    coll_loss.Fill(coll_pos[j])                
+    cnt = 0
 
+    for tcs,val in Q8_losses:
+        cnt +=1 
+        hist1.GetXaxis().SetBinLabel(cnt, tcs)
+        hist1.SetBinContent(cnt, val)
 
-    #pad_l.SetLogy(1)
-    coll_loss.GetXaxis().SetTitleOffset(.9)
-    coll_loss.GetYaxis().SetTitleOffset(1.06)
-    coll_loss.GetXaxis().SetTitle(xtitle)
-    coll_loss.GetYaxis().SetTitle(ytitle)
-    coll_loss.Scale(1.0/maxval)
-    cold_loss.Scale(1.0/maxval)
-    warm_loss.Scale(1.0/maxval)
-    coll_loss.GetXaxis().SetRangeUser(XurMin, XurMax)
-    coll_loss.GetYaxis().SetRangeUser(YurMin, YurMax)
+    cnt = 0
 
-    coll_loss.Draw('hist')
-    cold_loss.Draw('same')
-    warm_loss.Draw('same')
+    for tcs,val in Q10_losses:
+        cnt +=1 
+        hist2.SetBinContent(cnt, val)
 
-    lh = []
-    # YurMin = 3.2e-9
-    lhRange  = [3e-9+i*1e-9 for i in range(3,7)]
-    lhRange += [i*1.e-8 for i in range(1,11)]
-    lhRange += [i*1.e-7 for i in range(1,11)]
-    lhRange += [i*1.e-6 for i in range(1,11)]
-    lhRange += [i*1.e-5 for i in range(1,11)]
-    lhRange += [i*1.e-4 for i in range(1,11)]
-    lhRange += [i*1.e-3 for i in range(1,11)]
-    lhRange += [i*1.e-2 for i in range(1,11)]
-    lhRange += [i*1.e-1 for i in range(1,11)]
-    lhRange += [i*1. for i in range(1,int(YurMax))]
-
-    for i in lhRange:
-
-        lh += [TLine()]
-        lh[-1].SetLineStyle(1)
-        lh[-1].SetLineColor(kGray)
-        lh[-1].DrawLine(XurMin,i,XurMax,i)
-
-
-    lv = []
-    lvRange = [1000*i for i in range(0,int(length_LHC*1e-3))]
-    for s in lvRange:
-
-        if s > XurMin and s < XurMax:
-            lv += [TLine()]
-            lv[-1].SetLineStyle(1)
-            lv[-1].SetLineColor(kGray)
-            lv[-1].DrawLine(s,YurMin,s,YurMax)
-
-
-    # lx, ly = TLine(),TLine()
-    # lx.SetLineWidth(2)
-    # lx.SetLineStyle(3)
-    # lx.DrawLine(XurMin,1,XurMax,1)
-
-    coll_loss.Draw('same')
-    cold_loss.Draw('same')
-    warm_loss.Draw('same')
-
-    gPad.RedrawAxis()
+    hist1.Draw('P')
+    hist2.Draw('PSAME')
 
     # x1, y1, x2, y2a
-    thelegend = TLegend(0.18, 0.78, 0.42, 0.9) 
+    thelegend = TLegend(0.18, 0.6, 0.42, 0.7) 
     thelegend.SetFillColor(0)
     thelegend.SetLineColor(0)
     thelegend.SetTextSize(0.035)
     thelegend.SetShadowColor(10)
-    thelegend.AddEntry(coll_loss,'losses on collimators', "L")
-    thelegend.AddEntry(cold_loss,'cold losses', "L")
-    thelegend.AddEntry(warm_loss,'warm losses', "L")
+    thelegend.AddEntry(hist1,'at Q8', "P")
+    thelegend.AddEntry(hist2,'at Q10', "P")
     thelegend.Draw()
 
-    #gPad.SetRightMargin(1.2)
-    #gStyle.SetStatX(0.9)
-    #gStyle.SetStatY(0.95)
-    gPad.SetGrid(0,1)
-    gPad.SetLogy(1)
-
     pname  = wwwpath
-    pname += 'losses'+rel+'.png'
-    cv.Print(pname)
+    pname += 'scan/'+hname+'losses.png'
 
-def check_npart(thispath,appendix):
-
-    index = 1
-    
-    # l = sum_npart(fname,index)
-    #    print("npart of " + fname + " is " + str(l))    
-
-    # ----
-
-    # fname = thispath + "tracks2.dat"
-    index = 0
-    
-    #l = count_npart(fname,index)
-    #print("npart of " + fname + " is " + str(l))    
-
-    # ----
-    #fname = thispath + "survival"+appendix+".dat"
-    #index = 1
-    
-    #l = count_npart(fname,index)
-   
-    #print("npart of " + fname + " is " + str(l))    
-
-    # ----
-    fname = thispath + "LPI_BLP_out"+appendix+".s"
-    index = 1
-    
-    l = count_npart(fname,index)
-   
-    print("npart of " + fname + " is " + str(l))    
-    # ----
-
-    fname = thispath + "FirstImpacts"+appendix+".dat"
-    index = 0
-    
-    ll = count_npart(fname,index)
-    print("npart of " + fname + " is " + str(ll))
-
-    # ----
+    cv.SaveAs(pname)

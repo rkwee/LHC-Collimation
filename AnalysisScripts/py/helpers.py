@@ -9,8 +9,20 @@ from ROOT import TLatex
 
 workpath = '/afs/cern.ch/work/r/rkwee/HL-LHC/'
 wwwpath  = '/afs/cern.ch/user/r/rkwee/public/www/HL-LHC/'
-source_dir  = "/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/save/"
+source_dir  = workpath + 'runs/sourcedirs/NewColl7TeVB1/'
 # ------------------------------------------------------------------------------------------------
+length_LHC = 26659
+IPs = [
+ ("IP1",        0.000000  ),      
+ ("IP2",     3332.436584  ),      
+ ("IP3",     6664.720800  ),      
+ ("IP4",     9997.005016  ),      
+ ("IP5",    13329.289233  ),      
+ ("IP6",    16661.725816  ),      
+ ("IP7",    19994.162400  ),      
+ ("IP8",    23315.378983  ),      
+]
+
 def mylabel(font):
 
     mylabel = TLatex()

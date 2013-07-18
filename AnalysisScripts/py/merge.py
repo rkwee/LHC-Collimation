@@ -10,10 +10,14 @@ from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("-r", "", dest="rundir", type="string",
                   help="this is the main rundir with the run_X dirs")
+parser.add_option("-t", "", dest="tag", type="string",
+                  help="tag of merged file, just some string name like _nominal ")
 
 (options, args) = parser.parse_args()
 rundir = options.rundir
+# tag    = options.tag
 
+tag = rundir.split('7TeVPostLS1')[-1]
 # rundir = '/afs/cern.ch/work/r/rkwee/public/sixtrack_example/'
 
 # 2 types of merging: 1. append, 2. add up
@@ -21,7 +25,7 @@ rundir = options.rundir
 # all files to append:
 fApp = ['LPI_BLP_out.s',           
         'FirstImpacts.dat',
-        'survival.dat',
+        #'survival.dat',
         'impacts_fake.dat',
         'impacts_real.dat',
         ]
@@ -96,7 +100,7 @@ def doAppend(fApp,rundir):
 
     for targetfile in fApp:
 
-        foutname = rundir + targetfile.split('.')[0] + '_merged.' + targetfile.split('.')[-1]
+        foutname = rundir + targetfile.split('.')[0] + tag + '.' + targetfile.split('.')[-1]
         print('-'*20)
         print("Writing summary file " + foutname)
 
@@ -105,6 +109,8 @@ def doAppend(fApp,rundir):
 
         resFiles = findGoodFiles(targetfile,rundir)
         cnt      = 0
+
+        print len(resFiles),' for targetfile', targetfile
 
         # ------------
         for rFile in resFiles:
@@ -141,7 +147,7 @@ def doAddup(fAdd,rundir):
 
     for targetfile in fAdd:
 
-        foutname = rundir + targetfile.split('.')[0] + '_merged.' + targetfile.split('.')[-1]
+        foutname = rundir + targetfile.split('.')[0] + tag + '.' + targetfile.split('.')[-1]
         print('-'*20)
         print("Writing summary file " + foutname)
 

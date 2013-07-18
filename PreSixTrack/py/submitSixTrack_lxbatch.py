@@ -78,16 +78,16 @@ if not os.path.exists(afs_run_dir):
 
 # prepare runfiles: these files should be present in source_dir
 
-sixtrackExe = sourcepath +'common/' + cDict[ckey][1]
+sixtrackExe = source_dir + cDict[ckey][1]
 fort2       = source_dir +'fort.2'
 fort3       = source_dir +'fort.3'
 collDB      = thissource +'CollDB_V6.503_lowb_st.'+beam+'.data' + tcs
 collPos     = source_dir +'CollPositions.'+beam+'.dat'
 apertfile   = source_dir +'allapert.' + beam
 surveyfile  = source_dir +'SurveyWithCrossing_XP_lowb_'+beam+'.dat'
-beamlossExe = sourcepath +'common/' +'BeamLossPattern_2005-04-30_gcc2.9'
-cleanIneExe = sourcepath +'common/' +'CleanInelastic'
-cleancoll   = sourcepath +'common/' +'correct_coll_summary.sh'
+beamlossExe = source_dir +'BeamLossPattern_2005-04-30_gcc2.9'
+cleanIneExe = source_dir +'CleanInelastic'
+cleancoll   = source_dir +'correct_coll_summary.sh'
 
 inputFiles  = [sixtrackExe,beamlossExe,cleanIneExe,fort2,collPos,apertfile,surveyfile,cleancoll]
 
