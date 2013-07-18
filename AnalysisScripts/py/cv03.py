@@ -15,6 +15,7 @@ from ROOT import *
 import lossmap
 import helpers
 from helpers import wwwpath
+import math
 ## -------------------------------------------------------------------------------
 
 TCS = [
@@ -73,7 +74,6 @@ def cv03():
             cold_loss = rf.Get('cold_loss' + tag)
             print "-"*20, tag, "-"*20
  
-           #p1_cold_loss
             p1_bin_start = cold_loss.FindBin(p1_cold_loss_start)
             p1_bin_end   = cold_loss.FindBin(p1_cold_loss_end)
             p1_cold_loss = cold_loss.Integral(p1_bin_start,p1_bin_end)/(p1_bin_end - p1_bin_start)
@@ -82,8 +82,16 @@ def cv03():
             p2_bin_end   = cold_loss.FindBin(p2_cold_loss_end)
             p2_cold_loss = cold_loss.Integral(p2_bin_start,p2_bin_end)/(p2_bin_end - p2_bin_start)
 
-            Q8_losses  += [(tcs, p1_cold_loss)]
-            Q10_losses += [(tcs, p2_cold_loss)]
+            # statistical uncertainty
+            p1_stat, p2_stat = 0.,0.
+
+            for i in range(p1_bin_start, p1_bin_end+1):
+                p1_stat += cold_loss.GetBinError(i)**2
+            for i in range(p2_bin_start, p2_bin_end+1):
+                p2_stat += cold_loss.GetBinError(i)**2
+
+            Q8_losses  += [(tcs, p1_cold_loss, math.sqrt(p1_stat))]
+            Q10_losses += [(tcs, p2_cold_loss, math.sqrt(p2_stat))]
 
             if p1_cold_loss > maxval:
                 maxval = p1_cold_loss
@@ -98,9 +106,10 @@ def cv03():
                 minval = p2_cold_loss 
 
         # plot the benchmark plots
-        bmPlot(Q8_losses,Q10_losses,'comp',maxval,minval)
+        bmPlotA(Q8_losses,Q10_losses,'compErr_',maxval,minval)
 
-def bmPlot(Q8_losses,Q10_losses,rel,maxval,minval):
+
+def bmPlotA(Q8_losses,Q10_losses,rel,maxval,minval):
 
     nbins = len(Q8_losses)
     hname = rel
@@ -112,25 +121,30 @@ def bmPlot(Q8_losses,Q10_losses,rel,maxval,minval):
 
     hist1 = TH1F(hname, hname, nbins, 1, nbins+1)
     hist1.GetYaxis().SetRangeUser(minval*.95, maxval*1.13)
+    hist1.GetYaxis().SetRangeUser(1e-9,1e-4)
     hist1.SetMarkerStyle(22)
     hist1.SetMarkerColor(kMagenta-3)
+    hist1.SetLineColor(kMagenta-3)
     hist1.GetYaxis().SetTitle('Cleaning Inefficiency #eta')
     hist2 = TH1F(hname+'d', hname+'d', nbins, 1, nbins+1)
     hist2.SetMarkerStyle(23)
     hist2.SetMarkerColor(kGreen-3)
+    hist2.SetLineColor(kGreen-3)
 
     cnt = 0
 
-    for tcs,val in Q8_losses:
+    for tcs,val,err in Q8_losses:
         cnt +=1 
         hist1.GetXaxis().SetBinLabel(cnt, tcs)
         hist1.SetBinContent(cnt, val)
+        hist1.SetBinError(cnt, err)
 
     cnt = 0
 
-    for tcs,val in Q10_losses:
+    for tcs,val,err in Q10_losses:
         cnt +=1 
         hist2.SetBinContent(cnt, val)
+        hist2.SetBinError(cnt, err)
 
     hist1.Draw('P')
     hist2.Draw('PSAME')
@@ -141,8 +155,8 @@ def bmPlot(Q8_losses,Q10_losses,rel,maxval,minval):
     thelegend.SetLineColor(0)
     thelegend.SetTextSize(0.035)
     thelegend.SetShadowColor(10)
-    thelegend.AddEntry(hist1,'at Q8', "P")
-    thelegend.AddEntry(hist2,'at Q10', "P")
+    thelegend.AddEntry(hist1,'at Q8', "PL")
+    thelegend.AddEntry(hist2,'at Q10', "PL")
     thelegend.Draw()
 
     pname  = wwwpath
