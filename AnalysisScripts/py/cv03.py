@@ -74,10 +74,10 @@ def cv03():
         p2_cold_loss_start, p2_cold_loss_end  = 20380., 20430.
 
         rf = TFile.Open(rfname)
-        Q8_losses, Q10_losses = [],[]
+        max_cold_losses, Q8_losses, Q10_losses = [],[],[]
 
-        maxval = -1.;
-        minval = 10.;
+        # for better visibility 
+        scaleFactor = 10.
 
         for tcs in TCS:
 
@@ -101,6 +101,7 @@ def cv03():
             p2_bin_end   = cold_loss.FindBin(p2_cold_loss_end)
             p2_cold_loss = cold_loss.Integral(p2_bin_start,p2_bin_end)/(p2_bin_end - p2_bin_start)
 
+
             # statistical uncertainty
             p1_stat, p2_stat = 0.,0.
 
@@ -114,24 +115,13 @@ def cv03():
 
             Q8_losses  += [(tcs, p1_cold_loss, math.sqrt(p1_stat))]
             Q10_losses += [(tcs, p2_cold_loss, math.sqrt(p2_stat))]
-
-            if p1_cold_loss > maxval:
-                maxval = p1_cold_loss
-
-            if p2_cold_loss > maxval:
-                maxval = p2_cold_loss
-
-            if p1_cold_loss < minval:
-                minval = p1_cold_loss 
-
-            if p2_cold_loss < minval:
-                minval = p2_cold_loss 
+            max_cold_losses += [cold_loss.GetMaximum()/scaleFactor]
 
         # plot the benchmark plots
-        bmPlotA(Q8_losses,Q10_losses,'compErr_',maxval,minval)
+        bmPlot(Q8_losses,Q10_losses,max_cold_losses,'comp')
 
 
-def bmPlotA(Q8_losses,Q10_losses,rel,maxval,minval):
+def bmPlot(Q8_losses,Q10_losses,max_cold_losses,rel):
 
     nbins = len(Q8_losses)
     hname = rel
@@ -142,16 +132,22 @@ def bmPlotA(Q8_losses,Q10_losses,rel,maxval,minval):
     cv.SetTopMargin(0.15)
 
     hist1 = TH1F(hname, hname, nbins, 1, nbins+1)
-    hist1.GetYaxis().SetRangeUser(minval*.95, maxval*1.13)
-
     hist1.SetMarkerStyle(22)
     hist1.SetMarkerColor(kMagenta-3)
     hist1.SetLineColor(kMagenta-3)
     hist1.GetYaxis().SetTitle('Cleaning Inefficiency #eta')
+
     hist2 = TH1F(hname+'d', hname+'d', nbins, 1, nbins+1)
     hist2.SetMarkerStyle(23)
     hist2.SetMarkerColor(kGreen-3)
     hist2.SetLineColor(kGreen-3)
+
+    hist3 = TH1F(hname+'m', hname+'m', nbins, 1, nbins+1)
+    hist3.SetMarkerStyle(20)
+    hist3.SetMarkerColor(kAzure-3)
+    hist3.SetLineColor(kAzure-3)
+
+    vals = []
 
     cnt = 0
 
@@ -160,6 +156,7 @@ def bmPlotA(Q8_losses,Q10_losses,rel,maxval,minval):
         hist1.GetXaxis().SetBinLabel(cnt, tcs)
         hist1.SetBinContent(cnt, val)
         #hist1.SetBinError(cnt, err)
+        vals += [val]
 
     cnt = 0
 
@@ -167,18 +164,32 @@ def bmPlotA(Q8_losses,Q10_losses,rel,maxval,minval):
         cnt +=1 
         hist2.SetBinContent(cnt, val)
         #hist2.SetBinError(cnt, err)
+        vals += [val]
 
+    cnt = 0
+
+    for val in max_cold_losses:
+        cnt +=1 
+        hist3.SetBinContent(cnt, val)
+        vals += [val]
+
+    minval = min(vals)
+    maxval = max(vals)
+
+    hist1.GetYaxis().SetRangeUser(minval*.95, maxval*1.13)
     hist1.Draw('P')
     hist2.Draw('PSAME')
+    hist3.Draw('PSAME')
 
     # x1, y1, x2, y2a
-    thelegend = TLegend(0.18, 0.6, 0.42, 0.7) 
+    thelegend = TLegend(0.16, 0.7, 0.42, 0.82) 
     thelegend.SetFillColor(0)
     thelegend.SetLineColor(0)
     thelegend.SetTextSize(0.035)
     thelegend.SetShadowColor(10)
-    thelegend.AddEntry(hist1,'at Q8', "PL")
-    thelegend.AddEntry(hist2,'at Q10', "PL")
+    thelegend.AddEntry(hist1,'at Q8', "P")
+    thelegend.AddEntry(hist2,'at Q10', "P")
+    thelegend.AddEntry(hist3,'10% of maximum cold loss', "P")
     thelegend.Draw()
 
     pname  = wwwpath
