@@ -10,25 +10,25 @@ from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("-r", "", dest="rundir", type="string",
                   help="this is the main rundir with the run_X dirs")
-parser.add_option("-t", "", dest="tag", type="string",
-                  help="tag of merged file, just some string name like _nominal ")
+#parser.add_option("-t", "", dest="tag", type="string",
+#                  help="tag of merged file, just some string name like _nominal ")
 
 (options, args) = parser.parse_args()
 rundir = options.rundir
 # tag    = options.tag
-
 tag = rundir.split('7TeVPostLS1')[-1]
+
 # rundir = '/afs/cern.ch/work/r/rkwee/public/sixtrack_example/'
 
 # 2 types of merging: 1. append, 2. add up
 
-# all files to append:
-fApp = ['LPI_BLP_out.s',           
-        'FirstImpacts.dat',
-        #'survival.dat',
-        'impacts_fake.dat',
-        'impacts_real.dat',
-        ]
+# all files to append, doGzip boolean
+fApp = [
+    ('FirstImpacts.dat',1),
+    ('LPI_BLP_out.s',   0),    
+    ('impacts_fake.dat',0),
+    ('impacts_real.dat',0),
+    ]
 
 # specified to work only with this file!
 fAdd = ['coll_summary.dat',
@@ -78,10 +78,13 @@ def findGoodFiles(targetfile,rundir):
         if debug:
             print("adding file " + thisfile)
 
-        if not os.path.exists(thisfile):
+        if not os.path.exists(thisfile) and not os.path.exists(thisfile + '.gz'):
             continue
 
-        resFiles += [thisfile]
+        if os.path.exists(thisfile):
+            resFiles += [thisfile]
+        elif os.path.exists(thisfile + '.gz'):
+            resFiles += [thisfile]
 
     if debug:
         print("Returning " + str(len(resFiles)) + " files.")
@@ -91,14 +94,14 @@ def findGoodFiles(targetfile,rundir):
 # -----------------------------------------------------------------
 def doAppend(fApp,rundir):
 
-    debug = 0 
+    debug  = 0 
 
     if not rundir.endswith('/'):
         rundir += '/'
 
-    print("Using " + rundir)
+    print("Using files in " + rundir)
 
-    for targetfile in fApp:
+    for targetfile,doGzip in fApp:
 
         foutname = rundir + targetfile.split('.')[0] + tag + '.' + targetfile.split('.')[-1]
         print('-'*20)
@@ -117,20 +120,40 @@ def doAppend(fApp,rundir):
 
             cnt += 1
 
-            if debug:
-                print("opening this file" + thisfile)
-            
-            with open(rFile) as rf:
+            if not rFile.endswith('.gz'):
+                
+                with open(rFile) as rf:
+                    for line in rf:
+                        
+                        if cnt < 2 and line.count("#"):
+                            fileout.write(line)
+                        if not line.count('#'):
+                            fileout.write(line)                
+            else:
 
+                rf = gzip.open(rFile):
                 for line in rf:
 
                     if cnt < 2 and line.count("#"):
                         fileout.write(line)
-
                     if not line.count('#'):
                         fileout.write(line)
 
         fileout.close()
+
+        if doGzip:
+            os.chdir(rundir)
+            
+            if os.path.exists(foutname .split('/')[-1]+'.gz'):
+                cmd = 'rm ' + foutname .split('/')[-1]+'.gz'
+                print 'rm old zipped file'
+                os.system(cmd)
+                
+            cmd = 'gzip ' + foutname .split('/')[-1]
+            print cmd
+            os.system(cmd)
+            os.chdir('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/')
+
 
 # -----------------------------------------------------------------
                     
@@ -172,15 +195,55 @@ def doAddup(fAdd,rundir):
                 # create dict while reading first file
                 allLines = []
 
-            with open(rFile) as rf:
-                
+            # - if not gzipped
+            if not rFile.endswith('.gz'):
+
+                with open(rFile) as rf:
+
+                    for line in rf:
+
+                        if cnt < 2 and line.count("#"):
+                            fileout.write(line)
+
+                        if not line.count('#'):
+
+                            icoll    = line.split()[0]
+                            collname = line.split()[1]
+                            nimp     = float(line.split()[2])
+                            nabs     = float(line.split()[3])
+                            imp_av   = float(line.split()[4])
+                            imp_sig  = float(line.split()[5])
+                            length   = line.split()[6]
+
+                            # single line     # 0        1     2      3      4        5
+                            sline = [ icoll, [collname, nimp, nabs, imp_av, imp_sig, length] ]
+
+                            if cnt == 1:
+                                allLines += [sline]
+                            else:
+                                if debug:
+                                    print(cnt, icoll, nimp, cDict[icoll])
+
+                                # dict already exists, so average and add up
+                                if cDict[icoll][1]:
+                                    cDict[ icoll ][3]  = imp_av * nimp/(cDict[icoll][1] + nimp) + cDict[icoll][1]/(cDict[icoll][1]+nimp) * cDict[icoll][3]
+                                    cDict[ icoll ][4]  = imp_sig* nimp/(cDict[icoll][1] + nimp) + cDict[icoll][1]/(cDict[icoll][1]+nimp) * cDict[icoll][4]
+
+                                cDict[ icoll ][1] += nimp
+                                cDict[ icoll ][2] += nabs
+
+            # - if gzipped - only opening different!
+            else:
+                            
+                rf = gzip.open(rFile):
+
                 for line in rf:
 
                     if cnt < 2 and line.count("#"):
                         fileout.write(line)
 
                     if not line.count('#'):
-                        
+
                         icoll    = line.split()[0]
                         collname = line.split()[1]
                         nimp     = float(line.split()[2])
@@ -206,7 +269,6 @@ def doAddup(fAdd,rundir):
                             cDict[ icoll ][1] += nimp
                             cDict[ icoll ][2] += nabs
 
-                            
             # create once the dict
             if cnt == 1:
                 cDict = dict(allLines)

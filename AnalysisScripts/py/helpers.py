@@ -5,6 +5,7 @@
 
 import os, math, time, ROOT
 from ROOT import TLatex
+import gzip
 # ------------------------------------------------------------------------------------------------
 
 workpath = '/afs/cern.ch/work/r/rkwee/HL-LHC/'
@@ -63,10 +64,18 @@ warm = [0.0,22.5365,54.853,152.489,172.1655,192.39999999999998,199.4846999999999
 
 
 def file_len(fname):
-    with open(fname) as f:
-        for i, l in enumerate(f):
-            pass
-    return i + 1
+
+    if fname.endswith('gz'):
+        i = 0
+        f = gzip.open(fname,'r')
+        for line in f:
+           i += 1
+        return i
+    else:
+        with open(fname) as f:
+            for i, l in enumerate(f):
+                pass
+        return i + 1
 
 def sum_npart(fname,index):
     # fname = file 
