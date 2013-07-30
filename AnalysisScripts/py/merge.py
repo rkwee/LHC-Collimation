@@ -84,7 +84,7 @@ def findGoodFiles(targetfile,rundir):
         if os.path.exists(thisfile):
             resFiles += [thisfile]
         elif os.path.exists(thisfile + '.gz'):
-            resFiles += [thisfile]
+            resFiles += [thisfile+'.gz']
 
     if debug:
         print("Returning " + str(len(resFiles)) + " files.")
@@ -94,7 +94,7 @@ def findGoodFiles(targetfile,rundir):
 # -----------------------------------------------------------------
 def doAppend(fApp,rundir):
 
-    debug  = 0 
+    debug  = 0
 
     if not rundir.endswith('/'):
         rundir += '/'
@@ -120,7 +120,10 @@ def doAppend(fApp,rundir):
 
             cnt += 1
 
-            if not rFile.endswith('.gz'):
+            if debug:
+                print('opening ' + rFile)
+
+            if not rFile.count('.gz'):
                 
                 with open(rFile) as rf:
                     for line in rf:
