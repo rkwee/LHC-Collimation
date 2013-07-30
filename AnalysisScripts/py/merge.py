@@ -131,7 +131,7 @@ def doAppend(fApp,rundir):
                             fileout.write(line)                
             else:
 
-                rf = gzip.open(rFile):
+                rf = gzip.open(rFile)
                 for line in rf:
 
                     if cnt < 2 and line.count("#"):
@@ -235,7 +235,7 @@ def doAddup(fAdd,rundir):
             # - if gzipped - only opening different!
             else:
                             
-                rf = gzip.open(rFile):
+                rf = gzip.open(rFile)
 
                 for line in rf:
 
