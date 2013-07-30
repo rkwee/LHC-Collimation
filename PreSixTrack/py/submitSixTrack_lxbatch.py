@@ -163,7 +163,7 @@ for job in newrange:
     run_job.write(cmd)
 
     # collDB
-    cmd =  'cp ' + collDB + ' ' +collDB.split('/')[-1].rstrip(tcs)+ ' \n'
+    cmd =  'cp ' + collDB + ' ' +collDB.split('/')[-1].split(tcs)[0]+ ' \n'
     run_job.write(cmd)
 
     # now fort3 file
