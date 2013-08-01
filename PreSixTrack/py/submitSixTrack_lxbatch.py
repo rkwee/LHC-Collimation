@@ -113,7 +113,7 @@ for subdir in os.listdir(afs_run_dir):
     if os.path.isdir(afs_run_dir+subdir):
         occupiedDirs += [int(subdir.split('_')[-1])]
 
-startjob = 0
+startjob = -1
 if occupiedDirs:
     startjob = max(occupiedDirs)
 

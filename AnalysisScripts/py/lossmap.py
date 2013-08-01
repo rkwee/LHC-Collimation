@@ -24,7 +24,7 @@ from ROOT import *
 import helpers, gzip
 from helpers import *
 ## -------------------------------------------------------------------------------
-def lossmap(path,tag,doZoom):
+def lossmap(path,tag,doZoom,doPrint):
 
     print ' losses on collmator Danieles script'
 
@@ -120,17 +120,19 @@ def lossmap(path,tag,doZoom):
 
     # -- the number of lines in FirstImpact-1 (for header) is the total number of particles hitting a collimator
     maxval = file_len(f4)-1
+    tcs = tag.split('_')[-1]
+
+    if doPrint:
+        print '('+tcs+', ' + str(maxval) + ')'
 
     nbins, xmin, xmax = 10*length_LHC,0., length_LHC
 
     coll_loss = TH1F("coll_loss" + tag,"coll_loss" + tag,nbins, xmin, xmax)
-    cold_loss = TH1F("cold_loss" + tag,"coll_loss" + tag,nbins, xmin, xmax)
-    warm_loss = TH1F("warm_loss" + tag,"coll_loss" + tag,nbins, xmin, xmax)
-    #  cold_loss = coll_loss.Clone("cold_loss" + tag)
-    #  warm_loss = coll_loss.Clone("warm_loss")
+    cold_loss = TH1F("cold_loss" + tag,"cold_loss" + tag,nbins, xmin, xmax)
+    warm_loss = TH1F("warm_loss" + tag,"warm_loss" + tag,nbins, xmin, xmax)
 
     xtitle = 's [m]'
-    ytitle = "losses"
+    ytitle = "Cleaning inefficiency #eta"
 
     coll_loss.SetLineColor(kBlack)
     warm_loss.SetLineColor(kOrange)
@@ -227,8 +229,8 @@ def lossmap(path,tag,doZoom):
 
     gPad.RedrawAxis()
 
-    # x1, y1, x2, y2a
-    thelegend = TLegend(0.18, 0.78, 0.42, 0.9) 
+    x1, y1, x2, y2 = 0.18, 0.78, 0.42, 0.9
+    thelegend = TLegend( x1, y1, x2, y2)
     thelegend.SetFillColor(0)
     thelegend.SetLineColor(0)
     thelegend.SetTextSize(0.035)
@@ -237,6 +239,9 @@ def lossmap(path,tag,doZoom):
     thelegend.AddEntry(cold_loss,'cold losses', "L")
     thelegend.AddEntry(warm_loss,'warm losses', "L")
     thelegend.Draw()
+
+    lab = mylabel(60)
+    lab.DrawLatex(x1, y1-0.1, tcs)
 
     #gPad.SetRightMargin(1.2)
     #gStyle.SetStatX(0.9)

@@ -4,7 +4,7 @@
 # Regina Kwee-Hinzmann @ RHUL
 # 2013, June
 # -----------------------------------------------------------------
-import os, stat, sys
+import os, stat, sys, gzip
 from optparse import OptionParser
 
 parser = OptionParser()
@@ -37,7 +37,7 @@ fAdd = ['coll_summary.dat',
 # -----------------------------------------------------------------
 def findGoodFiles(targetfile,rundir):
 
-    debug = 0
+    debug = 1
 
     # all goodfiles
     resFiles = []
@@ -61,22 +61,16 @@ def findGoodFiles(targetfile,rundir):
         if subdir in excludeDirs:
             continue
 
-        if debug: 
+        if debug and 0: 
             print("Finding " + subdir)
 
         # directory with results 
         rdir = rundir + subdir + "/"
 
-        if debug:
-            print("Using this dir " + rdir )
-
         if not os.path.isdir(rdir):
             continue
 
         thisfile = rdir + targetfile
-
-        if debug:
-            print("adding file " + thisfile)
 
         if not os.path.exists(thisfile) and not os.path.exists(thisfile + '.gz'):
             continue
@@ -86,6 +80,9 @@ def findGoodFiles(targetfile,rundir):
         elif os.path.exists(thisfile + '.gz'):
             resFiles += [thisfile+'.gz']
 
+        if debug:
+            print("adding file " + resFiles[-1])
+
     if debug:
         print("Returning " + str(len(resFiles)) + " files.")
 
@@ -94,7 +91,7 @@ def findGoodFiles(targetfile,rundir):
 # -----------------------------------------------------------------
 def doAppend(fApp,rundir):
 
-    debug  = 0
+    debug  = 1
 
     if not rundir.endswith('/'):
         rundir += '/'

@@ -1,32 +1,26 @@
 
 #!/usr/bin/python
 #
-# May 2013, rkwee
+# June 2013, rkwee
 ## -----------------------------------------------------------------------------------
-print 'run cv01 : phase-space of input distribution'
+print 'run cv05 : phase-space of input distribution'
 ## -----------------------------------------------------------------------------------
 import ROOT, sys, glob, os
 from ROOT import *
 import helpers
 from helpers import *
 ## -------------------------------------------------------------------------------
-def cv01():
+def cv05():
 
     debug = False
 
-    path  = '/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/'
-    path = "/afs/cern.ch/work/r/rkwee/HL-LHC/SixTrack/SixTrack_4446_coll_gfortran_O4/run_d5/"
-
     genpath = "/afs/cern.ch/work/r/rkwee/HL-LHC/roderik/inputdistributions/"
-    genpath = "/tmp/rkwee/7TeVPostLS1_nominal_b2/run_234/"
 
     distTypes = ['d1', 'd2', 'd3', 'd5']
-    distTypes = ['d2']
+
     for distType in distTypes:
 
         path = genpath + distType + '/'
-
-        path = "/tmp/rkwee/7TeVPostLS1_nominal_b2/run_234/"
         # has 6 colums: X[m]   Xp[rad]   Y [m]   Yp[rad]   s in bucket [m]  E[MeV]
         f1    = path + 'dist0.dat'
 
@@ -50,8 +44,6 @@ def cv01():
                 ypcoor = float(line.split()[3])
 
                 xarrayX += [xcoor ]
-                yarrayX += [xpcoor]
-                xarrayY += [ycoor ]
                 yarrayY += [ypcoor]
 
         # plot
@@ -61,53 +53,33 @@ def cv01():
         grX = TGraph()
         grX.Set(len(xarrayX))
 
-        grY = TGraph()
-        grY.Set(len(xarrayY))
-
-        xtitle = 'x, y [m]'
-        ytitle = "x', y' [rad]"
+        xtitle = 'x [m]'
+        ytitle = "y [m]"
 
         grX.SetMarkerStyle(7)
-        grY.SetMarkerStyle(7)
         grX.SetLineWidth(2)
-        grY.SetLineWidth(2)
-        grX.SetMarkerColor(kMagenta+2)
-        grY.SetMarkerColor(kMagenta)
-        grX.SetFillColor(kMagenta+2)
-        grY.SetFillColor(kMagenta)
-        grX.SetLineColor(kMagenta+2)
-        grY.SetLineColor(kMagenta)
+        grX.SetMarkerColor(kCyan+2)
+        grX.SetFillColor(kCyan+2)
+        grX.SetLineColor(kCyan+2)
+
 
         for i in range(len(xarrayX)):
-            grX.SetPoint(i+1, xarrayX[i], yarrayX[i])
-
-        for i in range(len(xarrayY)):
-            grY.SetPoint(i+1, xarrayY[i], yarrayY[i])
+            grX.SetPoint(i+1, xarrayX[i], yarrayY[i])
 
         grX.GetXaxis().SetTitleOffset(.9)
         grX.GetYaxis().SetTitleOffset(1.6)
         grX.GetXaxis().SetTitle(xtitle)
         grX.GetYaxis().SetTitle(ytitle)
         grX.Draw('ap')
-        grY.Draw('samep')
-        # x1, y1, x2, y2a
-        thelegend = TLegend(0.75, 0.8, 0.84, 0.9) 
-        thelegend.SetFillColor(0)
-        thelegend.SetLineColor(0)
-        thelegend.SetTextSize(0.035)
-        thelegend.SetShadowColor(10)
-        thelegend.AddEntry(grX,"x'", "PLEF")
-        thelegend.AddEntry(grY,"y'", "PLEF")
-        thelegend.Draw()
 
         clab = mylabel(60)
-        clab.DrawLatex(0.2, 0.9, 'distribution type ' + distType.split("d")[-1])
+        clab.DrawLatex(0.45, 0.88, 'distribution type ' + distType.split("d")[-1])
 
         pname  = wwwpath
-        pname += 'scan/debugB2/phasespace_'+distType+'.pdf'
-        #v.Print(pname)
+        pname += 'realspace_'+distType+'.pdf'
+        cv.Print(pname)
 
         pname  = wwwpath
-        pname += 'scan/debugB2/phasespace_'+distType+'.png'
+        pname += 'realspace_'+distType+'.png'
         cv.Print(pname)
 

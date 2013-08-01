@@ -13,22 +13,26 @@ def cv00():
     print 'run cv00 : aperture plots'
     debug = False
 
-    path  = '/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/'
+    path  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/sourcedirs/NewColl7TeVB1/'
     f1    = path + 'allapert.b1'
+    pname  = wwwpath + 'scan/debugB2/'
 
+    text   = f1.split('.')[-1]
     # aper_1 = half width rectangle
     # aper_2 = half height rectangle
     # aper_3 = half horizontal axis ellipse (or radius if circle)
     # aper_4 = half vertical axis ellipse
 
     XurMin, XurMax = 13000., 13700.
-    #XurMin, XurMax = 0., 27000.
-    XurMin, XurMax = 2000., 4500.
+    #    XurMin, XurMax = 0., length_LHC
+
+    # around Q8
+    XurMin, XurMax = 19500., 20500.
     cv_x, cv_y = 2000, 400 
 
     #XurMin, XurMax = -1, -1
     YurMin, YurMax = -1, -1
-    rel = '_02'
+    rel = '_02_' + text
 
 
     xarrayH, xarrayV, yarrayH, yarrayV = [], [], [], []
@@ -100,8 +104,8 @@ def cv00():
     gr.Draw('al')
     grH.Draw('lsame')
 
-    # x1, y1, x2, y2
-    thelegend = TLegend(0.7, 0.7, 0.8, 0.8) 
+    x1, y1, x2, y2 = 0.7, 0.7, 0.8, 0.8
+    thelegend = TLegend(x1, y1, x2, y2)
     thelegend.SetFillColor(0)
     thelegend.SetLineColor(0)
     thelegend.SetTextSize(0.035)
@@ -110,7 +114,9 @@ def cv00():
     thelegend.AddEntry(grH,'horizontal aperture', "PL")
     thelegend.Draw()
 
-    pname  = wwwpath
+    lab = mylabel(70)
+    lab.DrawLatex(x1, y1-0.1, text)
+
     pname += 'aperture'+rel+'.png'
     print("printing " + pname)
     cv.Print(pname)

@@ -11,17 +11,20 @@ def cv02():
     print 'run cv02 : plotting betafunctions'
 
     debug = False
-
-    path  = '/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/'
+    path = "/tmp/rkwee/7TeVPostLS1_nominal_b2/run_234/"
+    text = 'b2'
+    pname  = wwwpath + 'scan/debugB2/'
 
     # 1=ielem 2=name 3=s 4=TBETAX 5=TBETAY
     f1    = path + 'betafunctions.dat'
 
-    XurMin, XurMax = 9000., 19000.
-    #XurMin, XurMax = -1, -1
-    YurMin, YurMax = -1, -1
+    # around Q8
+    XurMin, XurMax, YurMin, YurMax, = 19500., 20500., 0., 500.
 
-    rel = '_01'
+    #XurMin, XurMax = 9000., 19000., -1, -1
+    #  XurMin, XurMax,  YurMin, YurMax = 0., length_LHC, -1, -1
+  
+    rel = '_01_' + text
 
     xarray, bxarray, byarray = [],[],[]
 
@@ -58,13 +61,13 @@ def cv02():
     
     grx.SetMarkerStyle(7)
     grx.SetLineWidth(1)
-    grx.SetLineColor(kRed)
-    grx.SetMarkerColor(kRed)
+    grx.SetLineColor(kMagenta-6)
+    grx.SetMarkerColor(kMagenta-6)
 
     gry.SetMarkerStyle(7)
     gry.SetLineWidth(1)
-    gry.SetLineColor(kBlue)
-    gry.SetMarkerColor(kBlue)
+    gry.SetLineColor(kTeal+3)
+    gry.SetMarkerColor(kTeal+3)
 
     for i in range(len(byarray)):
         grx.SetPoint(i+1, xarray[i], bxarray[i])
@@ -84,8 +87,8 @@ def cv02():
     grx.Draw('al')
     gry.Draw('lsame')
 
-    # x1, y1, x2, y2
-    thelegend = TLegend(0.7, 0.7, 0.8, 0.8) 
+    x1, y1, x2, y2 = 0.7, 0.7, 0.8, 0.8
+    thelegend = TLegend(x1, y1, x2, y2)
     thelegend.SetFillColor(0)
     thelegend.SetLineColor(0)
     thelegend.SetTextSize(0.035)
@@ -94,7 +97,9 @@ def cv02():
     thelegend.AddEntry(gry,'#beta_{y}', "PL")
     thelegend.Draw()
 
-    pname  = wwwpath
+    lab = mylabel(70)
+    lab.DrawLatex(x1, y1-0.1, text)
+    
     pname += 'betafunction'+rel+'.png'
     print("printing " + pname)
     cv.Print(pname)
