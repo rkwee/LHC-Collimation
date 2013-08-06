@@ -18,46 +18,49 @@ from helpers import wwwpath, file_len
 import math, gzip
 ## -------------------------------------------------------------------------------
 
+
+# already merged the new files??
+
 TCS = [
 
-('nominal_B1',  12016858),
-('TCSG.4R6.B1',  5979551),
-('TCSG.6R7.B1',  6018721),
-('TCSG.A4L7.B1',  6800715),
-('TCSG.A4R7.B1',  6497420),
-('TCSG.A5L7.B1',  6044670),
-('TCSG.A6L7.B1',  4488443),
-('TCSG.B4L7.B1',  5982305),
-('TCSG.B5L7.B1',  6037577),
-('TCSG.B5R7.B1',  6052281),
-('TCSG.D4L7.B1',  6019343),
-('TCSG.D5R7.B1',  6051532),
-('TCSG.E5R7.B1',  6010177),
-# ('TCSG.4L6.B2',  1657957),
-# ('TCSG.6L7.B2',  6273317),
-# ('TCSG.A4L7.B2',  6273328),
-# ('TCSG.A4R7.B2',  6273353),
-# ('TCSG.A5R7.B2',  6240904),
-# ('TCSG.A6R7.B2',  5313129),
-# ('TCSG.B4R7.B2',  6241294),
-# ('TCSG.B5L7.B2',  3367086),
-# ('TCSG.B5R7.B2',  6273317),
-# ('TCSG.D4R7.B2',  5460328),
-# ('TCSG.D5L7.B2',  6260530),
-# ('TCSG.E5L7.B2',  6266897),
-#('nominal_B2',  6260540),
-
-    ]               
+#--- 0 setting     # 1 numper of total protons entering IR7  # s-position of TCS
+#    ('nominal_B1', 18193641, 1e4),
+# ('TCSG.A6L7.B1', 4488443, 19832.68),
+# ('TCSG.B5L7.B1', 6037577, 19891.91),
+# ('TCSG.A5L7.B1', 6044670, 19895.91),
+# ('TCSG.D4L7.B1', 6019343, 19917.24),
+# ('TCSG.B4L7.B1', 5982305, 19987.16),
+# ('TCSG.A4L7.B1', 6800715, 19991.16),
+# ('TCSG.A4R7.B1', 6497420, 19995.16),
+# ('TCSG.B5R7.B1', 6052281, 20086.42),
+# ('TCSG.D5R7.B1', 6051532, 20102.42),
+# ('TCSG.E5R7.B1', 6010177, 20106.42),
+# ('TCSG.6R7.B1', 6018721, 20141.02),
+#    ('nominal_B2', 6260540, 0),
+# ('TCSG.A6R7.B2', 5313129, 6503.24),
+# ('TCSG.B5R7.B2', 6273317, 6562.46),
+# ('TCSG.A5R7.B2', 6240904, 6566.46),
+# ('TCSG.D4R7.B2', 5460328, 6587.79),
+# ('TCSG.B4R7.B2', 6241294, 6653.72),
+# ('TCSG.A4R7.B2', 6273353, 6657.72),
+# ('TCSG.A4L7.B2', 6273328, 6673.72),
+    ('TCSG.B5L7.B2', 3367086, 6756.98),
+# ('TCSG.D5L7.B2', 6260530, 6772.98),
+# ('TCSG.E5L7.B2', 6266897, 6776.98),
+# ('TCSG.6L7.B2', 6273317, 6811.58),
+    
+]               
 
     
 def cv03():
 
-    debug        = 0
+    debug        = 1
     doWriteRFile = 1
-    doAvLoss     = 1
+    doAvLoss     = 0
 
-    rfname = "7TeVPostLS1_scan_B1.root"
-#    rfname = "7TeVPostLS1_DEBUG_scan.root"
+    rfname = "7TeVPostLS1_scan_B2.root"
+    rfname = "7TeVPostLS1_DEBUG_scan.root"
+    rfname = "test.root"
 
     if doWriteRFile:
         print "Writing " + rfname
@@ -65,29 +68,29 @@ def cv03():
         # create a root file
         rf = TFile(rfname, 'recreate')
         
-        for tcs,norm in TCS:
+        for tcs,norm,spos in TCS:
             
             tag      = '_' + tcs
             thispath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/'
+            beam     = 'b2'
+            if tag.count("B1"):
+                beam = 'b1'
 
             doZoom   = 0
             doPrint  = 1
-            h_tot_loss, h_cold, h_warm =  lossmap.lossmap(thispath,tag,doZoom,doPrint) 
+            h_tot_loss, h_cold, h_warm =  lossmap.lossmap(beam,thispath,tag,doZoom,doPrint) 
             h_tot_loss.Write()
             h_cold.Write()
             h_warm.Write()            
 
             doZoom   = 1
             doPrint  = 0
-            lossmap.lossmap(thispath,tag,doZoom,doPrint) 
+            lossmap.lossmap(beam,thispath,tag,doZoom,doPrint) 
             
         rf.Close()
 
     if doAvLoss:
-        print "Calculating losses at Q8 and Q10"
-
-        p1_cold_loss_start, p1_cold_loss_end  = 20290., 20340.
-        p2_cold_loss_start, p2_cold_loss_end  = 20380., 20430.
+        print "Calculating losses at Q8 and Q10 for B1 and QA and QB for B2"
 
         print "Opening ", rfname
         rf = TFile.Open(rfname)
@@ -96,11 +99,19 @@ def cv03():
         # for better visibility 
         scaleFactor = 10.
 
-        for tcs,norm in TCS:
+        for tcs,norm,spos in TCS:
 
             tag  = '_'+ tcs
             cold_loss = rf.Get('cold_loss' + tag)
             print "-"*20, tcs, "-"*20
+
+            if tag.count("B1"):
+                p1_cold_loss_start, p1_cold_loss_end  = 20290., 20340.
+                p2_cold_loss_start, p2_cold_loss_end  = 20380., 20430.
+            else:
+                p1_cold_loss_start, p1_cold_loss_end  = 6950., 7010.
+                p2_cold_loss_start, p2_cold_loss_end  = 7050., 7110.
+
 
             # -- the number of lines in FirstImpact-1 (for header) is the total number of particles hitting a collimator
             # f4   = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/FirstImpacts' + tag + '.dat.gz'
@@ -108,7 +119,7 @@ def cv03():
             #norm = file_len(f4)-1
 
             #print '('+tcs+', ' + str(norm) + ')'
-            #norm = 1.
+            norm = 1.
 
             p1_bin_start = cold_loss.FindBin(p1_cold_loss_start)
             p1_bin_end   = cold_loss.FindBin(p1_cold_loss_end)
@@ -140,15 +151,15 @@ def cv03():
                 p2_stat += math.pow(p2_err,2)
 
 
-            Q8_losses  += [(tcs, p1_cold_loss, math.sqrt(p1_stat/norm))]
-            Q10_losses += [(tcs, p2_cold_loss, math.sqrt(p2_stat/norm))]
-            max_cold_losses += [( cold_loss.GetMaximum()/scaleFactor, cold_loss.GetBinError(cold_loss.GetMaximumBin())/scaleFactor )]
+            Q8_losses  += [(tcs, p1_cold_loss, math.sqrt(p1_cold_loss/norm))]
+            Q10_losses += [(tcs, p2_cold_loss, math.sqrt(p2_cold_loss/norm))]
 
-            print(tcs + 'bin error max loss =' + str(cold_loss.GetBinError(cold_loss.GetMaximumBin())))
-
+            max_cold_loss = cold_loss.GetMaximum()/scaleFactor
+            max_cold_losses += [( max_cold_loss, math.sqrt(max_cold_loss/norm) )]
+            print "Maximum loss in bin", cold_loss.GetMaximumBin(), " from ", cold_loss.GetBinLowEdge(cold_loss.GetMaximumBin()), " to ", cold_loss.GetBinLowEdge(cold_loss.GetMaximumBin() + 1)
 
         # plot the benchmark plots
-        bmPlot(Q8_losses,Q10_losses,max_cold_losses,'comp')
+        bmPlot(Q8_losses,Q10_losses,max_cold_losses,'complossesErr_' + rfname.split('.')[0])
 
 
 def bmPlot(Q8_losses,Q10_losses,max_cold_losses,hname):
@@ -184,7 +195,7 @@ def bmPlot(Q8_losses,Q10_losses,max_cold_losses,hname):
         cnt +=1 
         hist1.GetXaxis().SetBinLabel(cnt, tcs)
         hist1.SetBinContent(cnt, val)
-        #hist1.SetBinError(cnt, err)
+        hist1.SetBinError(cnt, err)
         vals += [val]
 
     cnt = 0
@@ -192,7 +203,7 @@ def bmPlot(Q8_losses,Q10_losses,max_cold_losses,hname):
     for tcs,val,err in Q10_losses:
         cnt +=1 
         hist2.SetBinContent(cnt, val)
-        #hist2.SetBinError(cnt, err)
+        hist2.SetBinError(cnt, err)
         vals += [val]
 
     cnt = 0
@@ -200,13 +211,13 @@ def bmPlot(Q8_losses,Q10_losses,max_cold_losses,hname):
     for val,err in max_cold_losses:
         cnt +=1 
         hist3.SetBinContent(cnt, val)
-        #hist3.SetBinError(cnt, err)
+        hist3.SetBinError(cnt, err)
         vals += [val]
 
     minval = min(vals)
     maxval = max(vals)
 
-    hist1.GetYaxis().SetRangeUser(minval*.95, maxval*1.13)
+    hist1.GetYaxis().SetRangeUser(minval*.75, maxval*1.23)
     hist1.Draw('P')
     hist2.Draw('PSAME')
     hist3.Draw('PSAME')
@@ -223,6 +234,6 @@ def bmPlot(Q8_losses,Q10_losses,max_cold_losses,hname):
     thelegend.Draw()
 
     pname  = wwwpath
-    pname += 'scan/'+hname+'losses.png'
+    pname += 'scan/'+hname+'.png'
 
     cv.Print(pname)
