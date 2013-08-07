@@ -24,12 +24,11 @@ from ROOT import *
 import helpers, gzip
 from helpers import *
 ## -------------------------------------------------------------------------------
-def lossmap(path,tag,doZoom,doPrint):
+def lossmap(beam,path,tag,doZoom,doPrint):
 
     print ' losses on collmator Danieles script'
 
-    debug = False
-
+    debug = 0
 
     if not path.endswith('/'):
         path += '/'
@@ -51,7 +50,7 @@ def lossmap(path,tag,doZoom,doPrint):
     # path  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/oldExe/'
     f1    = path + 'LPI_BLP_out'+tag+'.s'
     f2    = path + 'coll_summary'+tag+'.dat'
-    f3    = helpers.source_dir + 'CollPositions.b1.dat'
+    f3    = helpers.source_dir + 'NewColl7TeVB'+beam.split('b')[-1]+'/CollPositions.'+beam+'.dat'
     f4    = path + 'FirstImpacts'+tag+'.dat.gz'
 
     cmd = "perl -pi -e 's/\\0/ /g' " + f1
@@ -61,11 +60,15 @@ def lossmap(path,tag,doZoom,doPrint):
     #check_npart(path,'_merged')
     #return
 
-    rel = tag
+    rel = tag 
     XurMin, XurMax = 0., length_LHC
 
-    if doZoom:
+    if doZoom and beam.count('1'):
         XurMin, XurMax = 18e3, 22e3
+        rel = tag + '_zoom'
+
+    if doZoom and beam.count("2"):
+        XurMin, XurMax = 5.1e3, 7.2e3
         rel = tag + '_zoom'
 
     YurMin, YurMax = 3.2e-9, 3.
@@ -123,7 +126,7 @@ def lossmap(path,tag,doZoom,doPrint):
     tcs = tag.split('_')[-1]
 
     if doPrint:
-        print '('+tcs+', ' + str(maxval) + ')'
+        print "('"+tcs+"', " + str(maxval) + "),"
 
     nbins, xmin, xmax = 10*length_LHC,0., length_LHC
 
@@ -137,6 +140,9 @@ def lossmap(path,tag,doZoom,doPrint):
     coll_loss.SetLineColor(kBlack)
     warm_loss.SetLineColor(kOrange)
     cold_loss.SetLineColor(kBlue)
+    coll_loss.SetFillColor(kBlack)
+    warm_loss.SetFillColor(kOrange)
+    cold_loss.SetFillColor(kBlue)
 
     meter  = range(10)
     n_warm = len(warm)
@@ -147,40 +153,54 @@ def lossmap(path,tag,doZoom,doPrint):
     f3_nlines = len(names_pos)
 
     # -- cold and warm losses for 10th of 1 meter
-    for j in range(10):                                                                                                              
+    for j in range(10):           
+        cnt = 0                                                                                                   
         for i in range(f1_nlines):
-            for k in k_warm:
-                
+
+            for k in k_warm:                
                 if losses[i] >= warm[k] and losses[i] <= warm[k+1]:
                     warm_loss.Fill(losses[i])                                                                   
-                if k<n_warm-1 and losses[i] >= warm[k+1] and losses[i] <= warm[k+2]:
-                    cold_loss.Fill(losses[i])                                                 
+                elif k<n_warm-1 and losses[i] >= warm[k+1] and losses[i] <= warm[k+2]:
+                    cold_loss.Fill(losses[i])                                         
+                else:
+                    cnt += 1        
+
+    print "cnt of neither warm nor cold losses =", cnt, "in file LPI"
 
     # -- losses on collimator
     # f2_nlines = 0 
+
+    # loop over coll_summary file
     for i in range(f2_nlines):
 
+        # loop over CollPositions
         for j in range(f3_nlines):
 
+            # if we're at the same collimator
             if names_sum[i] == names_pos[j]:
 
-                kval = int(nabs[i]/length[i])
-                
-                for k in range(kval):
-                    
-                    coll_loss.Fill(coll_pos[j])                
+                # actually no need to normalise by collimator length? 
+                # why not just fill as many times as nabs in the respective postion??
 
+                # kval = int(nabs[i]/length[i])
+                #for k in range(kval):                    
+                #    coll_loss.Fill(coll_pos[j])                
+
+                # using nabs as weight for postsition coll_pos ==> avoid values > 1
+                coll_loss.Fill(coll_pos[j],nabs[i])
 
     #pad_l.SetLogy(1)
     coll_loss.GetXaxis().SetTitleOffset(.9)
     coll_loss.GetYaxis().SetTitleOffset(1.06)
     coll_loss.GetXaxis().SetTitle(xtitle)
     coll_loss.GetYaxis().SetTitle(ytitle)
-    coll_loss.Scale(1.0/maxval)
-    cold_loss.Scale(1.0/maxval)
-    warm_loss.Scale(1.0/maxval)
-    coll_loss.GetXaxis().SetRangeUser(XurMin, XurMax)
-    coll_loss.GetYaxis().SetRangeUser(YurMin, YurMax)
+
+    if not debug:
+        coll_loss.Scale(1.0/maxval)
+        cold_loss.Scale(1.0/maxval)
+        warm_loss.Scale(1.0/maxval)
+        coll_loss.GetXaxis().SetRangeUser(XurMin, XurMax)
+        coll_loss.GetYaxis().SetRangeUser(YurMin, YurMax)
 
     coll_loss.Draw('hist')
     cold_loss.Draw('samehist')
@@ -229,7 +249,11 @@ def lossmap(path,tag,doZoom,doPrint):
 
     gPad.RedrawAxis()
 
-    x1, y1, x2, y2 = 0.18, 0.78, 0.42, 0.9
+    x1, y1, x2, y2 = 0.68, 0.78, 0.91, 0.9
+
+    if beam.count('2'):
+        x1, y1, x2, y2 = 0.18, 0.78, 0.42, 0.9
+
     thelegend = TLegend( x1, y1, x2, y2)
     thelegend.SetFillColor(0)
     thelegend.SetLineColor(0)
@@ -252,9 +276,9 @@ def lossmap(path,tag,doZoom,doPrint):
     pname  = wwwpath
     pname += 'scan/losses'+rel+'.png'
 
-    print('saving file as' + pname ) 
-
-    cv.Print(pname)
+    if not debug:
+        print('gsaving file as' + pname ) 
+        cv.Print(pname)
 
     #return cv
     return coll_loss, cold_loss, warm_loss
@@ -336,7 +360,9 @@ if __name__ == "__main__":
     gStyle.SetOptStat(0)
     #gStyle.SetCanvasColor(10)
     # gStyle.SetPalette(100,prepPalette())
- 
-    lossmap(path,tag,doZoom)
+    tag = '_TCSG.B5L7.B2'
+    thispath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/run_0011/'
+    beam,path,tag,doZoom,doPrint = 'b2', thispath, '',0,0
+    lossmap(beam,path,tag,doZoom,doPrint)
   
     print '--- fin ---'
