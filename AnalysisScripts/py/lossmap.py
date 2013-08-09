@@ -19,9 +19,9 @@
 # doZoom = options.doZoom
 
 ## -------------------------------------------------------------------------------
-import ROOT, sys, glob, os
+import ROOT, sys, glob, os, commands
 from ROOT import *
-import helpers, gzip
+import helpers, gzip, time
 from helpers import *
 ## -------------------------------------------------------------------------------
 def lossmap(beam,path,tag,doZoom,doPrint):
@@ -33,7 +33,7 @@ def lossmap(beam,path,tag,doZoom,doPrint):
     if not path.endswith('/'):
         path += '/'
 
-
+    tH = time.time()
     # path  = workpath + 'HL-LHC-Collimation/AnalysisScripts/C/danielesExample/forRegina/'
 
     # f1    = path + 'LPI_BLP_out.s_total.dat'
@@ -72,7 +72,6 @@ def lossmap(beam,path,tag,doZoom,doPrint):
         rel = tag + '_zoom'
 
     YurMin, YurMax = 3.2e-9, 3.
-
 
     # loss positions
     losses = []
@@ -115,14 +114,34 @@ def lossmap(beam,path,tag,doZoom,doPrint):
             names_pos  += [ line.split()[1] ]
             coll_pos   += [ float(line.split()[2]) ]
 
-
+    
     # -- plot 
-
+    tA = time.time()
+    print(str(tA-tH)+" for filling data into lists")
+    
     cv = TCanvas( 'cv' + tag, 'cv' + tag, 1200, 700)
     #cv.SetRightMargin(0.12)
 
     # -- the number of lines in FirstImpact-1 (for header) is the total number of particles hitting a collimator
+    t0 = time.time()
     maxval = file_len(f4)-1
+    # cmd = 'ls 7TeV*' + tag + '/run_*/First* | grep -c First' 
+    # n_eol = int(commands.getoutput(cmd))
+
+    # cmd = 'gunzip 7TeV*' + tag + '/run_*/First*' 
+    # os.system(cmd)
+
+    # cmd = 'cat 7TeV*' + tag + '/run_*/First* | wc -l' 
+    # nlines = int(commands.getoutput(cmd))
+
+    # cmd = 'gzip 7TeV*' + tag + '/run_*/First*' 
+    # os.system(cmd)
+
+    # maxval = nlines - 2*n_eol
+
+    t1 = time.time()
+    print(str(t1-t0)+" for checking file_len of " + f4 + " =  " + str(maxval))
+
     tcs = tag.split('_')[-1]
 
     if doPrint:
@@ -251,7 +270,7 @@ def lossmap(beam,path,tag,doZoom,doPrint):
 
     x1, y1, x2, y2 = 0.68, 0.78, 0.91, 0.9
 
-    if beam.count('2'):
+    if beam.count('1'):
         x1, y1, x2, y2 = 0.18, 0.78, 0.42, 0.9
 
     thelegend = TLegend( x1, y1, x2, y2)
@@ -280,6 +299,8 @@ def lossmap(beam,path,tag,doZoom,doPrint):
         print('gsaving file as' + pname ) 
         cv.Print(pname)
 
+    tB = time.time()
+    print(str(tB -tA)+" for filling histograms")
     #return cv
     return coll_loss, cold_loss, warm_loss
 
