@@ -10,7 +10,7 @@
 #
 # May 2013, rkwee
 ## -------------------------------------------------------------------------------
-import ROOT, sys, glob, os
+import ROOT, sys, glob, os, time
 from ROOT import *
 import lossmap
 import helpers
@@ -24,7 +24,7 @@ import math, gzip
 TCS = [
 
 #--- 0 setting     # 1 numper of total protons entering IR7  # s-position of TCS
-#    ('nominal_B1', 18193641, 1e4),
+#     ('nominal_B1', 18193641, 1e4),
 # ('TCSG.A6L7.B1', 4488443, 19832.68),
 # ('TCSG.B5L7.B1', 6037577, 19891.91),
 # ('TCSG.A5L7.B1', 6044670, 19895.91),
@@ -44,11 +44,11 @@ TCS = [
 # ('TCSG.B4R7.B2', 6241294, 6653.72),
 # ('TCSG.A4R7.B2', 6273353, 6657.72),
 # ('TCSG.A4L7.B2', 6273328, 6673.72),
-    ('TCSG.B5L7.B2', 3367086, 6756.98),
+#    ('TCSG.B5L7.B2', 3367086, 6756.98),
 # ('TCSG.D5L7.B2', 6260530, 6772.98),
 # ('TCSG.E5L7.B2', 6266897, 6776.98),
 # ('TCSG.6L7.B2', 6273317, 6811.58),
-    
+ ('testB1', 0, 0),
 ]               
 
     
@@ -59,9 +59,9 @@ def cv03():
     doAvLoss     = 0
 
     rfname = "7TeVPostLS1_scan_B2.root"
-    rfname = "7TeVPostLS1_DEBUG_scan.root"
-    rfname = "test.root"
-
+    #    rfname = "7TeVPostLS1_DEBUG_scan.root"
+    rfname = "test_timit.root"
+    tA = time.time()
     if doWriteRFile:
         print "Writing " + rfname
 
@@ -78,7 +78,10 @@ def cv03():
 
             doZoom   = 0
             doPrint  = 1
+            t0 = time.time()
             h_tot_loss, h_cold, h_warm =  lossmap.lossmap(beam,thispath,tag,doZoom,doPrint) 
+            t1 = time.time()
+            print(str(t1-t0)+" for creating 1. lossmap of " + tcs )
             h_tot_loss.Write()
             h_cold.Write()
             h_warm.Write()            
@@ -86,9 +89,12 @@ def cv03():
             doZoom   = 1
             doPrint  = 0
             lossmap.lossmap(beam,thispath,tag,doZoom,doPrint) 
-            
+            t2 = time.time()
+            print(str(t2-t1)+" for creating 2. lossmap of " + tcs )
         rf.Close()
+    tB = time.time()
 
+    print(str(tB-tA)+" for producing " + rfname)
     if doAvLoss:
         print "Calculating losses at Q8 and Q10 for B1 and QA and QB for B2"
 
@@ -118,16 +124,17 @@ def cv03():
             # -- takes ages, do only once for check
             #norm = file_len(f4)-1
 
-            #print '('+tcs+', ' + str(norm) + ')'
-            norm = 1.
+            #norm = 1.
 
             p1_bin_start = cold_loss.FindBin(p1_cold_loss_start)
             p1_bin_end   = cold_loss.FindBin(p1_cold_loss_end)
-            p1_cold_loss = cold_loss.Integral(p1_bin_start,p1_bin_end)/(p1_bin_end - p1_bin_start)
+            p1_cold_loss = cold_loss.Integral(p1_bin_start,p1_bin_end)
+            p1_nbins     = p1_bin_end - p1_bin_start
 
             p2_bin_start = cold_loss.FindBin(p2_cold_loss_start)
             p2_bin_end   = cold_loss.FindBin(p2_cold_loss_end)
-            p2_cold_loss = cold_loss.Integral(p2_bin_start,p2_bin_end)/(p2_bin_end - p2_bin_start)
+            p2_cold_loss = cold_loss.Integral(p2_bin_start,p2_bin_end)
+            p2_nbins     = p2_bin_end - p2_bin_start
 
             # statistical uncertainty
             p1_stat, p2_stat = 0.,0.
@@ -135,24 +142,8 @@ def cv03():
             if debug:
                 print('Q8: averaging from bin ' + str(p1_bin_start) + ' to bin ' + str(p1_bin_end))
 
-            for i in range(p1_bin_start, p1_bin_end+1):
-                p1_err   = cold_loss.GetBinError(i)
-                p1_stat += math.pow(p1_err,2)
-
-                if debug:
-                    print tcs, ' Q8: N_'+str(i)+' =',p1_err, ', bin error = ', cold_loss.GetBinError(i), ', norm =', norm
-
-            if debug:
-                print tcs, 'val = ', p1_cold_loss, ' +- ', math.sqrt(p1_stat/norm)
-
-
-            for i in range(p2_bin_start, p2_bin_end+1):
-                p2_err   = cold_loss.GetBinError(i)
-                p2_stat += math.pow(p2_err,2)
-
-
-            Q8_losses  += [(tcs, p1_cold_loss, math.sqrt(p1_cold_loss/norm))]
-            Q10_losses += [(tcs, p2_cold_loss, math.sqrt(p2_cold_loss/norm))]
+            Q8_losses  += [(tcs, p1_cold_loss/p1_nbins, math.sqrt(p1_cold_loss/norm)/p1_nbins)]
+            Q10_losses += [(tcs, p2_cold_loss/p2_nbins, math.sqrt(p2_cold_loss/norm)/p2_nbins)]
 
             max_cold_loss = cold_loss.GetMaximum()/scaleFactor
             max_cold_losses += [( max_cold_loss, math.sqrt(max_cold_loss/norm) )]
