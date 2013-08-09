@@ -4,7 +4,7 @@
 # Regina Kwee-Hinzmann @ RHUL
 # 2013, June
 # -----------------------------------------------------------------
-import os, stat, sys, gzip
+import os, stat, sys, gzip, time
 from optparse import OptionParser
 
 parser = OptionParser()
@@ -34,10 +34,12 @@ fApp = [
 fAdd = ['coll_summary.dat',
         ]
 
+# common pattern to all header lines
+headerPattern = 'icoll'
 # -----------------------------------------------------------------
 def findGoodFiles(targetfile,rundir):
 
-    debug = 1
+    debug = 0
 
     # all goodfiles
     resFiles = []
@@ -50,8 +52,12 @@ def findGoodFiles(targetfile,rundir):
 
 
     # exclude dirs
-    excludeDirs =  [ 'run_000'+str(i) for i in range(1,10)]
-    excludeDirs += [ 'run_00'+str(i) for i in range(10,21)]
+    #excludeDirs =  [ 'run_000'+str(i) for i in range(1,10)]
+    #excludeDirs += [ 'run_00'+str(i) for i in range(10,21)]
+    excludeDirs = []
+
+    if excludeDirs:
+        print("INFO: Excluding " + str(len(excludeDirs)) + " run dirs.")
 
     # ------------
     # get all good files into a list
@@ -61,11 +67,11 @@ def findGoodFiles(targetfile,rundir):
         if subdir in excludeDirs:
             continue
 
-        if debug and 0: 
-            print("Finding " + subdir)
-
         # directory with results 
         rdir = rundir + subdir + "/"
+
+        if debug: 
+            print("Finding " + rdir)
 
         if not os.path.isdir(rdir):
             continue
@@ -91,7 +97,7 @@ def findGoodFiles(targetfile,rundir):
 # -----------------------------------------------------------------
 def doAppend(fApp,rundir):
 
-    debug  = 1
+    debug  = 0
 
     if not rundir.endswith('/'):
         rundir += '/'
@@ -107,12 +113,17 @@ def doAppend(fApp,rundir):
         # open one new file for merged info
         fileout  = open(foutname,'w')
 
+        t0 = time.time()
         resFiles = findGoodFiles(targetfile,rundir)
+        t1 = time.time()
+
+        print(str(t1-t0)+" for finding a list")
         cnt      = 0
 
         print len(resFiles),' for targetfile', targetfile
 
         # ------------
+        t0 = time.time()
         for rFile in resFiles:
 
             cnt += 1
@@ -125,21 +136,23 @@ def doAppend(fApp,rundir):
                 with open(rFile) as rf:
                     for line in rf:
                         
-                        if cnt < 2 and line.count("#"):
+                        if cnt < 2 and line.count(headerPattern):
                             fileout.write(line)
-                        if not line.count('#'):
+                        elif not line.count(headerPattern):
                             fileout.write(line)                
             else:
 
                 rf = gzip.open(rFile)
                 for line in rf:
 
-                    if cnt < 2 and line.count("#"):
+                    if cnt < 2 and line.count(headerPattern):
                         fileout.write(line)
-                    if not line.count('#'):
-                        fileout.write(line)
+                    elif not line.count(headerPattern):
+                        fileout.write(line)                
 
         fileout.close()
+        t1 = time.time()
+        print(str(t1-t0)+" for wrting " + foutname)
 
         if doGzip:
             os.chdir(rundir)
@@ -151,9 +164,11 @@ def doAppend(fApp,rundir):
                 
             cmd = 'gzip ' + foutname .split('/')[-1]
             print cmd
+            t0 = time.time()
             os.system(cmd)
             os.chdir('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/')
-
+            t1 = time.time()
+            print(str(t1-t0)+" for gzipping it")
 
 # -----------------------------------------------------------------
                     
@@ -183,7 +198,7 @@ def doAddup(fAdd,rundir):
         nimp, nabs, imp_av, imp_sig = -9999.,-9999.,-9999.,-9999.
         
         # ------------
-
+        os.system('date')
         for rFile in resFiles:
 
             cnt += 1
@@ -239,10 +254,10 @@ def doAddup(fAdd,rundir):
 
                 for line in rf:
 
-                    if cnt < 2 and line.count("#"):
+                    if cnt < 2 and line.count(headerPattern):
                         fileout.write(line)
 
-                    if not line.count('#'):
+                    if not line.count(headerPattern):
 
                         icoll    = line.split()[0]
                         collname = line.split()[1]
@@ -274,7 +289,8 @@ def doAddup(fAdd,rundir):
                 cDict = dict(allLines)
         
         # ----------
-        
+
+        print('saving data in dictionary done')
         # use sorted keys
         cKeys = [str(i) for i in range(73)]
 
@@ -294,10 +310,14 @@ def doAddup(fAdd,rundir):
 
 
         fileout.close()
-
-        
+                
 # -----------------------------------------------------------------
 if __name__ == "__main__":
 
+    t0 = time.time()
     doAppend(fApp,rundir)
+    t1 = time.time()
+    print(str(t1-t0)+" for doAppend")
     doAddup(fAdd,rundir)
+    t2 = time.time()
+    print(str(t2-t1)+" for doAddup")
