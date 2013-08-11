@@ -1,8 +1,15 @@
 #!/usr/bin/python
 #
-# if doWriteRFile = 1
+# if doWriteRFile == 1
+#    go through text files, dumps norm per tcs if doPrint = 1!
 #    writes out root file 
+#    
+# if plotLossMaps == 1
+#    uses rootfile
+#    needs proper norm!
 #    plots lossmap for every tcs
+#    plots zoomed version
+#
 # if doAvLoss = 1
 #    uses rootfile 
 #    plots losses at Q8 and Q10 
@@ -10,65 +17,92 @@
 #
 # May 2013, rkwee
 ## -------------------------------------------------------------------------------
-import ROOT, sys, glob, os, time
+import ROOT, sys, glob, os, time, math, gzip
 from ROOT import *
 import lossmap
 import helpers
-from helpers import wwwpath, file_len
-import math, gzip
+from helpers import wwwpath, file_len, length_LHC, mylabel
 ## -------------------------------------------------------------------------------
 
 
 # already merged the new files??
 
+# -- order of appearance according s-coor
+#   ('nominal_B1    # 1e4),       
+# ('TCSG.A6L7.B1    # 19832.68),  
+# ('TCSG.B15L7.B1   # 19891.91),  
+# ('TCSG.A5L7.B1    # 19895.91),  
+# ('TCSG.D4L7.B1    # 19917.24),  
+# ('TCSG.B14L7.B1   # 19987.16),  
+# ('TCSG.A4L7.B1    # 19991.16),  
+# ('TCSG.A4R7.B1    # 19995.16),  
+# ('TCSG.B15R7.B1   # 20086.42),  
+# ('TCSG.D5R7.B1    # 20102.42),  
+# ('TCSG.E5R7.B1    # 20106.42),  
+# ('TCSG.6R7.B1     # 20141.02),  
+                                   
+# ('TCSG.A6R7.B2',  # 6503.24),
+# ('TCSG.B5R7.B2',  # 6562.46),
+# ('TCSG.A5R7.B2',  # 6566.46),
+# ('TCSG.D4R7.B2',  # 6587.79),
+# ('TCSG.B4R7.B2',  # 6653.72),
+# ('TCSG.A4R7.B2',  # 6657.72),
+# ('TCSG.A4L7.B2',  # 6673.72),
+# ('TCSG.B5L7.B2',  # 6756.98),
+# ('TCSG.D5L7.B2',  # 6772.98),
+# ('TCSG.E5L7.B2',  # 6776.98),
+# ('TCSG.6L7.B2',   # 6811.58),
+
 TCS = [
 
-#--- 0 setting     # 1 numper of total protons entering IR7  # s-position of TCS
-#     ('nominal_B1', 18193641, 1e4),
-# ('TCSG.A6L7.B1', 4488443, 19832.68),
-# ('TCSG.B5L7.B1', 6037577, 19891.91),
-# ('TCSG.A5L7.B1', 6044670, 19895.91),
-# ('TCSG.D4L7.B1', 6019343, 19917.24),
-# ('TCSG.B4L7.B1', 5982305, 19987.16),
-# ('TCSG.A4L7.B1', 6800715, 19991.16),
-# ('TCSG.A4R7.B1', 6497420, 19995.16),
-# ('TCSG.B5R7.B1', 6052281, 20086.42),
-# ('TCSG.D5R7.B1', 6051532, 20102.42),
-# ('TCSG.E5R7.B1', 6010177, 20106.42),
-# ('TCSG.6R7.B1', 6018721, 20141.02),
-#    ('nominal_B2', 6260540, 0),
-# ('TCSG.A6R7.B2', 5313129, 6503.24),
-# ('TCSG.B5R7.B2', 6273317, 6562.46),
-# ('TCSG.A5R7.B2', 6240904, 6566.46),
-# ('TCSG.D4R7.B2', 5460328, 6587.79),
-# ('TCSG.B4R7.B2', 6241294, 6653.72),
-# ('TCSG.A4R7.B2', 6273353, 6657.72),
-# ('TCSG.A4L7.B2', 6273328, 6673.72),
-#    ('TCSG.B5L7.B2', 3367086, 6756.98),
-# ('TCSG.D5L7.B2', 6260530, 6772.98),
-# ('TCSG.E5L7.B2', 6266897, 6776.98),
-# ('TCSG.6L7.B2', 6273317, 6811.58),
- ('testB1', 0, 0),
+#--- 0 setting     # 1 numper of total protons entering IR7 
+('nominal_B1', 18314363.0),
+('TCSG.A6L7.B1', 10743009.0),
+('TCSG.B5L7.B1', 12341363.0),
+('TCSG.A5L7.B1', 12348455.0),
+('TCSG.D4L7.B1', 12311450.0),
+('TCSG.B4L7.B1', 12279849.0),
+('TCSG.A4L7.B1', 13104827.0),
+('TCSG.A4R7.B1', 12795623.0),
+('TCSG.B5R7.B1', 12356337.0),
+('TCSG.D5R7.B1', 12349086.0),
+('TCSG.E5R7.B1', 12326352.0),
+('TCSG.6R7.B1', 12322859.0),
+('nominal_B2', 6387574.0),
+('TCSG.A6R7.B2', 6265929.0),
+('TCSG.B5R7.B2', 6400347.0),
+('TCSG.A5R7.B2', 11616070.0),
+('TCSG.D4R7.B2', 6310732.0),
+('TCSG.B4R7.B2', 6368329.0),
+('TCSG.A4R7.B2', 12794348.0),
+('TCSG.A4L7.B2', 12800730.0),
+('TCSG.B5L7.B2', 6022700.0),
+('TCSG.D5L7.B2', 6387559.0),
+('TCSG.E5L7.B2', 6393929.0),
+('TCSG.6L7.B2', 12800706.0),
+# ('testB1', 618157,)         
 ]               
 
-    
+
 def cv03():
 
     debug        = 1
-    doWriteRFile = 1
-    doAvLoss     = 0
+    doWriteRFile = 0
+    plotLossMaps = 0
+    doAvLoss     = 1
 
     rfname = "7TeVPostLS1_scan_B2.root"
     #    rfname = "7TeVPostLS1_DEBUG_scan.root"
     rfname = "test_timit.root"
     tA = time.time()
+
     if doWriteRFile:
         print "Writing " + rfname
 
         # create a root file
         rf = TFile(rfname, 'recreate')
         
-        for tcs,norm,spos in TCS:
+        for tcs,norm in TCS:
             
             tag      = '_' + tcs
             thispath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/'
@@ -76,25 +110,140 @@ def cv03():
             if tag.count("B1"):
                 beam = 'b1'
 
-            doZoom   = 0
-            doPrint  = 1
             t0 = time.time()
-            h_tot_loss, h_cold, h_warm =  lossmap.lossmap(beam,thispath,tag,doZoom,doPrint) 
+            doPrint = 1
+            h_tot_loss, h_cold, h_warm =  lossmap.lossmap(beam,thispath,tag,doPrint) 
             t1 = time.time()
-            print(str(t1-t0)+" for creating 1. lossmap of " + tcs )
+            print(str(t1-t0)+" for returning lossmap histograms of " + tcs )
             h_tot_loss.Write()
             h_cold.Write()
             h_warm.Write()            
 
-            doZoom   = 1
-            doPrint  = 0
-            lossmap.lossmap(beam,thispath,tag,doZoom,doPrint) 
-            t2 = time.time()
-            print(str(t2-t1)+" for creating 2. lossmap of " + tcs )
         rf.Close()
     tB = time.time()
 
     print(str(tB-tA)+" for producing " + rfname)
+    # ------------------------------------------------
+
+    if plotLossMaps:
+        print("Plotting lossmaps from " + "."*20 + rfname)
+
+        doZooms = [0,1]
+
+        for doZoom in doZooms: 
+           
+            rf = TFile.Open(rfname)
+
+            for tcs,norm in TCS:
+
+                tag      = '_' + tcs
+                rel      = tag 
+                thispath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/'
+                beam     = 'b2'
+
+                if tag.count("B1"):
+                    beam = 'b1'
+
+                cv = TCanvas( 'cv' + tag + str(doZoom), 'cv' + tag + str(doZoom), 1200, 700)
+
+                YurMin, YurMax = 3.2e-9, 3.
+
+                if debug: print("Get histograms for tcs " + tcs )
+
+                coll_loss = rf.Get('coll_loss' +tag)
+                cold_loss = rf.Get('cold_loss' +tag)
+                warm_loss = rf.Get('warm_loss' +tag)
+
+                coll_loss.SetLineColor(kBlack)
+                warm_loss.SetLineColor(kOrange)
+                cold_loss.SetLineColor(kBlue)
+                coll_loss.SetFillColor(kBlack)
+                warm_loss.SetFillColor(kOrange)
+                cold_loss.SetFillColor(kBlue)
+
+                coll_loss.Scale(1.0/norm)
+                cold_loss.Scale(1.0/norm)
+                warm_loss.Scale(1.0/norm)
+
+                if beam.count('1') and not doZoom:
+                    x1, y1, x2, y2 = 0.18, 0.78, 0.42, 0.9
+                else:
+                    x1, y1, x2, y2 = 0.68, 0.78, 0.91, 0.9
+
+                XurMin, XurMax = 0., length_LHC
+                if doZoom and beam.count('1'):
+                    XurMin, XurMax = 19.7e3, 20.6e3
+                    rel = tag + '_zoom'
+                if doZoom and beam.count("2"):
+                    XurMin, XurMax = 6.4e3, 7.3e3
+                    rel = tag + '_zoom'
+
+                coll_loss.Draw('hist')
+                cold_loss.Draw('samehist')
+                warm_loss.Draw('samehist')
+
+                lh = []
+                # YurMin = 3.2e-9
+                lhRange  = [3e-9+i*1e-9 for i in range(3,7)]
+                lhRange += [i*1.e-8 for i in range(1,11)]
+                lhRange += [i*1.e-7 for i in range(1,11)]
+                lhRange += [i*1.e-6 for i in range(1,11)]
+                lhRange += [i*1.e-5 for i in range(1,11)]
+                lhRange += [i*1.e-4 for i in range(1,11)]
+                lhRange += [i*1.e-3 for i in range(1,11)]
+                lhRange += [i*1.e-2 for i in range(1,11)]
+                lhRange += [i*1.e-1 for i in range(1,11)]
+                lhRange += [i*1. for i in range(1,int(YurMax))]
+
+                for i in lhRange:
+                    lh += [TLine()]
+                    lh[-1].SetLineStyle(1)
+                    lh[-1].SetLineColor(kGray)
+                    lh[-1].DrawLine(XurMin,i,XurMax,i)
+
+                lv = []
+                lvRange = [1000*i for i in range(0,int(length_LHC*1e-3))]
+                for s in lvRange:
+
+                    if s > XurMin and s < XurMax:
+                        lv += [TLine()]
+                        lv[-1].SetLineStyle(1)
+                        lv[-1].SetLineColor(kGray)
+                        lv[-1].DrawLine(s,YurMin,s,YurMax)
+
+                coll_loss.Draw('same')
+                cold_loss.Draw('same')
+                warm_loss.Draw('same')
+                coll_loss.GetXaxis().SetRangeUser(XurMin, XurMax)
+                coll_loss.GetYaxis().SetRangeUser(YurMin, YurMax)
+
+                thelegend = TLegend( x1, y1, x2, y2)
+                thelegend.SetFillColor(0)
+                thelegend.SetLineColor(0)
+                thelegend.SetTextSize(0.035)
+                thelegend.SetShadowColor(10)
+                thelegend.AddEntry(coll_loss,'losses on collimators', "L")
+                thelegend.AddEntry(cold_loss,'cold losses', "L")
+                thelegend.AddEntry(warm_loss,'warm losses', "L")
+                thelegend.Draw()
+
+                lab = mylabel(60)
+                lab.DrawLatex(x1, y1-0.1, tcs)
+
+                gPad.RedrawAxis()
+                gPad.SetGrid(0,1)
+                gPad.SetLogy(1)
+
+                pname  = wwwpath
+                pname += 'scan/losses'+rel+'.png'
+
+                print('Saving file as' + pname ) 
+                cv.Print(pname)
+
+    # ------------------------------------------------
+    tC = time.time()
+    print(str(tC-tB)+" for plotting lossmaps.")
+
     if doAvLoss:
         print "Calculating losses at Q8 and Q10 for B1 and QA and QB for B2"
 
@@ -105,10 +254,11 @@ def cv03():
         # for better visibility 
         scaleFactor = 10.
 
-        for tcs,norm,spos in TCS:
+        for tcs,norm in TCS:
 
             tag  = '_'+ tcs
             cold_loss = rf.Get('cold_loss' + tag)
+            cold_loss.Scale(1./norm)
             print "-"*20, tcs, "-"*20
 
             if tag.count("B1"):
@@ -118,14 +268,7 @@ def cv03():
                 p1_cold_loss_start, p1_cold_loss_end  = 6950., 7010.
                 p2_cold_loss_start, p2_cold_loss_end  = 7050., 7110.
 
-
-            # -- the number of lines in FirstImpact-1 (for header) is the total number of particles hitting a collimator
-            # f4   = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/FirstImpacts' + tag + '.dat.gz'
-            # -- takes ages, do only once for check
-            #norm = file_len(f4)-1
-
             #norm = 1.
-
             p1_bin_start = cold_loss.FindBin(p1_cold_loss_start)
             p1_bin_end   = cold_loss.FindBin(p1_cold_loss_end)
             p1_cold_loss = cold_loss.Integral(p1_bin_start,p1_bin_end)
@@ -147,7 +290,8 @@ def cv03():
 
             max_cold_loss = cold_loss.GetMaximum()/scaleFactor
             max_cold_losses += [( max_cold_loss, math.sqrt(max_cold_loss/norm) )]
-            print "Maximum loss in bin", cold_loss.GetMaximumBin(), " from ", cold_loss.GetBinLowEdge(cold_loss.GetMaximumBin()), " to ", cold_loss.GetBinLowEdge(cold_loss.GetMaximumBin() + 1)
+            print "Maximum loss in bin", cold_loss.GetMaximumBin(), \
+                " from ", cold_loss.GetBinLowEdge(cold_loss.GetMaximumBin()), " to ", cold_loss.GetBinLowEdge(cold_loss.GetMaximumBin() + 1)
 
         # plot the benchmark plots
         bmPlot(Q8_losses,Q10_losses,max_cold_losses,'complossesErr_' + rfname.split('.')[0])
@@ -157,7 +301,7 @@ def bmPlot(Q8_losses,Q10_losses,max_cold_losses,hname):
 
     nbins = len(Q8_losses)
 
-    cv = TCanvas( 'cv' + hname, 'cv' + hname, 1200, 800)
+    cv = TCanvas( 'cv' + hname, 'cv' + hname, 2000, 800)
     cv.SetLeftMargin(0.15)
     cv.SetRightMargin(0.15)
     cv.SetTopMargin(0.15)

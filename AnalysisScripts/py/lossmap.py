@@ -3,75 +3,34 @@
 # May 2013, rkwee
 # -----------------------------------------------------------------------------------
 # from optparse import OptionParser
-
-# parser = OptionParser()
-# parser.add_option("-p", dest="path", type="string",
-#                   help="put path of dir with result files")
-# parser.add_option("-t", dest="tag", type="string",
-#                   help="tag of files, eg _nominal ")
-# parser.add_option("-z", dest="doZoom", type="int",
-#                   help="if do zooms")
-
-# (options, args) = parser.parse_args()
-
-# tag  = options.tag
-# path = options.path
-# doZoom = options.doZoom
-
+# use once to write out rootfile
+# initially written by Daniele
 ## -------------------------------------------------------------------------------
 import ROOT, sys, glob, os, commands
 from ROOT import *
 import helpers, gzip, time
 from helpers import *
 ## -------------------------------------------------------------------------------
-def lossmap(beam,path,tag,doZoom,doPrint):
+def lossmap(beam,path,tag,doPrint):
 
-    print ' losses on collmator Danieles script'
+    print ' losses on collimator '
 
-    debug = 0
+    debug = 1
 
     if not path.endswith('/'):
         path += '/'
 
     tH = time.time()
-    # path  = workpath + 'HL-LHC-Collimation/AnalysisScripts/C/danielesExample/forRegina/'
-
-    # f1    = path + 'LPI_BLP_out.s_total.dat'
-    # f2    = path + 'coll_summary_cleaned.dat'
-    # f3    = path + 'CollPositions.V6503.cry.dat'
-    # f4    = path + 'FirstImpacts.dat_total.dat'
-
-    # path  = '/afs/cern.ch/work/r/rkwee/public/sixtrack_example/clean_input/' 
-    # f1    = path + 'LPI_BLP_out.s'
-    # f2    = path + 'coll_summary.dat'
-    # f3    = path + 'CollPositions.b1.dat'
-    # f4    = path + 'FirstImpacts.dat'
 
     # path  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/oldExe/'
     f1    = path + 'LPI_BLP_out'+tag+'.s'
     f2    = path + 'coll_summary'+tag+'.dat'
     f3    = helpers.source_dir + 'NewColl7TeVB'+beam.split('b')[-1]+'/CollPositions.'+beam+'.dat'
-    f4    = path + 'FirstImpacts'+tag+'.dat.gz'
+    f4    = path + 'FirstImpacts'+tag+'.dat'
 
     cmd = "perl -pi -e 's/\\0/ /g' " + f1
     print cmd
     os.system(cmd)             
-
-    #check_npart(path,'_merged')
-    #return
-
-    rel = tag 
-    XurMin, XurMax = 0., length_LHC
-
-    if doZoom and beam.count('1'):
-        XurMin, XurMax = 18e3, 22e3
-        rel = tag + '_zoom'
-
-    if doZoom and beam.count("2"):
-        XurMin, XurMax = 5.1e3, 7.2e3
-        rel = tag + '_zoom'
-
-    YurMin, YurMax = 3.2e-9, 3.
 
     # loss positions
     losses = []
@@ -83,7 +42,6 @@ def lossmap(beam,path,tag,doZoom,doPrint):
             line  = line.rstrip()
             
             losses += [float(line.split()[2])]
-
 
     names_sum, nabs, length = [],[],[]
     
@@ -98,7 +56,6 @@ def lossmap(beam,path,tag,doZoom,doPrint):
             names_sum  += [ line.split()[1] ]
             nabs   += [ float(line.split()[3]) ]
             length += [ float(line.split()[6]) ]
-
 
     names_pos, coll_pos = [],[]
     
@@ -119,26 +76,9 @@ def lossmap(beam,path,tag,doZoom,doPrint):
     tA = time.time()
     print(str(tA-tH)+" for filling data into lists")
     
-    cv = TCanvas( 'cv' + tag, 'cv' + tag, 1200, 700)
-    #cv.SetRightMargin(0.12)
-
     # -- the number of lines in FirstImpact-1 (for header) is the total number of particles hitting a collimator
     t0 = time.time()
-    maxval = file_len(f4)-1
-    # cmd = 'ls 7TeV*' + tag + '/run_*/First* | grep -c First' 
-    # n_eol = int(commands.getoutput(cmd))
-
-    # cmd = 'gunzip 7TeV*' + tag + '/run_*/First*' 
-    # os.system(cmd)
-
-    # cmd = 'cat 7TeV*' + tag + '/run_*/First* | wc -l' 
-    # nlines = int(commands.getoutput(cmd))
-
-    # cmd = 'gzip 7TeV*' + tag + '/run_*/First*' 
-    # os.system(cmd)
-
-    # maxval = nlines - 2*n_eol
-
+    maxval = float(open(f4).read())
     t1 = time.time()
     print(str(t1-t0)+" for checking file_len of " + f4 + " =  " + str(maxval))
 
@@ -155,14 +95,11 @@ def lossmap(beam,path,tag,doZoom,doPrint):
 
     xtitle = 's [m]'
     ytitle = "Cleaning inefficiency #eta"
-
-    coll_loss.SetLineColor(kBlack)
-    warm_loss.SetLineColor(kOrange)
-    cold_loss.SetLineColor(kBlue)
-    coll_loss.SetFillColor(kBlack)
-    warm_loss.SetFillColor(kOrange)
-    cold_loss.SetFillColor(kBlue)
-
+    coll_loss.GetXaxis().SetTitleOffset(.9)
+    coll_loss.GetYaxis().SetTitleOffset(1.06)
+    coll_loss.GetXaxis().SetTitle(xtitle)
+    coll_loss.GetYaxis().SetTitle(ytitle)
+    
     meter  = range(10)
     n_warm = len(warm)
     k_warm = [2*k for k in range(n_warm/2)]
@@ -187,8 +124,6 @@ def lossmap(beam,path,tag,doZoom,doPrint):
     print "cnt of neither warm nor cold losses =", cnt, "in file LPI"
 
     # -- losses on collimator
-    # f2_nlines = 0 
-
     # loop over coll_summary file
     for i in range(f2_nlines):
 
@@ -198,110 +133,16 @@ def lossmap(beam,path,tag,doZoom,doPrint):
             # if we're at the same collimator
             if names_sum[i] == names_pos[j]:
 
-                # actually no need to normalise by collimator length? 
-                # why not just fill as many times as nabs in the respective postion??
-
-                # kval = int(nabs[i]/length[i])
-                #for k in range(kval):                    
-                #    coll_loss.Fill(coll_pos[j])                
-
-                # using nabs as weight for postsition coll_pos ==> avoid values > 1
                 coll_loss.Fill(coll_pos[j],nabs[i])
-
-    #pad_l.SetLogy(1)
-    coll_loss.GetXaxis().SetTitleOffset(.9)
-    coll_loss.GetYaxis().SetTitleOffset(1.06)
-    coll_loss.GetXaxis().SetTitle(xtitle)
-    coll_loss.GetYaxis().SetTitle(ytitle)
 
     if not debug:
         coll_loss.Scale(1.0/maxval)
         cold_loss.Scale(1.0/maxval)
         warm_loss.Scale(1.0/maxval)
-        coll_loss.GetXaxis().SetRangeUser(XurMin, XurMax)
-        coll_loss.GetYaxis().SetRangeUser(YurMin, YurMax)
-
-    coll_loss.Draw('hist')
-    cold_loss.Draw('samehist')
-    warm_loss.Draw('samehist')
-
-    lh = []
-    # YurMin = 3.2e-9
-    lhRange  = [3e-9+i*1e-9 for i in range(3,7)]
-    lhRange += [i*1.e-8 for i in range(1,11)]
-    lhRange += [i*1.e-7 for i in range(1,11)]
-    lhRange += [i*1.e-6 for i in range(1,11)]
-    lhRange += [i*1.e-5 for i in range(1,11)]
-    lhRange += [i*1.e-4 for i in range(1,11)]
-    lhRange += [i*1.e-3 for i in range(1,11)]
-    lhRange += [i*1.e-2 for i in range(1,11)]
-    lhRange += [i*1.e-1 for i in range(1,11)]
-    lhRange += [i*1. for i in range(1,int(YurMax))]
-
-    for i in lhRange:
-
-        lh += [TLine()]
-        lh[-1].SetLineStyle(1)
-        lh[-1].SetLineColor(kGray)
-        lh[-1].DrawLine(XurMin,i,XurMax,i)
-
-
-    lv = []
-    lvRange = [1000*i for i in range(0,int(length_LHC*1e-3))]
-    for s in lvRange:
-
-        if s > XurMin and s < XurMax:
-            lv += [TLine()]
-            lv[-1].SetLineStyle(1)
-            lv[-1].SetLineColor(kGray)
-            lv[-1].DrawLine(s,YurMin,s,YurMax)
-
-
-    # lx, ly = TLine(),TLine()
-    # lx.SetLineWidth(2)
-    # lx.SetLineStyle(3)
-    # lx.DrawLine(XurMin,1,XurMax,1)
-
-    coll_loss.Draw('same')
-    cold_loss.Draw('same')
-    warm_loss.Draw('same')
-
-    gPad.RedrawAxis()
-
-    x1, y1, x2, y2 = 0.68, 0.78, 0.91, 0.9
-
-    if beam.count('1'):
-        x1, y1, x2, y2 = 0.18, 0.78, 0.42, 0.9
-
-    thelegend = TLegend( x1, y1, x2, y2)
-    thelegend.SetFillColor(0)
-    thelegend.SetLineColor(0)
-    thelegend.SetTextSize(0.035)
-    thelegend.SetShadowColor(10)
-    thelegend.AddEntry(coll_loss,'losses on collimators', "L")
-    thelegend.AddEntry(cold_loss,'cold losses', "L")
-    thelegend.AddEntry(warm_loss,'warm losses', "L")
-    thelegend.Draw()
-
-    lab = mylabel(60)
-    lab.DrawLatex(x1, y1-0.1, tcs)
-
-    #gPad.SetRightMargin(1.2)
-    #gStyle.SetStatX(0.9)
-    #gStyle.SetStatY(0.95)
-    gPad.SetGrid(0,1)
-    gPad.SetLogy(1)
-
-    pname  = wwwpath
-    pname += 'scan/losses'+rel+'.png'
-
-    if not debug:
-        print('gsaving file as' + pname ) 
-        cv.Print(pname)
 
     tB = time.time()
     print(str(tB -tA)+" for filling histograms")
-    #return cv
+
     return coll_loss, cold_loss, warm_loss
 
 # ------------------------------------------------------------------------------------
@@ -383,7 +224,7 @@ if __name__ == "__main__":
     # gStyle.SetPalette(100,prepPalette())
     tag = '_TCSG.B5L7.B2'
     thispath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/run_0011/'
-    beam,path,tag,doZoom,doPrint = 'b2', thispath, '',0,0
-    lossmap(beam,path,tag,doZoom,doPrint)
+    beam,path,tag,doPrint = 'b2', thispath, '',0,0
+    lossmap(beam,path,tag,doPrint)
   
     print '--- fin ---'

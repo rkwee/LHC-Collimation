@@ -22,7 +22,7 @@ tag = rundir.split('7TeVPostLS1')[-1]
 
 # 2 types of merging: 1. append, 2. add up
 
-# all files to append, doGzip boolean
+# all files to append, doCountLines only
 fApp = [
     ('FirstImpacts.dat',1),
     ('LPI_BLP_out.s',   0),    
@@ -49,7 +49,6 @@ def findGoodFiles(targetfile,rundir):
 
     # find the correct path 
     subdirs = os.listdir(rundir)
-
 
     # exclude dirs
     #excludeDirs =  [ 'run_000'+str(i) for i in range(1,10)]
@@ -104,7 +103,7 @@ def doAppend(fApp,rundir):
 
     print("Using files in " + rundir)
 
-    for targetfile,doGzip in fApp:
+    for targetfile,doCountLines in fApp:
 
         foutname = rundir + targetfile.split('.')[0] + tag + '.' + targetfile.split('.')[-1]
         print('-'*20)
@@ -118,57 +117,53 @@ def doAppend(fApp,rundir):
         t1 = time.time()
 
         print(str(t1-t0)+" for finding a list")
-        cnt      = 0
 
         print len(resFiles),' for targetfile', targetfile
 
         # ------------
         t0 = time.time()
-        for rFile in resFiles:
+        nlines = 0
 
-            cnt += 1
-
-            if debug:
-                print('opening ' + rFile)
-
-            if not rFile.count('.gz'):
-                
-                with open(rFile) as rf:
+        for cnt,rFile in enumerate(resFiles):
+            
+            if doCountLines:                
+                if not rFile.count('.gz'):
+                    with open(rFile) as rf:
+                        for line in rf:
+                            if not line.count(headerPattern):
+                                nlines += 1
+                else:
+                    rf = gzip.open(rFile)
                     for line in rf:
                         
+                        if not line.count(headerPattern):
+                            nlines += 1
+
+            else:
+                if not rFile.count('.gz'):
+                    with open(rFile) as rf:
+                        for line in rf:
+
+                            if cnt < 2 and line.count(headerPattern):
+                                fileout.write(line)
+                            elif not line.count(headerPattern):
+                                fileout.write(line)                
+                else:
+
+                    rf = gzip.open(rFile)
+                    for line in rf:
+
                         if cnt < 2 and line.count(headerPattern):
                             fileout.write(line)
                         elif not line.count(headerPattern):
                             fileout.write(line)                
-            else:
 
-                rf = gzip.open(rFile)
-                for line in rf:
-
-                    if cnt < 2 and line.count(headerPattern):
-                        fileout.write(line)
-                    elif not line.count(headerPattern):
-                        fileout.write(line)                
+            if doCountLines and cnt == len(resFiles)-1:
+                fileout.write(str(nlines))
 
         fileout.close()
         t1 = time.time()
         print(str(t1-t0)+" for wrting " + foutname)
-
-        if doGzip:
-            os.chdir(rundir)
-            
-            if os.path.exists(foutname .split('/')[-1]+'.gz'):
-                cmd = 'rm ' + foutname .split('/')[-1]+'.gz'
-                print 'rm old zipped file'
-                os.system(cmd)
-                
-            cmd = 'gzip ' + foutname .split('/')[-1]
-            print cmd
-            t0 = time.time()
-            os.system(cmd)
-            os.chdir('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/')
-            t1 = time.time()
-            print(str(t1-t0)+" for gzipping it")
 
 # -----------------------------------------------------------------
                     

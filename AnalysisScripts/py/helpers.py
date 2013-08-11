@@ -10,7 +10,7 @@ import gzip
 
 workpath = '/afs/cern.ch/work/r/rkwee/HL-LHC/'
 wwwpath  = '/afs/cern.ch/user/r/rkwee/public/www/HL-LHC/'
-source_dir  = workpath + 'runs/sourcedirs/NewColl7TeVB1/'
+source_dir  = workpath + 'runs/sourcedirs/'
 # ------------------------------------------------------------------------------------------------
 length_LHC = 26659
 IPs = [
