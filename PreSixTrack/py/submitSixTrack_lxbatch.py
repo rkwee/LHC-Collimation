@@ -45,8 +45,8 @@ tcs  = '.'+options.tcs
 #queuename='8nh'
 #npacks='50'
 doTest=0
-doRun=1
-showInfo=0
+doRun=0
+showInfo=1
 mailOpt = '-u Regina.Kwee@gmail.com'
 # -----------------------------------------------------------
 
@@ -57,6 +57,7 @@ cList  = [[ '3.5TeVExample',[sourcepath + '3.5TeVExample/' ,'SixTrack_4411_coll_
 cList += [[ '3.5TeVOldExe', [sourcepath + '3.5TeVOldExe/'  ,'SixTrackwColl'                 , '3500000' ]]]
 cList += [[ 'NewColl7TeVB1',[sourcepath + 'NewColl7TeVB1/' ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 cList += [[ 'NewColl7TeVB2',[sourcepath + 'NewColl7TeVB2/' ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
+cList += [[ 'vHaloB1',      [sourcepath + 'NewColl7TeVB1/' ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 
 cDict = dict(cList)
 
@@ -65,12 +66,16 @@ run_dir     = run_dir + "/"
 afs_run_dir = afsRunMain + run_dir
 source_dir  = cDict[ckey][0]
 energy      = cDict[ckey][2]
+haloType    = ''
+if ckey.count('vHalo'):
+    haloType = 'vHalo/'
 # -----------------------------------------------------------
 beam        = 'b1'
 if source_dir.count('B2') or source_dir.count('b2'):
     beam = 'b2'
 
 thissource  = sourcepath + 'postLS1/' + beam + '/'
+if showInfo: print("Using thissource " + thissource )
 # -----------------------------------------------------------
 if not os.path.exists(afs_run_dir):
     print 'making dir', afs_run_dir
@@ -80,7 +85,7 @@ if not os.path.exists(afs_run_dir):
 
 sixtrackExe = source_dir + cDict[ckey][1]
 fort2       = source_dir +'fort.2'
-fort3       = source_dir +'fort.3'
+fort3       = thissource + haloType + 'fort.3'
 collDB      = thissource +'CollDB_V6.503_lowb_st.'+beam+'.data' + tcs
 collPos     = source_dir +'CollPositions.'+beam+'.dat'
 apertfile   = source_dir +'allapert.' + beam
@@ -143,13 +148,13 @@ for job in newrange:
     
     # write a job script
 
-    run_job_fname = subdir + 'job_'+str(job)+'.sh'
+    run_job_fname = subdir + 'job_'+str(index)+'.sh'
     run_job = open(run_job_fname,'w')
     run_job.write('#!/bin/bash\n\n')
 
     run_job.write('mkdir ' + run_dir +'\n')
-    run_job.write('mkdir ' + run_dir +'run_' + str(job)+ '\n')
-    run_job.write('cd ' + run_dir + 'run_'+ str(job) +'\n')
+    run_job.write('mkdir ' + run_dir +'run_' + str(index)+ '\n')
+    run_job.write('cd ' + run_dir + 'run_'+ str(index) +'\n')
 
     # copy the inputfiles
     for inpfile in inputFiles:
@@ -176,10 +181,10 @@ for job in newrange:
     run_job.write('./'+cleancoll.split('/')[-1] + '\n')
 
     # copy back
-    # cmd_copy = "cp * " + subdir + '\\n'
     # cmd_copy = 'cp amplitude.dat efficiency.dat coll_summary.dat screen* survival.dat LP* FLUKA* FirstImpacts.dat sigmasettings.out impacts* ' + subdir
     if doTest:
         cmd_copy = 'cp coll_summary.dat collgaps* screen* LP* FLUKA* FirstImpacts.dat sigmasettings.out impacts* ' + subdir
+        cmd_copy = "cp * " + subdir + '\\n'
     else:
         cmd_copy = 'cp coll_summary.dat LP* FLUKA* FirstImpacts.dat impacts* ' + subdir
 
