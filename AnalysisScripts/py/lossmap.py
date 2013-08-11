@@ -11,7 +11,7 @@ from ROOT import *
 import helpers, gzip, time
 from helpers import *
 ## -------------------------------------------------------------------------------
-def lossmap(beam,path,tag,doPrint):
+def lossmap(beam,path,tag):
 
     print ' losses on collimator '
 
@@ -26,7 +26,6 @@ def lossmap(beam,path,tag,doPrint):
     f1    = path + 'LPI_BLP_out'+tag+'.s'
     f2    = path + 'coll_summary'+tag+'.dat'
     f3    = helpers.source_dir + 'NewColl7TeVB'+beam.split('b')[-1]+'/CollPositions.'+beam+'.dat'
-    f4    = path + 'FirstImpacts'+tag+'.dat'
 
     cmd = "perl -pi -e 's/\\0/ /g' " + f1
     print cmd
@@ -76,16 +75,7 @@ def lossmap(beam,path,tag,doPrint):
     tA = time.time()
     print(str(tA-tH)+" for filling data into lists")
     
-    # -- the number of lines in FirstImpact-1 (for header) is the total number of particles hitting a collimator
-    t0 = time.time()
-    maxval = float(open(f4).read())
-    t1 = time.time()
-    print(str(t1-t0)+" for checking file_len of " + f4 + " =  " + str(maxval))
-
     tcs = tag.split('_')[-1]
-
-    if doPrint:
-        print "('"+tcs+"', " + str(maxval) + "),"
 
     nbins, xmin, xmax = 10*length_LHC,0., length_LHC
 
@@ -134,11 +124,6 @@ def lossmap(beam,path,tag,doPrint):
             if names_sum[i] == names_pos[j]:
 
                 coll_loss.Fill(coll_pos[j],nabs[i])
-
-    if not debug:
-        coll_loss.Scale(1.0/maxval)
-        cold_loss.Scale(1.0/maxval)
-        warm_loss.Scale(1.0/maxval)
 
     tB = time.time()
     print(str(tB -tA)+" for filling histograms")
@@ -224,7 +209,7 @@ if __name__ == "__main__":
     # gStyle.SetPalette(100,prepPalette())
     tag = '_TCSG.B5L7.B2'
     thispath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/run_0011/'
-    beam,path,tag,doPrint = 'b2', thispath, '',0,0
-    lossmap(beam,path,tag,doPrint)
+    beam,path,tag = 'b2', thispath, '',0
+    lossmap(beam,path,tag)
   
     print '--- fin ---'

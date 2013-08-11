@@ -1,12 +1,10 @@
 #!/usr/bin/python
 #
 # if doWriteRFile == 1
-#    go through text files, dumps norm per tcs if doPrint = 1!
-#    writes out root file 
+#    writes out root file : histograms for lossmaps and 1 ttree with normalisation factor
 #    
 # if plotLossMaps == 1
 #    uses rootfile
-#    needs proper norm!
 #    plots lossmap for every tcs
 #    plots zoomed version
 #
@@ -19,11 +17,10 @@
 ## -------------------------------------------------------------------------------
 import ROOT, sys, glob, os, time, math, gzip
 from ROOT import *
-import lossmap
-import helpers
+import lossmap, helpers, array
 from helpers import wwwpath, file_len, length_LHC, mylabel
+from array import array
 ## -------------------------------------------------------------------------------
-
 
 # already merged the new files??
 
@@ -55,45 +52,43 @@ from helpers import wwwpath, file_len, length_LHC, mylabel
 
 TCS = [
 
-#--- 0 setting     # 1 numper of total protons entering IR7 
-('nominal_B1', 18314363.0),
-('TCSG.A6L7.B1', 10743009.0),
-('TCSG.B5L7.B1', 12341363.0),
-('TCSG.A5L7.B1', 12348455.0),
-('TCSG.D4L7.B1', 12311450.0),
-('TCSG.B4L7.B1', 12279849.0),
-('TCSG.A4L7.B1', 13104827.0),
-('TCSG.A4R7.B1', 12795623.0),
-('TCSG.B5R7.B1', 12356337.0),
-('TCSG.D5R7.B1', 12349086.0),
-('TCSG.E5R7.B1', 12326352.0),
-('TCSG.6R7.B1', 12322859.0),
-('nominal_B2', 6387574.0),
-('TCSG.A6R7.B2', 6265929.0),
-('TCSG.B5R7.B2', 6400347.0),
-('TCSG.A5R7.B2', 11616070.0),
-('TCSG.D4R7.B2', 6310732.0),
-('TCSG.B4R7.B2', 6368329.0),
-('TCSG.A4R7.B2', 12794348.0),
-('TCSG.A4L7.B2', 12800730.0),
-('TCSG.B5L7.B2', 6022700.0),
-('TCSG.D5L7.B2', 6387559.0),
-('TCSG.E5L7.B2', 6393929.0),
-('TCSG.6L7.B2', 12800706.0),
-# ('testB1', 618157,)         
+'nominal_B1', 
+'TCSG.A6L7.B1', 
+'TCSG.B5L7.B1', 
+'TCSG.A5L7.B1', 
+'TCSG.D4L7.B1', 
+'TCSG.B4L7.B1', 
+'TCSG.A4L7.B1', 
+'TCSG.A4R7.B1', 
+'TCSG.B5R7.B1', 
+'TCSG.D5R7.B1', 
+'TCSG.E5R7.B1', 
+'TCSG.6R7.B1', 
+'nominal_B2', 
+'TCSG.A6R7.B2', 
+'TCSG.B5R7.B2', 
+'TCSG.A5R7.B2', 
+'TCSG.D4R7.B2', 
+'TCSG.B4R7.B2', 
+'TCSG.A4R7.B2', 
+'TCSG.A4L7.B2', 
+'TCSG.B5L7.B2', 
+'TCSG.D5L7.B2', 
+'TCSG.E5L7.B2', 
+'TCSG.6L7.B2', 
+#     'testB1',
 ]               
-
 
 def cv03():
 
     debug        = 1
     doWriteRFile = 0
-    plotLossMaps = 0
-    doAvLoss     = 1
+    plotLossMaps = 1
+    doAvLoss     = 0
 
-    rfname = "7TeVPostLS1_scan_B2.root"
+    rfname = "7TeVPostLS1_scan.root"
     #    rfname = "7TeVPostLS1_DEBUG_scan.root"
-    rfname = "test_timit.root"
+    trname = 'normtree'
     tA = time.time()
 
     if doWriteRFile:
@@ -101,8 +96,9 @@ def cv03():
 
         # create a root file
         rf = TFile(rfname, 'recreate')
-        
-        for tcs,norm in TCS:
+        nt = TTree(trname,"norm for each tcs")        
+
+        for tcs in TCS:
             
             tag      = '_' + tcs
             thispath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/'
@@ -111,15 +107,42 @@ def cv03():
                 beam = 'b1'
 
             t0 = time.time()
-            doPrint = 1
-            h_tot_loss, h_cold, h_warm =  lossmap.lossmap(beam,thispath,tag,doPrint) 
+            f4 = thispath + 'FirstImpacts'+tag+'.dat'
+            h_tot_loss, h_cold, h_warm = lossmap.lossmap(beam,thispath,tag) 
             t1 = time.time()
             print(str(t1-t0)+" for returning lossmap histograms of " + tcs )
             h_tot_loss.Write()
             h_cold.Write()
             h_warm.Write()            
 
+            # -- write the for each norm value a branch into ttree
+            t0 = time.time()
+
+            # setting branch name 
+            branchname = 'norm' + tag
+
+            # use globals dict to convert strings to variable names
+            globals()[branchname] = array('i',[0])
+
+            # create branch
+            nt.Branch(branchname, globals()[branchname], branchname+'/i')
+
+            # get value
+            maxval = int(open(f4).read())
+            if debug: print "('"+tcs+"', " + str(maxval) + "),"
+
+            # assigning value
+            globals()[branchname][0] = maxval
+
+            # write to tree
+            nt.Fill()
+
+            t1 = time.time()
+            print(str(t1-t0)+" for checking file_len of " + f4 + " =  " + str(maxval))
+        
+        nt.Write()
         rf.Close()
+
     tB = time.time()
 
     print(str(tB-tA)+" for producing " + rfname)
@@ -133,13 +156,20 @@ def cv03():
         for doZoom in doZooms: 
            
             rf = TFile.Open(rfname)
+            nt = rf.Get(trname)
 
-            for tcs,norm in TCS:
+            for tcs in TCS:
 
-                tag      = '_' + tcs
-                rel      = tag 
-                thispath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/'
-                beam     = 'b2'
+                tag        = '_' + tcs
+                rel        = tag 
+                thispath   = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/'
+                beam       = 'b2'
+                branchname = 'norm'+tag
+
+                nt.SetBranchAddress(branchname, globals()[branchname])
+                nt.GetEntry(0)
+                norm       = globals()[branchname][0]
+                if debug: print "('"+tcs+"', " + str(norm) + "),"
 
                 if tag.count("B1"):
                     beam = 'b1'
@@ -254,7 +284,7 @@ def cv03():
         # for better visibility 
         scaleFactor = 10.
 
-        for tcs,norm in TCS:
+        for tcs in TCS:
 
             tag  = '_'+ tcs
             cold_loss = rf.Get('cold_loss' + tag)
