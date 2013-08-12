@@ -15,7 +15,7 @@
 #
 # May 2013, rkwee
 ## -------------------------------------------------------------------------------
-import ROOT, sys, glob, os, time, math, gzip
+import ROOT, sys, glob, os, time, math
 from ROOT import *
 import lossmap, helpers, array
 from helpers import wwwpath, file_len, length_LHC, mylabel
@@ -49,7 +49,8 @@ from array import array
 # ('TCSG.D5L7.B2',  # 6772.98),
 # ('TCSG.E5L7.B2',  # 6776.98),
 # ('TCSG.6L7.B2',   # 6811.58),
-
+QA = 'Q8 (B1) / Q7 (B2)'
+QB = 'Q10 (B1) / Q9 (B2)'
 TCS = [
 
 'nominal_B1', 
@@ -83,8 +84,8 @@ def cv03():
 
     debug        = 1
     doWriteRFile = 0
-    plotLossMaps = 1
-    doAvLoss     = 0
+    plotLossMaps = 0
+    doAvLoss     = 1
 
     rfname = "7TeVPostLS1_scan.root"
     #    rfname = "7TeVPostLS1_DEBUG_scan.root"
@@ -265,7 +266,7 @@ def cv03():
                 gPad.SetLogy(1)
 
                 pname  = wwwpath
-                pname += 'scan/losses'+rel+'.png'
+                pname += 'scan/losses'+rel+'.pdf'
 
                 print('Saving file as' + pname ) 
                 cv.Print(pname)
@@ -275,10 +276,11 @@ def cv03():
     print(str(tC-tB)+" for plotting lossmaps.")
 
     if doAvLoss:
-        print "Calculating losses at Q8 and Q10 for B1 and QA and QB for B2"
+        print "Calculating losses at Q8 and Q10 for B1 and Q7 and Q9 for B2"
 
         print "Opening ", rfname
         rf = TFile.Open(rfname)
+        nt = rf.Get(trname)
         max_cold_losses, Q8_losses, Q10_losses = [],[],[]
 
         # for better visibility 
@@ -288,6 +290,13 @@ def cv03():
 
             tag  = '_'+ tcs
             cold_loss = rf.Get('cold_loss' + tag)
+            branchname = 'norm'+tag
+            
+            globals()[branchname] = array('i',[0])
+            nt.SetBranchAddress(branchname, globals()[branchname])
+            nt.GetEntry(0)
+            norm = globals()[branchname][0]
+
             cold_loss.Scale(1./norm)
             print "-"*20, tcs, "-"*20
 
@@ -324,10 +333,10 @@ def cv03():
                 " from ", cold_loss.GetBinLowEdge(cold_loss.GetMaximumBin()), " to ", cold_loss.GetBinLowEdge(cold_loss.GetMaximumBin() + 1)
 
         # plot the benchmark plots
-        bmPlot(Q8_losses,Q10_losses,max_cold_losses,'complossesErr_' + rfname.split('.')[0])
+        bmPlot(Q8_losses,Q10_losses,max_cold_losses,'complossesErr_' + rfname.split('.')[0], QA, QB)
 
 
-def bmPlot(Q8_losses,Q10_losses,max_cold_losses,hname):
+def bmPlot(Q8_losses,Q10_losses,max_cold_losses,hname, QA, QB):
 
     nbins = len(Q8_losses)
 
@@ -382,7 +391,7 @@ def bmPlot(Q8_losses,Q10_losses,max_cold_losses,hname):
     minval = min(vals)
     maxval = max(vals)
 
-    hist1.GetYaxis().SetRangeUser(minval*.75, maxval*1.23)
+    hist1.GetYaxis().SetRangeUser(minval*.75, maxval*1.2)
     hist1.Draw('P')
     hist2.Draw('PSAME')
     hist3.Draw('PSAME')
@@ -393,12 +402,13 @@ def bmPlot(Q8_losses,Q10_losses,max_cold_losses,hname):
     thelegend.SetLineColor(0)
     thelegend.SetTextSize(0.035)
     thelegend.SetShadowColor(10)
-    thelegend.AddEntry(hist1,'at Q8', "P")
-    thelegend.AddEntry(hist2,'at Q10', "P")
+    thelegend.AddEntry(hist1,'at ' +QA, "PL")
+    thelegend.AddEntry(hist2,'at ' +QB, "PL")
     thelegend.AddEntry(hist3,'10% of maximum cold loss', "P")
     thelegend.Draw()
 
     pname  = wwwpath
     pname += 'scan/'+hname+'.png'
 
+    print(pname)
     cv.Print(pname)
