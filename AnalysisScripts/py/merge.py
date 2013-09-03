@@ -140,11 +140,12 @@ def doAppend(fApp,rundir):
                             nlines += 1
 
             else:
+
                 if not rFile.count('.gz'):
                     with open(rFile) as rf:
                         for line in rf:
 
-                            if cnt < 2 and line.count(headerPattern):
+                            if cnt < 1 and line.count(headerPattern):
                                 fileout.write(line)
                             elif not line.count(headerPattern):
                                 fileout.write(line)                
@@ -153,7 +154,7 @@ def doAppend(fApp,rundir):
                     rf = gzip.open(rFile)
                     for line in rf:
 
-                        if cnt < 2 and line.count(headerPattern):
+                        if cnt < 1 and line.count(headerPattern):
                             fileout.write(line)
                         elif not line.count(headerPattern):
                             fileout.write(line)                
@@ -212,7 +213,7 @@ def doAddup(fAdd,rundir):
 
                     for line in rf:
 
-                        if cnt < 2 and line.count("#"):
+                        if cnt < 1 and line.count("#"):
                             fileout.write(line)
 
                         if not line.count('#'):
@@ -249,7 +250,7 @@ def doAddup(fAdd,rundir):
 
                 for line in rf:
 
-                    if cnt < 2 and line.count(headerPattern):
+                    if cnt < 1 and line.count(headerPattern):
                         fileout.write(line)
 
                     if not line.count(headerPattern):
