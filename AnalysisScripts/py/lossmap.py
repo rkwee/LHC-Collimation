@@ -22,14 +22,12 @@ def lossmap(beam,path,tag):
 
     tH = time.time()
 
-    # path  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/oldExe/'
     f1    = path + 'LPI_BLP_out'+tag+'.s'
     f2    = path + 'coll_summary'+tag+'.dat'
     f3    = helpers.source_dir + 'NewColl7TeVB'+beam.split('b')[-1]+'/CollPositions.'+beam+'.dat'
-
     cmd = "perl -pi -e 's/\\0/ /g' " + f1
-    print cmd
-    os.system(cmd)             
+    #print cmd
+    #os.system(cmd)             
 
     # loss positions
     losses = []
