@@ -11,7 +11,7 @@ from ROOT import *
 import helpers, gzip, time
 from helpers import *
 ## -------------------------------------------------------------------------------
-def lossmap(beam,path,tag):
+def lossmap(beam,path,tag,f3):
 
     print ' losses on collimator '
 
@@ -24,10 +24,7 @@ def lossmap(beam,path,tag):
 
     f1    = path + 'LPI_BLP_out'+tag+'.s'
     f2    = path + 'coll_summary'+tag+'.dat'
-    f3    = helpers.source_dir + 'NewColl7TeVB'+beam.split('b')[-1]+'/CollPositions.'+beam+'.dat'
-    cmd = "perl -pi -e 's/\\0/ /g' " + f1
-    #print cmd
-    #os.system(cmd)             
+
 
     # loss positions
     losses = []
@@ -65,9 +62,11 @@ def lossmap(beam,path,tag):
             if line.count("Pos"):
                 continue
 
-            names_pos  += [ line.split()[1] ]
-            coll_pos   += [ float(line.split()[2]) ]
-
+            try:
+                names_pos  += [ line.split()[1] ]
+                coll_pos   += [ float(line.split()[2]) ]
+            except IndexError:
+                print "IndexError. Line is ",line
     
     # -- plot 
     tA = time.time()
@@ -121,7 +120,8 @@ def lossmap(beam,path,tag):
             # if we're at the same collimator
             if names_sum[i] == names_pos[j]:
 
-                coll_loss.Fill(coll_pos[j],nabs[i])
+                # normalise the weight nabs by collimator length
+                coll_loss.Fill(coll_pos[j],nabs[i]/length[i])
 
     tB = time.time()
     print(str(tB -tA)+" for filling histograms")
