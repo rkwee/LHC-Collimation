@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# this is a script to submit sixtrack jobs to lxbatch
+# this is a script to submit fluka jobs to lxbatch
 # it needs a source dir with all the input files required for the job
 # these are copied to the dir which is allocated randomly by the batch sytem
 #
@@ -11,7 +11,7 @@
 # it will create new subdirs in run_dir counting on top of the exisisting ones
 #
 # Regina Kwee-Hinzmann
-# 2013, June
+# 2013, September
 #
 # -----------------------------------------------------------
 import os, stat, sys, random
