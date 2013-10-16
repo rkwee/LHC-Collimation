@@ -1,8 +1,12 @@
 #!/usr/bin/python
 #
 # R Kwee-Hinzmann, 2013
-# -----------------------------------------------------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------------
+import ROOT, sys, glob, os, math, helpers
+from ROOT import *
+from helpers import *
+from array import array
+# ---------------------------------------------------------------------------------
 import optparse
 from optparse import OptionParser
 
@@ -12,17 +16,13 @@ parser.add_option("-f", "--file", dest="filename", type="string",
 
 (options, args) = parser.parse_args()
 
-fname = options.filename
-# ---------------------------------------------------------------------------------
-import ROOT, sys, glob, os, math
-from ROOT import *
-from array import array
-# ---------------------------------------------------------------------------------
+fname  = options.filename
+rfname = fname + '.root'
 #######################################################################################
     # http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam_gas_arc_4TeV/flukaIR15.html
     # 1  FLUKA run number (between 1 and 3000)
     # 2  ID of primary particle (between 1 and 60 000 in each run)
-    # 3  FLUKA particle type (an explanation of the numbers can be found here)
+    # 3  FLUKA particle type (an explanation of the numbers can be found at http://www.fluka.org/fluka.php?id=man_onl&sub=7)
     # 4  kinetic energy (GeV)
     # 5  statistical weight (should be 1 for all particles)
     # 6  X (cm)
@@ -36,55 +36,220 @@ from array import array
     # 14 Z_start (cm)
     # 15 t_start (s) : starting time of primary particle where t=0 is at the entrance of the TCTH
 #######################################################################################
-def getColContent(colNumber):
 
-    print 'processing........................', fname
+# dict  key = hname  #0 particleTypes #1 colNumbers #2 nbins #3 xmin #4 xmax #5 drawOpt #6 prettyName 
+                     #7 hcolor #8 ekinCut [GeV] #9 xtitle #10 ytitle
+sDict = { 
 
-    col = []
-    with open(fname) as myfile:
+    "EkinAll"      : [ ['all'],      [3],     100, 1e-3,  1e4, 'HIST',     'all',                        kAzure -10, -9999,'E [GeV]', '#frac{dN (counts/TCT hit)}{dlog E}', ],
+    "EkinMuons"    : [ ['10', '11'], [3],     100, 1e-3,  1e4, 'SAMEHIST', '#mu^{#pm}',                  kAzure -9, -9999,'E [GeV]', '#frac{dN (counts/TCT hit)}{dlog E}', ],
+    "EkinProtons"  : [ ['1'],        [3],     100, 1e-3,  1e4, 'SAMEHIST', 'protons',                    kAzure -8, -9999,'E [GeV]', '#frac{dN (counts/TCT hit)}{dlog E}', ],
+    "EkinNeutrons" : [ ['8'],        [3],     100, 1e-3,  1e4, 'SAMEHIST', 'neutrons',                   kAzure -7, -9999,'E [GeV]', '#frac{dN (counts/TCT hit)}{dlog E}', ],
+    "EkinPhotons"  : [ ['7'],        [3],     100, 1e-3,  1e4, 'SAMEHIST', '#gamma',                     kAzure -6, -9999,'E [GeV]', '#frac{dN (counts/TCT hit)}{dlog E}', ],
+    "EkinElecPosi" : [ ['3', '4'],   [3],     100, 1e-3,  1e4, 'SAMEHIST', 'e^{#pm}',                    kAzure -5, -9999,'E [GeV]', '#frac{dN (counts/TCT hit)}{dlog E}', ],
+    "RadMuonsEAll" : [ ['10', '11'], [6,7,3], 242,    0, 1210, 'HIST',     '#mu^{#pm}',                        kRed-10, -9999,'r [cm]', 'particles/cm^2/TCT hit'],
+    "RadMuonsE20"  : [ ['10', '11'], [6,7,3], 242,    0, 1210, 'HISTSAME', '#mu^{#pm} with E_{kin} >  20 GeV', kRed-7,   20.,'r [cm]', 'particles/cm^2/TCT hit'],
+    "RadMuonsE100" : [ ['10', '11'], [6,7,3], 242,    0, 1210, 'HISTSAME', '#mu^{#pm} with E_{kin} > 100 GeV', kRed-1,  100.,'r [cm]', 'particles/cm^2/TCT hit'],
+    }
 
-        for line in myfile:       
-
-            col += [float(line.split()[colNumber])]
-
-
-    return array('d', col)
 # ---------------------------------------------------------------------------------
-def do1DHisto(hname, colNumber, xaxis):
+def getColContent(colNumbers, particleTypes):
 
-    col  = getColContent(colNumber) 
+    cols, col = [], []
 
-    hist1 = TH1F(hname, hname, len(xaxis)-1, array('d', xaxis) )
+    for colNumber in colNumbers:
 
-    for colVal in col: 
-        hist1.Fill(colVal)
+        with open(fname) as myfile:
 
-    return hist1
+            for line in myfile:       
+
+                cline = line.split()
+                pType = cline[2]
+
+                if particleTypes[0].count('ll'):
+                    col  += [float(cline[colNumber])]
+                elif pType in particleTypes: 
+                    col  += [float(cline[colNumber])]
+
+        cols += [array('d',col)]
+        col   = []
+    
+    return cols
 # ---------------------------------------------------------------------------------
-def saveRootFile():
-
-    rfoutname = 'test.root'
-
-    print 'writing ', rfoutname
-    rfile = TFile.Open(rfoutname, "RECREATE")
-
-    hname, colNumber, nbins, xmin, xmax = "Ekin", 3, 100, 1e-3, 1e6
+def getXLogAxis(nbins, xmin, xmax):
 
     # exponent width
     width = 1./nbins*(math.log10(xmax) - math.log10(xmin))
-
+    
     # axis with exponents only 
     xtmp  = [math.log10(xmin) + i * width for i in range(nbins+1)]
-
-    # real axis in power of 10
+    
+        # real axis in power of 10
     xaxis = [math.pow(10, xExp) for xExp in xtmp]
 
-    hist  = do1DHisto(hname, colNumber, xaxis) 
+    return xaxis
+# ---------------------------------------------------------------------------------
+def do1dLogHisto(hname, colNumbers, xaxis, particleTypes):
 
-    hist.Write()
+    # expect only 1 list for Ekin histograms
+    [col] = getColContent(colNumbers, particleTypes) 
+
+    nbins = len(xaxis)-1
+    hist  = TH1F(hname, hname, nbins, array('d', xaxis) )
+
+    for colVal in col: hist.Fill(colVal)
+
+    for bin in range(nbins):
+        content = hist.GetBinContent(bin)
+        width   = hist.GetBinWidth(bin)
+        hist.SetBinContent(bin,content/width)
+ 
+    return hist
+# ---------------------------------------------------------------------------------
+def doTGraph(hist):
+
+    nbins   = hist.GetNbinsX()
+    bcenter = [ hist.GetXaxis().GetBinCenterLog(i) for i in range(1,nbins+1) ]
+    content = [ hist.GetBinContent(i) for i in range(1,nbins+1) ]
+    gr      = TGraph(hist)
+    npoints = gr.GetN()
+
+    for i in range(npoints):
+        x, y = ROOT.Double(), ROOT.Double()
+        x, y = bincenter[i], bincenter[i]*content[i]
+        gr.SetPoint(1+i, x, y)
+
+    return gr
+# ---------------------------------------------------------------------------------
+def do1dRadHisto(hname, colNumbers, xaxis, particleTypes):
+
+    # expect 2 lists for radially-binned histograms
+    [xcol, ycol, ekin] = getColContent(colNumbers, particleTypes) 
+
+    ekinCut = sDict[hname][8]
+    nbins   = len(xaxis)-1
+    hist    = TH1F(hname, hname, nbins, array('d', xaxis))
+
+    for i in range(len(xcol)): 
+        if ekin[i] > ekinCut:
+            hist.Fill(math.sqrt(xcol[i]**2 + ycol[i]**2))
+
+    for i in range(nbins):
+        binArea = math.pi * (xaxis[i+1]**2 - xaxis[i]**2)
+        content = hist.GetBinContent(i)
+        hist.SetBinContent(i,content/binArea)
+ 
+    return hist
+# ---------------------------------------------------------------------------------
+def saveRootFile():
+
+    print 'writing ','.'*20, rfname
+    rfile = TFile.Open(rfname, "RECREATE")
+
+    for skey in sDict.keys():
+
+        particleTypes = sDict[skey][0]
+        hname         = skey
+        colNumber     = sDict[skey][1]
+        nbins         = sDict[skey][2]
+        xmin          = sDict[skey][3]
+        xmax          = sDict[skey][4]
+
+        if hname.startswith("Ekin"):
+            xaxis = getXLogAxis(nbins, xmin, xmax)
+            hist  = do1dLogHisto(hname, colNumber, xaxis, particleTypes) 
+        elif hname.startswith("Rad"):
+            binwidth = xmax/nbins
+            xaxis = [i*binwidth for i in range(nbins+1)]
+            hist  = do1dRadHisto(hname, colNumber, xaxis, particleTypes) 
+
+        # graph = doTGraph(hist)
+        # graph.Write()
+        hist.Write()
 
     rfile.Close()
+
+    return rfname
+# ---------------------------------------------------------------------------------
+def plotSpectra():
+
+    rfname  = saveRootFile()    
+    rfile   = TFile.Open(rfname)
+    cv      = TCanvas( 'cv' , 'cv', 1200, 900)
+
+    hists  = []
+    # ....................................
+    if True:
+        var    = ['EkinAll', 
+                  'EkinElecPosi', 
+                  'EkinProtons', 
+                  'EkinNeutrons',
+                  'EkinPhotons', 
+                  'EkinMuons', 
+                  ]
+        x1, y1, x2, y2 = 0.72, 0.75, 0.98, 0.9
+        doLogx, doLogy = 1,1
+        pname  = wwwpath + 'TCT/Ekin_TCT_4TeV.pdf'
+    # ....................................
+
+    if False:
+        var    = ['RadMuonsEAll', 'RadMuonsE20', 'RadMuonsE100']
+        x1, y1, x2, y2 = 0.6, 0.75, 0.9, 0.9
+        doLogx, doLogy = 0,1
+        pname  = wwwpath + 'TCT/RadialDist_TCT_4TeV.pdf'
+    # ....................................
+
+    # ONCE: print all keys to order them
+    # print sDict.keys()
+
+    mlegend = TLegend( x1, y1, x2, y2)
+    mlegend.SetFillColor(0)
+    mlegend.SetLineColor(0)
+    mlegend.SetTextSize(0.035)
+    mlegend.SetShadowColor(10)
+
+    for i,skey in enumerate(var):
+        
+        hists += [rfile.Get(skey)]
+
+        hcolor = sDict[skey][7]
+        hists[-1].SetLineColor(hcolor)
+        hists[-1].SetLineWidth(2)
+        #hists[-1].SetFillColor(hcolor)
+
+        drawOpt = sDict[skey][5]
+        hists[-1].Draw(drawOpt)
+
+        prettyName = sDict[skey][6]
+        mlegend.AddEntry(hists[-1],prettyName, "lf")
+    
+        xtitle = sDict[skey][9]
+        ytitle = sDict[skey][10]
+    ytitle = ''
+
+    hists[0].GetYaxis().SetTitleSize(0.04)
+    hists[0].GetYaxis().SetLabelSize(0.035)
+    hists[0].GetXaxis().SetTitle(xtitle)
+    hists[0].GetYaxis().SetTitle(ytitle)
+    
+    mlegend.Draw()
+    lab = mylabel(60)
+    lab.DrawLatex(x1, y1-0.1, '4 TeV beam')
+
+    gPad.RedrawAxis()
+    gPad.SetLogx(doLogx)
+    gPad.SetLogy(doLogy)
+
+    print('Saving file as' + pname ) 
+    cv.Print(pname)
+
 # ---------------------------------------------------------------------------------
 if __name__ == "__main__":
 
-    saveRootFile()
+    gROOT.SetBatch()
+    gROOT.SetStyle("Plain")
+    gROOT.LoadMacro("/afs/cern.ch/user/r/rkwee/scratch0/miScripts/py/AtlasStyle.C")
+    gROOT.LoadMacro("/afs/cern.ch/user/r/rkwee/scratch0/miScripts/py/AtlasUtils.C")
+    SetAtlasStyle()
+
+    plotSpectra()
