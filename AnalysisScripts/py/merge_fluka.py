@@ -83,12 +83,13 @@ def joinTextFiles(fn):
         if not afile.count("run"): continue
         runnumber   = afile.split('run_')[-1].split('/')[0]
         cyclenumber = afile.split('/')[-1].split('b2')[-1].split('_fort.' + fn)[0]
-        # print("for file", afile, "found runnumber ", runnumber, ' and cyclenumber', cyclenumber)
+        print("for file", afile, "found runnumber ", runnumber, ' and cyclenumber', cyclenumber)
 
         with open(afile) as af:
 
             for line in af:
                 #line = line.rstrip()
+
                 outline  = runnumber + cyclenumber + '  ' + line[9:]
 
                 fout.write(outline)
@@ -105,7 +106,7 @@ def mergeFortfiles():
 
         for fn in flukaNumber: joinTextFiles(fn)
 
-    return
+        return
 
 
     for fn in flukaNumber:
