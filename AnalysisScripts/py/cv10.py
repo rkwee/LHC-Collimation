@@ -21,18 +21,35 @@ from array import array
 def cv10():
 
     debug        = 1
-    doWriteRFile = 0
+    doWriteRFile = 1
     plotLossMaps = 1
     doAvLoss     = 0
 
     tct    = 'ver-B1'
+
+    tcts   = ['HL_TCT_vHaloB1_TCT5OFF', 
+              'HL_TCT_hHaloB1_TCT5OFF',
+              ]
+
+    tct = tcts[1]
+
     tag    = '_' + tct
     rfname = "tct" + tag + ".root"
     trname = 'normtree'
     tA = time.time()
+
+    # subfolder in wwwpath for result plots
     subfolder = 'TCT/HL/'
 
+    # roderiks results
     thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/ats-HL_LHC_1.0/nominal_settings/' + tct + '/'
+
+    # my results (thight coll settings)
+    thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/' + tct
+
+    if not thispath.endswith('/'): thispath += '/'
+
+    # use for normalisation the sum of nabs (col 4)
     fileName  = thispath + 'coll_summary' + tag + '.dat'
     colNumber = 4
     beam     = 'b2'            

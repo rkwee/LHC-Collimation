@@ -10,13 +10,13 @@ from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("-r", "", dest="rundir", type="string",
                   help="this is the main rundir with the run_X dirs")
-#parser.add_option("-t", "", dest="tag", type="string",
-#                  help="tag of merged file, just some string name like _nominal ")
+parser.add_option("-t", "", dest="tag", type="string",
+                  help="tag of merged file, just some string name like _nominal ")
 
 (options, args) = parser.parse_args()
 rundir = options.rundir
-# tag    = options.tag
-tag = rundir.split('7TeVPostLS1')[-1]
+tag    = options.tag
+#tag = rundir.split('7TeVPostLS1')[-1]
 
 # rundir = '/afs/cern.ch/work/r/rkwee/public/sixtrack_example/'
 
@@ -24,10 +24,12 @@ tag = rundir.split('7TeVPostLS1')[-1]
 
 # all files to append, doCountLines only
 fApp = [
-    ('FirstImpacts.dat',1),
+    #('FirstImpacts.dat',1),
     ('LPI_BLP_out.s',   0),    
     ('impacts_fake.dat',0),
     ('impacts_real.dat',0),
+    #('impacts_all_fake.dat',0),
+    #('impacts_all_real.dat',0),
     ]
 
 # specified to work only with this file!
@@ -69,16 +71,15 @@ def findGoodFiles(targetfile,rundir):
         # directory with results 
         rdir = rundir + subdir + "/"
 
-        if debug: 
-            print("Finding " + rdir)
+        #if debug: print("Finding " + rdir)
 
-        if not os.path.isdir(rdir):
-            continue
+        if not os.path.isdir(rdir): continue
 
         thisfile = rdir + targetfile
 
-        if not os.path.exists(thisfile) and not os.path.exists(thisfile + '.gz'):
-            continue
+        if debug: print("Finding " + thisfile)
+
+        if not os.path.exists(thisfile) and not os.path.exists(thisfile + '.gz'): continue
 
         if os.path.exists(thisfile):
             resFiles += [thisfile]

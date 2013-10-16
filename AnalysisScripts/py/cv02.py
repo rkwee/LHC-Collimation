@@ -11,9 +11,9 @@ def cv02():
     print 'run cv02 : plotting betafunctions'
 
     debug = False
-    path = "/tmp/rkwee/7TeVPostLS1_nominal_b2/run_234/"
-    text = 'b2'
-    pname  = wwwpath + 'scan/debugB2/'
+    path = "/tmp/rkwee/HL_TCT_hHaloB1/run_00000/"
+    text = 'b1'
+    pname  = wwwpath + 'TCT/'
 
     # 1=ielem 2=name 3=s 4=TBETAX 5=TBETAY
     f1    = path + 'betafunctions.dat'
@@ -24,7 +24,7 @@ def cv02():
     #XurMin, XurMax = 9000., 19000., -1, -1
     #  XurMin, XurMax,  YurMin, YurMax = 0., length_LHC, -1, -1
   
-    rel = '_01_' + text
+    rel = '_00_' + text
 
     xarray, bxarray, byarray = [],[],[]
 

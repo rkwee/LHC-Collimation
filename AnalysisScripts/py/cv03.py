@@ -49,22 +49,25 @@ from array import array
 # ('TCSG.D5L7.B2',  # 6772.98),
 # ('TCSG.E5L7.B2',  # 6776.98),
 # ('TCSG.6L7.B2',   # 6811.58),
-QA = 'Q8 (B1) / Q7 (B2)'
-QB = 'Q10 (B1) / Q9 (B2)'
-TCS = [
 
-'nominal_B1', 
+vHalo = 1
+
+TCS_B1 = [
+'nominal.B1', 
 'TCSG.A6L7.B1', 
 'TCSG.B5L7.B1', 
 'TCSG.A5L7.B1', 
-'TCSG.D4L7.B1', 
+#'TCSG.D4L7.B1', 
 'TCSG.B4L7.B1', 
 'TCSG.A4L7.B1', 
 'TCSG.A4R7.B1', 
 'TCSG.B5R7.B1', 
-'TCSG.D5R7.B1', 
-'TCSG.E5R7.B1', 
+# 'TCSG.D5R7.B1', 
+# 'TCSG.E5R7.B1', 
 'TCSG.6R7.B1', 
+#     'testB1',
+]
+TCS_B2 = [
 'nominal_B2', 
 'TCSG.A6R7.B2', 
 'TCSG.B5R7.B2', 
@@ -77,8 +80,22 @@ TCS = [
 'TCSG.D5L7.B2', 
 'TCSG.E5L7.B2', 
 'TCSG.6L7.B2', 
-#     'testB1',
 ]               
+
+
+TCS = TCS_B1 
+
+# only used if doAvLoss = 1
+QA  = ' Q8 (B1) / Q7 (B2)'
+QB  = 'Q10 (B1) / Q9 (B2)'
+vhalo = ''
+
+
+if vHalo:
+    QA    = ' Q8 (B1)'
+    QB    = 'Q10 (B1)'
+    TCS   = TCS_B1 
+    vhalo = 'vHalo/'
 
 def cv03():
 
@@ -87,13 +104,12 @@ def cv03():
     plotLossMaps = 0
     doAvLoss     = 1
 
-    rfname = "7TeVPostLS1_scan.root"
-    #    rfname = "7TeVPostLS1_DEBUG_scan.root"
+    rfname = "7TeVPostLS1_scan_final_vHalo.root"
     trname = 'normtree'
     tA = time.time()
 
     if doWriteRFile:
-        print "Writing " + rfname
+        print "Writing " + '.'* 25 +' ' + rfname
 
         # create a root file
         rf = TFile(rfname, 'recreate')
@@ -102,8 +118,9 @@ def cv03():
         for tcs in TCS:
             
             tag      = '_' + tcs
-            thispath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/'
-            beam     = 'b2'
+            thispath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/'+vhalo+'7TeVPostLS1' + tag + '/'
+            beam     = 'b2'            
+
             if tag.count("B1"):
                 beam = 'b1'
 
@@ -121,6 +138,9 @@ def cv03():
 
             # setting branch name 
             branchname = 'norm' + tag
+            branchname = tcs.replace('.','QQQ')
+
+            if debug: print globals()
 
             # use globals dict to convert strings to variable names
             globals()[branchname] = array('i',[0])
@@ -150,10 +170,10 @@ def cv03():
     # ------------------------------------------------
 
     if plotLossMaps:
-        print("Plotting lossmaps from " + "."*20 + rfname)
+        print("Plotting lossmaps from " + "."*20 + ' '+ rfname)
 
         doZooms = [0,1]
-
+        rel = ''
         for doZoom in doZooms: 
            
             rf = TFile.Open(rfname)
@@ -162,14 +182,14 @@ def cv03():
             for tcs in TCS:
 
                 tag        = '_' + tcs
-                rel        = tag 
-                thispath   = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/'
-                beam       = 'b2'
-                branchname = 'norm'+tag
-
+                thispath   = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/vHalo/7TeVPostLS1' + tag + '/'
+                beam       = 'b1'
+                branchname = tcs.replace('.','QQQ')
+                
                 nt.SetBranchAddress(branchname, globals()[branchname])
                 nt.GetEntry(0)
-                norm       = globals()[branchname][0]
+                norm       = globals()[branchname][0]                
+
                 if debug: print "('"+tcs+"', " + str(norm) + "),"
 
                 if tag.count("B1"):
@@ -179,9 +199,11 @@ def cv03():
 
                 YurMin, YurMax = 3.2e-9, 3.
 
-                if debug: print("Get histograms for tcs " + tcs )
+                hname = 'coll_loss' +tag
 
-                coll_loss = rf.Get('coll_loss' +tag)
+                if debug: print("Get histograms for tcs " + tcs + ", starting with " + hname)
+
+                coll_loss = rf.Get(hname)
                 cold_loss = rf.Get('cold_loss' +tag)
                 warm_loss = rf.Get('warm_loss' +tag)
 
@@ -266,7 +288,7 @@ def cv03():
                 gPad.SetLogy(1)
 
                 pname  = wwwpath
-                pname += 'scan/losses'+rel+'.pdf'
+                pname += 'scan/'+vhalo+'losses'+rel+'.png'
 
                 print('Saving file as' + pname ) 
                 cv.Print(pname)
@@ -290,8 +312,8 @@ def cv03():
 
             tag  = '_'+ tcs
             cold_loss = rf.Get('cold_loss' + tag)
-            branchname = 'norm'+tag
-            
+            branchname = tag.replace('.','QQQ')
+
             globals()[branchname] = array('i',[0])
             nt.SetBranchAddress(branchname, globals()[branchname])
             nt.GetEntry(0)
@@ -349,6 +371,7 @@ def bmPlot(Q8_losses,Q10_losses,max_cold_losses,hname, QA, QB):
     hist1.SetMarkerStyle(22)
     hist1.SetMarkerColor(kMagenta-3)
     hist1.SetLineColor(kMagenta-3)
+    hist1.GetYaxis().SetTitleOffset(.62)
     hist1.GetYaxis().SetTitle('Cleaning Inefficiency #eta')
 
     hist2 = TH1F(hname+'d', hname+'d', nbins, 1, nbins+1)
@@ -391,24 +414,30 @@ def bmPlot(Q8_losses,Q10_losses,max_cold_losses,hname, QA, QB):
     minval = min(vals)
     maxval = max(vals)
 
-    hist1.GetYaxis().SetRangeUser(minval*.75, maxval*1.2)
+    hist1.GetYaxis().SetRangeUser(minval*.7, maxval*1.33)
     hist1.Draw('P')
-    hist2.Draw('PSAME')
-    hist3.Draw('PSAME')
 
-    # x1, y1, x2, y2a
-    thelegend = TLegend(0.16, 0.7, 0.42, 0.82) 
+    hist3.Draw('PSAME')
+    hist2.Draw('PSAME')
+    hist1.Draw('PSAME')
+
+    x1, y1, x2, y2 = 0.16, 0.7, 0.42, 0.82
+    thelegend = TLegend(x1, y1, x2, y2)
     thelegend.SetFillColor(0)
     thelegend.SetLineColor(0)
     thelegend.SetTextSize(0.035)
     thelegend.SetShadowColor(10)
-    thelegend.AddEntry(hist1,'at ' +QA, "PL")
+    thelegend.AddEntry(hist1,'at  ' +QA, "PL")
     thelegend.AddEntry(hist2,'at ' +QB, "PL")
-    thelegend.AddEntry(hist3,'10% of maximum cold loss', "P")
+    thelegend.AddEntry(hist3,'10% of maximum cold loss', "PL")
     thelegend.Draw()
 
     pname  = wwwpath
-    pname += 'scan/'+hname+'.png'
+    pname += 'scan/'+vhalo+hname+'.png'
+
+    if vHalo:
+        lab = mylabel(60)
+        lab.DrawLatex(x1+.3, y1+0.18, vhalo.rstrip('/'))
 
     print(pname)
     cv.Print(pname)

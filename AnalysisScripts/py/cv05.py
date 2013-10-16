@@ -17,10 +17,12 @@ def cv05():
     genpath = "/afs/cern.ch/work/r/rkwee/HL-LHC/roderik/inputdistributions/"
 
     distTypes = ['d1', 'd2', 'd3', 'd5']
+    distTypes = ['d2']
 
     for distType in distTypes:
 
         path = genpath + distType + '/'
+        path = "/tmp/rkwee/vHalo/7TeVPostLS1_nominal_B1/run_0000/"
         # has 6 colums: X[m]   Xp[rad]   Y [m]   Yp[rad]   s in bucket [m]  E[MeV]
         f1    = path + 'dist0.dat'
 
@@ -76,10 +78,10 @@ def cv05():
         clab.DrawLatex(0.45, 0.88, 'distribution type ' + distType.split("d")[-1])
 
         pname  = wwwpath
-        pname += 'realspace_'+distType+'.pdf'
+        pname += 'scan/vHalo/realspace_'+distType+'.pdf'
         cv.Print(pname)
 
         pname  = wwwpath
-        pname += 'realspace_'+distType+'.png'
+        pname += 'scan/vHalo/realspace_'+distType+'.png'
         cv.Print(pname)
 

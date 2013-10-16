@@ -26,10 +26,9 @@ def cv01():
 
         path = genpath + distType + '/'
 
-        path = "/tmp/rkwee/7TeVPostLS1_nominal_b2/run_234/"
+        path = "/tmp/rkwee/vHalo/7TeVPostLS1_nominal_B1/run_0000/"
         # has 6 colums: X[m]   Xp[rad]   Y [m]   Yp[rad]   s in bucket [m]  E[MeV]
         f1    = path + 'dist0.dat'
-
 
         xarrayX, yarrayX = [], []
         xarrayY, yarrayY = [], []
@@ -88,8 +87,10 @@ def cv01():
         grX.GetYaxis().SetTitleOffset(1.6)
         grX.GetXaxis().SetTitle(xtitle)
         grX.GetYaxis().SetTitle(ytitle)
-        grX.Draw('ap')
-        grY.Draw('samep')
+
+
+        grY.Draw('ap')
+        grX.Draw('samep')
         # x1, y1, x2, y2a
         thelegend = TLegend(0.75, 0.8, 0.84, 0.9) 
         thelegend.SetFillColor(0)
@@ -108,6 +109,6 @@ def cv01():
         #v.Print(pname)
 
         pname  = wwwpath
-        pname += 'scan/debugB2/phasespace_'+distType+'.png'
+        pname += 'scan/vHalo/phasespace_'+distType+'.png'
         cv.Print(pname)
 
