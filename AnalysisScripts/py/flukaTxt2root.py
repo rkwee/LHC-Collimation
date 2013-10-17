@@ -19,6 +19,8 @@ parser.add_option("-f", "--file", dest="filename", type="string",
 fname  = options.filename
 rfname = fname + '.root'
 #######################################################################################
+    # FORMAT RODERIK
+
     # http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam_gas_arc_4TeV/flukaIR15.html
     # 1  FLUKA run number (between 1 and 3000)
     # 2  ID of primary particle (between 1 and 60 000 in each run)
@@ -36,22 +38,56 @@ rfname = fname + '.root'
     # 14 Z_start (cm)
     # 15 t_start (s) : starting time of primary particle where t=0 is at the entrance of the TCTH
 #######################################################################################
+    # FORMAT FLUKA GUYS
 
+    # Scoring from Region No  1754 to  1753
+    # Col  1: primary event number
+    # -- Particle information --
+    # Col  2: FLUKA particle type ID
+    # Col  3: generation number
+    # Col  4: statistical weight
+    # -- Crossing at scoring plane --
+    # Col  5: x coord (cm)
+    # Col  6: y coord (cm)
+    # Col  7: x dir cosine
+    # Col  8: y dir cosine
+    # Col  9: total energy (GeV)
+    # Col 10: kinetic energy (GeV)
+    # Col 11: particle age since primary event (sec)
+    # -- Primary event --
+    # Col 12: x coord TCT impact (cm)
+    # Col 13: y coord TCT impact (cm)
+    # Col 14: z coord TCT impact (cm)
+#######################################################################################
+doHL = 0
+sometext = '4 TeV beam'
+cEkin    = 3
+pID      = 2
+cX, cY   = 6,7
+tag      = '4TeV'
+
+if fname.endswith("30"): doHL = 1
+if doHL:
+    sometext = 'HL LHC'
+    pID      = 1
+    cEkin    = 9
+    cX, cY   = 4,5
+    tag      = 'HL'
+# ---------------------------------------------------------------------------------
 # dict  key = hname  #0 particleTypes #1 colNumbers #2 nbins #3 xmin #4 xmax #5 drawOpt #6 prettyName 
                      #7 hcolor #8 ekinCut [GeV] #9 xtitle #10 ytitle
 sDict = { 
 
-    "EkinAll"      : [ ['all'],      [3],     100, 1e-3,  1e4, 'HIST',     'all',                        kAzure -10, -9999,'E [GeV]', '#frac{dN (counts/TCT hit)}{dlog E}', ],
-    "EkinMuons"    : [ ['10', '11'], [3],     100, 1e-3,  1e4, 'SAMEHIST', '#mu^{#pm}',                  kAzure -9, -9999,'E [GeV]', '#frac{dN (counts/TCT hit)}{dlog E}', ],
-    "EkinProtons"  : [ ['1'],        [3],     100, 1e-3,  1e4, 'SAMEHIST', 'protons',                    kAzure -8, -9999,'E [GeV]', '#frac{dN (counts/TCT hit)}{dlog E}', ],
-    "EkinNeutrons" : [ ['8'],        [3],     100, 1e-3,  1e4, 'SAMEHIST', 'neutrons',                   kAzure -7, -9999,'E [GeV]', '#frac{dN (counts/TCT hit)}{dlog E}', ],
-    "EkinPhotons"  : [ ['7'],        [3],     100, 1e-3,  1e4, 'SAMEHIST', '#gamma',                     kAzure -6, -9999,'E [GeV]', '#frac{dN (counts/TCT hit)}{dlog E}', ],
-    "EkinElecPosi" : [ ['3', '4'],   [3],     100, 1e-3,  1e4, 'SAMEHIST', 'e^{#pm}',                    kAzure -5, -9999,'E [GeV]', '#frac{dN (counts/TCT hit)}{dlog E}', ],
-    "RadMuonsEAll" : [ ['10', '11'], [6,7,3], 242,    0, 1210, 'HIST',     '#mu^{#pm}',                        kRed-10, -9999,'r [cm]', 'particles/cm^2/TCT hit'],
-    "RadMuonsE20"  : [ ['10', '11'], [6,7,3], 242,    0, 1210, 'HISTSAME', '#mu^{#pm} with E_{kin} >  20 GeV', kRed-7,   20.,'r [cm]', 'particles/cm^2/TCT hit'],
-    "RadMuonsE100" : [ ['10', '11'], [6,7,3], 242,    0, 1210, 'HISTSAME', '#mu^{#pm} with E_{kin} > 100 GeV', kRed-1,  100.,'r [cm]', 'particles/cm^2/TCT hit'],
+    "EkinAll"      : [ ['all'],      [cEkin],     100, 1e-3,  1e4, 'HIST',     'all',                        kAzure -10, -9999,'E [GeV]', '#frac{dN (counts)}{dlog E}', ],
+    # "EkinMuons"    : [ ['10', '11'], [cEkin],     100, 1e-3,  1e4, 'SAMEHIST', '#mu^{#pm}',                  kAzure -9, -9999,'E [GeV]', '#frac{dN (counts)}{dlog E}', ],
+    # "EkinProtons"  : [ ['1'],        [cEkin],     100, 1e-3,  1e4, 'SAMEHIST', 'protons',                    kAzure -8, -9999,'E [GeV]', '#frac{dN (counts)}{dlog E}', ],
+    # "EkinNeutrons" : [ ['8'],        [cEkin],     100, 1e-3,  1e4, 'SAMEHIST', 'neutrons',                   kAzure -7, -9999,'E [GeV]', '#frac{dN (counts)}{dlog E}', ],
+    # "EkinPhotons"  : [ ['7'],        [cEkin],     100, 1e-3,  1e4, 'SAMEHIST', '#gamma',                     kAzure -6, -9999,'E [GeV]', '#frac{dN (counts)}{dlog E}', ],
+    # "EkinElecPosi" : [ ['3', '4'],   [cEkin],     100, 1e-3,  1e4, 'SAMEHIST', 'e^{#pm}',                    kAzure -5, -9999,'E [GeV]', '#frac{dN (counts)}{dlog E}', ],
+    # "RadMuonsEAll" : [ ['10', '11'], [cX,cY,cEkin], 242,    0, 1210, 'HIST',     '#mu^{#pm}',                        kRed-10, -9999,'r [cm]', 'particles/cm^{2}'],
+    # "RadMuonsE20"  : [ ['10', '11'], [cX,cY,cEkin], 242,    0, 1210, 'HISTSAME', '#mu^{#pm} with E_{kin} >  20 GeV', kRed-7,   20.,'r [cm]', 'particles/cm^{2}'],
+    # "RadMuonsE100" : [ ['10', '11'], [cX,cY,cEkin], 242,    0, 1210, 'HISTSAME', '#mu^{#pm} with E_{kin} > 100 GeV', kRed-1,  100.,'r [cm]', 'particles/cm^{2}'],
     }
-
 # ---------------------------------------------------------------------------------
 def getColContent(colNumbers, particleTypes):
 
@@ -64,7 +100,7 @@ def getColContent(colNumbers, particleTypes):
             for line in myfile:       
 
                 cline = line.split()
-                pType = cline[2]
+                pType = cline[pID]
 
                 if particleTypes[0].count('ll'):
                     col  += [float(cline[colNumber])]
@@ -98,11 +134,15 @@ def do1dLogHisto(hname, colNumbers, xaxis, particleTypes):
     hist  = TH1F(hname, hname, nbins, array('d', xaxis) )
 
     for colVal in col: hist.Fill(colVal)
-
-    for bin in range(nbins):
+   
+    # This second loop changes the Get.Entries() value by number of bins!!
+    for bin in range(1,nbins+1):
         content = hist.GetBinContent(bin)
         width   = hist.GetBinWidth(bin)
-        hist.SetBinContent(bin,content/width)
+        bcenter = hist.GetXaxis().GetBinCenterLog(bin)
+        #mybince = math.sqrt(hist.GetBinLowEdge(bin+1) * hist.GetBinLowEdge(bin))
+        #print "mybincenter", mybince, "roots bincenter", bcenter
+        hist.SetBinContent(bin,bcenter*content/width)
  
     return hist
 # ---------------------------------------------------------------------------------
@@ -163,8 +203,6 @@ def saveRootFile():
             xaxis = [i*binwidth for i in range(nbins+1)]
             hist  = do1dRadHisto(hname, colNumber, xaxis, particleTypes) 
 
-        # graph = doTGraph(hist)
-        # graph.Write()
         hist.Write()
 
     rfile.Close()
@@ -181,22 +219,22 @@ def plotSpectra():
     # ....................................
     if True:
         var    = ['EkinAll', 
-                  'EkinElecPosi', 
-                  'EkinProtons', 
-                  'EkinNeutrons',
-                  'EkinPhotons', 
-                  'EkinMuons', 
+                  # 'EkinElecPosi', 
+                  # 'EkinProtons', 
+                  # 'EkinNeutrons',
+                  # 'EkinPhotons', 
+                  # 'EkinMuons', 
                   ]
         x1, y1, x2, y2 = 0.72, 0.75, 0.98, 0.9
         doLogx, doLogy = 1,1
-        pname  = wwwpath + 'TCT/Ekin_TCT_4TeV.pdf'
+        pname  = wwwpath + 'TCT/Ekin_TCT_'+tag
     # ....................................
 
-    if False:
+    if 0:
         var    = ['RadMuonsEAll', 'RadMuonsE20', 'RadMuonsE100']
         x1, y1, x2, y2 = 0.6, 0.75, 0.9, 0.9
         doLogx, doLogy = 0,1
-        pname  = wwwpath + 'TCT/RadialDist_TCT_4TeV.pdf'
+        pname  = wwwpath + 'TCT/RadialDist_TCT_'+tag
     # ....................................
 
     # ONCE: print all keys to order them
@@ -212,6 +250,7 @@ def plotSpectra():
         
         hists += [rfile.Get(skey)]
 
+        print "Histogram ....", skey, "has ", hists[-1].GetEntries() - hists[-1].GetNbinsX(), "entries."
         hcolor = sDict[skey][7]
         hists[-1].SetLineColor(hcolor)
         hists[-1].SetLineWidth(2)
@@ -225,7 +264,6 @@ def plotSpectra():
     
         xtitle = sDict[skey][9]
         ytitle = sDict[skey][10]
-    ytitle = ''
 
     hists[0].GetYaxis().SetTitleSize(0.04)
     hists[0].GetYaxis().SetLabelSize(0.035)
@@ -234,14 +272,15 @@ def plotSpectra():
     
     mlegend.Draw()
     lab = mylabel(60)
-    lab.DrawLatex(x1, y1-0.1, '4 TeV beam')
+    lab.DrawLatex(x1, y1-0.1, sometext)
 
     gPad.RedrawAxis()
     gPad.SetLogx(doLogx)
     gPad.SetLogy(doLogy)
 
     print('Saving file as' + pname ) 
-    cv.Print(pname)
+    cv.Print(pname + '.pdf')
+    cv.Print(pname + '.png')
 
 # ---------------------------------------------------------------------------------
 if __name__ == "__main__":
