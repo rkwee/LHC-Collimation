@@ -69,7 +69,7 @@ csfile_H = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/TCT_4TeV_B2hHalo/coll_summary_
 csfile_V = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/TCT_4TeV_B2vHalo/coll_summary_TCT_4TeV_B2vHalo.dat'
 Ntct_V   = 3 # wc -l TCT_4TeV_B2vHalo/impacts_real_on_71_TCTH.4R1.B2_B2vHalo.dat
 Ntct_H   = 452 # wc -l TCT_4TeV_B2vHalo/impacts_real_on_72_TCTVA.4R1.B2_B2vHalo.dat
-NtotBeam = 1.15e11*1404
+NtotBeam = 1.5e11*1380
 nprim    = 1.57e7 # number of simulated primary interactions in fluka
 
 if fname.endswith("30"): doHL = 1
@@ -84,7 +84,7 @@ if doHL:
     Ntct_H   = 15793 # ats-HL_LHC_1.0/nominal_settings/impacts_real_on_52_TCTH.4L1.B1.dat
     Ntct_V   = 5817 # ats-HL_LHC_1.0/nominal_settings/impacts_real_on_53_TCTVA.4L1.B1.dat
     NtotBeam = 1.6e11*2808
-    nprim    = 3e6
+    nprim    = 1e3*7390
 # ---------------------------------------------------------------------------------
 # dict  key = hname  #0 particleTypes #1 colNumbers #2 nbins #3 xmin #4 xmax #5 drawOpt #6 prettyName 
                      #7 hcolor #8 ekinCut [GeV] #9 xtitle #10 ytitle
@@ -187,6 +187,8 @@ def do1dLogHisto(hname, colNumbers, xaxis, particleTypes):
 def doNormR():
     # normlise by loss rate
 
+    print sometext
+
     # lifetime
     tau_1   = 12*60 # loose beam in 12 minutes
     tau_2   = 100*60*60 # in 100 h
@@ -202,6 +204,7 @@ def doNormR():
     R2det_V = Ntct_V/Ntot_V * NtotBeam/tau_2
 
     print "total #p lost in 200 turns _V", Ntot_V
+    print "fraction #p lost in 200 turns  _V", Ntct_V/Ntot_V
 
     R1det = int(0.5*( R1det_H + R1det_V ))
     R2det = int(0.5*( R2det_H + R2det_V ))
@@ -357,16 +360,24 @@ def saveRootFile():
 # ---------------------------------------------------------------------------------
 def plotSpectra():
 
-    #   rfname  = saveRootFile()    
+    # rfname  = saveRootFile()    
     rfile   = TFile.Open(rfname)
 
     # dict for variables
-    vDict   = { # vkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill
+    vDict_4TeV   = { # vkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill
         'Ekin_TCT' : [["EkinAll", "EkinMuons", "EkinPhotons", "EkinElecPosi","EkinNeutrons", "EkinProtons" ],0.72, 0.75, 0.98, 0.9, 1,1, 2e-2,1e4,-1,-1, 0],
         'RadNMuons_TCT': [ ["RadNMuonsEAll", "RadNMuonsE20", "RadNMuonsE100" ],0.52, 0.75, 0.98, 0.9, 0,1, 0.,1200.,-1,-1, 1,],
         'RadialEnDist_TCT':[ ["RadEnAll", "RadEnMuons", "RadEnNeutrons", "RadEnProtons", "RadEnPhotons", "RadEnElecPosi" ],0.72, 0.75, 0.98, 0.9, 0,1, -1,-1,-1,-1, 1,],
         'PhiNDist_TCT': [ ["PhiNAll", "PhiNMuons", "PhiNPhotons", "PhiNNeutrons","PhiNElecPosi","PhiNProtons", ],0.72, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-5,9e-3, 0,],
         'PhiEnDist_TCT':[ [ "PhiEnAll", "PhiEnMuons", "PhiEnNeutrons", "PhiEnProtons", "PhiEnPhotons", "PhiEnElecPosi" ],0.72, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,4, 0,],
+        }
+
+    vDict   = { # vkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill
+        'Ekin_TCT' : [["EkinAll", "EkinMuons", "EkinPhotons", "EkinElecPosi","EkinNeutrons", "EkinProtons" ],0.72, 0.75, 0.98, 0.9, 1,1, 2e-2,1e4,-1,-1, 1],
+        'RadNMuons_TCT': [ ["RadNMuonsEAll", "RadNMuonsE20", "RadNMuonsE100" ],0.52, 0.75, 0.98, 0.9, 0,1, 0.,1200.,-1,-1, 1,],
+        'RadialEnDist_TCT':[ ["RadEnAll", "RadEnMuons", "RadEnNeutrons", "RadEnProtons", "RadEnPhotons", "RadEnElecPosi" ],0.72, 0.75, 0.98, 0.9, 0,1, -1,-1,-1,-1, 1,],
+        'PhiNDist_TCT': [ ["PhiNAll", "PhiNMuons","PhiNNeutrons","PhiNProtons","PhiNPhotons", "PhiNElecPosi", ],0.72, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-5,9, 1,],
+        'PhiEnDist_TCT':[ [ "PhiEnAll", "PhiEnMuons", "PhiEnNeutrons", "PhiEnProtons", "PhiEnPhotons", "PhiEnElecPosi" ],0.72, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1e4, 1,],
         }
     
     for vkey in vDict.keys():
@@ -441,5 +452,5 @@ if __name__ == "__main__":
     gROOT.LoadMacro("/afs/cern.ch/user/r/rkwee/scratch0/miScripts/py/AtlasUtils.C")
     SetAtlasStyle()
 
-    #print doNormR(), 'Hz'
-    plotSpectra()
+    print doNormR(), 'Hz'
+    #plotSpectra()
