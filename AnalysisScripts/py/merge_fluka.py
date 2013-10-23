@@ -25,7 +25,9 @@ rundir = options.rundir
 if not rundir.endswith('/'): rundir += '/'
 scoringType = options.scoringType
 unit = options.unit
-if unit == 66: skipN = 9
+if unit == '66': 
+    skipN = 9
+    print 'skipping first', skipN, 'characters of each file'
 else: skipN = -9999
 # ----------------------------------------------------------------------------------------------------------------------
 # define run files and parameters
