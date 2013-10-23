@@ -25,6 +25,8 @@ rundir = options.rundir
 if not rundir.endswith('/'): rundir += '/'
 scoringType = options.scoringType
 unit = options.unit
+if unit == 66: skipN = 9
+else: skipN = -9999
 # ----------------------------------------------------------------------------------------------------------------------
 # define run files and parameters
 debug      = 1
@@ -75,28 +77,40 @@ def joinTextFiles(fn):
 
     allfortfiles,inpfile = ListFortFiles(fn)
     
+    print "name of inpfile is", inpfile
+
+    fdummy   = rundir + inpfile + '_' + fn + '.dummy'
     foutname = rundir + inpfile + '_' + fn 
     fout     = open(foutname, 'w')
 
+    foutdummy= open(fdummy, 'w')
+    cnt = 0
     for afile in allfortfiles:
 
         if not afile.count("run"): continue
+
+        foutdummy.write(afile+"\n")
+        cnt += 1
+
         runnumber   = afile.split('run_')[-1].split('/')[0]
         cyclenumber = afile.split('/')[-1].split('b2')[-1].split('_fort.' + fn)[0]
-        print("for file", afile, "found runnumber ", runnumber, ' and cyclenumber', cyclenumber)
+        #print("for file", afile, "found runnumber ", runnumber, ' and cyclenumber', cyclenumber)
 
         with open(afile) as af:
 
             for line in af:
                 #line = line.rstrip()
 
-                outline  = runnumber + cyclenumber + '  ' + line[9:]
+                if line.count("#"): continue
+                if skipN > 0: outline  = runnumber + cyclenumber + '  ' + line[skipN:]
+                else: outline = line
 
                 fout.write(outline)
 
     fout.close()
+    foutdummy.close()
 
-    print("Wrote " + foutname)
+    print("Wrote " + foutname + " from ", cnt, " fort files.")
 
     return foutname
 # ----------------------------------------------------------------------------------------------------------------------
