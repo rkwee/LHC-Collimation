@@ -15,9 +15,13 @@ parser = OptionParser()
 parser.add_option("-f", "--file", dest="filename", type="string",
                   help="put the path of the merged fort.66 file from fluka runs")
 
+parser.add_option("-c", dest="doCreate", type="int",
+                  help="0 or 1 for creating a rootfile or not.")
+
 (options, args) = parser.parse_args()
 
 fname  = options.filename
+doCreate = options.doCreate
 #######################################################################################
     # FORMAT RODERIK
 
@@ -79,8 +83,19 @@ else:
     hDict = hDict_4TeV
     if debug: print "Using 4 TeV format", '.'*10
 # ---------------------------------------------------------------------------------
-sometext,pID,cEkin,cX,cY,cZ,tag,csfile_H,csfile_V,Ntct_H,Ntct_V, NtotBeam,nprim = [v for v in varList]
+sometext,pID,cEkin,cX,cY,cZ,tag,csfile_H,csfile_V,Ntct_H,Ntct_V, NtotBeam,nprim,subfolder = [v for v in varList]
+
+nprim = 3340500.0
+if nprim < 0.: 
+    print "no number of primaries set. Set it first (wc -l from merged fort 30/66 file)"
+    sys.exit()
+
 rfoutName = fname +".root"
+
+if not os.path.exists(wwwpath + subfolder):
+    print 'making dir', wwwpath + subfolder
+    os.mkdir(wwwpath + subfolder)
+
 # ---------------------------------------------------------------------------------
 def createTTree(fname):
   print "writing ", rfoutName
@@ -116,7 +131,6 @@ def do1dLogHisto(mt, colNumbers, hname, xaxis, particleTypes):
     # this cut doesnt change anything. it may only for beamgas
     zmin, zmax = 2260., 14960.
 
-    if debug: print "INFO: Using these variables", colNumbers
     cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)
 
     if not particleTypes[0].count('ll'):
@@ -147,8 +161,6 @@ def do1dRadHisto(mt, hname, colNumbers, xaxis, particleTypes):
 
     # this cut doesnt change anything. it may only for beamgas
     zmin, zmax = 2260., 14960.
-
-    if debug: print "INFO: Using these variables", colNumbers
 
     cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)
     cut += ' && energy_ke > ' + str(ekinCut)
@@ -183,7 +195,6 @@ def do1dRadEnHisto(mt, hname, colNumbers, xaxis, particleTypes):
     # this cut doesnt change anything. it may only for beamgas
     zmin, zmax = 2260., 14960.
 
-    if debug: print "INFO: Using these variables", colNumbers
     cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) 
 
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
@@ -212,14 +223,19 @@ def do1dPhiHisto(mt, hname, colNumbers, xaxis, particleTypes):
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
 
+    # cut on radius
+    otherCut = sDict[hname][8]
+
+    if otherCut > 0.: oCut = '&& TMath::Sqrt(TMath::Power(x,2)+TMath::Power(y,2)) > ' + str(otherCut)
+    else: oCut = ''
+
     # store sum of squares of weights 
     hist.Sumw2()
 
     # this cut doesnt change anything. it may only for beamgas
     zmin, zmax = 2260., 14960.
 
-    if debug: print "INFO: Using these variables", colNumbers
-    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) 
+    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + oCut
 
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
     var = 'TMath::ATan2(y,x)'
@@ -243,15 +259,19 @@ def do1dPhiEnHisto(mt, hname, colNumbers, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
+    # cut on radius
+    otherCut = sDict[hname][8]
 
     # store sum of squares of weights 
     hist.Sumw2()
 
+    if otherCut > 0.: oCut = ' && TMath::Sqrt(TMath::Power(x,2)+TMath::Power(y,2)) > ' + str(otherCut)
+    else: oCut = ''
+
     # this cut doesnt change anything. it may only for beamgas
     zmin, zmax = 2260., 14960.
 
-    if debug: print "INFO: Using these variables", colNumbers
-    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) 
+    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + oCut
 
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
     var = 'TMath::ATan2(y,x)'
@@ -273,9 +293,69 @@ def do1dPhiEnHisto(mt, hname, colNumbers, xaxis, particleTypes):
  
     return hist
 # ---------------------------------------------------------------------------------
+def do1dXcoorHisto(mt, hname, colNumbers, xaxis, particleTypes):
+
+    nbins   = len(xaxis)-1
+    hist    = TH1F(hname, hname, nbins, array('d', xaxis))
+    # cut on radius
+    otherCut = sDict[hname][8]
+
+    # store sum of squares of weights 
+    hist.Sumw2()
+
+    # this cut doesnt change anything. it may only for beamgas
+    zmin, zmax = 2260., 14960.
+    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) 
+
+    var = 'x'
+    if not particleTypes[0].count('ll'):
+      pcuts = [ 'particle ==' + p for p in particleTypes  ]
+      pcut  = '||'.join(pcuts)
+      cut   = '('+ pcut + ') && ' + cut 
+
+    if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
+    mt.Project(hname, var, cut)
+    if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
+
+    for i in range(nbins):
+        content = hist.GetBinContent(i)
+        hist.SetBinContent(i,content/hist.GetBinWidth(i))
+ 
+    return hist
+# ---------------------------------------------------------------------------------
+def do1dYcoorHisto(mt, hname, colNumbers, xaxis, particleTypes):
+
+    nbins   = len(xaxis)-1
+    hist    = TH1F(hname, hname, nbins, array('d', xaxis))
+    # cut on radius
+    otherCut = sDict[hname][8]
+
+    # store sum of squares of weights 
+    hist.Sumw2()
+
+    # this cut doesnt change anything. it may only for beamgas
+    zmin, zmax = 2260., 14960.
+    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) 
+
+    var = 'y'
+    if not particleTypes[0].count('ll'):
+      pcuts = [ 'particle ==' + p for p in particleTypes  ]
+      pcut  = '||'.join(pcuts)
+      cut   = '('+ pcut + ') && ' + cut 
+
+    if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
+    mt.Project(hname, var, cut)
+    if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
+
+    for i in range(nbins):
+        content = hist.GetBinContent(i)
+        hist.SetBinContent(i,content/hist.GetBinWidth(i))
+ 
+    return hist
+# ---------------------------------------------------------------------------------
 def getHistogram(skey, mt):
 
-    if debug: print "INFO: filling histogram ...", skey
+    if debug: print "INFO: filling histogram", '.'*20, skey, '.'*20
 
     particleTypes = sDict[skey][0]
     hname         = skey
@@ -308,6 +388,16 @@ def getHistogram(skey, mt):
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
         hist  = do1dPhiEnHisto(mt, hname, colNumbers, xaxis, particleTypes) 
 
+    elif hname.startswith("Xcoor"):
+        binwidth = (xmax-xmin)/nbins
+        xaxis = [xmin+i*binwidth for i in range(nbins+1)]
+        hist  = do1dXcoorHisto(mt, hname, colNumbers, xaxis, particleTypes) 
+
+    elif hname.startswith("Ycoor"):
+        binwidth = (xmax-xmin)/nbins
+        xaxis = [xmin+i*binwidth for i in range(nbins+1)]
+        hist  = do1dYcoorHisto(mt, hname, colNumbers, xaxis, particleTypes) 
+
     return hist
 # ---------------------------------------------------------------------------------
 def plotSpectra(fname):
@@ -327,7 +417,7 @@ def plotSpectra(fname):
       hList = hDict[hkey][0] 
       x1, y1, x2, y2 = hDict[hkey][1],hDict[hkey][2],hDict[hkey][3],hDict[hkey][4]
       doLogx, doLogy = hDict[hkey][5], hDict[hkey][6]
-      pname = wwwpath + 'TCT/'+hkey+'_'+tag
+      pname = wwwpath + subfolder +hkey+'_'+tag
       XurMin, XurMax = hDict[hkey][7],hDict[hkey][8]
       YurMin, YurMax = hDict[hkey][9],hDict[hkey][10]
       doFill = hDict[hkey][11]
@@ -338,7 +428,7 @@ def plotSpectra(fname):
       mlegend.SetTextSize(0.035)
       mlegend.SetShadowColor(10)
       
-      for hname in hList:
+      for i,hname in enumerate(hList):
         
            hists += [getHistogram(hname, mt)]
            norm   = nprim
@@ -349,8 +439,8 @@ def plotSpectra(fname):
            hists[-1].SetLineWidth(3)
            if doFill:  hists[-1].SetFillColor(hcolor)
            
-           drawOpt = sDict[hname][5]
-           hists[-1].Draw(drawOpt)
+           if not i: hists[-1].Draw("HIST")
+           else: hists[-1].Draw("HISTSAME")
            
            prettyName = sDict[hname][6]
            mlegend.AddEntry(hists[-1],prettyName, "lf")
@@ -368,6 +458,7 @@ def plotSpectra(fname):
       hists[0].GetYaxis().SetLabelSize(0.035)
       hists[0].GetXaxis().SetTitle(xtitle)
       hists[0].GetYaxis().SetTitle(ytitle)
+      print "Setting xtitle, ytitle ", xtitle, ytitle
 
       mlegend.Draw()
       lab = mylabel(60)
@@ -378,7 +469,7 @@ def plotSpectra(fname):
       gPad.SetLogy(doLogy)
       
       print('Saving file as' + pname ) 
-      cv.Print(pname + '.pdf')
+      #    cv.Print(pname + '.pdf')
       cv.Print(pname + '.png')
       
 # ---------------------------------------------------------------------------------
@@ -390,5 +481,5 @@ if __name__ == "__main__":
     gROOT.LoadMacro("/afs/cern.ch/user/r/rkwee/scratch0/miScripts/py/AtlasUtils.C")
     SetAtlasStyle()
 
-    #createTTree(fname)
+    if doCreate:  createTTree(fname)
     plotSpectra(fname)
