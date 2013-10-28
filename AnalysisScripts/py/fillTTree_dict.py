@@ -92,17 +92,33 @@ varList_4TeV = [sometext,pID,cEkin,cX,cY,cZ,tag,csfile_H,csfile_V,Ntct_H,Ntct_V,
 # ---------------------------------------------------------------------------------
 sDict = { 
     
-    "EkinAll"           : [ ['all'],      [cEkin],      60, 1e-2,  1e4, 'HIST',     'all',      kBlack, -9999,'E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
-    "EkinMuons"         : [ ['10', '11'], [cEkin],      60, 1e-2,  1e4, 'SAMEHIST', '#mu^{#pm}',kAzure, -9999,'E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
-    "EkinProtons"       : [ ['1'],        [cEkin],      60, 1e-2,  1e4, 'SAMEHIST', 'protons',  kCyan, -9999,'E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
-    "EkinNeutrons"      : [ ['8'],        [cEkin],      60, 1e-2,  1e4, 'SAMEHIST', 'neutrons', kRed -9, -9999,'E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
-    "EkinPhotons"       : [ ['7'],        [cEkin],      60, 1e-2,  1e4, 'SAMEHIST', '#gamma',   kOrange, -9999,'E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
-    "EkinElecPosi"      : [ ['3', '4'],   [cEkin],      60, 1e-2,  1e4, 'SAMEHIST', 'e^{#pm}',  kYellow,  -9999,'E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
-    "EkinSel1":[['3','4','1','7','8','10','11'], [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', 'e^{#pm}, #mu^{#pm}, #gamma, p, n',  kYellow-7,  -9999,'E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
-    "EkinPions":[['13','14','23'],        [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', '#pi^{#pm,0}',  kPink+1,  -9999,'E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
-    "EkinKaons":[['15','16','24'],        [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', 'K^{#pm,0}',  kSpring+1,   -9999,'E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
-    "EkinSel2":[['3','4','1','7','8','10','11','13','14','23'], [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', 'e^{#pm}, #mu^{#pm}, #gamma, p, n, #pi^{#pm,0}',  kViolet,  -9999,'E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
-    "EkinSel3":[['3','4','1','7','8','10','11','13','14','23','15','16','24'], [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', 'e^{#pm}, #mu^{#pm}, #gamma, p, n, #pi^{#pm,0}, K^{#pm,0}',  kRed,  -9999,'E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinAll"           : [ ['all'],      [cEkin],      60, 1e-2,  1e4, 'HIST',     'all',      kBlack, '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinMuons"         : [ ['10', '11'], [cEkin],      60, 1e-2,  1e4, 'SAMEHIST', '#mu^{#pm}',kAzure, '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinProtons"       : [ ['1'],        [cEkin],      60, 1e-2,  1e4, 'SAMEHIST', 'protons',  kCyan, '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinNeutrons"      : [ ['8'],        [cEkin],      60, 1e-2,  1e4, 'SAMEHIST', 'neutrons', kRed -9, '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinPhotons"       : [ ['7'],        [cEkin],      60, 1e-2,  1e4, 'SAMEHIST', '#gamma',   kOrange, '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinElecPosi"      : [ ['3', '4'],   [cEkin],      60, 1e-2,  1e4, 'SAMEHIST', 'e^{#pm}',  kYellow,  '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinSel1":[['3','4','1','7','8','10','11'], [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', 'e^{#pm}, #mu^{#pm}, #gamma, p, n',  kYellow-7,  '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinPions":[['13','14','23'],        [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', '#pi^{#pm,0}',  kPink+1,  '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinKaons":[['15','16','24'],        [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', 'K^{#pm,0}',  kSpring+1,   '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinSel2":[['3','4','1','7','8','10','11','13','14','23'], [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', 'e^{#pm}, #mu^{#pm}, #gamma, p, n, #pi^{#pm,0}',  kViolet,  '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinSel3":[['3','4','1','7','8','10','11','13','14','23','15','16','24'], [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', 'e^{#pm}, #mu^{#pm}, #gamma, p, n, #pi^{#pm,0}, K^{#pm,0}',  kRed,  '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+
+    "EkinPos": [['1','10','4','15','13'], [cEkin], 60, 1e-2,  1e4, 'HISTSAME','p,K^{+},e^{+},#mu^{+},#pi^{+}', kGreen+1,  '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinNeg": [['11','3','14','16'], [cEkin],60, 1e-2,  1e4 , 'HISTSAME', 'K^{-}, e^{-},#mu^{-},#pi^{-}',  kMagenta+1,  '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinNeu": [['7','23','24','8'], [cEkin], 60, 1e-2,  1e4, 'HISTSAME', 'n,K^{0},#gamma,#pi^{0}',  kBlue,  '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinPiPlus":[['13'],        [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', '#pi^{+}',  kPink+2,  '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinPiMinus":[['14'],        [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', '#pi^{-}',  kPink+3,  '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinPiZero":[['23'],        [cEkin], 60, 1e-2,  1e4, 'SAMEHIST', '#pi^{0}',  kPink,  '-9999','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+
+    "EkinAllRInBP"      : [ ['all'],    [cEkin],      60, 1e-2,  1e4, 'HIST', 'all r < r_{bp}',    kBlue-3, '<:6.9','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinAllROutBP"     : [ ['all'],    [cEkin],      60, 1e-2,  1e4, 'HIST', 'all r #geq r_{bp}', kMagenta, '>=:6.9','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinPiPlusRInBP"   : [ ['13'],     [cEkin],      60, 1e-2,  1e4, 'HIST', '#pi^{+} r < r_{bp}',    kCyan-2, '<:6.9','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinPiPlusROutBP"  : [ ['13'],     [cEkin],      60, 1e-2,  1e4, 'HIST', '#pi^{+} r #geq r_{bp}', kPink-2, '>=:6.9','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinPiMinusRInBP"  : [ ['14'],     [cEkin],      60, 1e-2,  1e4, 'HIST', '#pi^{-} r < r_{bp}',    kCyan+1, '<:6.9','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinPiMinusROutBP" : [ ['14'],     [cEkin],      60, 1e-2,  1e4, 'HIST', '#pi^{-} r #geq r_{bp}', kPink+1, '>=:6.9','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinNeutronsRInBP" : [ ['8'],      [cEkin],      60, 1e-2,  1e4, 'HIST', 'n r < r_{bp}',    kGreen, '<:6.9','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
+    "EkinNeutronsROutBP": [ ['8'],      [cEkin],      60, 1e-2,  1e4, 'HIST', 'n r #geq r_{bp}', kPink+2, '>=:6.9','E [GeV]', '#frac{dN(counts/TCT hit)}{dlog E}', ],
 
     "RadNAll"           : [ ['all'],      [cX,cY,cZ,cEkin], 242,    0, 1210, 'HIST',     'all',        kBlack, -9999,'r [cm]', 'particles/cm^{2}/TCT hit'],
     "RadNMuons"         : [ ['10', '11'], [cX,cY,cZ,cEkin], 242,    0, 1210, 'HISTSAME', '#mu^{#pm} ', kAzure,  -9999,'r [cm]',  'particles/cm^{2}/TCT hit'],
@@ -186,6 +202,31 @@ sDict = {
     "YcoorNNeg":       [['11','3','14','16'], [cX,cY,cZ,cEkin], 160,  -400., 400., 'HISTSAME', 'K^{-}, e^{-},#mu^{-},#pi^{-}',  kMagenta+1,  -9999,'y [cm]',  'particles/cm^{2}/TCT hit'],
     "YcoorNPos":       [['1','10','4','15','13'], [cX,cY,cZ,cEkin], 160,  -400., 400., 'HISTSAME', 'p,K^{+},e^{+},#mu^{+},#pi^{+}',  kGreen+1,  -9999,'y [cm]',  'particles/cm^{2}/TCT hit'],
     "YcoorNNeu":       [['7','23','24','8'], [cX,cY,cZ,cEkin], 160,  -400., 400., 'HISTSAME', 'n,K^{0},#gamma,#pi^{0}',  kBlue,  -9999,'y [cm]',  'particles/cm^{2}/TCT hit'],
+
+
+    "XYNAll"           : [ ['all'],      [cY,cX], 120, -120, 120, 'HIST',     'all',        kWhite, '-9999','x [cm]','y [cm]',],
+    "XYNPhotons"       : [ ['7'],        [cY,cX], 120, -120, 120, 'HISTSAME', '#gamma',     kWhite,  '-9999','x [cm]','y [cm]',],
+    "XYNElecPosi"      : [ ['3','4'],    [cY,cX], 120, -120, 120, 'HISTSAME', 'e^{#pm}',    kWhite,  '-9999','x [cm]','y [cm]',],
+    "XYNMuons"         : [ ['10', '11'], [cY,cX], 120, -120, 120, 'HISTSAME', '#mu^{#pm} ', kWhite,  '-9999','x [cm]','y [cm]',],
+
+    "XYNNeutronsE"      : [ ['8'],        [cY,cX], 120, -120, 120, 'HISTSAME', 'neutrons 10 GeV < E_{kin} < 150 GeV',   kWhite,  '10.:150.','x [cm]','y [cm]',],
+    "XYNProtonsE"       : [ ['1'],        [cY,cX], 120, -120, 120, 'HISTSAME', 'protons 10 GeV < E_{kin} < 150 GeV',    kWhite,  '10.:150.','x [cm]','y [cm]',],
+    "XYNPiPlusE":       [['13'], [cY,cX], 120, -120, 120, 'HISTSAME', '#pi^{+} 10 GeV < E_{kin} < 150 GeV',kWhite,  '10.:150.','x [cm]','y [cm]',],
+    "XYNPiMinusE":      [['14'], [cY,cX], 120, -120, 120, 'HISTSAME', '#pi^{-} 10 GeV < E_{kin} < 150 GeV',kWhite,  '10.:150.','x [cm]','y [cm]',],
+    "XYNKaonPlusE":     [['15'], [cY,cX], 120, -120, 120, 'HISTSAME', 'K^{+} 10 GeV < E_{kin} < 150 GeV',kWhite,  '10.:150.','x [cm]','y [cm]',],
+    "XYNKaonMinusE":    [['16'], [cY,cX], 120, -120, 120, 'HISTSAME', 'K^{-} 10 GeV < E_{kin} < 150 GeV', kWhite,  '10.:150.','x [cm]','y [cm]',],
+
+    "XYNAllZoom"       : [ ['all'],      [cY,cX], 60, -30, 30, 'HIST',     'all',        kWhite, '-9999','x [cm]','y [cm]',],
+    "XYNMuonsZoom"     : [ ['10', '11'], [cY,cX], 60, -30, 30, 'HISTSAME', '#mu^{#pm} ', kWhite,  '-9999','x [cm]','y [cm]',],
+    "XYNNeutronsZoom"  : [ ['8'],        [cY,cX], 60, -30, 30, 'HISTSAME', 'neutrons',   kWhite,  '-9999','x [cm]','y [cm]',],
+    "XYNProtonsZoom"   : [ ['1'],        [cY,cX], 60, -30, 30, 'HISTSAME', 'protons',    kWhite,  '-9999','x [cm]','y [cm]',],
+    "XYNPhotonsZoom"   : [ ['7'],        [cY,cX], 60, -30, 30, 'HISTSAME', '#gamma',     kWhite,  '-9999','x [cm]','y [cm]',],
+    "XYNElecPosiZoom"  : [ ['3','4'],    [cY,cX], 60, -30, 30, 'HISTSAME', 'e^{#pm}',    kWhite,  '-9999','x [cm]','y [cm]',],
+    "XYNPiPlusZoom":    [['13'], [cY,cX], 60, -30, 30, 'HISTSAME', '#pi^{+}',kWhite,  '-9999','x [cm]','y [cm]',],
+    "XYNPiMinusZoom":   [['14'], [cY,cX], 60, -30, 30, 'HISTSAME', '#pi^{-}',kWhite,  '-9999','x [cm]','y [cm]',],
+    "XYNKaonPlusZoom":  [['15'], [cY,cX], 60, -30, 30, 'HISTSAME', 'K^{+}',kWhite,  '-9999','x [cm]','y [cm]',],
+    "XYNKaonMinusZoom":[['16'], [cY,cX], 60, -30, 30, 'HISTSAME', 'K^{-}',   kWhite,  '-9999','x [cm]','y [cm]',],
+
     }
 
 # ---------------------------------------------------------------------------------
@@ -201,9 +242,16 @@ hDict_4TeV   = { # vkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2
         }
 
 hDict_HL_halo   = { # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill
-    #'Ekin_TCT' : [["EkinAll", "EkinMuons", "EkinPhotons", "EkinElecPosi","EkinNeutrons", "EkinProtons","EkinPions", "EkinKaons"  ],0.72, 0.7, 0.98, 0.9, 1,1, 2e-2,1e4,1e-6,9, 0],
+    # 'Ekin_TCT' : [["EkinAll", "EkinMuons", "EkinPhotons", "EkinElecPosi","EkinNeutrons", "EkinProtons","EkinPions", "EkinKaons"  ],0.72, 0.7, 0.98, 0.9, 1,1, 2e-2,1e4,1e-6,9, 0],
+    # 'Ekin_debug_TCT' : [["EkinAll", "EkinMuons", "EkinPhotons", "EkinElecPosi","EkinNeutrons", "EkinProtons","EkinPions", "EkinKaons"  ],0.72, 0.7, 0.98, 0.9, 1,1, 2e-2,1e4,1e-6,9, 0],
     # 'Ekin_TCT_more' : [[ "EkinAll","EkinSel3","EkinSel2","EkinSel1","EkinPions", "EkinKaons" ],0.52, 0.75, 0.98, 0.9, 1,1, 2e-2,1e4,1e-6,9, 1],
+    # 'EkinChar_TCT' : [[ "EkinPos","EkinNeg","EkinNeu", "EkinPiPlus","EkinPiMinus","EkinPiZero","EkinPhotons" ],0.52, 0.7, 0.98, 0.9, 1,1, 2e-2,1e4,1e-6,9, 0],
+    # 'EkinBp_TCT' : [["EkinAll", "EkinAllRInBP","EkinPiPlusRInBP","EkinPiMinusRInBP","EkinNeutronsRInBP","EkinAllROutBP","EkinPiPlusROutBP","EkinPiMinusROutBP","EkinNeutronsROutBP", ],0.7, 0.6, 0.98, 0.9, 1,1, 2e-2,1e4,1e-6,9, 0],
+    # 'EkinPiInBp_TCT' : [["EkinPiPlusRInBP","EkinPiMinusRInBP", ],0.7, 0.6, 0.98, 0.9, 1,1, 2e-2,1e4,1e-6,9, 0],
+
     #'RadNDist_TCT': [ ["RadNAll", "RadNMuons", "RadNNeutrons", "RadNProtons", "RadNPhotons", "RadNElecPosi", "RadNPions", "RadNKaons" ],0.72, 0.7, 0.98, 0.9, 0,1, 0,1200,-1,-1, 0,],
+    # 'RadNChar_TCT': [ ["RadNNeg", "RadNPos", "RadNNeu","RadNNeutrons","RadNPhotons" ],0.52, 0.75, 0.98, 0.9, 0,1, 0.,1200.,-1,-1, 0,],
+    # 'RadNChar_debug_TCT': [ ["RadNNeg", "RadNPos", "RadNNeu","RadNNeutrons","RadNPhotons" ],0.52, 0.75, 0.98, 0.9, 0,1, 0.,1200.,1e-6,1, 0,],
     # 'RadNMuons_TCT': [ ["RadNMuonsEAll", "RadNMuonsE20", "RadNMuonsE100","RadNMuonsE1000" ],0.52, 0.75, 0.98, 0.9, 0,1, 0.,1200.,-1,-1, 1,],
     # 'RadEnChar_TCT': [ ["RadEnNeg", "RadEnPos", "RadEnNeu","RadEnNeutrons","RadEnPhotons" ],0.52, 0.75, 0.98, 0.9, 0,1, 0.,1200.,-1,-1, 0,],
     #'RadEnDist_TCT':[ ["RadEnAll", "RadEnMuons", "RadEnNeutrons", "RadEnProtons", "RadEnPhotons", "RadEnElecPosi", "RadEnPions","RadEnKaons" ],0.72, 0.65, 0.98, 0.9, 0,1, 0,1200,-1,-1, 0,],
@@ -212,7 +260,33 @@ hDict_HL_halo   = { # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4
     # 'PhiNMu_TCT': [ ["PhiNMuons","PhiNMuR10","PhiNMuR50","PhiNMuR100","PhiNMuR200","PhiNMuR300","PhiNMuR400","PhiNMuR500","PhiNMuR1000" ],0.4, 0.64, 0.7, 0.92, 0,1, -3.14,3.,1e-5,9-1, 1,],
     # 'PhiEnMu_TCT': [ ["PhiEnMuons","PhiEnMuR10","PhiEnMuR50","PhiEnMuR100","PhiEnMuR200","PhiEnMuR300","PhiEnMuR400","PhiEnMuR500","PhiEnMuR1000" ],0.2, 0.8, 0.5, 1.0, 0,1, -3.14,3.,1e-5,9-1, 0,],
     #'PhiEnDist_TCT':[ [ "PhiEnAll", "PhiEnMuons", "PhiEnNeutrons", "PhiEnProtons", "PhiEnPhotons", "PhiEnElecPosi", "PhiEnPions","PhiEnKaons" ],0.72, 0.7, 0.98, 0.9, 0,1, -1,-1,5e-3,5e2, 0,],
+
     # 'XcoorNChar_TCT': [ ["XcoorNNeg", "XcoorNPos", "XcoorNNeu" ],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1e1, 0,],
-    'YcoorNChar_TCT': [ ["YcoorNNeg", "YcoorNPos", "YcoorNNeu" ],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1e1, 0,],
+    # 'YcoorNChar_TCT': [ ["YcoorNNeg", "YcoorNPos", "YcoorNNeu" ],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1e1, 0,],
+
+    "XYNAll_TCT"           : [ ["XYNAll" ]  ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNMuons_TCT"         : [ ["XYNMuons" ] , 0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNPhotons_TCT"       : [ ["XYNPhotons" ], 0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNElecPosi_TCT"      : [ ["XYNElecPosi" ] ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0,],
+
+    "XYNNeutronsE_TCT"      : [ ["XYNNeutronsE"] ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNProtonsE_TCT"       : [ ["XYNProtonsE"] ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNPiPlusE_TCT"        : [ ["XYNPiPlusE"] ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0,],       
+    "XYNPiMinusE_TCT"       : [ ["XYNPiMinusE"]  ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNKaonPlusE_TCT"      : [ ["XYNKaonPlusE"] ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0,],
+    'XYNKaonMinusE_TCT'     : [ ["XYNKaonMinusE"] ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0,],
+
+    "XYNAllZoom_TCT"       : [ ["XYNAllZoom"]  ,0.7, 0.95, 0.9, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNMuonsZoom_TCT"     : [ ["XYNMuonsZoom"] , 0.7, 0.95, 0.9, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNNeutronsZoom_TCT"  : [ ["XYNNeutronsZoom"] ,0.7, 0.95, 0.9, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNProtonsZoom_TCT"   : [ ["XYNProtonsZoom"] ,0.7, 0.95, 0.9, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNPhotonsZoom_TCT"   : [ ["XYNPhotonsZoom"] ,0.7, 0.95, 0.9, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNElecPosiZoom_TCT"  : [ ["XYNElecPosiZoom"] ,0.7, 0.95, 0.9, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNPiPlusZoom_TCT"    : [ ["XYNPiPlusZoom"] ,0.7, 0.95, 0.9, 1., 0,0, -1,-1,-1,-1, 0,],       
+    "XYNPiMinusZoom_TCT"   : [ ["XYNPiMinusZoom"]  ,0.7, 0.95, 0.9, 1., 0,0, -1,-1,-1,-1, 0,],
+    "XYNKaonPlusZoom_TCT"  : [ ["XYNKaonPlusZoom"] ,0.7, 0.95, 0.9, 1., 0,0, -1,-1,-1,-1, 0,],
+    'XYNKaonMinusZoom_TCT': [ ["XYNKaonMinusZoom" ] ,0.7, 0.95, 0.9, 1., 0,0, -1,-1,-1,-1, 0,],
+
+
     }
 # ---------------------------------------------------------------------------------

@@ -109,12 +109,15 @@ def getXLogAxis(nbins, xmin, xmax):
 
     # exponent width
     width = 1./nbins*(math.log10(xmax) - math.log10(xmin))
+    # width = 1./nbins*(math.log(xmax) - math.log(xmin))
     
     # axis with exponents only 
     xtmp  = [math.log10(xmin) + i * width for i in range(nbins+1)]
+    # xtmp  = [math.log(xmin) + i * width for i in range(nbins+1)]
     
     # real axis in power of 10
     xaxis = [math.pow(10, xExp) for xExp in xtmp]
+    # xaxis = [math.exp(xExp) for xExp in xtmp]
 
     return xaxis
 # ---------------------------------------------------------------------------------
@@ -123,6 +126,15 @@ def do1dLogHisto(mt, colNumbers, hname, xaxis, particleTypes):
     nbins = len(xaxis)-1
     hist  = TH1F(hname, hname, nbins, array('d', xaxis) )
 
+    # cut on radius
+    radius = 'TMath::Sqrt(TMath::Power(x,2) + TMath::Power(y,2))'
+    rcuts  = sDict[hname][8].split(':')
+
+    if rcuts[0].count('-9999'): rCut = ''
+    else:
+        rcut = ' '.join(rcuts)
+        rCut = ' && ' + radius + ' ' + rcut
+
     # store sum of squares of weights 
     hist.Sumw2()
 
@@ -130,12 +142,12 @@ def do1dLogHisto(mt, colNumbers, hname, xaxis, particleTypes):
 
     # this cut doesnt change anything. it may only for beamgas
     zmin, zmax = 2260., 14960.
-
-    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)
+    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + rCut
 
     if not particleTypes[0].count('ll'):
-      cuts  = [ 'particle ==' + p for p in particleTypes  ]
-      cut   = '||'.join(cuts)
+      pcuts = [ 'particle ==' + p for p in particleTypes  ]
+      pcut  = '||'.join(pcuts)
+      cut   = '('+ pcut + ') && ' + cut 
 
     if debug: print 'will apply a cut of ', cut, 'to', hname
     mt.Project(hname, var, cut)
@@ -177,10 +189,12 @@ def do1dRadHisto(mt, hname, colNumbers, xaxis, particleTypes):
     mt.Project(hname, var, cut)
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
 
-    for i in range(nbins):
-        binArea = math.pi * (xaxis[i+1]**2 - xaxis[i]**2)
-        content = hist.GetBinContent(i)
-        hist.SetBinContent(i,content/binArea)
+    if debug: print 'INFO: Ignoring binarea!!!'
+
+    # for i in range(nbins):
+    #     binArea = math.pi * (xaxis[i+1]**2 - xaxis[i]**2)
+    #     content = hist.GetBinContent(i)
+    #     hist.SetBinContent(i,content/binArea)
  
     return hist
 # ---------------------------------------------------------------------------------
@@ -352,6 +366,46 @@ def do1dYcoorHisto(mt, hname, colNumbers, xaxis, particleTypes):
         hist.SetBinContent(i,content/hist.GetBinWidth(i))
  
     return hist
+
+# ---------------------------------------------------------------------------------
+def do2dScatHisto(mt, hname, colNumbers, nbins, xymin, xymax, particleTypes):
+
+    hist    = TH2F(hname, hname, nbins, xymin, xymax, nbins, xymin, xymax)
+
+    # cut on energy
+    ecuts = sDict[hname][8]
+    if float(ecuts.split(':')[0]) < 0.:
+        eCut = ' && energy_ke > '+  ecuts
+    else:
+        emin = ecuts.split(':')[0]
+        emax = ecuts.split(':')[1]
+        eCut = ' && ' +  emax + ' > energy_ke && ' + emin + ' < energy_ke '
+
+    # store sum of squares of weights 
+    hist.Sumw2()
+
+    # this cut doesnt change anything. it may only for beamgas
+    zmin, zmax = 2260., 14960.
+    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + eCut
+
+    # the trick
+    var = ":".join(colNumbers)
+    if debug: print 'INFO: will fill these variables ', var, 'into', hname
+
+    if not particleTypes[0].count('ll'):
+      pcuts = [ 'particle ==' + p for p in particleTypes  ]
+      pcut  = '||'.join(pcuts)
+      cut   = '('+ pcut + ') && ' + cut 
+
+    if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
+    mt.Project(hname, var, cut)
+    if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
+
+    for i in range(nbins):
+        content = hist.GetBinContent(i)
+        hist.SetBinContent(i,content/hist.GetBinWidth(i))
+ 
+    return hist
 # ---------------------------------------------------------------------------------
 def getHistogram(skey, mt):
 
@@ -398,6 +452,10 @@ def getHistogram(skey, mt):
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
         hist  = do1dYcoorHisto(mt, hname, colNumbers, xaxis, particleTypes) 
 
+    elif hname.startswith("XYN"):
+        # only same binning in x and y for now
+        hist  = do2dScatHisto(mt, hname, colNumbers, nbins, xmin, xmax, particleTypes) 
+
     return hist
 # ---------------------------------------------------------------------------------
 def plotSpectra(fname):
@@ -413,6 +471,10 @@ def plotSpectra(fname):
 
       cv = TCanvas( 'cv'+hkey, 'cv'+hkey, 1200, 900)
       hists = []
+
+      gStyle.SetPalette(1)
+      gPad.SetRightMargin(1.4)
+      # gPad.SetLeftMargin(-0.2)
 
       hList = hDict[hkey][0] 
       x1, y1, x2, y2 = hDict[hkey][1],hDict[hkey][2],hDict[hkey][3],hDict[hkey][4]
@@ -439,8 +501,11 @@ def plotSpectra(fname):
            hists[-1].SetLineWidth(3)
            if doFill:  hists[-1].SetFillColor(hcolor)
            
-           if not i: hists[-1].Draw("HIST")
-           else: hists[-1].Draw("HISTSAME")
+           if not i: 
+               if   type(hists[-1]) == TH1F: hists[-1].Draw("HIST")
+               elif type(hists[-1]) == TH2F: hists[-1].Draw("COLZ")
+           else:
+               if   type(hists[-1]) == TH1F: hists[-1].Draw("HISTSAME")
            
            prettyName = sDict[hname][6]
            mlegend.AddEntry(hists[-1],prettyName, "lf")
@@ -456,17 +521,24 @@ def plotSpectra(fname):
         
       hists[0].GetYaxis().SetTitleSize(0.04)
       hists[0].GetYaxis().SetLabelSize(0.035)
+      hists[0].GetXaxis().SetTitleSize(0.04)
+      hists[0].GetXaxis().SetLabelSize(0.035)
+      if type(hists[0]) == TH2F: 
+          hists[0].GetZaxis().SetLabelSize(0.035)
+
       hists[0].GetXaxis().SetTitle(xtitle)
       hists[0].GetYaxis().SetTitle(ytitle)
-      print "Setting xtitle, ytitle ", xtitle, ytitle
 
       mlegend.Draw()
       lab = mylabel(60)
       lab.DrawLatex(x1-0.2, y2-0.05, sometext)
 
       gPad.RedrawAxis()
-      gPad.SetLogx(doLogx)
-      gPad.SetLogy(doLogy)
+      if type(hists[0]) == TH2F: 
+          gPad.SetLogz(doLogy)
+      else:
+          gPad.SetLogx(doLogx)
+          gPad.SetLogy(doLogy)
       
       print('Saving file as' + pname ) 
       #    cv.Print(pname + '.pdf')
