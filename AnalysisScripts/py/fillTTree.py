@@ -86,8 +86,9 @@ else:
 sometext,pID,cEkin,cX,cY,cZ,tag,csfile_H,csfile_V,Ntct_H,Ntct_V, NtotBeam,nprim,subfolder = [v for v in varList]
 
 nprim = 3340500.0
+nprim = 7330000.0
 if nprim < 0.: 
-    print "no number of primaries set. Set it first (wc -l from merged fort 30/66 file)"
+    print "no number of primaries set. Set it first wc -l from merged fort 30/66 file)"
     sys.exit()
 
 rfoutName = fname +".root"
@@ -541,8 +542,8 @@ def plotSpectra(fname):
           gPad.SetLogy(doLogy)
       
       print('Saving file as' + pname ) 
-      #    cv.Print(pname + '.pdf')
-      cv.Print(pname + '.png')
+      cv.Print(pname + '.pdf')
+      #cv.Print(pname + '.png')
       
 # ---------------------------------------------------------------------------------
 if __name__ == "__main__":

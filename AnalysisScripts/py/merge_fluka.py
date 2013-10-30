@@ -32,7 +32,7 @@ else: skipN = -9999
 # ----------------------------------------------------------------------------------------------------------------------
 # define run files and parameters
 debug      = 1
-doRun      = 1
+doRun      = 0
 
 flukatool  = ''
 flukapath  = '/afs/cern.ch/work/r/rkwee/Fluka/fluka20112blinuxAA/'

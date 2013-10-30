@@ -55,8 +55,8 @@ commonsource = sourcepath + 'common/'
 
 # assume all exectutables are in sourcepath + 'common/'
 
-cList  = [[ 'fluka_4TeV_haloB2',     [sourcepath + 'TCT_4TeV_60cm/fluka/','ir1_4TeV.exe', '*fort*', 'RANDOMIZ       1.0  9875214.', ]]]
-cList += [[ 'fluka_HL_TCT_haloB2',   [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts/exe_tct_impacts', '*fort.30','RANDOMIZ         1.0  9875214.',]]]
+cList  = [[ 'fluka_4TeV_haloB2',     [sourcepath + 'TCT_4TeV_60cm/fluka/','slc5Exe/ir1_4TeV_shscript.exe', '*fort*', 'RANDOMIZ       1.0  9875214.', ]]]
+cList += [[ 'fluka_HL_TCT_haloB2',   [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts_myexe/my.exe', '*fort.*','RANDOMIZ         1.0  9875214.',]]]
 
 cDict = dict(cList)
 

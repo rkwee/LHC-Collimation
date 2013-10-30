@@ -31,6 +31,8 @@ def cv10():
               'HL_TCT_hHaloB1_TCT5OFF',
               ]
 
+    tcts = ['TCT_4TeV_B2vHalo', 'TCT_4TeV_B2hHalo']
+
     tct = tcts[1]
 
     tag    = '_' + tct
@@ -39,7 +41,7 @@ def cv10():
     tA = time.time()
 
     # subfolder in wwwpath for result plots
-    subfolder = 'TCT/HL/'
+    subfolder = 'TCT/'
 
     # roderiks results
     thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/ats-HL_LHC_1.0/nominal_settings/' + tct + '/'
@@ -58,6 +60,7 @@ def cv10():
         beam = 'b1'
 
     f3 = helpers.source_dir + 'HL_TCT_7TeV/' + beam +'/CollPositions.'+beam+'.dat'
+    f3 = helpers.source_dir + 'TCT_4TeV_60cm/'+beam+'/CollPositions.'+beam+'.dat'
 
     if doWriteRFile:
         print "Writing " + '.'* 25 +' ' + rfname
@@ -153,6 +156,7 @@ def cv10():
             else:
                 x1, y1, x2, y2 = 0.68, 0.78, 0.91, 0.9
 
+            x1, y1, x2, y2 = 0.68, 0.78, 0.91, 0.9
             XurMin, XurMax = 0., length_LHC
             if doZoom and beam.count('1'):
                 XurMin, XurMax = 19.7e3, 20.6e3

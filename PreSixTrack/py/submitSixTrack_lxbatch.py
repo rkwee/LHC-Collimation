@@ -29,7 +29,7 @@ parser.add_option("-p", dest="npacks", type="string",
 parser.add_option("-k", dest="ckey", type="string",
                   help="put key dictionary (similar as or same run_dir)")
 parser.add_option("-t", dest="tcs", type="string",
-                  help="put name of TCS as in collDB, otherwise ignore.")
+                  help="put name of TCS as in collDB, otherwise ignore (tcs is any appendix to CollDB*.data<tcs>.")
 
 (options, args) = parser.parse_args()
 
@@ -62,15 +62,22 @@ cList += [[ 'NewColl7TeVB2',    [sourcepath + 'NewColl7TeVB2/'   ,'SixTrack_4446
 cList += [[ 'vHaloB1',          [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 cList += [[ '4TeV_vHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_hHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_vHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_hHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
 cList += [[ 'HL_TCT_hHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 cList += [[ 'HL_TCT_vHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 
 cDict = dict(cList)
 
+try:
+    source_dir  = cDict[ckey][0]
+except KeyError:
+    print('KeyError, possible keys are:', cDict.keys())
+    sys.exit()
+
 afsRunMain  = "/afs/cern.ch/work/r/rkwee/HL-LHC/runs/"
 run_dir     = run_dir + "/"
 afs_run_dir = afsRunMain + run_dir
-source_dir  = cDict[ckey][0]
 energy      = cDict[ckey][2]
 haloType    = ''
 if ckey.count('vHalo'): haloType = 'vHalo/'
@@ -195,13 +202,17 @@ for job in newrange:
     run_job.write('./'+cleanIneExe.split('/')[-1] + ' FLUKA_impacts.dat LPI_BLP_out.s '+ collPos.split('/')[-1] + ' coll_summary.dat\n')
     run_job.write('./'+cleancoll.split('/')[-1] + '\n')
 
+    # gzip log file
+    cmd = 'gzip FirstImpacts.dat \n'
+    run_job.write(cmd)
+
     # copy back
     # cmd_copy = 'cp amplitude.dat efficiency.dat coll_summary.dat screen* survival.dat LP* FLUKA* FirstImpacts.dat sigmasettings.out impacts* ' + subdir
     if doTest:
-        cmd_copy = 'cp coll_summary.dat collgaps* screen* LP* FLUKA* FirstImpacts.dat sigmasettings.out impacts* ' + subdir
-        cmd_copy = "cp * " + subdir + '\\n'
+        cmd_copy = 'cp coll_summary.dat collgaps* screen* LP* FLUKA* FirstImpacts.dat* sigmasettings.out impacts* ' + subdir
+        cmd_copy = "cp * " + subdir
     else:
-        cmd_copy = 'cp coll_summary.dat LP* FLUKA* FirstImpacts.dat impacts* ' + subdir
+        cmd_copy = 'cp coll_summary.dat LP* FLUKA* FirstImpacts.dat* impacts* ' + subdir
 
     run_job.write(cmd_copy)
 
