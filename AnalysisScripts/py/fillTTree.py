@@ -64,8 +64,8 @@ doCreate = options.doCreate
     # Col 14: z coord TCT impact (cm)
 #######################################################################################
 
-# setting variables
-
+# setting variables for doCreate:
+# ---------------------------------------------------------------------------------
 debug        = 1
 treeName     = "particle"
 fortformat66 = "event/I:generation/I:particle/I:energy_ke/F:weight/F:x/F:y/F:xp/F:yp/F:age/F:energy_tot/F:x_interact/F:y_interact/F:z_interact/F:t_interact/F"
@@ -84,9 +84,8 @@ else:
     if debug: print "Using 4 TeV format", '.'*10
 # ---------------------------------------------------------------------------------
 sometext,pID,cEkin,cX,cY,cZ,tag,csfile_H,csfile_V,Ntct_H,Ntct_V, NtotBeam,nprim,subfolder = [v for v in varList]
+zmin, zmax = 2260., 14960.
 
-nprim = 3340500.0
-nprim = 7330000.0
 if nprim < 0.: 
     print "no number of primaries set. Set it first wc -l from merged fort 30/66 file)"
     sys.exit()
@@ -122,7 +121,7 @@ def getXLogAxis(nbins, xmin, xmax):
 
     return xaxis
 # ---------------------------------------------------------------------------------
-def do1dLogHisto(mt, colNumbers, hname, xaxis, particleTypes):
+def do1dLogHisto(mt, hname, xaxis, particleTypes):
 
     nbins = len(xaxis)-1
     hist  = TH1F(hname, hname, nbins, array('d', xaxis) )
@@ -139,11 +138,10 @@ def do1dLogHisto(mt, colNumbers, hname, xaxis, particleTypes):
     # store sum of squares of weights 
     hist.Sumw2()
 
-    var = colNumbers[0]
+    var = 'weight * energy_ke'
 
     # this cut doesnt change anything. it may only for beamgas
-    zmin, zmax = 2260., 14960.
-    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + rCut
+    cut = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + rCut
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
@@ -163,7 +161,7 @@ def do1dLogHisto(mt, colNumbers, hname, xaxis, particleTypes):
  
     return hist
 # ---------------------------------------------------------------------------------
-def do1dRadHisto(mt, hname, colNumbers, xaxis, particleTypes):
+def do1dRadHisto(mt, hname, xaxis, particleTypes):
 
     ekinCut = sDict[hname][8]
     nbins   = len(xaxis)-1
@@ -173,13 +171,11 @@ def do1dRadHisto(mt, hname, colNumbers, xaxis, particleTypes):
     hist.Sumw2()
 
     # this cut doesnt change anything. it may only for beamgas
-    zmin, zmax = 2260., 14960.
-
     cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)
     cut += ' && energy_ke > ' + str(ekinCut)
 
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
-    var = 'TMath::Sqrt(TMath::Power(x,2) + TMath::Power(y,2))'
+    var = 'weight * (TMath::Sqrt(TMath::Power(x,2) + TMath::Power(y,2)))'
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
@@ -199,7 +195,7 @@ def do1dRadHisto(mt, hname, colNumbers, xaxis, particleTypes):
  
     return hist
 # ---------------------------------------------------------------------------------
-def do1dRadEnHisto(mt, hname, colNumbers, xaxis, particleTypes):
+def do1dRadEnHisto(mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
@@ -208,12 +204,10 @@ def do1dRadEnHisto(mt, hname, colNumbers, xaxis, particleTypes):
     hist.Sumw2()
 
     # this cut doesnt change anything. it may only for beamgas
-    zmin, zmax = 2260., 14960.
-
     cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) 
 
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
-    var = 'TMath::Sqrt(TMath::Power(x,2) + TMath::Power(y,2))'
+    var = 'weight * (TMath::Sqrt(TMath::Power(x,2) + TMath::Power(y,2)))'
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
@@ -233,7 +227,7 @@ def do1dRadEnHisto(mt, hname, colNumbers, xaxis, particleTypes):
  
     return hist
 # ---------------------------------------------------------------------------------
-def do1dPhiHisto(mt, hname, colNumbers, xaxis, particleTypes):
+def do1dPhiHisto(mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
@@ -248,12 +242,10 @@ def do1dPhiHisto(mt, hname, colNumbers, xaxis, particleTypes):
     hist.Sumw2()
 
     # this cut doesnt change anything. it may only for beamgas
-    zmin, zmax = 2260., 14960.
-
     cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + oCut
 
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
-    var = 'TMath::ATan2(y,x)'
+    var = 'weight * (TMath::ATan2(y,x))'
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
@@ -270,7 +262,7 @@ def do1dPhiHisto(mt, hname, colNumbers, xaxis, particleTypes):
 
     return hist
 # ---------------------------------------------------------------------------------
-def do1dPhiEnHisto(mt, hname, colNumbers, xaxis, particleTypes):
+def do1dPhiEnHisto(mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
@@ -284,12 +276,10 @@ def do1dPhiEnHisto(mt, hname, colNumbers, xaxis, particleTypes):
     else: oCut = ''
 
     # this cut doesnt change anything. it may only for beamgas
-    zmin, zmax = 2260., 14960.
-
     cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + oCut
 
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
-    var = 'TMath::ATan2(y,x)'
+    var = 'weight * (TMath::ATan2(y,x))'
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
@@ -308,7 +298,7 @@ def do1dPhiEnHisto(mt, hname, colNumbers, xaxis, particleTypes):
  
     return hist
 # ---------------------------------------------------------------------------------
-def do1dXcoorHisto(mt, hname, colNumbers, xaxis, particleTypes):
+def do1dXcoorHisto(mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
@@ -319,10 +309,9 @@ def do1dXcoorHisto(mt, hname, colNumbers, xaxis, particleTypes):
     hist.Sumw2()
 
     # this cut doesnt change anything. it may only for beamgas
-    zmin, zmax = 2260., 14960.
     cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) 
 
-    var = 'x'
+    var = 'weight * x'
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
       pcut  = '||'.join(pcuts)
@@ -338,7 +327,7 @@ def do1dXcoorHisto(mt, hname, colNumbers, xaxis, particleTypes):
  
     return hist
 # ---------------------------------------------------------------------------------
-def do1dYcoorHisto(mt, hname, colNumbers, xaxis, particleTypes):
+def do1dYcoorHisto(mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
@@ -349,10 +338,9 @@ def do1dYcoorHisto(mt, hname, colNumbers, xaxis, particleTypes):
     hist.Sumw2()
 
     # this cut doesnt change anything. it may only for beamgas
-    zmin, zmax = 2260., 14960.
     cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) 
 
-    var = 'y'
+    var = 'weight * y'
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
       pcut  = '||'.join(pcuts)
@@ -369,7 +357,7 @@ def do1dYcoorHisto(mt, hname, colNumbers, xaxis, particleTypes):
     return hist
 
 # ---------------------------------------------------------------------------------
-def do2dScatHisto(mt, hname, colNumbers, nbins, xymin, xymax, particleTypes):
+def do2dScatHisto(mt, hname, nbins, xymin, xymax, particleTypes):
 
     hist    = TH2F(hname, hname, nbins, xymin, xymax, nbins, xymin, xymax)
 
@@ -386,11 +374,10 @@ def do2dScatHisto(mt, hname, colNumbers, nbins, xymin, xymax, particleTypes):
     hist.Sumw2()
 
     # this cut doesnt change anything. it may only for beamgas
-    zmin, zmax = 2260., 14960.
     cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + eCut
 
     # the trick
-    var = ":".join(colNumbers)
+    var = "weight * y:weight * x"
     if debug: print 'INFO: will fill these variables ', var, 'into', hname
 
     if not particleTypes[0].count('ll'):
@@ -414,61 +401,56 @@ def getHistogram(skey, mt):
 
     particleTypes = sDict[skey][0]
     hname         = skey
-    colNumbers    = sDict[skey][1]
     nbins         = sDict[skey][2]
     xmin          = sDict[skey][3]
     xmax          = sDict[skey][4]
 
     if hname.startswith("Ekin"):
         xaxis = getXLogAxis(nbins, xmin, xmax)
-        hist  = do1dLogHisto(mt, colNumbers, hname, xaxis, particleTypes)
+        hist  = do1dLogHisto(mt, hname, xaxis, particleTypes)
 
     elif hname.startswith("RadN"):
         binwidth = xmax/nbins
         xaxis = [i*binwidth for i in range(nbins+1)]
-        hist  = do1dRadHisto(mt, hname, colNumbers, xaxis, particleTypes) 
+        hist  = do1dRadHisto(mt, hname, xaxis, particleTypes) 
 
     elif hname.startswith("RadEn"):
         binwidth = xmax/nbins
         xaxis = [i*binwidth for i in range(nbins+1)]
-        hist  = do1dRadEnHisto(mt, hname, colNumbers, xaxis, particleTypes) 
+        hist  = do1dRadEnHisto(mt, hname, xaxis, particleTypes) 
 
     elif hname.startswith("PhiN"):
         binwidth = (xmax-xmin)/nbins
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
-        hist  = do1dPhiHisto(mt, hname, colNumbers, xaxis, particleTypes) 
+        hist  = do1dPhiHisto(mt, hname, xaxis, particleTypes) 
         
     elif hname.startswith("PhiEn"):
         binwidth = (xmax-xmin)/nbins
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
-        hist  = do1dPhiEnHisto(mt, hname, colNumbers, xaxis, particleTypes) 
+        hist  = do1dPhiEnHisto(mt, hname, xaxis, particleTypes) 
 
     elif hname.startswith("Xcoor"):
         binwidth = (xmax-xmin)/nbins
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
-        hist  = do1dXcoorHisto(mt, hname, colNumbers, xaxis, particleTypes) 
+        hist  = do1dXcoorHisto(mt, hname, xaxis, particleTypes) 
 
     elif hname.startswith("Ycoor"):
         binwidth = (xmax-xmin)/nbins
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
-        hist  = do1dYcoorHisto(mt, hname, colNumbers, xaxis, particleTypes) 
+        hist  = do1dYcoorHisto(mt, hname, xaxis, particleTypes) 
 
     elif hname.startswith("XYN"):
         # only same binning in x and y for now
-        hist  = do2dScatHisto(mt, hname, colNumbers, nbins, xmin, xmax, particleTypes) 
+        hist  = do2dScatHisto(mt, hname, nbins, xmin, xmax, particleTypes) 
 
     return hist
 # ---------------------------------------------------------------------------------
 def plotSpectra(fname):
 
-    # branch names
-    bnames = fortformat.split(':')
-    bList  = [b.split('/')[0] for b in bnames]
-
-    rf = TFile(fname + '.root')
-    mt = rf.Get(treeName)
-
     for hkey in hDict.keys():
+      bbgFile = sDict[hkey][5]
+      rf = TFile(bbgFile)
+      mt = rf.Get(treeName)
 
       cv = TCanvas( 'cv'+hkey, 'cv'+hkey, 1200, 900)
       hists = []
@@ -494,7 +476,7 @@ def plotSpectra(fname):
       for i,hname in enumerate(hList):
         
            hists += [getHistogram(hname, mt)]
-           norm   = nprim
+           norm   = sDict[hkey][1]
            hists[-1].Scale(1./norm)
            
            hcolor = sDict[hname][7]
@@ -555,4 +537,4 @@ if __name__ == "__main__":
     SetAtlasStyle()
 
     if doCreate:  createTTree(fname)
-    plotSpectra(fname)
+    #plotSpectra(fname)
