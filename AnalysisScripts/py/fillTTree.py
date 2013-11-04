@@ -6,104 +6,37 @@ import ROOT, sys, glob, os, math, helpers
 from ROOT import *
 from helpers import *
 from array import array
-from fillTTree_dict import varList_4TeV, varList_HL,sDict,hDict_4TeV,hDict_HL_halo
+from fillTTree_dict import sDict_HL_BH,sDict_HL_BGac,sDict_HL_comp,sDict_4TeV,sDict_HL_BGst
 # ---------------------------------------------------------------------------------
 import optparse
 from optparse import OptionParser
 
 parser = OptionParser()
-parser.add_option("-f", "--file", dest="filename", type="string",
-                  help="put the path of the merged fort.66 file from fluka runs")
-
-parser.add_option("-c", dest="doCreate", type="int",
-                  help="0 or 1 for creating a rootfile or not.")
+parser.add_option("-t", "--tag", dest="tag", type="string",
+                  help="put the path of rootfile (merged fortfiles from fluka runs) and produced by createTTree.py")
 
 (options, args) = parser.parse_args()
 
-fname  = options.filename
-doCreate = options.doCreate
-#######################################################################################
-    # FORMAT RODERIK
-
-    # http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam_gas_arc_4TeV/flukaIR15.html
-    # 1  FLUKA run number (between 1 and 3000)
-    # 2  ID of primary particle (between 1 and 60 000 in each run)
-    # 3  FLUKA particle type (an explanation of the numbers can be found at http://www.fluka.org/fluka.php?id=man_onl&sub=7)
-    # 4  kinetic energy (GeV)
-    # 5  statistical weight (should be 1 for all particles)
-    # 6  X (cm)
-    # 7  Y (cm)
-    # 8  directional cosine w.r.t X-axis
-    # 9  directional cosine w.r.t Y-axis
-    # 10 time (s) since start of primary particle
-    # 11 total energy (GeV)
-    # 12 X_start (cm) : starting position of primary particle
-    # 13 Y_start (cm)
-    # 14 Z_start (cm)
-    # 15 t_start (s) : starting time of primary particle where t=0 is at the entrance of the TCTH
-#######################################################################################
-    # FORMAT FLUKA GUYS
-
-    # Scoring from Region No  1754 to  1753
-    # Col  1: primary event number
-    # -- Particle information --
-    # Col  2: FLUKA particle type ID
-    # Col  3: generation number
-    # Col  4: statistical weight
-    # -- Crossing at scoring plane --
-    # Col  5: x coord (cm)
-    # Col  6: y coord (cm)
-    # Col  7: x dir cosine
-    # Col  8: y dir cosine
-    # Col  9: total energy (GeV)
-    # Col 10: kinetic energy (GeV)
-    # Col 11: particle age since primary event (sec)
-    # -- Primary event --
-    # Col 12: x coord TCT impact (cm)
-    # Col 13: y coord TCT impact (cm)
-    # Col 14: z coord TCT impact (cm)
-#######################################################################################
-
-# setting variables for doCreate:
+tag  = options.tag
 # ---------------------------------------------------------------------------------
-debug        = 1
-treeName     = "particle"
-fortformat66 = "event/I:generation/I:particle/I:energy_ke/F:weight/F:x/F:y/F:xp/F:yp/F:age/F:energy_tot/F:x_interact/F:y_interact/F:z_interact/F:t_interact/F"
-fortformat30 = "event/I:particle/I:generation/I:weight/F:x/F:y/F:xp/F:yp/F:energy_tot/F:energy_ke/F:age/F:x_interact/F:y_interact/F:z_interact/F"
+debug = 1
 
-if fname.endswith("30"): 
-    fortformat = fortformat30
-    varList = varList_HL
-    hDict = hDict_HL_halo
-
+if tag.count('BH'):
+    sDict = sDict_HL_BH
     if debug: print "Using HL format", '.'*10
+elif tag.count('BGac'):
+    sDict = sDict_HL_BGac
+elif tag.count('BGst'):
+    sDict = sDict_HL_BGst
+elif tag.count('comp'):
+    sDict = sDict_HL_comp
 else: 
-    fortformat = fortformat66
-    varList = varList_4TeV
-    hDict = hDict_4TeV
+    sDict = sDict_4TeV
     if debug: print "Using 4 TeV format", '.'*10
 # ---------------------------------------------------------------------------------
-sometext,pID,cEkin,cX,cY,cZ,tag,csfile_H,csfile_V,Ntct_H,Ntct_V, NtotBeam,nprim,subfolder = [v for v in varList]
 zmin, zmax = 2260., 14960.
-
-if nprim < 0.: 
-    print "no number of primaries set. Set it first wc -l from merged fort 30/66 file)"
-    sys.exit()
-
-rfoutName = fname +".root"
-
-if not os.path.exists(wwwpath + subfolder):
-    print 'making dir', wwwpath + subfolder
-    os.mkdir(wwwpath + subfolder)
-
-# ---------------------------------------------------------------------------------
-def createTTree(fname):
-  print "writing ", rfoutName
-
-  mytree = TTree(treeName,treeName)
-  mytree.ReadFile(fname,fortformat)
-  mytree.SaveAs(rfoutName)
-
+# to disable the zcut have zOn > zmax
+zOn = 2e4
 # ---------------------------------------------------------------------------------
 def getXLogAxis(nbins, xmin, xmax):
 
@@ -125,28 +58,30 @@ def do1dLogHisto(mt, hname, xaxis, particleTypes):
 
     nbins = len(xaxis)-1
     hist  = TH1F(hname, hname, nbins, array('d', xaxis) )
+    cuts  = []
 
     # cut on radius
-    radius = 'TMath::Sqrt(TMath::Power(x,2) + TMath::Power(y,2))'
+    radius = 'TMath::Sqrt(x*x + y*y)'
     rcuts  = sDict[hname][8].split(':')
 
-    if rcuts[0].count('-9999'): rCut = ''
-    else:
-        rcut = ' '.join(rcuts)
-        rCut = ' && ' + radius + ' ' + rcut
+    if not rcuts[0].count('-9999'): 
+        rcut  = ' '.join(rcuts)
+        cuts += [radius + ' ' + rcut]
 
     # store sum of squares of weights 
     hist.Sumw2()
 
-    var = 'weight * energy_ke'
+    var = 'energy_ke'
 
-    # this cut doesnt change anything. it may only for beamgas
-    cut = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + rCut
+    if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
       pcut  = '||'.join(pcuts)
-      cut   = '('+ pcut + ') && ' + cut 
+      cuts += ['('+ pcut + ')']
+
+    if cuts: cut = 'weight * (' + ' && '.join(cuts) + ')'
+    else: cut = 'weight'
 
     if debug: print 'will apply a cut of ', cut, 'to', hname
     mt.Project(hname, var, cut)
@@ -166,32 +101,35 @@ def do1dRadHisto(mt, hname, xaxis, particleTypes):
     ekinCut = sDict[hname][8]
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
+    cuts    = []
 
     # store sum of squares of weights 
     hist.Sumw2()
 
-    # this cut doesnt change anything. it may only for beamgas
-    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)
-    cut += ' && energy_ke > ' + str(ekinCut)
-
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
-    var = 'weight * (TMath::Sqrt(TMath::Power(x,2) + TMath::Power(y,2)))'
+    var = 'TMath::Sqrt(x*x + y*y)'
+
+    if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+
+    if not ekinCut.count('-9999'): cuts += ['energy_ke > ' + ekinCut]
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
       pcut  = '||'.join(pcuts)
-      cut   = '('+ pcut + ') && ' + cut 
+      cuts += ['('+ pcut + ')']
+
+    if cuts: cut = 'weight * (' + ' && '.join(cuts) + ')'
+    else: cut = 'weight'
 
     if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
     mt.Project(hname, var, cut)
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
 
-    if debug: print 'INFO: Ignoring binarea!!!'
-
-    # for i in range(nbins):
-    #     binArea = math.pi * (xaxis[i+1]**2 - xaxis[i]**2)
-    #     content = hist.GetBinContent(i)
-    #     hist.SetBinContent(i,content/binArea)
+    #    if debug: print 'INFO: Ignoring binarea!!!'
+    for i in range(nbins):
+        binArea = math.pi * (xaxis[i+1]**2 - xaxis[i]**2)
+        content = hist.GetBinContent(i)
+        hist.SetBinContent(i,content/binArea)
  
     return hist
 # ---------------------------------------------------------------------------------
@@ -199,23 +137,25 @@ def do1dRadEnHisto(mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
+    cuts    = []
 
     # store sum of squares of weights 
     hist.Sumw2()
 
-    # this cut doesnt change anything. it may only for beamgas
-    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) 
-
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
-    var = 'weight * (TMath::Sqrt(TMath::Power(x,2) + TMath::Power(y,2)))'
+    var = 'TMath::Sqrt(x*x + y*y)'
+
+    if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
       pcut  = '||'.join(pcuts)
-      cut   = '('+ pcut + ') && ' + cut 
+      cuts += ['('+ pcut + ')']
 
     # weightening by multiplying the cut
-    cut = 'energy_ke * (' + cut + ')'
+    if cuts: cut = 'weight * energy_ke * (' + ' && '.join(cuts) + ')'
+    else: cut = 'weight * energy_ke'
+    
     if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
     mt.Project(hname, var, cut)
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
@@ -231,26 +171,27 @@ def do1dPhiHisto(mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
-
-    # cut on radius
-    otherCut = sDict[hname][8]
-
-    if otherCut > 0.: oCut = '&& TMath::Sqrt(TMath::Power(x,2)+TMath::Power(y,2)) > ' + str(otherCut)
-    else: oCut = ''
+    cuts    = []
 
     # store sum of squares of weights 
     hist.Sumw2()
 
-    # this cut doesnt change anything. it may only for beamgas
-    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + oCut
-
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
-    var = 'weight * (TMath::ATan2(y,x))'
+    var = 'TMath::ATan2(y,x)'
+
+    # cut on radius 
+    rcut = sDict[hname][8]
+    if float(rcut) > 0.: cuts += ['TMath::Sqrt(x*x + y*y) > ' + rcut]
+
+    if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
       pcut  = '||'.join(pcuts)
-      cut   = '('+ pcut + ') && ' + cut 
+      cuts += ['('+ pcut + ')']
+
+    if cuts: cut = 'weight * (' + ' && '.join(cuts) + ')'
+    else: cut = 'weight'
 
     if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
     mt.Project(hname, var, cut)
@@ -266,28 +207,29 @@ def do1dPhiEnHisto(mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
-    # cut on radius
-    otherCut = sDict[hname][8]
+    cuts    = []
 
     # store sum of squares of weights 
     hist.Sumw2()
 
-    if otherCut > 0.: oCut = ' && TMath::Sqrt(TMath::Power(x,2)+TMath::Power(y,2)) > ' + str(otherCut)
-    else: oCut = ''
-
-    # this cut doesnt change anything. it may only for beamgas
-    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + oCut
-
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
-    var = 'weight * (TMath::ATan2(y,x))'
+    var = 'TMath::ATan2(y,x)'
+
+    if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+
+    # cut on radius
+    rcut = sDict[hname][8]
+    if float(rcut) > 0.: cuts += ['TMath::Sqrt(x*x + y*y) > ' + rcut]
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
       pcut  = '||'.join(pcuts)
-      cut   = '('+ pcut + ') && ' + cut 
+      cuts += ['('+ pcut + ')']
 
     # weightening by multiplying the cut
-    cut = 'energy_ke * (' + cut + ')'
+    if cuts: cut = 'weight * energy_ke * (' + ' && '.join(cuts) + ')'
+    else: cut = 'weight * energy_ke'
+
     if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
     mt.Project(hname, var, cut)
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
@@ -302,20 +244,25 @@ def do1dXcoorHisto(mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
-    # cut on radius
-    otherCut = sDict[hname][8]
+    cuts    = []
 
     # store sum of squares of weights 
     hist.Sumw2()
 
-    # this cut doesnt change anything. it may only for beamgas
-    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) 
+    # cut on radius - not used
+    rcut = sDict[hname][8]
 
-    var = 'weight * x'
+    if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+
+    var = 'x'
+
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
       pcut  = '||'.join(pcuts)
-      cut   = '('+ pcut + ') && ' + cut 
+      cuts += ['('+ pcut + ')']
+
+    if cuts: cut = 'weight * (' + ' && '.join(cuts) + ')'
+    else: cut = 'weight'
 
     if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
     mt.Project(hname, var, cut)
@@ -331,20 +278,25 @@ def do1dYcoorHisto(mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
-    # cut on radius
-    otherCut = sDict[hname][8]
+    cuts    = []
 
     # store sum of squares of weights 
     hist.Sumw2()
 
-    # this cut doesnt change anything. it may only for beamgas
-    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) 
+    # cut - not used
+    rcut = sDict[hname][8]
 
-    var = 'weight * y'
+    if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+
+    var = 'y'
+
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
       pcut  = '||'.join(pcuts)
-      cut   = '('+ pcut + ') && ' + cut 
+      cuts += ['('+ pcut + ')']
+
+    if cuts: cut = 'weight * (' + ' && '.join(cuts) + ')'
+    else: cut = 'weight'
 
     if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
     mt.Project(hname, var, cut)
@@ -359,31 +311,33 @@ def do1dYcoorHisto(mt, hname, xaxis, particleTypes):
 # ---------------------------------------------------------------------------------
 def do2dScatHisto(mt, hname, nbins, xymin, xymax, particleTypes):
 
-    hist    = TH2F(hname, hname, nbins, xymin, xymax, nbins, xymin, xymax)
-
-    # cut on energy
-    ecuts = sDict[hname][8]
-    if float(ecuts.split(':')[0]) < 0.:
-        eCut = ' && energy_ke > '+  ecuts
-    else:
-        emin = ecuts.split(':')[0]
-        emax = ecuts.split(':')[1]
-        eCut = ' && ' +  emax + ' > energy_ke && ' + emin + ' < energy_ke '
+    hist = TH2F(hname, hname, nbins, xymin, xymax, nbins, xymin, xymax)
+    cuts = []
 
     # store sum of squares of weights 
     hist.Sumw2()
 
-    # this cut doesnt change anything. it may only for beamgas
-    cut  = 'z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax) + eCut
+    # cut on energy
+    ecuts = sDict[hname][8]
+    if not ecuts.split(':')[0].count('-9999'):
+        emin = ecuts.split(':')[0]
+        emax = ecuts.split(':')[1]
+        cuts += [emax + ' > energy_ke && ' + emin + ' < energy_ke']
 
-    # the trick
-    var = "weight * y:weight * x"
+    if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+
+    # y is on y-axis, x on x-axis
+    var = "y:x"
+
     if debug: print 'INFO: will fill these variables ', var, 'into', hname
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
       pcut  = '||'.join(pcuts)
-      cut   = '('+ pcut + ') && ' + cut 
+      cuts += ['('+ pcut + ')']
+
+    if cuts: cut = 'weight * (' + ' && '.join(cuts) + ')'
+    else: cut = 'weight'
 
     if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
     mt.Project(hname, var, cut)
@@ -445,96 +399,54 @@ def getHistogram(skey, mt):
 
     return hist
 # ---------------------------------------------------------------------------------
-def plotSpectra(fname):
+def GetHistos():
+    # write out a rootfile with histograms
 
-    for hkey in hDict.keys():
-      bbgFile = sDict[hkey][5]
-      rf = TFile(bbgFile)
-      mt = rf.Get(treeName)
+    # histograms which should be written one to rootfile
+    rHists = []
 
-      cv = TCanvas( 'cv'+hkey, 'cv'+hkey, 1200, 900)
-      hists = []
+    # rootfile with results
+    rfname = '~/Documents/RHUL/work/runs/TCT/HL/results_'+tag+'.root'
 
-      gStyle.SetPalette(1)
-      gPad.SetRightMargin(1.4)
-      # gPad.SetLeftMargin(-0.2)
+    print 'writing ','.'*20, rfname
+    rfile = TFile.Open(rfname, "RECREATE")
 
-      hList = hDict[hkey][0] 
-      x1, y1, x2, y2 = hDict[hkey][1],hDict[hkey][2],hDict[hkey][3],hDict[hkey][4]
-      doLogx, doLogy = hDict[hkey][5], hDict[hkey][6]
-      pname = wwwpath + subfolder +hkey+'_'+tag
-      XurMin, XurMax = hDict[hkey][7],hDict[hkey][8]
-      YurMin, YurMax = hDict[hkey][9],hDict[hkey][10]
-      doFill = hDict[hkey][11]
+    hists = []
+    for i,skey in enumerate(sDict.keys()):
 
-      mlegend = TLegend( x1, y1, x2, y2)
-      mlegend.SetFillColor(0)
-      mlegend.SetLineColor(0)
-      mlegend.SetTextSize(0.035)
-      mlegend.SetShadowColor(10)
-      
-      for i,hname in enumerate(hList):
-        
-           hists += [getHistogram(hname, mt)]
-           norm   = sDict[hkey][1]
-           hists[-1].Scale(1./norm)
-           
-           hcolor = sDict[hname][7]
-           hists[-1].SetLineColor(hcolor)
-           hists[-1].SetLineWidth(3)
-           if doFill:  hists[-1].SetFillColor(hcolor)
-           
-           if not i: 
-               if   type(hists[-1]) == TH1F: hists[-1].Draw("HIST")
-               elif type(hists[-1]) == TH2F: hists[-1].Draw("COLZ")
-           else:
-               if   type(hists[-1]) == TH1F: hists[-1].Draw("HISTSAME")
-           
-           prettyName = sDict[hname][6]
-           mlegend.AddEntry(hists[-1],prettyName, "lf")
-           
-           xtitle = sDict[hname][9]
-           ytitle = sDict[hname][10]
-        
-      # ....................................
-      if XurMin is not -1:                        
-        hists[0].GetXaxis().SetRangeUser(XurMin, XurMax)
-      if YurMin is not -1:         
-        hists[0].GetYaxis().SetRangeUser(YurMin, YurMax)
-        
-      hists[0].GetYaxis().SetTitleSize(0.04)
-      hists[0].GetYaxis().SetLabelSize(0.035)
-      hists[0].GetXaxis().SetTitleSize(0.04)
-      hists[0].GetXaxis().SetLabelSize(0.035)
-      if type(hists[0]) == TH2F: 
-          hists[0].GetZaxis().SetLabelSize(0.035)
+       print "Getting ...", skey
 
-      hists[0].GetXaxis().SetTitle(xtitle)
-      hists[0].GetYaxis().SetTitle(ytitle)
+       if skey in rHists:
+          continue
 
-      mlegend.Draw()
-      lab = mylabel(60)
-      lab.DrawLatex(x1-0.2, y2-0.05, sometext)
+       mt     = sDict[skey][5]
+       hists += [getHistogram(skey, mt)]          
+       rHists += [skey]
 
-      gPad.RedrawAxis()
-      if type(hists[0]) == TH2F: 
-          gPad.SetLogz(doLogy)
-      else:
-          gPad.SetLogx(doLogx)
-          gPad.SetLogy(doLogy)
-      
-      print('Saving file as' + pname ) 
-      cv.Print(pname + '.pdf')
-      #cv.Print(pname + '.png')
-      
+       norm   = sDict[skey][1]
+       if norm != 1.: print 'normalising by ', norm
+       hists[-1].Scale(1./norm)
+
+       hcolor = sDict[skey][7]
+       hists[-1].SetLineColor(hcolor)
+       hists[-1].SetLineWidth(3)
+
+       if not i: 
+           if   type(hists[-1]) == TH1F: hists[-1].Draw("HIST")
+           elif type(hists[-1]) == TH2F: hists[-1].Draw("COLZ")
+       else:
+           if   type(hists[-1]) == TH1F: hists[-1].Draw("HISTSAME")
+
+       hists[-1].Write()
+
+    rfile.Close()
 # ---------------------------------------------------------------------------------
 if __name__ == "__main__":
 
     gROOT.SetBatch()
     gROOT.SetStyle("Plain")
-    gROOT.LoadMacro("/afs/cern.ch/user/r/rkwee/scratch0/miScripts/py/AtlasStyle.C")
-    gROOT.LoadMacro("/afs/cern.ch/user/r/rkwee/scratch0/miScripts/py/AtlasUtils.C")
+    gROOT.LoadMacro(gitpath + "C/AtlasStyle.C")
+    gROOT.LoadMacro(gitpath + "C/AtlasUtils.C")
     SetAtlasStyle()
 
-    if doCreate:  createTTree(fname)
-    #plotSpectra(fname)
+    GetHistos()

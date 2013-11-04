@@ -57,7 +57,7 @@ csfile_H = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/ats-HL_LHC_1.0/nominal_setting
 csfile_V = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/ats-HL_LHC_1.0/nominal_settings/ver-B1/coll_summary_ver-B1.dat'
 Ntct_H   = 15793 # ats-HL_LHC_1.0/nominal_settings/impacts_real_on_52_TCTH.4L1.B1.dat
 Ntct_V   = 5817 # ats-HL_LHC_1.0/nominal_settings/impacts_real_on_53_TCTVA.4L1.B1.dat
-NtotBeam = 1.6e11*2808
+NtotBeam = 2.2e11*2808
 nprim    = -9999
 subfolder= 'TCT/HL/nominalSettings/'
 
