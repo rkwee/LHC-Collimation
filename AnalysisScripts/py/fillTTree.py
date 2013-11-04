@@ -13,7 +13,7 @@ from optparse import OptionParser
 
 parser = OptionParser()
 parser.add_option("-t", "--tag", dest="tag", type="string",
-                  help="put the path of rootfile (merged fortfiles from fluka runs) and produced by createTTree.py")
+                  help="use tag to indicate which sDict should be used")
 
 (options, args) = parser.parse_args()
 
