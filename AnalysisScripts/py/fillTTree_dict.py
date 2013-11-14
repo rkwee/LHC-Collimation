@@ -48,8 +48,40 @@ from ROOT import *
 #######################################################################################
 # plotting from several rootfiles of the same format!!:
 treeName     = "particle"
-fortformat66 = "event/I:generation/I:particle/I:energy_ke/F:weight/F:x/F:y/F:xp/F:yp/F:age/F:energy_tot/F:x_interact/F:y_interact/F:z_interact/F:t_interact/F"
-fortformat30 = "event/I:particle/I:generation/I:weight/F:x/F:y/F:xp/F:yp/F:energy_tot/F:energy_ke/F:age/F:x_interact/F:y_interact/F:z_interact/F"
+
+# -- beamgas 4 TeV
+# from http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam_gas_arc_4TeV/flukaIR15.html
+fBG_4TeV  = '/Users/rkwee/Documents/RHUL/work/runs/TCT/4TeV/beam-gas_4TeV-IR1_to_arc_20MeV_cutoff.root'
+bbgFile = fBG_4TeV
+print "Opening...", bbgFile
+rfBG_4TeV = TFile(bbgFile)
+tBG_4TeV  = rfBG_4TeV.Get(treeName)
+nprim_BG_4TeV = 28788000.
+
+# -- beamhalo 4 TeV
+# from FL_TCT_4TeV_haloB2_new
+fBH_4TeV  = '/Users/rkwee/Documents/RHUL/work/runs/TCT/FL_TCT_4TeV_haloB2_new/ir1_4TeV_settings_from_TWISS_b2_nprim6570000_66.root'
+bbgFile = fBH_4TeV
+print "Opening...", bbgFile
+rfBH_4TeV = TFile(bbgFile)
+tBH_4TeV  = rfBH_4TeV.Get(treeName)
+nprim_BH_4TeV = 6570000.
+
+# -- beamhalo 3.5 TeV
+# from http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam-halo_3.5TeV/flukaIR15.html
+fBH_3p5TeV  = '/Users/rkwee/Documents/RHUL/work/runs/TCT/3p5TeV/beam-halo_3.5TeV-R1_D1.root'
+bbgFile = fBH_3p5TeV
+print "Opening...", bbgFile
+rfBH_3p5TeV = TFile(bbgFile)
+tBH_3p5TeV  = rfBH_3p5TeV.Get(treeName)
+nprim_BH_3p5TeV = 2344800.
+
+fBH_3p5TeV_v2  = '/Users/rkwee/Documents/RHUL/work/runs/TCT/3p5TeV/beam-halo_3.5TeV-R1.root'
+bbgFile = fBH_3p5TeV_v2
+print "Opening...", bbgFile
+rfBH_3p5TeV_v2 = TFile(bbgFile)
+tBH_3p5TeV_v2  = rfBH_3p5TeV_v2.Get(treeName)
+nprim_BH_3p5TeV_v2 = 2381600.
 
 # HL 
 # -- beamgas for start up scenario, high
@@ -59,21 +91,21 @@ print "Opening...", bbgFile
 rfBGst = TFile(bbgFile)
 tBGst  = rfBGst.Get(treeName)
 
-# -- beamgas after conditioning, high
+# -- HL beamgas after conditioning, high
 fBGac  = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/beamgas/lxplus/hilumi_ir1_fort_scaled_afterconditioning_max_30.root'
 bbgFile = fBGac
 print "Opening...", bbgFile
 rfBGac = TFile(bbgFile)
 tBGac  = rfBGac.Get(treeName)
 
-# -- beamhalo
+# -- HL beamhalo
 fBH     = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/FL_ats-HL_LHC_nominal/hllhc_ir1_b2_nprim7330000_30.root'
 fBH     = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/beamhalo/hllhc_ir1_b2_nprim7330000_30.root'
 bbgFile = fBH
 print "Opening...", bbgFile
 rfBH    = TFile(bbgFile)
 tBH     = rfBH.Get(treeName)
-nprim   = 7330000.
+nprim_BH= 7330000.
 R12m    = 146563140 # Hz from cv07
 R100h   = 293126 #Hz from cv07
 
@@ -190,49 +222,39 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'PhiEnMuR500'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r > 500 cm ',kAzure+3,'500','#phi [rad]', 'GeV/rad'+yrel],
  'PhiEnMuR1000'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r > 1000 cm ',kCyan-10,'1000','#phi [rad]', 'GeV/rad'+yrel],
 
- 'PhiEnNeg'+tag:[ ['11','3','14','16'], norm, 100, -math.pi, math.pi, tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}',kMagenta+1,'-9999','r [cm]','particles/cm^{2}'+yrel],
- 'PhiEnPos'+tag:[ ['1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','r [cm]','particles/cm^{2}'+yrel],
- 'PhiEnNeu'+tag:[ ['7','23','24','8'], norm, 100, -math.pi, math.pi, tBBG, 'n,K^{0},#gamma,#pi^{0}',kBlue,'-9999','r [cm]','particles/cm^{2}'+yrel],
+        'PhiEnNeg'+tag:[ ['11','3','14','16'], norm, 100, -math.pi, math.pi, tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}',kMagenta+1,'-9999','r [cm]','particles/cm^{2}'+yrel],
+        'PhiEnPos'+tag:[ ['1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','r [cm]','particles/cm^{2}'+yrel],
+        'PhiEnNeu'+tag:[ ['7','23','24','8'], norm, 100, -math.pi, math.pi, tBBG, 'n,K^{0},#gamma,#pi^{0}',kBlue,'-9999','r [cm]','particles/cm^{2}'+yrel],
+        
+        'XcoorNNeg'+tag:[ ['11','3','14','16'], norm, 160, -400., 400., tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}',kMagenta+1,'-9999','x [cm]','particles/cm^{2}'+yrel],
+        'XcoorNPos'+tag:[ ['1','10','4','15','13'], norm, 160, -400., 400., tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','x [cm]','particles/cm^{2}'+yrel],
+        'XcoorNNeu'+tag:[ ['7','23','24','8'], norm, 160, -400., 400., tBBG, 'n,K^{0},#gamma,#pi^{0}',kBlue,'-9999','x [cm]','particles/cm^{2}'+yrel],
+        
+        'YcoorNNeg'+tag:[ ['11','3','14','16'], norm, 160, -400., 400., tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}',kMagenta+1,'-9999','y [cm]','particles/cm^{2}'+yrel],
+        'YcoorNPos'+tag:[ ['1','10','4','15','13'], norm, 160, -400., 400., tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','y [cm]','particles/cm^{2}'+yrel],
+        'YcoorNNeu'+tag:[ ['7','23','24','8'], norm, 160, -400., 400., tBBG, 'n,K^{0},#gamma,#pi^{0}',kBlue,'-9999','y [cm]','particles/cm^{2}'+yrel],
+        
+        
+        'XYNAll'+tag:[ ['all'],norm, 120, -120, 120, tBBG, 'all', kWhite, '-9999','x [cm]','y [cm]',],
+        'XYNPhotons'+tag:[ ['7'], norm, 120, -120, 120, tBBG, '#gamma', kWhite, '-9999','x [cm]','y [cm]',],
+        'XYNElecPosi'+tag:[ ['3','4'], norm, 120, -120, 120, tBBG, 'e^{#pm}', kWhite, '-9999','x [cm]','y [cm]',],
+        'XYNMuons'+tag:[ ['10', '11'], norm, 120, -120, 120, tBBG, '#mu^{#pm} ', kWhite, '-9999','x [cm]','y [cm]',],
 
- 'XcoorNNeg'+tag:[ ['11','3','14','16'], norm, 160, -400., 400., tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}',kMagenta+1,'-9999','x [cm]','particles/cm^{2}'+yrel],
- 'XcoorNPos'+tag:[ ['1','10','4','15','13'], norm, 160, -400., 400., tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','x [cm]','particles/cm^{2}'+yrel],
- 'XcoorNNeu'+tag:[ ['7','23','24','8'], norm, 160, -400., 400., tBBG, 'n,K^{0},#gamma,#pi^{0}',kBlue,'-9999','x [cm]','particles/cm^{2}'+yrel],
-
- 'YcoorNNeg'+tag:[ ['11','3','14','16'], norm, 160, -400., 400., tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}',kMagenta+1,'-9999','y [cm]','particles/cm^{2}'+yrel],
- 'YcoorNPos'+tag:[ ['1','10','4','15','13'], norm, 160, -400., 400., tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','y [cm]','particles/cm^{2}'+yrel],
- 'YcoorNNeu'+tag:[ ['7','23','24','8'], norm, 160, -400., 400., tBBG, 'n,K^{0},#gamma,#pi^{0}',kBlue,'-9999','y [cm]','particles/cm^{2}'+yrel],
-
-
- 'XYNAll'+tag:[ ['all'],norm, 120, -120, 120, tBBG, 'all', kWhite, '-9999','x [cm]','y [cm]',],
- 'XYNPhotons'+tag:[ ['7'], norm, 120, -120, 120, tBBG, '#gamma', kWhite, '-9999','x [cm]','y [cm]',],
- 'XYNElecPosi'+tag:[ ['3','4'], norm, 120, -120, 120, tBBG, 'e^{#pm}', kWhite, '-9999','x [cm]','y [cm]',],
- 'XYNMuons'+tag:[ ['10', '11'], norm, 120, -120, 120, tBBG, '#mu^{#pm} ', kWhite, '-9999','x [cm]','y [cm]',],
-
- 'XYNElecPosiE'+tag:[ ['3','4'], norm, 120, -120, 120, tBBG, 'e^{#pm} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
- 'XYNPhotonsE'+tag:[ ['7'], norm, 120, -120, 120, tBBG, '#gamma 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
- 'XYNNeutronsE'+tag:[ ['8'], norm, 120, -120, 120, tBBG, 'neutrons 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
- 'XYNProtonsE'+tag:[ ['1'], norm, 120, -120, 120, tBBG, 'protons 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]',],
- 'XYNPiPlusE'+tag:[ ['13'], norm, 120, -120, 120, tBBG, '#pi^{+} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
- 'XYNPiMinusE'+tag:[ ['14'], norm, 120, -120, 120, tBBG, '#pi^{-} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
- 'XYNKaonPlusE'+tag:[ ['15'], norm, 120, -120, 120, tBBG, 'K^{+} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
- 'XYNKaonMinusE'+tag:[ ['16'], norm, 120, -120, 120, tBBG, 'K^{-} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]',],
+        'XYNElecPosiE'+tag:[ ['3','4'], norm, 120, -120, 120, tBBG, 'e^{#pm} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
+        'XYNPhotonsE'+tag:[ ['7'], norm, 120, -120, 120, tBBG, '#gamma 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
+        'XYNNeutronsE'+tag:[ ['8'], norm, 120, -120, 120, tBBG, 'neutrons 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
+        'XYNProtonsE'+tag:[ ['1'], norm, 120, -120, 120, tBBG, 'protons 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]',],
+        'XYNPiPlusE'+tag:[ ['13'], norm, 120, -120, 120, tBBG, '#pi^{+} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
+        'XYNPiMinusE'+tag:[ ['14'], norm, 120, -120, 120, tBBG, '#pi^{-} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
+        'XYNKaonsE'+tag:[ ['15','16'], norm, 120, -120, 120, tBBG, 'K^{#pm} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
+        'XYNKaonPlusE'+tag:[ ['15'], norm, 120, -120, 120, tBBG, 'K^{+} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]',],
+        'XYNKaonMinusE'+tag:[ ['16'], norm, 120, -120, 120, tBBG, 'K^{-} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]',],
  
- 'XYNAllZoom'+tag:[ ['all'],norm, 60, -30, 30, tBBG, 'all', kWhite, '-9999','x [cm]','y [cm]',],
- 'XYNMuonsZoom'+tag:[ ['10', '11'], norm, 60, -30, 30, tBBG, '#mu^{#pm} ', kWhite, '-9999','x [cm]','y [cm]',],
- 'XYNNeutronsZoom'+tag:[ ['8'], norm, 60, -30, 30, tBBG, 'neutrons',kWhite, '-9999','x [cm]','y [cm]',],
- 'XYNProtonsZoom'+tag:[ ['1'], norm, 60, -30, 30, tBBG, 'protons', kWhite, '-9999','x [cm]','y [cm]',],
- 'XYNPhotonsZoom'+tag:[ ['7'], norm, 60, -30, 30, tBBG, '#gamma', kWhite, '-9999','x [cm]','y [cm]',],
- 'XYNElecPosiZoom'+tag:[ ['3','4'], norm, 60, -30, 30, tBBG, 'e^{#pm}', kWhite, '-9999','x [cm]','y [cm]',],
- 'XYNPiPlusZoom'+ tag:[ ['13'], norm, 60, -30, 30, tBBG, '#pi^{+}',kWhite, '-9999','x [cm]','y [cm]',],
- 'XYNPiMinusZoom'+ tag:[ ['14'], norm, 60, -30, 30, tBBG, '#pi^{-}',kWhite, '-9999','x [cm]','y [cm]',],
- 'XYNKaonPlusZoom'+ tag:[ ['15'], norm, 60, -30, 30, tBBG, 'K^{+}',kWhite, '-9999','x [cm]','y [cm]',],
- 'XYNKaonMinusZoom'+tag:[ ['16'], norm, 60, -30, 30, tBBG, 'K^{-}',kWhite, '-9999','x [cm]','y [cm]',],
-
     }
     return sDict_gen
 # ---------------------------------------------------------------------------------
 tag = '_BH'
-norm = nprim
+norm = nprim_BH
 tBBG = tBH
 yrel = '/TCT hit'
 sDict_HL_BH = generate_sDict(tag, norm, tBBG, yrel)
@@ -249,100 +271,128 @@ tBBG = tBGst
 yrel = '/s'
 sDict_HL_BGst = generate_sDict(tag, norm, tBBG, yrel)
 # ---------------------------------------------------------------------------------
+tag = '_BG_4TeV'
+norm = nprim_BG_4TeV
+tBBG = tBG_4TeV
+yrel = '/BG event'
+sDict_BG_4TeV = generate_sDict(tag, norm, tBBG, yrel)
+# ---------------------------------------------------------------------------------
+tag = '_BH_4TeV'
+norm = nprim_BH_4TeV
+tBBH = tBH_4TeV
+yrel = '/TCT hit'
+sDict_BH_4TeV = generate_sDict(tag, norm, tBBG, yrel)
+# ---------------------------------------------------------------------------------
+tag = '_BH_3p5TeV'
+norm = nprim_BH_3p5TeV
+tBBH = tBH_3p5TeV
+yrel = '/TCT hit'
+sDict_BH_3p5TeV = generate_sDict(tag, norm, tBBG, yrel)
+# ---------------------------------------------------------------------------------
+tag = '_BH_3p5TeV_v2'
+norm = nprim_BH_3p5TeV_v2
+tBBH = tBH_3p5TeV_v2
+yrel = '/TCT hit'
+sDict_BH_3p5TeV_v2 = generate_sDict(tag, norm, tBBG, yrel)
+# ---------------------------------------------------------------------------------
 # comp plots
 # ---------------------------------------------------------------------------------
-
+# BG norm: scaling to higher bunch intensity
+normBGst = 1.15/2.2
+normBGac = 1.15/1.1 # additional factor 2 due to higher contribution from SR
+# norm is already appplied when root file was produced
+R12m ,R100h,nprim = 1.,1.,1.
 sDict_HL_comp = {
 
-    "EkinMuBGst"  : [ ['10', '11'], 1.,      60, 1e-2,  1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinMuBGac"  : [ ['10', '11'], 1.,      60, 1e-2,  1e4, tBGac, ' BG after Cond',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinMuBHds"  : [ ['10', '11'], nprim/R12m,  60, 1e-2, 1e4, tBH,' BH 12 min loss',kPink-9, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinMuBHop"  : [ ['10', '11'], nprim/R100h,  60, 1e-2,1e4, tBH,' BH 100h loss',kGreen+2, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinMuBGst": [ ['10', '11'], normBGst,60, 1e-2,1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinMuBGac": [ ['10', '11'], normBGac,60, 1e-2,1e4, tBGac, ' BG after Cond',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinMuBHds": [ ['10', '11'], nprim/R12m,60, 1e-2, 1e4, tBH,' BH 12 min loss',kPink-9, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinMuBHop": [ ['10', '11'], nprim/R100h,60, 1e-2,1e4, tBH,' BH 100h loss',kGreen+2, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
 
-    "EkinPrBGst"  : [ ['1'], 1.,      60, 1e-2,  1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinPrBGac"  : [ ['1'], 1.,      60, 1e-2,  1e4, tBGac, ' BG after Cond',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinPrBHds"  : [ ['1'], nprim/R12m,  60, 1e-2, 1e4, tBH,' BH 12 min loss',kPink-9, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinPrBHop"  : [ ['1'], nprim/R100h,  60, 1e-2,1e4, tBH,' BH 100h loss',kGreen+2, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinPrBGst": [ ['1'], normBGst,60, 1e-2,1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinPrBGac": [ ['1'], normBGac,60, 1e-2,1e4, tBGac, ' BG after Cond',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinPrBHds": [ ['1'], nprim/R12m,60, 1e-2, 1e4, tBH,' BH 12 min loss',kPink-9, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinPrBHop": [ ['1'], nprim/R100h,60, 1e-2,1e4, tBH,' BH 100h loss',kGreen+2, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
 
-    "EkinNeBGst"  : [ ['8'], 1.,      60, 1e-2,  1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinNeBGac"  : [ ['8'], 1.,      60, 1e-2,  1e4, tBGac, ' BG after Cond',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinNeBHds"  : [ ['8'], nprim/R12m,  60, 1e-2, 1e4, tBH,' BH 12 min loss',kPink-9, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinNeBHop"  : [ ['8'], nprim/R100h,  60, 1e-2,1e4, tBH,' BH 100h loss',kGreen+2, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinNeBGst": [ ['8'], normBGst,60, 1e-2,1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinNeBGac": [ ['8'], normBGac,60, 1e-2,1e4, tBGac, ' BG after Cond',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinNeBHds": [ ['8'], nprim/R12m,60, 1e-2, 1e4, tBH,' BH 12 min loss',kPink-9, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinNeBHop": [ ['8'], nprim/R100h,60, 1e-2,1e4, tBH,' BH 100h loss',kGreen+2, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
 
-    "EkinEpBGst"  : [ ['3', '4'], 1.,      60, 1e-2,  1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinEpBGac"  : [ ['3', '4'], 1.,      60, 1e-2,  1e4, tBGac, ' BG after Cond',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinEpBHds"  : [ ['3', '4'], nprim/R12m,  60, 1e-2, 1e4, tBH,' BH 12 min loss',kPink-9, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinEpBHop"  : [ ['3', '4'], nprim/R100h,  60, 1e-2,1e4, tBH,' BH 100h loss',kGreen+2, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinEpBGst": [ ['3', '4'], normBGst,60, 1e-2,1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinEpBGac": [ ['3', '4'], normBGac,60, 1e-2,1e4, tBGac, ' BG after Cond',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinEpBHds": [ ['3', '4'], nprim/R12m,60, 1e-2, 1e4, tBH,' BH 12 min loss',kPink-9, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinEpBHop": [ ['3', '4'], nprim/R100h,60, 1e-2,1e4, tBH,' BH 100h loss',kGreen+2, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
 
-    "EkinPhBGst"  : [ ['7'], 1.,      60, 1e-2,  1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinPhBGac"  : [ ['7'], 1.,      60, 1e-2,  1e4, tBGac, ' BG after Cond',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinPhBHds"  : [ ['7'], nprim/R12m,  60, 1e-2, 1e4, tBH,' BH 12 min loss',kPink-9, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinPhBHop"  : [ ['7'], nprim/R100h,  60, 1e-2,1e4, tBH,' BH 100h loss',kGreen+2, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinPhBGst": [ ['7'], normBGst,60, 1e-2,1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinPhBGac": [ ['7'], normBGac,60, 1e-2,1e4, tBGac, ' BG after Cond',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinPhBHds": [ ['7'], nprim/R12m,60, 1e-2, 1e4, tBH,' BH 12 min loss',kPink-9, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinPhBHop": [ ['7'], nprim/R100h,60, 1e-2,1e4, tBH,' BH 100h loss',kGreen+2, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
 
-    "EkinChBGst"  : [ ['13','14','15','16'], 1.,      60, 1e-2,  1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinChBGac"  : [ ['13','14','15','16'], 1.,      60, 1e-2,  1e4, tBGac, ' BG after Cond',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinChBHds"  : [ ['13','14','15','16'], nprim/R12m,  60, 1e-2, 1e4, tBH,' BH 12 min loss',kPink-9, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
-    "EkinChBHop"  : [ ['13','14','15','16'], nprim/R100h,  60, 1e-2,1e4, tBH,' BH 100h loss',kGreen+2, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinChBGst": [ ['13','14','15','16'], normBGst,60, 1e-2,1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinChBGac": [ ['13','14','15','16'], normBGac,60, 1e-2,1e4, tBGac, ' BG after Cond',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinChBHds": [ ['13','14','15','16'], nprim/R12m,60, 1e-2, 1e4, tBH,' BH 12 min loss',kPink-9, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
+ "EkinChBHop": [ ['13','14','15','16'], nprim/R100h,60, 1e-2,1e4, tBH,' BH 100h loss',kGreen+2, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
 
-    "RadNMuBGst"  : [ ['10', '11'], 1. , 242, 0, 1210, tBGst, 'BG startup', kBlue-1,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNMuBGac"  : [ ['10', '11'], 1. , 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNMuBHds"  : [ ['10', '11'], nprim/R12m  , 242, 0, 1210, tBH, 'BH 12 min loss ', kPink-9,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNMuBHop"  : [ ['10', '11'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,  '-9999','r [cm]',  'particles/cm^{2}/s'],
+ "RadNMuBGst": [ ['10', '11'], normBGst, 242, 0, 1210, tBGst, 'BG startup', kBlue-1,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNMuBGac": [ ['10', '11'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNMuBHds": [ ['10', '11'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12 min loss ', kPink-9,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNMuBHop": [ ['10', '11'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','particles/cm^{2}/s'],
 
-    "RadNNeBGst"  : [ ['8'], 1. , 242, 0, 1210, tBGst, 'BG startup', kBlue-1,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNNeBGac"  : [ ['8'], 1. , 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNNeBHds"  : [ ['8'], nprim/R12m  , 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNNeBHop"  : [ ['8'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,  '-9999','r [cm]',  'particles/cm^{2}/s'],
+ "RadNNeBGst": [ ['8'], normBGst, 242, 0, 1210, tBGst, 'BG startup', kBlue-1,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNNeBGac": [ ['8'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNNeBHds": [ ['8'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNNeBHop": [ ['8'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','particles/cm^{2}/s'],
 
-    "RadNPrBGst"  : [ ['1'], 1. , 242, 0, 1210, tBGst, 'BG startup', kBlue-1,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNPrBGac"  : [ ['1'], 1. , 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNPrBHds"  : [ ['1'], nprim/R12m  , 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNPrBHop"  : [ ['1'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,  '-9999','r [cm]',  'particles/cm^{2}/s'],
+ "RadNPrBGst": [ ['1'], normBGst, 242, 0, 1210, tBGst, 'BG startup', kBlue-1,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNPrBGac": [ ['1'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNPrBHds": [ ['1'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNPrBHop": [ ['1'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','particles/cm^{2}/s'],
 
-    "RadNPhBGst"  : [ ['7'], 1. , 242, 0, 1210, tBGst, 'BG startup', kBlue-1,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNPhBGac"  : [ ['7'], 1. , 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNPhBHds"  : [ ['7'], nprim/R12m  , 242, 0, 1210, tBH, 'BH 12min loss', kPink-9,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNPhBHop"  : [ ['7'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,  '-9999','r [cm]',  'particles/cm^{2}/s'],
+ "RadNPhBGst": [ ['7'], normBGst, 242, 0, 1210, tBGst, 'BG startup', kBlue-1,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNPhBGac": [ ['7'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNPhBHds": [ ['7'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12min loss', kPink-9,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNPhBHop": [ ['7'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','particles/cm^{2}/s'],
 
-    "RadNChBGst"  : [ ['13','14','15','16'], 1. , 242, 0, 1210, tBGst, 'BG startup', kBlue-1,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNChBGac"  : [ ['13','14','15','16'], 1. , 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNChBHds"  : [ ['13','14','15','16'], nprim/R12m  , 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNChBHop"  : [ ['13','14','15','16'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,  '-9999','r [cm]',  'particles/cm^{2}/s'],
+ "RadNChBGst": [ ['13','14','15','16'], normBGst, 242, 0, 1210, tBGst, 'BG startup', kBlue-1,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNChBGac": [ ['13','14','15','16'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNChBHds": [ ['13','14','15','16'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNChBHop": [ ['13','14','15','16'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','particles/cm^{2}/s'],
 
-    "RadNEpBGst"  : [ ['3', '4'], 1. , 242, 0, 1210, tBGst, 'BG startup', kBlue-1,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNEpBGac"  : [ ['3', '4'], 1. , 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNEpBHds"  : [ ['3', '4'], nprim/R12m  , 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,  '-9999','r [cm]',  'particles/cm^{2}/s'],
-    "RadNEpBHop"  : [ ['3', '4'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,  '-9999','r [cm]',  'particles/cm^{2}/s'],
+ "RadNEpBGst": [ ['3', '4'], normBGst, 242, 0, 1210, tBGst, 'BG startup', kBlue-1,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNEpBGac": [ ['3', '4'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNEpBHds": [ ['3', '4'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,'-9999','r [cm]','particles/cm^{2}/s'],
+ "RadNEpBHop": [ ['3', '4'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','particles/cm^{2}/s'],
 
-    "RadEnMuBGst"  : [ ['10', '11'], 1. , 242, 0, 1210, tBGst, 'BG startup', kBlue-1,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnMuBGac"  : [ ['10', '11'], 1. , 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnMuBHds"  : [ ['10', '11'], nprim/R12m  , 242, 0, 1210, tBH, 'BH 12 min loss ', kPink-9,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnMuBHop"  : [ ['10', '11'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
+ "RadEnMuBGst": [ ['10', '11'], normBGst, 242, 0, 1210, tBGst, 'BG startup', kBlue-1,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnMuBGac": [ ['10', '11'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnMuBHds": [ ['10', '11'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12 min loss ', kPink-9,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnMuBHop": [ ['10', '11'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','GeV/cm^{2}/s'],
 
-    "RadEnNeBGst"  : [ ['8'], 1. , 242, 0, 1210, tBGst, 'BG startup', kBlue-1,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnNeBGac"  : [ ['8'], 1. , 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnNeBHds"  : [ ['8'], nprim/R12m  , 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnNeBHop"  : [ ['8'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
+ "RadEnNeBGst": [ ['8'], normBGst, 242, 0, 1210, tBGst, 'BG startup', kBlue-1,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnNeBGac": [ ['8'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnNeBHds": [ ['8'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnNeBHop": [ ['8'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','GeV/cm^{2}/s'],
 
-    "RadEnPrBGst"  : [ ['1'], 1. , 242, 0, 1210, tBGst, 'BG startup', kBlue-1,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnPrBGac"  : [ ['1'], 1. , 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnPrBHds"  : [ ['1'], nprim/R12m  , 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnPrBHop"  : [ ['1'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
+ "RadEnPrBGst": [ ['1'], normBGst, 242, 0, 1210, tBGst, 'BG startup', kBlue-1,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnPrBGac": [ ['1'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnPrBHds": [ ['1'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnPrBHop": [ ['1'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','GeV/cm^{2}/s'],
 
-    "RadEnPhBGst"  : [ ['7'], 1. , 242, 0, 1210, tBGst, 'BG startup', kBlue-1,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnPhBGac"  : [ ['7'], 1. , 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnPhBHds"  : [ ['7'], nprim/R12m  , 242, 0, 1210, tBH, 'BH 12min loss', kPink-9,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnPhBHop"  : [ ['7'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
+ "RadEnPhBGst": [ ['7'], normBGst, 242, 0, 1210, tBGst, 'BG startup', kBlue-1,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnPhBGac": [ ['7'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnPhBHds": [ ['7'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12min loss', kPink-9,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnPhBHop": [ ['7'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','GeV/cm^{2}/s'],
 
-    "RadEnChBGst"  : [ ['13','14','15','16'], 1. , 242, 0, 1210, tBGst, 'BG startup', kBlue-1,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnChBGac"  : [ ['13','14','15','16'], 1. , 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnChBHds"  : [ ['13','14','15','16'], nprim/R12m  , 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnChBHop"  : [ ['13','14','15','16'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
+ "RadEnChBGst": [ ['13','14','15','16'], normBGst, 242, 0, 1210, tBGst, 'BG startup', kBlue-1,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnChBGac": [ ['13','14','15','16'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnChBHds": [ ['13','14','15','16'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnChBHop": [ ['13','14','15','16'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','GeV/cm^{2}/s'],
 
-    "RadEnEpBGst"  : [ ['3', '4'], 1. , 242, 0, 1210, tBGst, 'BG startup', kBlue-1,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnEpBGac"  : [ ['3', '4'], 1. , 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnEpBHds"  : [ ['3', '4'], nprim/R12m  , 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
-    "RadEnEpBHop"  : [ ['3', '4'], nprim/R100h , 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,  '-9999','r [cm]',  'GeV/cm^{2}/s'],
+ "RadEnEpBGst": [ ['3', '4'], normBGst, 242, 0, 1210, tBGst, 'BG startup', kBlue-1,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnEpBGac": [ ['3', '4'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnEpBHds": [ ['3', '4'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,'-9999','r [cm]','GeV/cm^{2}/s'],
+ "RadEnEpBHop": [ ['3', '4'], nprim/R100h, 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','GeV/cm^{2}/s'],
 }
 
 # ---------------------------------------------------------------------------------

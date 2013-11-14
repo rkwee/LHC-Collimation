@@ -17,6 +17,7 @@ print "collimation "
 ## -----------------------------------------------------------------------------------
 import ROOT, sys, glob, os
 from ROOT import *
+from helpers import *
 ## -----------------------------------------------------------------------------------
 moduleName = __import__(cvNumber)
 ## -----------------------------------------------------------------------------------
@@ -25,8 +26,8 @@ if __name__ == "__main__":
     gROOT.SetBatch()
     gROOT.Reset()
     gROOT.SetStyle("Plain")
-    gROOT.LoadMacro("/afs/cern.ch/user/r/rkwee/scratch0/miScripts/py/AtlasStyle.C")
-    gROOT.LoadMacro("/afs/cern.ch/user/r/rkwee/scratch0/miScripts/py/AtlasUtils.C")
+    gROOT.LoadMacro(gitpath + "C/AtlasStyle.C")
+    gROOT.LoadMacro(gitpath + "C/AtlasUtils.C")
     SetAtlasStyle()
 
     #gStyle.SetOptStat(1000100110)

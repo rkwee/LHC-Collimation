@@ -28,18 +28,10 @@ fortformat30 = "event/I:particle/I:generation/I:weight/F:x/F:y/F:xp/F:yp/F:energ
 
 if fname.endswith("30"): 
     fortformat = fortformat30
-    varList = varList_HL
     if debug: print "Using HL format", '.'*10
 else: 
     fortformat = fortformat66
-    varList = varList_4TeV
     if debug: print "Using 4 TeV format", '.'*10
-# ---------------------------------------------------------------------------------
-zmin, zmax = 2260., 14960.
-
-if not os.path.exists(wwwpath + subfolder):
-    print 'making dir', wwwpath + subfolder
-    os.mkdir(wwwpath + subfolder)
 # ---------------------------------------------------------------------------------
 def createTTree(fname):
     rfoutName = fname +".root"
@@ -53,9 +45,5 @@ def createTTree(fname):
 if __name__ == "__main__":
 
     gROOT.SetBatch()
-    gROOT.SetStyle("Plain")
-    gROOT.LoadMacro(gitpath + "C/AtlasStyle.C")
-    gROOT.LoadMacro(gitpath + "C/AtlasUtils.C")
-    SetAtlasStyle()
 
     createTTree(fname)

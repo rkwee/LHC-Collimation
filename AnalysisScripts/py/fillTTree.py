@@ -6,7 +6,7 @@ import ROOT, sys, glob, os, math, helpers
 from ROOT import *
 from helpers import *
 from array import array
-from fillTTree_dict import sDict_HL_BH,sDict_HL_BGac,sDict_HL_comp,sDict_4TeV,sDict_HL_BGst
+from fillTTree_dict import sDict_HL_BH,sDict_HL_BGac,sDict_HL_comp,sDict_HL_BGst, sDict_BG_4TeV, sDict_BH_4TeV,sDict_BH_3p5TeV,sDict_BH_3p5TeV_v2
 # ---------------------------------------------------------------------------------
 import optparse
 from optparse import OptionParser
@@ -21,7 +21,7 @@ tag  = options.tag
 # ---------------------------------------------------------------------------------
 debug = 1
 
-if tag.count('BH'):
+if tag.count('BH') and not tag.count('TeV'):
     sDict = sDict_HL_BH
     if debug: print "Using HL format", '.'*10
 elif tag.count('BGac'):
@@ -30,6 +30,15 @@ elif tag.count('BGst'):
     sDict = sDict_HL_BGst
 elif tag.count('comp'):
     sDict = sDict_HL_comp
+elif tag.count('BH_4TeV'):
+    sDict = sDict_BH_4TeV
+    if debug: print "Using 4 TeV format", '.'*10
+elif tag.count('BG_4TeV'):
+    sDict = sDict_BG_4TeV
+    if debug: print "Using 4 TeV format", '.'*10
+elif tag.count('BH_3p5TeV_v2'):
+    sDict = sDict_BH_3p5TeV_v2
+    if debug: print "Using 3.5 TeV v2 format", '.'*10
 else: 
     sDict = sDict_4TeV
     if debug: print "Using 4 TeV format", '.'*10
@@ -412,12 +421,14 @@ def GetHistos():
     rfile = TFile.Open(rfname, "RECREATE")
 
     hists = []
+    cnt = 0
     for i,skey in enumerate(sDict.keys()):
-
-       print "Getting ...", skey
 
        if skey in rHists:
           continue
+
+       cnt += 1
+       print "Getting ...", skey, '... #', cnt
 
        mt     = sDict[skey][5]
        hists += [getHistogram(skey, mt)]          

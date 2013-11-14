@@ -6,15 +6,15 @@ import ROOT, sys, glob, os, math, helpers
 from ROOT import *
 from helpers import *
 from array import array
-from fillTTree_dict import sDict_HL_BH,sDict_HL_BGac,sDict_4TeV, sDict_HL_comp
-from plotSpectra_dict import hDict_4TeV,hDict_HL_BGac, hDict_HL_BH, hDict_HL_comp
+from fillTTree_dict import sDict_HL_BH,sDict_HL_BGac,sDict_BH_4TeV, sDict_HL_comp,sDict_BG_4TeV,sDict_BH_3p5TeV
+from plotSpectra_dict import hDict_BH_4TeV,hDict_HL_BGac, hDict_HL_BH, hDict_HL_comp,hDict_BG_4TeV,hDict_BH_3p5TeV
 # ---------------------------------------------------------------------------------
 import optparse
 from optparse import OptionParser
 
 parser = OptionParser()
 parser.add_option("-f", "--file", dest="filename", type="string",
-                  help="put rootfile produced by fillTTree.py")
+                  help="put rootfile produced by fillTTree.py with tag BH, BG or comp in it.")
 
 (options, args) = parser.parse_args()
 
@@ -22,7 +22,7 @@ rfname = options.filename
 # ---------------------------------------------------------------------------------
 debug = 1
 
-if rfname.count("BH"): 
+if rfname.count("BH") and not rfname.count('4TeV') and not rfname.count('3p5TeV'): 
     hDict = hDict_HL_BH
     sDict = sDict_HL_BH
     tag   = '_BH'
@@ -44,10 +44,25 @@ elif rfname.count("comp"):
     subfolder= 'TCT/HL/nominalSettings/comp/'
     if debug: print "Using HL comp format", '.'*10
 
-else: 
-    sDict = sDict_4TeV
-    hDict = hDict_4TeV
-    subfolder= 'TCT/'
+elif rfname.count('BH_4TeV'): 
+    sDict = sDict_BH_4TeV
+    hDict = hDict_BH_4TeV
+    tag   = '_BH_4TeV'
+    subfolder= 'TCT/4TeV/'
+    if debug: print "Using 4 TeV format", '.'*10
+
+elif rfname.count('BG_4TeV'): 
+    sDict = sDict_BG_4TeV
+    hDict = hDict_BG_4TeV
+    tag   = '_BG_4TeV'
+    subfolder= 'TCT/4TeV/'
+    if debug: print "Using 4 TeV format", '.'*10
+
+elif rfname.count('BG_3p5TeV'): 
+    sDict = sDict_BG_3p5TeV
+    hDict = hDict_BG_3p5TeV
+    tag   = '_BG_3p5TeV'
+    subfolder= 'TCT/3p5TeV/'
     if debug: print "Using 4 TeV format", '.'*10
 # ---------------------------------------------------------------------------------
 
@@ -110,7 +125,7 @@ def plotSpectra(rfname):
            
            norm   = sDict[hname][1]
            if norm != 1.: print 'normalising by ', norm
-           hists[-1].Scale(1./norm)
+           #hists[-1].Scale(1./norm)
 
            if not i: 
                if   type(hists[-1]) == TH1F: hists[-1].Draw("HIST")
@@ -125,7 +140,7 @@ def plotSpectra(rfname):
            ytitle = sDict[hname][10]
         
       # ....................................
-      if not hists[-1]:
+      if not hists[-1] or not hists[0]:
           continue
 
       if XurMin is not -1:                        
