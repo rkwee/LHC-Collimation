@@ -273,19 +273,19 @@ sDict_BG_4TeV = generate_sDict(tag, norm, tBBG, yrel)
 # ---------------------------------------------------------------------------------
 tag = '_BH_4TeV'
 norm = nprim_BH_4TeV
-tBBH = tBH_4TeV
+tBBG = tBH_4TeV
 yrel = '/TCT hit'
 sDict_BH_4TeV = generate_sDict(tag, norm, tBBG, yrel)
 # ---------------------------------------------------------------------------------
 tag = '_BH_3p5TeV'
 norm = nprim_BH_3p5TeV
-tBBH = tBH_3p5TeV
+tBBG = tBH_3p5TeV
 yrel = '/TCT hit'
 sDict_BH_3p5TeV = generate_sDict(tag, norm, tBBG, yrel)
 # ---------------------------------------------------------------------------------
 tag = '_BH_3p5TeV_v2'
 norm = nprim_BH_3p5TeV_v2
-tBBH = tBH_3p5TeV_v2
+tBBG = tBH_3p5TeV_v2
 yrel = '/TCT hit'
 sDict_BH_3p5TeV_v2 = generate_sDict(tag, norm, tBBG, yrel)
 # ---------------------------------------------------------------------------------
