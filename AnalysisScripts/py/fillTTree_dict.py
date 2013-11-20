@@ -4,7 +4,7 @@
 # ---------------------------------------------------------------------------------
 import ROOT, math
 from ROOT import *
-
+from helpers import workpath
 #######################################################################################
     # FORMAT RODERIK
 
@@ -51,8 +51,7 @@ treeName     = "particle"
 
 # -- beamgas 4 TeV
 # from http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam_gas_arc_4TeV/flukaIR15.html
-fBG_4TeV  = '/Users/rkwee/Documents/RHUL/work/runs/TCT/4TeV/beam-gas_4TeV-IR1_to_arc_20MeV_cutoff.root'
-bbgFile = fBG_4TeV
+bbgFile = workpath + 'data/4TeV/beam-gas_4TeV-IR1_to_arc_20MeV_cutoff.root'
 print "Opening...", bbgFile
 rfBG_4TeV = TFile(bbgFile)
 tBG_4TeV  = rfBG_4TeV.Get(treeName)
@@ -60,24 +59,22 @@ nprim_BG_4TeV = 28788000.
 
 # -- beamhalo 4 TeV
 # from FL_TCT_4TeV_haloB2_new
-fBH_4TeV  = '/Users/rkwee/Documents/RHUL/work/runs/TCT/FL_TCT_4TeV_haloB2_new/ir1_4TeV_settings_from_TWISS_b2_nprim6570000_66.root'
-bbgFile = fBH_4TeV
+#fBH_4TeV  = 'FL_TCT_4TeV_haloB2_new/ir1_4TeV_settings_from_TWISS_b2_nprim6570000_66.root'
+bbgFile = workpath + 'data/4TeV/ir1_4TeV_settings_from_TWISS_b2_nprim8578000_66.root'
 print "Opening...", bbgFile
 rfBH_4TeV = TFile(bbgFile)
 tBH_4TeV  = rfBH_4TeV.Get(treeName)
-nprim_BH_4TeV = 6570000.
+nprim_BH_4TeV = 8578000.
 
 # -- beamhalo 3.5 TeV
 # from http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam-halo_3.5TeV/flukaIR15.html
-fBH_3p5TeV  = '/Users/rkwee/Documents/RHUL/work/runs/TCT/3p5TeV/beam-halo_3.5TeV-R1_D1.root'
-bbgFile = fBH_3p5TeV
+bbgFile = workpath + 'data/3p5TeV/beam-halo_3.5TeV-R1_D1.root'
 print "Opening...", bbgFile
 rfBH_3p5TeV = TFile(bbgFile)
 tBH_3p5TeV  = rfBH_3p5TeV.Get(treeName)
 nprim_BH_3p5TeV = 2344800.
 
-fBH_3p5TeV_v2  = '/Users/rkwee/Documents/RHUL/work/runs/TCT/3p5TeV/beam-halo_3.5TeV-R1.root'
-bbgFile = fBH_3p5TeV_v2
+bbgFile = workpath + 'data/3p5TeV/beam-halo_3.5TeV-R1.root'
 print "Opening...", bbgFile
 rfBH_3p5TeV_v2 = TFile(bbgFile)
 tBH_3p5TeV_v2  = rfBH_3p5TeV_v2.Get(treeName)
@@ -85,27 +82,24 @@ nprim_BH_3p5TeV_v2 = 2381600.
 
 # HL 
 # -- beamgas for start up scenario, high
-fBGst  = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/beamgas/lxplus/hilumi_ir1_fort_scaled_startup_max_30.root'
-bbgFile = fBGst
+bbgFile = workpath + 'data/HL/hilumi_ir1_fort_scaled_startup_max_30.root'
 print "Opening...", bbgFile
-rfBGst = TFile(bbgFile)
-tBGst  = rfBGst.Get(treeName)
+rfBGst  = TFile(bbgFile)
+tBGst   = rfBGst.Get(treeName)
 
 # -- HL beamgas after conditioning, high
-fBGac  = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/beamgas/lxplus/hilumi_ir1_fort_scaled_afterconditioning_max_30.root'
-bbgFile = fBGac
+bbgFile = workpath + 'data/HL/hilumi_ir1_fort_scaled_afterconditioning_max_30.root'
 print "Opening...", bbgFile
-rfBGac = TFile(bbgFile)
-tBGac  = rfBGac.Get(treeName)
+rfBGac  = TFile(bbgFile)
+tBGac   = rfBGac.Get(treeName)
 
 # -- HL beamhalo
-fBH     = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/FL_ats-HL_LHC_nominal/hllhc_ir1_b2_nprim7330000_30.root'
-fBH     = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/beamhalo/hllhc_ir1_b2_nprim7330000_30.root'
-bbgFile = fBH
+bbgFile = workpath + 'data/HL/hllhc_ir1_b2_nprim7330000_30.root'
 print "Opening...", bbgFile
 rfBH    = TFile(bbgFile)
 tBH     = rfBH.Get(treeName)
 nprim_BH= 7330000.
+
 R12m    = 146563140 # Hz from cv07
 R100h   = 293126 #Hz from cv07
 

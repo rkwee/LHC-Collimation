@@ -29,6 +29,22 @@ def cv13():
     tagNum, tagDenom = 'BH_3p5TeV', 'BH_4TeV'
     sDict = sDict_BH_3p5TeV
 
+    # fNum   = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/results_BH_3p5TeV.root'
+    # fDenom = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/results_BH.root'
+    # subfolder = 'compBH_HLvs3p5/'
+    # lTextNum = 'BH HL TeV'
+    # lTextDenom = 'BH 3.5 TeV'
+    # tagNum, tagDenom = 'BH_3p5TeV', 'BH'
+    # sDict = sDict_BH_3p5TeV
+
+    # fNum   = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/results_BH_3p5TeV.root'
+    # fDenom = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/results_BH_3p5TeV_v2.root'
+    # subfolder = 'compBH_3p5vs3p5_v2/'
+    # lTextNum = 'BH 3.5 TeV'
+    # lTextDenom = 'BH 3.5 TeV analytic magnf'
+    # tagNum, tagDenom = 'BH_3p5TeV', 'BH_3p5TeV_v2'
+    # sDict = sDict_BH_3p5TeV
+
     rfNum = TFile.Open(fNum)
     rfDenom = TFile.Open(fDenom)
 
@@ -111,7 +127,7 @@ def cv13():
         hRatio.GetYaxis().SetTitle('ratio ' + lTextNum + '/' + lTextDenom)
         hRatio.Draw('h')
 
-        pname =  '/Users/rkwee/Documents/RHUL/work/results/www/TCT/'+subfolder+hnameRatio.replace('st','')+'.pdf'
+        pname =  '/Users/rkwee/Documents/RHUL/work/results/www/TCT/'+subfolder+hnameRatio.split('_')[0]+'.pdf'
 
         print pname
         cv.SaveAs(pname)

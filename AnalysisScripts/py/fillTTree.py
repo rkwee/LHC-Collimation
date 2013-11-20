@@ -12,36 +12,44 @@ import optparse
 from optparse import OptionParser
 
 parser = OptionParser()
-parser.add_option("-t", "--tag", dest="tag", type="string",
-                  help="use tag to indicate which sDict should be used")
+parser.add_option("-f", "--file", dest="rfile", type="string",
+                  help="put the rootfile from which histograms are filled.")
 
 (options, args) = parser.parse_args()
 
-tag  = options.tag
+rfname  = options.rfile
 # ---------------------------------------------------------------------------------
 debug = 1
+# assume that there are 3 folders HL, 4TeV and 3p5TeV
 
-if tag.count('BH') and not tag.count('TeV'):
-    sDict = sDict_HL_BH
+if rfname.count('HL'):
     if debug: print "Using HL format", '.'*10
-elif tag.count('BGac'):
-    sDict = sDict_HL_BGac
-elif tag.count('BGst'):
-    sDict = sDict_HL_BGst
-elif tag.count('comp'):
-    sDict = sDict_HL_comp
-elif tag.count('BH_4TeV'):
-    sDict = sDict_BH_4TeV
+    if rfname.count('hllhc'):
+        sDict = sDict_HL_BH
+    elif rfname.count('hilumi_ir1_fort_scaled_afterconditioning'):
+        sDict = sDict_HL_BGac
+    elif rfname.count('hilumi_ir1_fort_scaled_startup'):
+        sDict = sDict_HL_BGst
+    elif rfname.count('comp'):
+        sDict = sDict_HL_comp
+
+elif rfname.count('4TeV'):
     if debug: print "Using 4 TeV format", '.'*10
-elif tag.count('BG_4TeV'):
-    sDict = sDict_BG_4TeV
-    if debug: print "Using 4 TeV format", '.'*10
-elif tag.count('BH_3p5TeV_v2'):
-    sDict = sDict_BH_3p5TeV_v2
-    if debug: print "Using 3.5 TeV v2 format", '.'*10
+    if rfname.count('ir1_4TeV_settings_from_TWISS_b2_nprim'):
+        sDict = sDict_BH_4TeV
+    elif rfname.count('beam-gas'):
+        sDict = sDict_BG_4TeV
+
+elif rfname.count('3p5TeV'):
+    if debug: print "Using 3.5/4 TeV format. Beam Halo ONLY!", '.'*10
+    if rfname.count('beam-halo_3.5TeV-R1_D1'):
+        sDict = sDict_BH_3p5TeV
+    else:
+        sDict = sDict_BH_3p5TeV_v2
+
 else: 
-    sDict = sDict_4TeV
-    if debug: print "Using 4 TeV format", '.'*10
+    print 'file not recognised. try again.'
+    sys.exit()
 # ---------------------------------------------------------------------------------
 zmin, zmax = 2260., 14960.
 # to disable the zcut have zOn > zmax
@@ -415,10 +423,10 @@ def GetHistos():
     rHists = []
 
     # rootfile with results
-    rfname = '~/Documents/RHUL/work/runs/TCT/HL/results_'+tag+'.root'
+    rfoutname = '~/Documents/RHUL/work/runs/TCT/results/results_'+rfname.split('/')[-1]
 
-    print 'writing ','.'*20, rfname
-    rfile = TFile.Open(rfname, "RECREATE")
+    print 'writing ','.'*20, rfoutname
+    rfile = TFile.Open(rfoutname, "RECREATE")
 
     hists = []
     cnt = 0
