@@ -22,7 +22,7 @@ def cv10():
 
     debug        = 1
     doWriteRFile = 1
-    plotLossMaps = 1
+    plotLossMaps = 0
     doAvLoss     = 0
 
     tct    = 'ver-B1'
@@ -30,86 +30,110 @@ def cv10():
     tcts   = ['HL_TCT_vHaloB1_TCT5OFF', 
               'HL_TCT_hHaloB1_TCT5OFF',
               ]
-
     tcts = ['TCT_4TeV_B2vHalo', 'TCT_4TeV_B2hHalo']
 
     tct = tcts[1]
 
-    tag    = '_' + tct
+    # is tcs again
+    tcts = [
+'hHalo/7TeVPostLS1_TCSG.6R7.B1',
+'hHalo/7TeVPostLS1_TCSG.A4L7.B1',
+'hHalo/7TeVPostLS1_TCSG.A4R7.B1',
+'hHalo/7TeVPostLS1_TCSG.A5L7.B1',
+'hHalo/7TeVPostLS1_TCSG.A6L7.B1',
+'hHalo/7TeVPostLS1_TCSG.B4L7.B1',
+'hHalo/7TeVPostLS1_TCSG.B5L7.B1',
+'hHalo/7TeVPostLS1_TCSG.B5R7.B1',
+'hHalo/7TeVPostLS1_TCSG.D4L7.B1',
+'hHalo/7TeVPostLS1_TCSG.D5R7.B1',
+'hHalo/7TeVPostLS1_TCSG.E5R7.B1',
+'hHalo/7TeVPostLS1_nominal_B1',
+'hHalo/7TeVPostLS1_sel1.B1',
+        ]
+
     rfname = "tct" + tag + ".root"
     trname = 'normtree'
-    tA = time.time()
-
-    # subfolder in wwwpath for result plots
-    subfolder = 'TCT/'
-
-    # roderiks results
-    thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/ats-HL_LHC_1.0/nominal_settings/' + tct + '/'
-
-    # my results (thight coll settings)
-    thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/' + tct
-
-    if not thispath.endswith('/'): thispath += '/'
-
-    # use for normalisation the sum of nabs (col 4)
-    fileName  = thispath + 'coll_summary' + tag + '.dat'
-    colNumber = 4
-    beam     = 'b2'            
-        
-    if tag.count("B1"):
-        beam = 'b1'
-
-    f3 = helpers.source_dir + 'HL_TCT_7TeV/' + beam +'/CollPositions.'+beam+'.dat'
-    f3 = helpers.source_dir + 'TCT_4TeV_60cm/'+beam+'/CollPositions.'+beam+'.dat'
 
     if doWriteRFile:
         print "Writing " + '.'* 25 +' ' + rfname
-
+        
         # create a root file
         rf = TFile(rfname, 'recreate')
         nt = TTree(trname,"norm for each tct")        
+    
+        for tct in tcts:
 
-        t0 = time.time()
-        h_tot_loss, h_cold, h_warm = lossmap.lossmap(beam,thispath,tag, f3) 
-        t1 = time.time()
-        print(str(t1-t0)+" for returning lossmap histograms of " + tct )
-        h_tot_loss.Write()
-        h_cold.Write()
-        h_warm.Write()            
+            tag    = '_' + tct
+            tA = time.time()
+            
+            # subfolder in wwwpath for result plots
+            subfolder = 'scan/'
+            
+            # roderiks results
+            thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/ats-HL_LHC_1.0/nominal_settings/' + tct + '/'
 
-        # -- write the for each norm value a branch into ttree
-        t0 = time.time()
+            # my results (thight coll settings)
+            thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/' + tct
 
-        # setting branch name 
-        branchname = 'norm' + tag
-        branchname = tct.replace('.','QQQ')
+            # my results (thight coll settings)
+            thispath  = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/scan/' + tct
 
-        if debug and 0: print globals()
+            if not thispath.endswith('/'): thispath += '/'
 
-        # use globals dict to convert strings to variable names
-        globals()[branchname] = array('i',[0])
+            # use for normalisation the sum of nabs (col 4)
+            fileName  = thispath + 'coll_summary' + tag + '.dat'
+            colNumber = 4
+            beam     = 'b2'            
+            beamn    = '2'
 
-        # create branch
-        nt.Branch(branchname, globals()[branchname], branchname+'/i')
+            if tag.count("B1"):
+                beam = 'b1'
+                beamn = '1'
+            f3 = helpers.source_dir + 'HL_TCT_7TeV/' + beam +'/CollPositions.'+beam+'.dat'
+            f3 = helpers.source_dir + 'TCT_4TeV_60cm/'+beam+'/CollPositions.'+beam+'.dat'
+            f3 = helpers.source_dir + 'sourcedirs/NewColl7TeVB'+beamn+'/CollPositions.'+beam+'.dat'
 
-        # get value
-        maxval = int(addCol(fileName, colNumber-1))
+            t0 = time.time()
+            h_tot_loss, h_cold, h_warm = lossmap.lossmap(beam,thispath,tag, f3) 
+            t1 = time.time()
+            print(str(t1-t0)+" for returning lossmap histograms of " + tct )
+            h_tot_loss.Write()
+            h_cold.Write()
+            h_warm.Write()            
 
-        # assigning value
-        globals()[branchname][0] = maxval
+            # -- write the for each norm value a branch into ttree
+            t0 = time.time()
 
-        # write to tree
-        nt.Fill()
+            # setting branch name 
+            branchname = 'norm' + tag
+            branchname = tct.replace('.','QQQ')
 
-        t1 = time.time()
-        
-        nt.Write()
-        rf.Close()
+            if debug and 0: print globals()
 
-    tB = time.time()
+            # use globals dict to convert strings to variable names
+            globals()[branchname] = array('i',[0])
 
-    print(str(tB-tA)+" for producing " + rfname)
-    # ------------------------------------------------
+            # create branch
+            nt.Branch(branchname, globals()[branchname], branchname+'/i')
+
+            # get value
+            maxval = int(addCol(fileName, colNumber-1))
+
+            # assigning value
+            globals()[branchname][0] = maxval
+
+            # write to tree
+            nt.Fill()
+
+            t1 = time.time()
+
+            nt.Write()
+            rf.Close()
+
+        tB = time.time()
+
+        print(str(tB-tA)+" for producing " + rfname)
+        # ------------------------------------------------
 
     if plotLossMaps:
         print("Plotting lossmaps from " + "."*20 + ' '+ rfname)
@@ -117,7 +141,7 @@ def cv10():
         doZooms = [0,1]
         rel = ''
         for doZoom in doZooms: 
-           
+
             rf = TFile.Open(rfname)
             nt = rf.Get(trname)
 
