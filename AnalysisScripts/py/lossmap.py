@@ -25,7 +25,6 @@ def lossmap(beam,path,tag,f3):
     f1    = path + 'LPI_BLP_out'+tag+'.s'
     f2    = path + 'coll_summary'+tag+'.dat'
 
-
     # loss positions
     losses = []
    
@@ -104,7 +103,7 @@ def lossmap(beam,path,tag,f3):
                 if losses[i] >= warm[k] and losses[i] <= warm[k+1]:
                     warm_loss.Fill(losses[i])                                                                   
                 elif k<n_warm-1 and losses[i] >= warm[k+1] and losses[i] <= warm[k+2]:
-                    cold_loss.Fill(losses[i])                                         
+                    cold_loss.Fill(losses[i])                        
                 else:
                     cnt += 1        
 
