@@ -29,7 +29,7 @@ parser.add_option("-p", dest="npacks", type="string",
 parser.add_option("-k", dest="ckey", type="string",
                   help="put key dictionary (similar as or same run_dir)")
 parser.add_option("-t", dest="tcs", type="string",
-                  help="put name of TCS as in collDB, otherwise ignore (tcs is any appendix to CollDB*.data<tcs>.")
+                  help="put name of TCS as in collDB, otherwise ignore (tcs is any appendix to CollDB*.data<tcs>")
 
 (options, args) = parser.parse_args()
 
@@ -57,7 +57,7 @@ commonsource = sourcepath + 'common/'
 # assume all exectutables are in sourcepath + 'common/'
 cList  = [[ '3.5TeVExample',    [sourcepath + '3.5TeVExample/'   ,'SixTrack_4411_coll_gfortran_O4', '3500000' ]]]
 cList += [[ '3.5TeVOldExe',     [sourcepath + '3.5TeVOldExe/'    ,'SixTrackwColl'                 , '3500000' ]]]
-cList += [[ 'NewColl7TeVB1',    [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
+cList += [[ 'hHaloB1',          [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 cList += [[ 'NewColl7TeVB2',    [sourcepath + 'NewColl7TeVB2/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 cList += [[ 'vHaloB1',          [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 cList += [[ '4TeV_vHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
@@ -88,7 +88,7 @@ if source_dir.count('B2') or source_dir.count('b2'):
     beam = 'b2'
 
 thissource  = sourcepath + 'postLS1/' + beam + '/'
-thissource  = ''
+#thissource  = 
 
 if showInfo: print("Using thissource " + thissource )
 # -----------------------------------------------------------
@@ -100,8 +100,8 @@ if not os.path.exists(afs_run_dir):
 
 sixtrackExe = commonsource +cDict[ckey][1]
 fort2       = source_dir +'fort.2'
-fort3       = source_dir + haloType + 'fort.3'
-collDB      = source_dir +'CollDB_V6.503_lowb_st.'+beam+'.data' + tcs
+fort3       = thissource + haloType + 'fort.3'
+collDB      = thissource +'CollDB_V6.503_lowb_st.'+beam+'.data' + tcs
 collPos     = source_dir +'CollPositions.'+beam+'.dat'
 apertfile   = source_dir +'allapert.' + beam
 surveyfile  = source_dir +'SurveyWithCrossing_XP_lowb_'+beam+'.dat'
@@ -209,10 +209,10 @@ for job in newrange:
     # copy back
     # cmd_copy = 'cp amplitude.dat efficiency.dat coll_summary.dat screen* survival.dat LP* FLUKA* FirstImpacts.dat sigmasettings.out impacts* ' + subdir
     if doTest:
-        cmd_copy = 'cp coll_summary.dat collgaps* screen* LP* FLUKA* FirstImpacts.dat* sigmasettings.out impacts* ' + subdir
+        cmd_copy = 'cp coll_summary.dat collgaps* screen* LP* FirstImpacts.dat* sigmasettings.out impacts* ' + subdir
         cmd_copy = "cp * " + subdir
     else:
-        cmd_copy = 'cp coll_summary.dat LP* FLUKA* FirstImpacts.dat* impacts* ' + subdir
+        cmd_copy = 'cp coll_summary.dat LP* FirstImpacts.dat* impacts* ' + subdir
 
     run_job.write(cmd_copy)
 

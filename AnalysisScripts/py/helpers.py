@@ -11,6 +11,7 @@ import gzip
 workpath = '/afs/cern.ch/work/r/rkwee/HL-LHC/'
 wwwpath  = '/afs/cern.ch/user/r/rkwee/public/www/HL-LHC/'
 source_dir  = workpath + 'runs/sourcedirs/'
+gitpath  = workpath + 'HL-LHC-Collimation/AnalysisScripts/'
 # ------------------------------------------------------------------------------------------------
 length_LHC = 26659
 IPs = [

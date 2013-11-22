@@ -24,7 +24,7 @@ tag    = options.tag
 
 # all files to append, doCountLines only
 fApp = [
-    #('FirstImpacts.dat',1),
+    ('FirstImpacts.dat',1),
     ('LPI_BLP_out.s',   0),    
     ('impacts_fake.dat',0),
     ('impacts_real.dat',0),

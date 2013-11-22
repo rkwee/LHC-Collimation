@@ -30,7 +30,6 @@ def cv10():
     colls   = ['HL_TCT_vHaloB1_TCT5OFF', 
               'HL_TCT_hHaloB1_TCT5OFF',
               ]
-    colls = ['TCT_4TeV_B2vHalo', 'TCT_4TeV_B2hHalo']
 
     coll = colls[1]
 
@@ -59,11 +58,9 @@ def cv10():
     thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/hHaloB1/' 
 
     for coll in colls:
-
         rfname = "hHaloB1/scan_lossmaps_hHaloB1"+coll+".root"
         trname = 'normtree' + coll
         colNumber = 4
-
         beam   = 'b2'            
         beamn  = '2'        
         if coll.count("B1"):

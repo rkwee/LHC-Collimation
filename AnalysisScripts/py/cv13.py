@@ -13,32 +13,32 @@ def cv13():
 
     # ratio BGac to BGst
 
-    fNum   = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/results_BGst.root'
-    fDenom = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/results_BGac.root'
-    subfolder = 'HL/compBG/'
-    lTextNum = 'BG start-up'
-    lTextDenom = 'BG after cond.'
-    tagNum, tagDenom = 'BGst', 'BGac'
-    sDict = sDict_BH_4TeV
+    # fNum   = workpath + 'results/results_BGst.root'
+    # fDenom = workpath + 'results/results_BGac.root'
+    # subfolder = 'HL/compBG/'
+    # lTextNum = 'BG start-up'
+    # lTextDenom = 'BG after cond.'
+    # tagNum, tagDenom = 'BGst', 'BGac'
+    # sDict = sDict_BH_4TeV
 
-    fNum   = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/results_BH_3p5TeV.root'
-    fDenom = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/results_BH_4TeV.root'
+    fNum   = workpath + 'results/results_beam-halo_3.5TeV-R1_D1.root'
+    fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_b2_nprim8578000_66.root'
     subfolder = '4TeV/compBH/'
     lTextNum = 'BH 3.5 TeV'
     lTextDenom = 'BH 4 TeV'
     tagNum, tagDenom = 'BH_3p5TeV', 'BH_4TeV'
     sDict = sDict_BH_3p5TeV
 
-    # fNum   = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/results_BH_3p5TeV.root'
-    # fDenom = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/results_BH.root'
+    # fNum   = workpath + 'results/results_BH_3p5TeV.root'
+    # fDenom = workpath + 'results/results_BH.root'
     # subfolder = 'compBH_HLvs3p5/'
     # lTextNum = 'BH HL TeV'
     # lTextDenom = 'BH 3.5 TeV'
     # tagNum, tagDenom = 'BH_3p5TeV', 'BH'
     # sDict = sDict_BH_3p5TeV
 
-    # fNum   = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/results_BH_3p5TeV.root'
-    # fDenom = '/Users/rkwee/Documents/RHUL/work/runs/TCT/HL/results_BH_3p5TeV_v2.root'
+    # fNum   = workpath + 'results/results_BH_3p5TeV.root'
+    # fDenom = workpath + 'results/results_BH_3p5TeV_v2.root'
     # subfolder = 'compBH_3p5vs3p5_v2/'
     # lTextNum = 'BH 3.5 TeV'
     # lTextDenom = 'BH 3.5 TeV analytic magnf'
