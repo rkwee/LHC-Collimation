@@ -31,7 +31,9 @@ def cv10():
               'HL_TCT_hHaloB1_TCT5OFF',
               ]
 
-    coll = colls[1]
+    colls = ['_7TeVPostLS1_nominal_B1',
+             #'_nominal_B1',
+             ]
 
     haloType = 'hHalo'
     # is tcs again
@@ -273,30 +275,77 @@ def cv10():
             histname = 'cold_loss' + coll
             hist = rf.Get(histname)
 
-            # max loss in cold magnets
+            # max loss in cold magnets, get also poisson error
             maxLoss = hist.GetMaximum()
-            maxLossErr = hist.GetBinError(hist.GetMaximumBin())
-            maxLosses += [(maxLoss, maxLossErr)]
+            maxLosses += [(maxLoss/norm,math.sqrt(maxLoss)/norm)]
 
-            s_startQ8, s_stopQ8 = 0,0
+            s_startQ8, s_stopQ8   = 20270., 20340.
+            s_startQ10, s_stopQ10 = 20370., 20435.
+
+            bin_startQ8, bin_stopQ8   = hist.FindBin(s_startQ8), hist.FindBin(s_stopQ8)
+            bin_startQ10, bin_stopQ10 = hist.FindBin(s_startQ10), hist.FindBin(s_stopQ10)
+
+            lQ8, lErrQ8, lQ10, lErrQ10 = 0.,0.,0.,0.
+
+            for bin in range(bin_startQ8, bin_stopQ8): 
+                lQ8 += hist.GetBinContent(bin)
+                lErrQ8 += hist.GetBinError(bin)
+
+            for bin in range(bin_startQ10, bin_stopQ10): 
+                lQ10 += hist.GetBinContent(bin)
+                lErrQ10 += hist.GetBinError(bin)
+
+            lossesQ8 += [( lQ8/(bin_stopQ8-bin_startQ8)/norm,lErrQ8/math.sqrt(bin_stopQ8-bin_startQ8)/norm )]
+            lossesQ10 += [( lQ10/(bin_stopQ10-bin_startQ10)/norm,lErrQ10/math.sqrt(bin_stopQ10-bin_startQ10)/norm )]
 
 
         hname, nbins, xmin, xmax = 'hmaxLoss', len(colls), -0.5, len(colls)+0.5
         hist_maxLoss = TH1F(hname, hname, nbins, xmin, xmax)
         hist_maxLoss.GetYaxis().SetTitle('#eta [m^{-1}]')
-        hist_maxLoss.SetMarkerStyle(22)
+        hist_maxLoss.SetMarkerStyle(20)
         hist_maxLoss.SetMarkerColor(kBlue)
         hist_maxLoss.SetLineColor(kBlue)
 
+        hist_Q8 = hist_maxLoss.Clone('lossesQ8')
+        hist_Q8.SetMarkerStyle(22)
+        hist_Q8.SetMarkerColor(kGreen-3)
+        hist_Q8.SetLineColor(kGreen-3)
+
+        hist_Q10 = hist_maxLoss.Clone('lossesQ10')
+        hist_Q10.SetMarkerStyle(23)
+        hist_Q10.SetMarkerColor(kPink-9)
+        hist_Q10.SetLineColor(kPink-9)
+
         for i in range(len(colls)):
-            hist_maxLoss.SetBinContent(i+1, maxLosses[i][1])
-            hist_maxLoss.SetBinError(i+1, maxLosses[i][0])
+            hist_maxLoss.SetBinContent(i+1, maxLosses[i][0])
+            hist_maxLoss.SetBinError(i+1, maxLosses[i][1])
             hist_maxLoss.GetXaxis().SetBinLabel(i+1, colls[i].lstrip('_'))
 
-        coll = 'nothingSpecial'
-        cv = TCanvas( 'cv' + coll, 'cv' + coll, 1200, 700)
+            hist_Q8.SetBinContent(i+1, lossesQ8[i][0])
+            hist_Q8.SetBinError(i+1,   lossesQ8[i][1])
+            hist_Q10.SetBinContent(i+1,lossesQ10[i][0])
+            hist_Q10.SetBinError(i+1,  lossesQ10[i][1])
+
+        cv = TCanvas( 'cv' , 'cv' , 1200, 700)
         
+        hist_maxLoss.GetYaxis().SetRangeUser(1e-10,2e-4)
         hist_maxLoss.Draw('pe')
+        hist_Q8.Draw('pesame')
+        hist_Q10.Draw('pesame')
+
+        x1, y1, x2, y2 = 0.7, 0.65, 0.9, 0.9
+        mlegend = TLegend( x1, y1, x2, y2)
+        mlegend.SetFillColor(0)
+        mlegend.SetFillStyle(0)
+        mlegend.SetLineColor(0)
+        mlegend.SetTextSize(0.035)
+        mlegend.SetShadowColor(0)
+        mlegend.SetBorderSize(0)
+
+        mlegend.AddEntry(hist_maxLoss, 'max cold loss', 'lpe')
+        mlegend.AddEntry(hist_Q8, 'loss in Q8', 'lpe')
+        mlegend.AddEntry(hist_Q10, 'loss in Q10', 'lpe')
+        mlegend.Draw()
         resulthist = 'complossTEST'
         pname  = wwwpath
         pname += subfolder + resulthist+'.png'
