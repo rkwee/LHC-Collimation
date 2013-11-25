@@ -23,9 +23,11 @@ def cv10():
     debug        = 1
     doWriteRFile = 0
     plotLossMaps = 0
-    doAvLoss     = 1
+    doSelectRange= 1
+    doAvLoss     = 0
 
-    collsH = [
+
+    collsHB1 = [
         # hHaloB1
         ('hHalo', '_sel1.B1'),
         ('hHalo', '_nominal.B1'),
@@ -42,7 +44,7 @@ def cv10():
         ('hHalo', '_TCSG.6R7.B1'),
         ]
 
-    collsV = [
+    collsVB1 = [
         # vHaloB1
         ('vHalo', '_sel1.B1'),
         ('vHalo', '_nominal.B1'),
@@ -59,25 +61,41 @@ def cv10():
         ('vHalo', '_TCSG.6R7.B1'),
         ]
 
+    collsHB2 = [
+	('hHalo', '_nominal_B2'),
+	('hHalo', '_nominal.B2'),
+	('hHalo', '_TCSG.6L7.B2'),
+	('hHalo', '_TCSG.A4L7.B2'),
+	('hHalo', '_TCSG.A4R7.B2'),
+	('hHalo', '_TCSG.A5R7.B2'),
+	('hHalo', '_TCSG.A6R7.B2'),
+	('hHalo', '_TCSG.B4R7.B2'),
+	('hHalo', '_TCSG.B5L7.B2'),
+	('hHalo', '_TCSG.B5R7.B2'),
+	('hHalo', '_TCSG.D4R7.B2'),
+	('hHalo', '_TCSG.D5L7.B2'),
+	('hHalo', '_TCSG.E5L7.B2'),
+        ]
+
     # tcs 
-    colls = collsH + collsV
-            
+    colls = collsHB1 + collsVB1       
     # subfolder in wwwpath for result plots
     subfolder = 'scan/' 
-            
+    
     for haloType,coll in colls:
 
-        # my results (tight coll settings)
-        thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/'+haloType+'/' 
-
-        rfname = haloType+"/scan_lossmaps_"+ haloType+"B1"+coll+".root"
-        trname = 'normtree' + coll
-        colNumber = 4
         beam   = 'b2'            
         beamn  = '2'        
-        if coll.count("B1"):
+        if coll.count('B1'):
             beam  = 'b1'
             beamn = '1'
+
+        # my results (tight coll settings)
+        thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/scan/B'+beamn+'/'+haloType+'/' 
+
+        rfname = thispath + 'scan_lossmaps_'+ haloType+'B'+beamn+coll+'.root'
+        trname = 'normtree' + coll
+        colNumber = 4
             
         f3 = helpers.source_dir + 'HL_TCT_7TeV/' + beam +'/CollPositions.'+beam+'.dat'
         f3 = helpers.source_dir + 'TCT_4TeV_60cm/'+beam+'/CollPositions.'+beam+'.dat'
@@ -90,12 +108,12 @@ def cv10():
 
         if doWriteRFile:
 
-            print "Writing " + '.'* 25 +' ' + rfname        
+            print 'Writing ' + '.'* 25 +' ' + rfname        
 
             # create a root file
             rf = TFile(rfname, 'recreate')
     
-            nt  = TTree(trname,"norm for each coll") 
+            nt  = TTree(trname,'norm for each coll') 
 
             if not os.path.exists(f4): 
                 print f4,' does not exist?!'
@@ -104,7 +122,7 @@ def cv10():
             t0 = time.time()
             h_tot_loss, h_cold, h_warm = lossmap.lossmap(beam,thispath,coll, f3) 
             t1 = time.time()
-            print(str(t1-t0)+" for returning lossmap histograms of " + coll )
+            print(str(t1-t0)+' for returning lossmap histograms of ' + coll )
 
             if debug:
                 if h_cold.GetEntries() < 1.:
@@ -151,7 +169,7 @@ def cv10():
                 print rfname,' does not exist?!'
                 continue
 
-            print("Plotting lossmaps from " + "."*20 + ' '+ rfname)
+            print('Plotting lossmaps from ' + '.'*20 + ' '+ rfname)
             trname = 'normtree' + coll
 
             doZooms = [0,1]
@@ -160,8 +178,6 @@ def cv10():
 
                 rf = TFile.Open(rfname)            
                 nt = rf.Get(trname)
-
-                beam       = 'b1'
                 branchname = coll.replace('.','QQQ')
 
                 norm = -9999
@@ -175,7 +191,7 @@ def cv10():
 
                 hname = 'coll_loss' +coll
 
-                if debug: print("Get histograms for coll " + coll + ", starting with " + hname)
+                if debug: print('Get histograms for coll ' + coll + ', starting with ' + hname)
 
                 coll_loss = rf.Get(hname)
                 cold_loss = rf.Get('cold_loss' +coll)
@@ -247,9 +263,9 @@ def cv10():
                 thelegend.SetLineColor(0)
                 thelegend.SetTextSize(0.035)
                 thelegend.SetShadowColor(10)
-                thelegend.AddEntry(coll_loss,'losses on collimators', "L")
-                thelegend.AddEntry(cold_loss,'cold losses', "L")
-                thelegend.AddEntry(warm_loss,'warm losses', "L")
+                thelegend.AddEntry(coll_loss,'losses on collimators', 'L')
+                thelegend.AddEntry(cold_loss,'cold losses', 'L')
+                thelegend.AddEntry(warm_loss,'warm losses', 'L')
                 thelegend.Draw()
 
                 lab = mylabel(60)
@@ -267,6 +283,63 @@ def cv10():
                 print('Saving file as' + pname ) 
                 cv.Print(pname)
 
+        # ------------------------------------------------
+        if doSelectRange:
+
+            rf = TFile.Open(rfname)            
+            trname = 'normtree' + coll
+            branchname = coll.replace('.','QQQ')
+            nt = rf.Get(trname)
+            norm = -9999
+            for entry in nt: norm = getattr(entry,branchname)
+
+            hist = rf.Get('cold_loss' + coll)
+            hist.Scale(1./norm)
+
+            cv = TCanvas( 'cv' , 'cv' , 2000, 700)
+            gPad.SetLogy(1)
+
+            s_startQ8, s_stopQ8   = 6940., 7020.
+            s_startQ10, s_stopQ10 = 7050., 7110.
+
+            if coll.count('B1'):
+                s_startQ8, s_stopQ8   = 20270., 20340.
+                s_startQ10, s_stopQ10 = 20370., 20435.
+
+            XurMin, XurMax = s_startQ8, s_stopQ10
+            hist.GetXaxis().SetRangeUser(XurMin*.995, XurMax*1.005)
+
+            YurMin, YurMax = 1e-8,5e-5
+            hist.GetYaxis().SetRangeUser(YurMin, YurMax)
+
+            hist.Draw()
+
+            lv = TLine()
+            lv.SetLineStyle(1)
+            lv.SetLineWidth(2)
+            lv.SetLineColor(kBlue)
+            xval = s_startQ8
+            lv.DrawLine(xval,YurMin,xval,YurMax)
+            xval = s_stopQ8
+            lv.DrawLine(xval,YurMin,xval,YurMax)
+
+            lv.SetLineStyle(1)
+            lv.SetLineWidth(2)
+            lv.SetLineColor(kOrange)
+            xval = s_startQ10
+            lv.DrawLine(xval,YurMin,xval,YurMax)
+            xval = s_stopQ10
+            lv.DrawLine(xval,YurMin,xval,YurMax)
+
+            subfolder = 'scan/benchmarkLosses/'
+            resulthist = 'bm' + coll + '_' + haloType + 'B'+ beamn
+
+            pname  = wwwpath
+            pname += subfolder + resulthist+'.png'
+
+            print('Saving file as' + pname ) 
+            cv.Print(pname)
+
     # ------------------------------------------------
     
     if doAvLoss:
@@ -275,7 +348,13 @@ def cv10():
         fraction = 0.1
         for haloType,coll in colls:
 
-            rfname = haloType+"/scan_lossmaps_"+ haloType+"B1"+coll+".root"
+            beam   = 'b2'            
+            beamn  = '2'        
+            if coll.count('B1'):
+                beam  = 'b1'
+                beamn = '1'
+
+            rfname = thispath + 'scan_lossmaps_'+ haloType+'B'+beamn+coll+'.root'
             trname = 'normtree' + coll
 
             branchname = coll.replace('.','QQQ')
@@ -295,8 +374,12 @@ def cv10():
             maxLoss = hist.GetMaximum()
             maxLosses += [(fraction*maxLoss/norm,fraction*math.sqrt(maxLoss)/norm)]
 
-            s_startQ8, s_stopQ8   = 20270., 20340.
-            s_startQ10, s_stopQ10 = 20370., 20435.
+            s_startQ8, s_stopQ8   = 6940., 7020.
+            s_startQ10, s_stopQ10 = 7050., 7110.
+
+            if coll.count('B1'):
+                s_startQ8, s_stopQ8   = 20270., 20340.
+                s_startQ10, s_stopQ10 = 20370., 20435.
 
             bin_startQ8, bin_stopQ8   = hist.FindBin(s_startQ8), hist.FindBin(s_stopQ8)
             bin_startQ10, bin_stopQ10 = hist.FindBin(s_startQ10), hist.FindBin(s_stopQ10)
@@ -370,14 +453,15 @@ def cv10():
         lv.SetLineStyle(1)
         lv.SetLineWidth(2)
         lv.SetLineColor(1)
-        xval = len(collsH)
+        xval = len(collsHB2)
         lv.DrawLine(xval,YurMin,xval,YurMax)
 
         lab = mylabel(42)
         lab.DrawLatex(.48, y1+0.15, 'hHalo')
-        lab.DrawLatex(.59, y1+0.15, 'vHalo')
+        if beamn == '1':
+            lab.DrawLatex(.59, y1+0.15, 'vHalo')
 
-        resulthist = 'complossesB1'
+        resulthist = 'complossesB'+beamn
         pname  = wwwpath
         pname += subfolder + resulthist+'.png'
 
