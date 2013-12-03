@@ -71,8 +71,6 @@ def lossmap(beam,path,tag,f3):
     tA = time.time()
     print(str(tA-tH)+" for filling data into lists")
     
-    tcs = tag.split('_')[-1]
-
     nbins, xmin, xmax = 10*length_LHC,0., length_LHC
 
     coll_loss = TH1F("coll_loss" + tag,"coll_loss" + tag,nbins, xmin, xmax)

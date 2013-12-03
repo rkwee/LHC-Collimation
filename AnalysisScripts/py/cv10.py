@@ -78,7 +78,7 @@ def cv10():
         ]
 
     # tcs 
-    colls = collsHB1 + collsVB1       
+    colls = collsHB2
     # subfolder in wwwpath for result plots
     subfolder = 'scan/' 
     
@@ -296,7 +296,7 @@ def cv10():
             hist = rf.Get('cold_loss' + coll)
             hist.Scale(1./norm)
 
-            cv = TCanvas( 'cv' , 'cv' , 2000, 700)
+            cv = TCanvas( 'cv'+coll , 'cv'+coll , 2000, 700)
             gPad.SetLogy(1)
 
             s_startQ8, s_stopQ8   = 6940., 7020.
@@ -312,6 +312,8 @@ def cv10():
             YurMin, YurMax = 1e-8,5e-5
             hist.GetYaxis().SetRangeUser(YurMin, YurMax)
 
+            hist.GetYaxis().SetTitle('#eta [m^{-1}]')
+            hist.GetYaxis().SetTitle('s [m]')
             hist.Draw()
 
             lv = TLine()

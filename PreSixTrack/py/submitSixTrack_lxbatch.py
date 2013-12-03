@@ -57,9 +57,9 @@ commonsource = sourcepath + 'common/'
 # assume all exectutables are in sourcepath + 'common/'
 cList  = [[ '3.5TeVExample',    [sourcepath + '3.5TeVExample/'   ,'SixTrack_4411_coll_gfortran_O4', '3500000' ]]]
 cList += [[ '3.5TeVOldExe',     [sourcepath + '3.5TeVOldExe/'    ,'SixTrackwColl'                 , '3500000' ]]]
-cList += [[ 'hHaloB1',          [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
+cList += [[ '7TeV_hHaloB1',          [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 cList += [[ 'NewColl7TeVB2',    [sourcepath + 'NewColl7TeVB2/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
-cList += [[ 'vHaloB1',          [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
+cList += [[ '7TeV_vHaloB1',          [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 cList += [[ '4TeV_vHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_hHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_vHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
@@ -87,8 +87,8 @@ beam        = 'b1'
 if source_dir.count('B2') or source_dir.count('b2'):
     beam = 'b2'
 
-thissource  = sourcepath + 'postLS1/' + beam + '/'
-#thissource  = 
+if ckey.count('7TeV'): thissource  = sourcepath + 'postLS1/' + beam + '/'
+else: thissource  = source_dir
 
 if showInfo: print("Using thissource " + thissource )
 # -----------------------------------------------------------
