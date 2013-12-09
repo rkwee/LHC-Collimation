@@ -23,14 +23,16 @@ def cv10():
     debug        = 1
     doWriteRFile = 0
     plotLossMaps = 0
-    doSelectRange= 1
-    doAvLoss     = 0
+    doSelectRange= 0
+    doAvLoss     = 1
 
 
     collsHB1 = [
         # hHaloB1
-        ('hHalo', '_sel1.B1'),
         ('hHalo', '_nominal.B1'),
+        ('hHalo', '_sel1.B1'),
+        ('hHalo', '_sel2.B1'),
+        ('hHalo', '_sel3.B1'),
         ('hHalo', '_TCSG.A6L7.B1'),
         ('hHalo', '_TCSG.B5L7.B1'),
         ('hHalo', '_TCSG.A5L7.B1'),
@@ -46,8 +48,10 @@ def cv10():
 
     collsVB1 = [
         # vHaloB1
-        ('vHalo', '_sel1.B1'),
         ('vHalo', '_nominal.B1'),
+        ('vHalo', '_sel1.B1'),
+        ('vHalo', '_sel2.B1'),
+        ('vHalo', '_sel3.B1'),
         ('vHalo', '_TCSG.A6L7.B1'),
         ('vHalo', '_TCSG.B5L7.B1'),
         ('vHalo', '_TCSG.A5L7.B1'),
@@ -62,7 +66,6 @@ def cv10():
         ]
 
     collsHB2 = [
-	('hHalo', '_nominal_B2'),
 	('hHalo', '_nominal.B2'),
 	('hHalo', '_TCSG.6L7.B2'),
 	('hHalo', '_TCSG.A4L7.B2'),
@@ -309,7 +312,7 @@ def cv10():
             XurMin, XurMax = s_startQ8, s_stopQ10
             hist.GetXaxis().SetRangeUser(XurMin*.995, XurMax*1.005)
 
-            YurMin, YurMax = 1e-8,5e-5
+            YurMin, YurMax = 1e-8,5e-6
             hist.GetYaxis().SetRangeUser(YurMin, YurMax)
 
             hist.GetYaxis().SetTitle('#eta [m^{-1}]')
@@ -355,6 +358,9 @@ def cv10():
             if coll.count('B1'):
                 beam  = 'b1'
                 beamn = '1'
+
+            # my results (tight coll settings)
+            thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/scan/B'+beamn+'/'+haloType+'/' 
 
             rfname = thispath + 'scan_lossmaps_'+ haloType+'B'+beamn+coll+'.root'
             trname = 'normtree' + coll
@@ -430,14 +436,14 @@ def cv10():
         gPad.SetGridx(1)
         gPad.SetGridy(1)
 
-        YurMin, YurMax = 1.5e-6,5e-6
+        YurMin, YurMax = 6e-7,20e-6
         hist_maxLoss.GetYaxis().SetRangeUser(YurMin,YurMax)
         hist_maxLoss.GetXaxis().SetNdivisions(len(colls))
         hist_maxLoss.Draw('pe')
         hist_Q8.Draw('pesame')
         hist_Q10.Draw('pesame')
 
-        x1, y1, x2, y2 = 0.2, 0.7, 0.4, 0.9
+        x1, y1, x2, y2 = 0.75, 0.75, 0.9, 0.9
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)
         mlegend.SetFillStyle(0)
@@ -455,13 +461,13 @@ def cv10():
         lv.SetLineStyle(1)
         lv.SetLineWidth(2)
         lv.SetLineColor(1)
-        xval = len(collsHB2)
+        xval = len(collsHB1)
         lv.DrawLine(xval,YurMin,xval,YurMax)
 
         lab = mylabel(42)
-        lab.DrawLatex(.48, y1+0.15, 'hHalo')
+        lab.DrawLatex(.38, y1-0.1, 'hHalo')
         if beamn == '1':
-            lab.DrawLatex(.59, y1+0.15, 'vHalo')
+            lab.DrawLatex(.69, y1-0.1, 'vHalo')
 
         resulthist = 'complossesB'+beamn
         pname  = wwwpath
