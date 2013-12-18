@@ -44,7 +44,7 @@ elif rfname.count("comp"):
     subfolder= 'TCT/HL/nominalSettings/comp/'
     if debug: print "Using HL comp format", '.'*10
 
-elif rfname.count('BH_4TeV'): 
+elif rfname.count('4TeV'): 
     sDict = sDict_BH_4TeV
     hDict = hDict_BH_4TeV
     tag   = '_BH_4TeV'
@@ -62,6 +62,13 @@ elif rfname.count('BG_3p5TeV'):
     sDict = sDict_BG_3p5TeV
     hDict = hDict_BG_3p5TeV
     tag   = '_BG_3p5TeV'
+    subfolder= 'TCT/3p5TeV/'
+    if debug: print "Using 4 TeV format", '.'*10
+
+elif rfname.count('beam-halo_3.5TeV-R1_D1'): 
+    sDict = sDict_BH_3p5TeV
+    hDict = hDict_BH_3p5TeV
+    tag   = '_BH_3p5TeV'
     subfolder= 'TCT/3p5TeV/'
     if debug: print "Using 4 TeV format", '.'*10
 # ---------------------------------------------------------------------------------
@@ -144,9 +151,14 @@ def plotSpectra(rfname):
           continue
 
       if XurMin is not -1:                        
-        hists[0].GetXaxis().SetRangeUser(XurMin, XurMax)
+        if type(hists[0]) == TH2F: hists[0].GetZaxis().SetRangeUser(XurMin, XurMax)
+        else: hists[0].GetXaxis().SetRangeUser(XurMin, XurMax)
+
       if YurMin is not -1:         
-        hists[0].GetYaxis().SetRangeUser(YurMin, YurMax)
+        if type(hists[0]) == TH2F:  
+            hists[0].GetXaxis().SetRangeUser(-YurMin, YurMin)
+            hists[0].GetYaxis().SetRangeUser(-YurMax, YurMax)
+        else: hists[0].GetYaxis().SetRangeUser(YurMin, YurMax)
         
       hists[0].GetYaxis().SetTitleSize(0.04)
       hists[0].GetYaxis().SetLabelSize(0.035)
@@ -164,7 +176,7 @@ def plotSpectra(rfname):
 
       gPad.RedrawAxis()
       if type(hists[0]) == TH2F: 
-          gPad.SetLogz(doLogy)
+          gPad.SetLogz(doLogx)
       else:
           gPad.SetLogx(doLogx)
           gPad.SetLogy(doLogy)

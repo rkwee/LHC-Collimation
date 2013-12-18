@@ -22,11 +22,12 @@ def cv13():
     # sDict = sDict_BH_4TeV
 
     fNum   = workpath + 'results/results_beam-halo_3.5TeV-R1_D1.root'
-    fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_b2_nprim8578000_66.root'
+    fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_b2_nprim1766000_66.root'
     subfolder = '4TeV/compBH/'
-    lTextNum = 'BH 3.5 TeV'
+    lTextNum = 'BH 3.5 TeV '
     lTextDenom = 'BH 4 TeV'
     tagNum, tagDenom = 'BH_3p5TeV', 'BH_4TeV'
+    # tagNum, tagDenom = 'BH_4TeV', 'BH_4TeV'
     sDict = sDict_BH_3p5TeV
 
     # fNum   = workpath + 'results/results_BH_3p5TeV.root'
@@ -47,6 +48,8 @@ def cv13():
 
     rfNum = TFile.Open(fNum)
     rfDenom = TFile.Open(fDenom)
+    print 'opening as numerator', fNum
+    print 'opening as denominator', fDenom
 
     msize = 0.05
     for skey in sDict.keys():
