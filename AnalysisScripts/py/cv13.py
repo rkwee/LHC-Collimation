@@ -22,7 +22,7 @@ def cv13():
     # sDict = sDict_BH_4TeV
 
     fNum   = workpath + 'results/results_beam-halo_3.5TeV-R1_D1.root'
-    fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_b2_nprim1766000_66.root'
+    fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'
     subfolder = '4TeV/compBH/'
     lTextNum = 'BH 3.5 TeV '
     lTextDenom = 'BH 4 TeV'
@@ -56,9 +56,7 @@ def cv13():
 
         if skey.count('XY'): continue
 
-        a,b = 1,1
-        cv = TCanvas( 'cv'+skey, 'cv'+skey, 10, 10, a*80, b*80 )
-        cv.Divide(a,b)
+        cv = TCanvas( 'cv'+skey, 'cv'+skey, 10, 10, 80, 80 )
 
         x1, y1, x2, y2 = 0.63,0.7,0.95,0.92
         mlegend = TLegend( x1, y1, x2, y2)
@@ -96,6 +94,11 @@ def cv13():
         histNum  = rfNum.Get(hnameNum)
         histDenom  = rfDenom.Get(hnameDenom)
 
+        if hnameNum.count('Rad'):
+            histNum.Rebin()
+            histDenom.Rebin()
+
+
         histNum.GetXaxis().SetTitle(xtitle)
         histNum.GetYaxis().SetTitle(ytitle)
 
@@ -120,16 +123,26 @@ def cv13():
 
         hnameRatio = 'ratio'+hnameNum
         hRatio = histNum.Clone(hnameRatio)
-        hRatio.Divide(histNum, histDenom, 1, 1, 'B')
+
+        hRatio.Divide(histNum, histDenom, 1, 1)
         hRatio.SetLineColor(kRed)
         hRatio.SetMarkerColor(kRed)
         hRatio.SetMarkerStyle(22)
         hRatio.SetMarkerSize(msize)
 
-        p2.cd()
-        hRatio.GetYaxis().SetTitle('ratio ' + lTextNum + '/' + lTextDenom)
-        hRatio.Draw('h')
+        l = TLine()
+        l.SetLineWidth(1)
+        l.SetLineColor(kSpring)
+        XurMin = hRatio.GetBinLowEdge(1)
+        XurMax = hRatio.GetBinLowEdge( hRatio.GetNbinsX()+1 )
 
+        p2.cd()
+
+        if hnameNum.count('Rad') or hRatio.GetMaximum()>200:
+            hRatio.GetYaxis().SetRangeUser(-2,2)
+        hRatio.GetYaxis().SetTitle('ratio ' + lTextNum + '/' + lTextDenom)
+        hRatio.Draw('pe')
+        l.DrawLine(XurMin,1,XurMax,1)
         pname =  '/Users/rkwee/Documents/RHUL/work/results/www/TCT/'+subfolder+hnameRatio.split('_')[0]+'.pdf'
 
         print pname

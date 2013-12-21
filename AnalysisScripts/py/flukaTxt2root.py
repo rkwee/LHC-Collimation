@@ -23,13 +23,11 @@ fname  = options.filename
 
 if fname.endswith("30"): 
     hDict   = hDict_HL_halo
-    varList = varList_HL
 else: 
     hDict   = hDict_4TeV
-    varList = varList_4TeV
+
 
 rfname = fname + '.root'
-sometext,pID,cEkin,cX,cY,cZ,tag,csfile_H,csfile_V,Ntct_H,Ntct_V, NtotBeam,nprim = [v for v in varList]
 # ---------------------------------------------------------------------------------
 def getColContent(colNumbers, particleTypes):
 
@@ -89,33 +87,6 @@ def do1dLogHisto(hname, colNumbers, xaxis, particleTypes):
         hist.SetBinContent(bin,bcenter*content/width)
  
     return hist
-# ---------------------------------------------------------------------------------
-def doNormR():
-    # normlise by loss rate
-
-    print sometext
-
-    # lifetime
-    tau_1   = 12*60 # loose beam in 12 minutes
-    tau_2   = 100*60*60 # in 100 h
-
-    Ntot_H  = addCol(csfile_H, 4-1)
-    R1det_H = Ntct_H/Ntot_H * NtotBeam/tau_1
-    R2det_H = Ntct_H/Ntot_H * NtotBeam/tau_2
-
-    print "total #p lost in 200 turns _H", Ntot_H
-
-    Ntot_V  = addCol(csfile_V, 4-1)
-    R1det_V = Ntct_V/Ntot_V * NtotBeam/tau_1
-    R2det_V = Ntct_V/Ntot_V * NtotBeam/tau_2
-
-    print "total #p lost in 200 turns _V", Ntot_V
-    print "fraction #p lost in 200 turns  _V", Ntct_V/Ntot_V
-
-    R1det = int(0.5*( R1det_H + R1det_V ))
-    R2det = int(0.5*( R2det_H + R2det_V ))
-
-    return R1det, R2det
 # ---------------------------------------------------------------------------------
 def do1dRadHisto(hname, colNumbers, xaxis, particleTypes):
 

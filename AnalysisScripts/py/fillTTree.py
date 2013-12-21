@@ -54,6 +54,8 @@ else:
 zmin, zmax = 2260., 14960.
 # to disable the zcut have zOn > zmax
 zOn = 2e4
+# for all use energy cut at 20 MeV
+encut = 'energy_ke > 2.e-2'
 # ---------------------------------------------------------------------------------
 def getXLogAxis(nbins, xmin, xmax):
 
@@ -91,6 +93,7 @@ def do1dLogHisto(mt, hname, xaxis, particleTypes):
     var = 'energy_ke'
 
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+    cuts += [encut]
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
@@ -127,6 +130,7 @@ def do1dRadHisto(mt, hname, xaxis, particleTypes):
     var = 'TMath::Sqrt(x*x + y*y)'
 
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+    cuts += [encut]
 
     if not ekinCut.count('-9999'): cuts += ['energy_ke > ' + ekinCut]
 
@@ -163,6 +167,7 @@ def do1dRadEnHisto(mt, hname, xaxis, particleTypes):
     var = 'TMath::Sqrt(x*x + y*y)'
 
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+    cuts += [encut]
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
@@ -201,6 +206,7 @@ def do1dPhiHisto(mt, hname, xaxis, particleTypes):
     if float(rcut) > 0.: cuts += ['TMath::Sqrt(x*x + y*y) > ' + rcut]
 
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+    cuts += [encut]
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
@@ -233,6 +239,7 @@ def do1dPhiEnHisto(mt, hname, xaxis, particleTypes):
     var = 'TMath::ATan2(y,x)'
 
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+    cuts += [encut]
 
     # cut on radius
     rcut = sDict[hname][8]
@@ -270,6 +277,7 @@ def do1dXcoorHisto(mt, hname, xaxis, particleTypes):
     rcut = sDict[hname][8]
 
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+    cuts += [encut]
 
     var = 'x'
 
@@ -304,6 +312,7 @@ def do1dYcoorHisto(mt, hname, xaxis, particleTypes):
     rcut = sDict[hname][8]
 
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+    cuts += [encut]
 
     var = 'y'
 
@@ -342,6 +351,7 @@ def do2dScatHisto(mt, hname, nbins, xymin, xymax, particleTypes):
         cuts += [emax + ' > energy_ke && ' + emin + ' < energy_ke']
 
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+    cuts += [encut]
 
     # y is on y-axis, x on x-axis
     var = "y:x"
@@ -459,6 +469,7 @@ def GetHistos():
        hists[-1].Write()
 
     rfile.Close()
+    print 'wrote ','.'*20, rfoutname
 # ---------------------------------------------------------------------------------
 if __name__ == "__main__":
 

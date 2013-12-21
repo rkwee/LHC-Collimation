@@ -32,7 +32,7 @@ TStyle* AtlasStyle()
 
   // set margin sizes
   atlasStyle->SetPadTopMargin(0.05);
-  atlasStyle->SetPadRightMargin(0.05);
+  //  atlasStyle->SetPadRightMargin(0.05);
   atlasStyle->SetPadBottomMargin(0.16);
   atlasStyle->SetPadLeftMargin(0.16);
 
