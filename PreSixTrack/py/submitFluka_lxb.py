@@ -55,7 +55,8 @@ commonsource = sourcepath + 'common/'
 
 # assume all exectutables are in sourcepath + 'common/'
 
-cList  = [[ 'fluka_4TeV_haloB2',     [sourcepath + 'TCT_4TeV_60cm/fluka/','slc5Exe/ir1_4TeV_shscript.exe', '*fort*', 'RANDOMIZ       1.0  9875214.', ]]]
+cList  = [[ 'fluka_4TeV_haloB2',     [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', ]]]
+cList += [[ 'fluka_4TeV_haloB1',     [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', ]]]
 cList += [[ 'fluka_HL_TCT_haloB2',   [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts_myexe/my.exe', '*fort.*','RANDOMIZ         1.0  9875214.',]]]
 
 cDict = dict(cList)
@@ -91,7 +92,7 @@ fortfiles  = cDict[ckey][2]
 iniRand    = cDict[ckey][3]
 
 if not ckey.count("HL"):
-    haloData    = source_dir + 'HALO.dat'
+    haloData    = source_dir + beam +'/HALO.dat'
     magfile1    = source_dir + 'MB.dat'
     magfile2    = source_dir + 'MBXW.dat'
     magfile3    = source_dir + 'MQTL.dat'
@@ -105,7 +106,7 @@ else:
     haloData    = source_dir + 'TCTIMPAC.dat'
     magfile1    = source_dir + 'MBXF_150.dat'
     magfile2    = source_dir + 'MQXFv3.dat'
-    inpFile     = source_dir + beam + '/hllhc_ir1_'+beam+'.inp'
+    inpFile     = source_dir + beam + '/hllhc_ir1_tightsett_'+beam+'.inp'
     inputFiles  = [haloData, magfile1,magfile2, inpFile]
 
 cnt = 0

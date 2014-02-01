@@ -29,6 +29,8 @@ if unit == '66':
     skipN = 9
     print 'skipping first', skipN, 'characters of each file'
 else: skipN = -9999
+beam = 'B2'
+if rundir.count('B1'): beam = 'b1'
 # ----------------------------------------------------------------------------------------------------------------------
 # define run files and parameters
 debug      = 1
@@ -69,7 +71,7 @@ def ListFortFiles(fn):
     #   example of file: ir1_4TeV_settings_from_TWISS_b2001_fort.53
     onefile = allfortfiles[-1].split('/')[-1]
     onefile = onefile.split('_fort')[0]
-    onefile = onefile.rstrip(onefile[-3:])
+    onefile = onefile[:-3]
 
     # per fn return a list
     return allfortfiles, onefile
@@ -95,8 +97,8 @@ def joinTextFiles(fn):
         cnt += 1
 
         runnumber   = afile.split('run_')[-1].split('/')[0]
-        cyclenumber = afile.split('/')[-1].split('b2')[-1].split('_fort.' + fn)[0]
-        #print("for file", afile, "found runnumber ", runnumber, ' and cyclenumber', cyclenumber)
+        cyclenumber = afile.split('/')[-1].split(beam)[-1].split('_fort.' + fn)[0]
+        # print("for file", afile, "found runnumber ", runnumber, ' and cyclenumber', cyclenumber)
 
         with open(afile) as af:
 

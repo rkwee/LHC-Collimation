@@ -28,11 +28,12 @@ def cv10():
 
 
     collsHB1 = [
-        # hHaloB1
+        #hHaloB1
         ('hHalo', '_nominal.B1'),
         ('hHalo', '_sel1.B1'),
         ('hHalo', '_sel2.B1'),
         ('hHalo', '_sel3.B1'),
+        ('hHalo', '_sel4.B1'),
         ('hHalo', '_TCSG.A6L7.B1'),
         ('hHalo', '_TCSG.B5L7.B1'),
         ('hHalo', '_TCSG.A5L7.B1'),
@@ -47,11 +48,12 @@ def cv10():
         ]
 
     collsVB1 = [
-        # vHaloB1
+
         ('vHalo', '_nominal.B1'),
         ('vHalo', '_sel1.B1'),
         ('vHalo', '_sel2.B1'),
         ('vHalo', '_sel3.B1'),
+        ('vHalo', '_sel4.B1'),
         ('vHalo', '_TCSG.A6L7.B1'),
         ('vHalo', '_TCSG.B5L7.B1'),
         ('vHalo', '_TCSG.A5L7.B1'),
@@ -67,6 +69,10 @@ def cv10():
 
     collsHB2 = [
 	('hHalo', '_nominal.B2'),
+        ('hHalo', '_sel1.B2'),
+        ('hHalo', '_sel2.B2'),
+        ('hHalo', '_sel3.B2'),
+        ('hHalo', '_sel4.B2'),
 	('hHalo', '_TCSG.6L7.B2'),
 	('hHalo', '_TCSG.A4L7.B2'),
 	('hHalo', '_TCSG.A4R7.B2'),
@@ -80,8 +86,17 @@ def cv10():
 	('hHalo', '_TCSG.E5L7.B2'),
         ]
 
+    collsVB2 = [
+
+        ('vHalo', '_nominal.B2'),
+        ('vHalo', '_sel1.B2'),
+        ('vHalo', '_sel2.B2'),
+        ('vHalo', '_sel3.B2'),
+        ('vHalo', '_sel4.B2'),
+        ]
+
     # tcs 
-    colls = collsHB2
+    colls = collsHB1 +  collsVB1
     # subfolder in wwwpath for result plots
     subfolder = 'scan/' 
     
@@ -217,10 +232,10 @@ def cv10():
                     x1, y1, x2, y2 = 0.68, 0.78, 0.91, 0.9
 
                 XurMin, XurMax = 0., length_LHC
-                if doZoom and beam.count('1'):
-                    XurMin, XurMax = 19.7e3, 20.6e3
+                if doZoom:
                     rel = '_zoom'
-
+                    XurMin, XurMax = 6.3e3, 8.0e3 
+                    if beam.count('1') : XurMin, XurMax = 19.7e3, 20.6e3
                 coll_loss.Draw('hist')
                 cold_loss.Draw('samehist')
                 warm_loss.Draw('samehist')
@@ -281,6 +296,7 @@ def cv10():
                 gPad.SetLogy(1)
 
                 pname  = wwwpath
+                subfolder = 'scan/'
                 pname += subfolder + hname + '_' + haloType+ rel+'.png'
 
                 print('Saving file as' + pname ) 
@@ -299,7 +315,7 @@ def cv10():
             hist = rf.Get('cold_loss' + coll)
             hist.Scale(1./norm)
 
-            cv = TCanvas( 'cv'+coll , 'cv'+coll , 2000, 700)
+            cv = TCanvas( 'cv'+coll , 'cv'+coll , 2050, 700)
             gPad.SetLogy(1)
 
             s_startQ8, s_stopQ8   = 6940., 7020.
@@ -443,7 +459,8 @@ def cv10():
         hist_Q8.Draw('pesame')
         hist_Q10.Draw('pesame')
 
-        x1, y1, x2, y2 = 0.75, 0.75, 0.9, 0.9
+        if beamn == '1': x1, y1, x2, y2 = 0.75, 0.75, 0.9, 0.9
+        else: x1, y1, x2, y2 = 0.5, 0.75, 0.7, 0.9
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)
         mlegend.SetFillStyle(0)
@@ -466,8 +483,8 @@ def cv10():
 
         lab = mylabel(42)
         lab.DrawLatex(.38, y1-0.1, 'hHalo')
-        if beamn == '1':
-            lab.DrawLatex(.69, y1-0.1, 'vHalo')
+        if beamn == '1': lab.DrawLatex(.69, y1-0.1, 'vHalo')
+        else: lab.DrawLatex(.9, y1-0.1, 'vHalo')
 
         resulthist = 'complossesB'+beamn
         pname  = wwwpath

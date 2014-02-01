@@ -57,9 +57,10 @@ commonsource = sourcepath + 'common/'
 # assume all exectutables are in sourcepath + 'common/'
 cList  = [[ '3.5TeVExample',    [sourcepath + '3.5TeVExample/'   ,'SixTrack_4411_coll_gfortran_O4', '3500000' ]]]
 cList += [[ '3.5TeVOldExe',     [sourcepath + '3.5TeVOldExe/'    ,'SixTrackwColl'                 , '3500000' ]]]
-cList += [[ '7TeV_hHaloB1',          [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
-cList += [[ 'NewColl7TeVB2',    [sourcepath + 'NewColl7TeVB2/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
-cList += [[ '7TeV_vHaloB1',          [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
+cList += [[ '7TeV_hHaloB1',     [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
+cList += [[ '7TeV_hHaloB2',     [sourcepath + 'NewColl7TeVB2/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
+cList += [[ '7TeV_vHaloB1',     [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
+cList += [[ '7TeV_vHaloB2',     [sourcepath + 'NewColl7TeVB2/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 cList += [[ '4TeV_vHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_hHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_vHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
@@ -76,8 +77,8 @@ except KeyError:
     sys.exit()
 
 afsRunMain  = "/afs/cern.ch/work/r/rkwee/HL-LHC/runs/"
-run_dir     = run_dir + "/"
-afs_run_dir = afsRunMain + run_dir
+afs_run_dir = afsRunMain + run_dir + '/'
+loc_run_dir = run_dir.split('/')[-1] + '/'
 energy      = cDict[ckey][2]
 haloType    = ''
 if ckey.count('vHalo'): haloType = 'vHalo/'
@@ -158,7 +159,6 @@ for job in newrange:
 
     # for each job create a subdir
     subdir = afs_run_dir + 'run_' + index + '/'
-    
     os.mkdir(subdir)
 
     print('Changing to rundir ' + subdir)
@@ -170,9 +170,9 @@ for job in newrange:
     run_job = open(run_job_fname,'w')
     run_job.write('#!/bin/bash\n\n')
 
-    run_job.write('mkdir ' + run_dir +'\n')
-    run_job.write('mkdir ' + run_dir +'run_' + str(index)+ '\n')
-    run_job.write('cd ' + run_dir + 'run_'+ str(index) +'\n')
+    run_job.write('mkdir ' + loc_run_dir +'\n')
+    run_job.write('mkdir ' + loc_run_dir +'run_' + str(index)+ '\n')
+    run_job.write('cd ' + loc_run_dir + 'run_'+ str(index) +'\n')
 
     # copy the inputfiles
     for inpfile in inputFiles:
