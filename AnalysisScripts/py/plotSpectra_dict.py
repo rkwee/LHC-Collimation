@@ -8,7 +8,7 @@ hDict_HL_comp = {
     # ---------------------------------------------------------------------------------
     # comp plots
     # ---------------------------------------------------------------------------------
-    # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText
+    # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText #13 lx #14 ly
 
     'EkinMuComp' : [['EkinMuBGst', 'EkinMuBGac', 'EkinMuBHds', 'EkinMuBHop' ],0.63,0.73,0.95,0.9, 1,1, 2e-2,9e3,1e-1,8e9, 0, '#mu^{#pm}', 0.55,0.85],
     'EkinPrComp' : [['EkinPrBGst', 'EkinPrBGac', 'EkinPrBHds', 'EkinPrBHop' ],0.63,0.73,0.95,0.9, 1,1, 2e-2,9e3,1e-1,8e9, 0, 'p', 0.55,0.85],
@@ -38,7 +38,7 @@ lText = 'beamhalo'
 tag_HL= '_BH'
 hDict_HL_BH = { 
 
-    # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText
+    # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText #13 lx #14 ly
     # ---------------------------------------------------------------------------------
     # single file plots
     # ---------------------------------------------------------------------------------
@@ -128,7 +128,7 @@ lText = 'beamhalo 4 TeV'
 tag = '_BH_4TeV'
 hDict_BH_4TeV = { 
 
-    # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText
+    # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText #13 lx #14 ly
     # ---------------------------------------------------------------------------------
     # single file plots
     # ---------------------------------------------------------------------------------
@@ -174,7 +174,7 @@ lText = 'beamgas 4 TeV'
 tag = '_BG_4TeV'
 hDict_BG_4TeV = { 
 
-    # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText
+    # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText #13 lx #14 ly
     # ---------------------------------------------------------------------------------
     # single file plots
     # ---------------------------------------------------------------------------------
@@ -219,7 +219,7 @@ lText = 'beamhalo 3.5 TeV'
 tag = '_BH_3p5TeV'
 hDict_BH_3p5TeV = { 
 
-    # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText
+    # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText #13 lx #14 ly
     # ---------------------------------------------------------------------------------
     # single file plots
     # ---------------------------------------------------------------------------------
