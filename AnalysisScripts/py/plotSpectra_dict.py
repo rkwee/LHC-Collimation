@@ -1,4 +1,4 @@
-
+Beam = 'B1'
 tag_HL   = 'HL_BH'
 # ---------------------------------------------------------------------------------
 # dict for histograms, ALL hDicts must have the same structure!!
@@ -124,8 +124,8 @@ hDict_HL_BGac = { # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y
     }
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
-lText = 'beamhalo 4 TeV'
-tag = '_BH_4TeV'
+lText = 'beamhalo 4 TeV' 
+tag = '_BH_4TeV_' + Beam
 hDict_BH_4TeV = { 
 
     # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText #13 lx #14 ly

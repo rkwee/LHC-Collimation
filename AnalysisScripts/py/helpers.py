@@ -7,7 +7,6 @@ import os, math, time, ROOT
 from ROOT import TLatex
 import gzip
 # ------------------------------------------------------------------------------------------------
-
 workpath = '/afs/cern.ch/work/r/rkwee/HL-LHC/'
 wwwpath  = '/afs/cern.ch/user/r/rkwee/public/www/HL-LHC/'
 source_dir  = workpath + 'runs/sourcedirs/'

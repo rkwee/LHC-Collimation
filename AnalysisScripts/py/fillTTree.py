@@ -6,74 +6,36 @@ import ROOT, sys, glob, os, math, helpers
 from ROOT import *
 from helpers import *
 from array import array
-from fillTTree_dict import sDict_HL_BH,sDict_HL_BGac,sDict_HL_comp,sDict_HL_BGst, sDict_BG_4TeV, sDict_BH_4TeV,sDict_BH_3p5TeV,sDict_BH_3p5TeV_v2
+from fillTTree_dict import generate_sDict
+from createTTree import treeName
 # ---------------------------------------------------------------------------------
-import optparse
-from optparse import OptionParser
-
-parser = OptionParser()
-parser.add_option("-f", "--file", dest="rfile", type="string",
-                  help="put the rootfile from which histograms are filled.")
-
-(options, args) = parser.parse_args()
-
-rfname  = options.rfile
-# ---------------------------------------------------------------------------------
-debug = 1
-# assume that there are 3 folders HL, 4TeV and 3p5TeV
-
-if rfname.count('HL'):
-    if debug: print "Using HL format", '.'*10
-    if rfname.count('hllhc'):
-        sDict = sDict_HL_BH
-    elif rfname.count('hilumi_ir1_fort_scaled_afterconditioning'):
-        sDict = sDict_HL_BGac
-    elif rfname.count('hilumi_ir1_fort_scaled_startup'):
-        sDict = sDict_HL_BGst
-    elif rfname.count('comp'):
-        sDict = sDict_HL_comp
-
-elif rfname.count('4TeV'):
-    if debug: print "Using 4 TeV format", '.'*10
-    if rfname.count('ir1_4TeV_settings_from_TWISS_b2_nprim'):
-        sDict = sDict_BH_4TeV
-    elif rfname.count('beam-gas'):
-        sDict = sDict_BG_4TeV
-
-elif rfname.count('3p5TeV'):
-    if debug: print "Using 3.5/4 TeV format. Beam Halo ONLY!", '.'*10
-    if rfname.count('beam-halo_3.5TeV-R1_D1'):
-        sDict = sDict_BH_3p5TeV
-    else:
-        sDict = sDict_BH_3p5TeV_v2
-
-else: 
-    print 'file not recognised. try again.'
-    sys.exit()
+# helper functions first, then main local function //
+# global variables
 # ---------------------------------------------------------------------------------
 zmin, zmax = 2260., 14960.
 # to disable the zcut have zOn > zmax
 zOn = 2e4
 # for all use energy cut at 20 MeV
 encut = 'energy_ke > 2.e-2'
+debug = 1
 # ---------------------------------------------------------------------------------
 def getXLogAxis(nbins, xmin, xmax):
 
     # exponent width
     width = 1./nbins*(math.log10(xmax) - math.log10(xmin))
     # width = 1./nbins*(math.log(xmax) - math.log(xmin))
-    
+
     # axis with exponents only 
     xtmp  = [math.log10(xmin) + i * width for i in range(nbins+1)]
     # xtmp  = [math.log(xmin) + i * width for i in range(nbins+1)]
-    
+
     # real axis in power of 10
     xaxis = [math.pow(10, xExp) for xExp in xtmp]
     # xaxis = [math.exp(xExp) for xExp in xtmp]
 
     return xaxis
 # ---------------------------------------------------------------------------------
-def do1dLogHisto(mt, hname, xaxis, particleTypes):
+def do1dLogHisto(sDict, mt, hname, xaxis, particleTypes):
 
     nbins = len(xaxis)-1
     hist  = TH1F(hname, hname, nbins, array('d', xaxis) )
@@ -106,17 +68,17 @@ def do1dLogHisto(mt, hname, xaxis, particleTypes):
     if debug: print 'will apply a cut of ', cut, 'to', hname
     mt.Project(hname, var, cut)
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
-   
+
     # This second loop changes the Get.Entries() value by number of bins!!
     for bin in range(1,nbins+1):
         content = hist.GetBinContent(bin)
         width   = hist.GetBinWidth(bin)
         bcenter = hist.GetXaxis().GetBinCenterLog(bin)
         hist.SetBinContent(bin,bcenter*content/width)
- 
+
     return hist
 # ---------------------------------------------------------------------------------
-def do1dRadHisto(mt, hname, xaxis, particleTypes):
+def do1dRadHisto(sDict, mt, hname, xaxis, particleTypes):
 
     ekinCut = sDict[hname][8]
     nbins   = len(xaxis)-1
@@ -151,7 +113,7 @@ def do1dRadHisto(mt, hname, xaxis, particleTypes):
         binArea = math.pi * (xaxis[i+1]**2 - xaxis[i]**2)
         content = hist.GetBinContent(i)
         hist.SetBinContent(i,content/binArea)
- 
+
     return hist
 # ---------------------------------------------------------------------------------
 def do1dRadEnHisto(mt, hname, xaxis, particleTypes):
@@ -177,7 +139,7 @@ def do1dRadEnHisto(mt, hname, xaxis, particleTypes):
     # weightening by multiplying the cut
     if cuts: cut = 'weight * energy_ke * (' + ' && '.join(cuts) + ')'
     else: cut = 'weight * energy_ke'
-    
+
     if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
     mt.Project(hname, var, cut)
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
@@ -186,10 +148,10 @@ def do1dRadEnHisto(mt, hname, xaxis, particleTypes):
         binArea = math.pi * (xaxis[i+1]**2 - xaxis[i]**2)
         content = hist.GetBinContent(i)
         hist.SetBinContent(i,content/binArea)
- 
+
     return hist
 # ---------------------------------------------------------------------------------
-def do1dPhiHisto(mt, hname, xaxis, particleTypes):
+def do1dPhiHisto(sDict, mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
@@ -226,7 +188,7 @@ def do1dPhiHisto(mt, hname, xaxis, particleTypes):
 
     return hist
 # ---------------------------------------------------------------------------------
-def do1dPhiEnHisto(mt, hname, xaxis, particleTypes):
+def do1dPhiEnHisto(sDict, mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
@@ -261,10 +223,10 @@ def do1dPhiEnHisto(mt, hname, xaxis, particleTypes):
     for i in range(nbins):
         content = hist.GetBinContent(i)
         hist.SetBinContent(i,content/hist.GetBinWidth(i))
- 
+
     return hist
 # ---------------------------------------------------------------------------------
-def do1dXcoorHisto(mt, hname, xaxis, particleTypes):
+def do1dXcoorHisto(sDict, mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
@@ -296,10 +258,10 @@ def do1dXcoorHisto(mt, hname, xaxis, particleTypes):
     for i in range(nbins):
         content = hist.GetBinContent(i)
         hist.SetBinContent(i,content/hist.GetBinWidth(i))
- 
+
     return hist
 # ---------------------------------------------------------------------------------
-def do1dYcoorHisto(mt, hname, xaxis, particleTypes):
+def do1dYcoorHisto(sDict, mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
@@ -331,11 +293,11 @@ def do1dYcoorHisto(mt, hname, xaxis, particleTypes):
     for i in range(nbins):
         content = hist.GetBinContent(i)
         hist.SetBinContent(i,content/hist.GetBinWidth(i))
- 
+
     return hist
 
 # ---------------------------------------------------------------------------------
-def do2dScatHisto(mt, hname, nbins, xymin, xymax, particleTypes):
+def do2dScatHisto(sDict, mt, hname, nbins, xymin, xymax, particleTypes):
 
     hist = TH2F(hname, hname, nbins, xymin, xymax, nbins, xymin, xymax)
     cuts = []
@@ -373,10 +335,10 @@ def do2dScatHisto(mt, hname, nbins, xymin, xymax, particleTypes):
     for i in range(nbins):
         content = hist.GetBinContent(i)
         hist.SetBinContent(i,content/hist.GetBinWidth(i))
- 
+
     return hist
 # ---------------------------------------------------------------------------------
-def getHistogram(skey, mt):
+def getHistogram(sDict, skey, mt):
 
     if debug: print "INFO: filling histogram", '.'*20, skey, '.'*20
 
@@ -388,12 +350,12 @@ def getHistogram(skey, mt):
 
     if hname.startswith("Ekin"):
         xaxis = getXLogAxis(nbins, xmin, xmax)
-        hist  = do1dLogHisto(mt, hname, xaxis, particleTypes)
+        hist  = do1dLogHisto(sDict, mt, hname, xaxis, particleTypes)
 
     elif hname.startswith("RadN"):
         binwidth = xmax/nbins
         xaxis = [i*binwidth for i in range(nbins+1)]
-        hist  = do1dRadHisto(mt, hname, xaxis, particleTypes) 
+        hist  = do1dRadHisto(sDict, mt, hname, xaxis, particleTypes) 
 
     elif hname.startswith("RadEn"):
         binwidth = xmax/nbins
@@ -403,37 +365,50 @@ def getHistogram(skey, mt):
     elif hname.startswith("PhiN"):
         binwidth = (xmax-xmin)/nbins
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
-        hist  = do1dPhiHisto(mt, hname, xaxis, particleTypes) 
-        
+        hist  = do1dPhiHisto(sDict, mt, hname, xaxis, particleTypes) 
+
     elif hname.startswith("PhiEn"):
         binwidth = (xmax-xmin)/nbins
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
-        hist  = do1dPhiEnHisto(mt, hname, xaxis, particleTypes) 
+        hist  = do1dPhiEnHisto(sDict, mt, hname, xaxis, particleTypes) 
 
     elif hname.startswith("Xcoor"):
         binwidth = (xmax-xmin)/nbins
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
-        hist  = do1dXcoorHisto(mt, hname, xaxis, particleTypes) 
+        hist  = do1dXcoorHisto(sDict, mt, hname, xaxis, particleTypes) 
 
     elif hname.startswith("Ycoor"):
         binwidth = (xmax-xmin)/nbins
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
-        hist  = do1dYcoorHisto(mt, hname, xaxis, particleTypes) 
+        hist  = do1dYcoorHisto(sDict, mt, hname, xaxis, particleTypes) 
 
     elif hname.startswith("XYN"):
         # only same binning in x and y for now
-        hist  = do2dScatHisto(mt, hname, nbins, xmin, xmax, particleTypes) 
+        hist  = do2dScatHisto(sDict, mt, hname, nbins, xmin, xmax, particleTypes) 
 
     return hist
 # ---------------------------------------------------------------------------------
-def GetHistos():
+def resultFile(bbgFile):
+    return    workpath + 'results/results_'+bbgFile.split('/')[-1]
+# ---------------------------------------------------------------------------------
+# main local function
+# ---------------------------------------------------------------------------------
+def fillHistos(bbgFile, tag):
+    
+    # bbgFile is the rootfile with the TTree, use this to fill histograms
     # write out a rootfile with histograms
+
+    print "Opening...", bbgFile
+    norm = float(bbgFile.split('nprim')[-1].split('_')[0])
+    tBBG = TFile.Open(bbgFile).Get(treeName)
+    yrel = '/TCT hit'
+    sDict = generate_sDict(tag, norm, tBBG, yrel)
 
     # histograms which should be written one to rootfile
     rHists = []
 
     # rootfile with results
-    rfoutname = '~/Documents/RHUL/work/runs/TCT/results/results_'+rfname.split('/')[-1]
+    rfoutname = resultFile(bbgFile)
 
     print 'writing ','.'*20, rfoutname
     rfile = TFile.Open(rfoutname, "RECREATE")
@@ -449,7 +424,7 @@ def GetHistos():
        print "Getting ...", skey, '... #', cnt
 
        mt     = sDict[skey][5]
-       hists += [getHistogram(skey, mt)]          
+       hists += [getHistogram(sDict, skey, mt)]          
        rHists += [skey]
 
        norm   = sDict[skey][1]
@@ -470,13 +445,5 @@ def GetHistos():
 
     rfile.Close()
     print 'wrote ','.'*20, rfoutname
+
 # ---------------------------------------------------------------------------------
-if __name__ == "__main__":
-
-    gROOT.SetBatch()
-    gROOT.SetStyle("Plain")
-    gROOT.LoadMacro(gitpath + "C/AtlasStyle.C")
-    gROOT.LoadMacro(gitpath + "C/AtlasUtils.C")
-    SetAtlasStyle()
-
-    GetHistos()

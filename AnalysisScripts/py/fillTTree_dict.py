@@ -46,69 +46,13 @@ from helpers import workpath
     # Col 13: y coord TCT impact (cm)
     # Col 14: z coord TCT impact (cm)
 #######################################################################################
-# plotting from several rootfiles of the same format!!:
-treeName     = "particle"
-
-# -- beamgas 4 TeV
-# from http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam_gas_arc_4TeV/flukaIR15.html
-bbgFile = workpath + 'data/4TeV/beam-gas_4TeV-IR1_to_arc_20MeV_cutoff.root'
-print "Opening...", bbgFile
-rfBG_4TeV = TFile(bbgFile)
-tBG_4TeV  = rfBG_4TeV.Get(treeName)
-nprim_BG_4TeV = 28788000.
-
-# -- beamhalo 4 TeV
-# -- beamhalo 4 TeV                                                                                                                                           
-# from FL_TCT_4TeV_haloB2_new02
-#fBH_4TeV  = 'FL_TCT_4TeV_haloB2_new/ir1_4TeV_settings_from_TWISS_b2_nprim6570000_66.root'
-bbgFile = workpath + 'data/4TeV/ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'
-print "Opening...", bbgFile
-rfBH_4TeV = TFile(bbgFile)
-tBH_4TeV  = rfBH_4TeV.Get(treeName)
-nprim_BH_4TeV = float(bbgFile.split('nprim')[-1].split('_')[0])
-
-# -- beamhalo 3.5 TeV
-# from http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam-halo_3.5TeV/flukaIR15.html
-bbgFile = workpath + 'data/3p5TeV/beam-halo_3.5TeV-R1_D1.root'
-print "Opening...", bbgFile
-rfBH_3p5TeV = TFile(bbgFile)
-tBH_3p5TeV  = rfBH_3p5TeV.Get(treeName)
-nprim_BH_3p5TeV = 2344800.
-
-bbgFile = workpath + 'data/3p5TeV/beam-halo_3.5TeV-R1.root'
-print "Opening...", bbgFile
-rfBH_3p5TeV_v2 = TFile(bbgFile)
-tBH_3p5TeV_v2  = rfBH_3p5TeV_v2.Get(treeName)
-nprim_BH_3p5TeV_v2 = 2381600.
-
-# HL 
-# -- beamgas for start up scenario, high
-bbgFile = workpath + 'data/HL/hilumi_ir1_fort_scaled_startup_max_30.root'
-print "Opening...", bbgFile
-rfBGst  = TFile(bbgFile)
-tBGst   = rfBGst.Get(treeName)
-
-# -- HL beamgas after conditioning, high
-bbgFile = workpath + 'data/HL/hilumi_ir1_fort_scaled_afterconditioning_max_30.root'
-print "Opening...", bbgFile
-rfBGac  = TFile(bbgFile)
-tBGac   = rfBGac.Get(treeName)
-
-# -- HL beamhalo
-bbgFile = workpath + 'data/HL/hllhc_ir1_b2_nprim7330000_30.root'
-print "Opening...", bbgFile
-rfBH    = TFile(bbgFile)
-tBH     = rfBH.Get(treeName)
-nprim_BH= 7330000.
-
 R12m    = 146563140 # Hz from cv07
 R100h   = 293126 #Hz from cv07
-
+# ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
 # dict  key = hname  #0 particleTypes #1 norm #2 nbins #3 xmin #4 xmax #5 ttree #6 prettyName 
                      #7 hcolor #8 othercut[as string OR float/int] #9 xtitle #10 ytitle
 # ---------------------------------------------------------------------------------
-
 # ---------------------------------------------------------------------------------
 def generate_sDict( tag, norm, tBBG, yrel ):
     sDict_gen = { 
@@ -248,55 +192,39 @@ def generate_sDict( tag, norm, tBBG, yrel ):
     }
     return sDict_gen
 # ---------------------------------------------------------------------------------
-tag = '_BH'
-norm = nprim_BH
-tBBG = tBH
-yrel = '/TCT hit'
-sDict_HL_BH = generate_sDict(tag, norm, tBBG, yrel)
-# ---------------------------------------------------------------------------------
-tag = '_BGac'
-norm = 1.
-tBBG = tBGac
-yrel = '/s'
-sDict_HL_BGac = generate_sDict(tag, norm, tBBG, yrel)
-# ---------------------------------------------------------------------------------
-tag = '_BGst'
-norm = 1.
-tBBG = tBGst
-yrel = '/s'
-sDict_HL_BGst = generate_sDict(tag, norm, tBBG, yrel)
-# ---------------------------------------------------------------------------------
-tag = '_BG_4TeV'
-norm = nprim_BG_4TeV
-tBBG = tBG_4TeV
-yrel = '/BG event'
-sDict_BG_4TeV = generate_sDict(tag, norm, tBBG, yrel)
-# ---------------------------------------------------------------------------------
-tag = '_BH_4TeV'
-norm = nprim_BH_4TeV
-tBBG = tBH_4TeV
-yrel = '/TCT hit'
-sDict_BH_4TeV = generate_sDict(tag, norm, tBBG, yrel)
-# ---------------------------------------------------------------------------------
-tag = '_BH_3p5TeV'
-norm = nprim_BH_3p5TeV
-tBBG = tBH_3p5TeV
-yrel = '/TCT hit'
-sDict_BH_3p5TeV = generate_sDict(tag, norm, tBBG, yrel)
-# ---------------------------------------------------------------------------------
-tag = '_BH_3p5TeV_v2'
-norm = nprim_BH_3p5TeV_v2
-tBBG = tBH_3p5TeV_v2
-yrel = '/TCT hit'
-sDict_BH_3p5TeV_v2 = generate_sDict(tag, norm, tBBG, yrel)
-# ---------------------------------------------------------------------------------
 # comp plots
 # ---------------------------------------------------------------------------------
 # BG norm: scaling to higher bunch intensity
 normBGst = 1.15/2.2
 normBGac = 1.15/1.1 # additional factor 2 due to higher contribution from SR
+
+R12m    = 146563140 # Hz from cv07                                                                                                                                                
+R100h   = 293126 #Hz from cv07      
+
 # norm is already appplied when root file was produced
 R12m ,R100h,nprim = 1.,1.,1.
+# HL
+
+treeName = 'particle'
+# -- beamgas for start up scenario, high 
+bbgFile = workpath + 'data/HL/hilumi_ir1_fort_scaled_startup_max_30.root'
+print "Opening...", bbgFile
+rfBGst  = TFile(bbgFile)
+tBGst   = rfBGst.Get(treeName)
+
+# -- HL beamgas after conditioning, high
+bbgFile = workpath + 'data/HL/hilumi_ir1_fort_scaled_afterconditioning_max_30.root'
+print "Opening...", bbgFile
+rfBGac  = TFile(bbgFile)
+tBGac   = rfBGac.Get(treeName)
+
+# -- HL beamhalo
+bbgFile = workpath + 'data/HL/hllhc_ir1_b2_nprim7330000_30.root'
+print "Opening...", bbgFile
+rfBH    = TFile(bbgFile)
+tBH     = rfBH.Get(treeName)
+nprim   = 7330000.
+
 sDict_HL_comp = {
 
  "EkinMuBGst": [ ['10', '11'], normBGst,60, 1e-2,1e4, tBGst, ' BG startup',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', ],
@@ -389,9 +317,3 @@ sDict_HL_comp = {
  "RadEnEpBHds": [ ['3', '4'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,'-9999','r [cm]','GeV/cm^{2}/s'],
  "RadEnEpBHop": [ ['3', '4'], nprim/R100h, 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','GeV/cm^{2}/s'],
 }
-
-# ---------------------------------------------------------------------------------
-# 4 TeV case
-# ---------------------------------------------------------------------------------
-
-sDict_4TeV = {}

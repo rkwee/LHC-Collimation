@@ -6,84 +6,80 @@ import ROOT, sys, glob, os, math, helpers
 from ROOT import *
 from helpers import *
 from array import array
-from fillTTree_dict import sDict_HL_BH,sDict_HL_BGac,sDict_BH_4TeV, sDict_HL_comp,sDict_BG_4TeV,sDict_BH_3p5TeV
+import fillTTree
+from fillTTree_dict import generate_sDict
+from createTTree import treeName
 from plotSpectra_dict import hDict_BH_4TeV,hDict_HL_BGac, hDict_HL_BH, hDict_HL_comp,hDict_BG_4TeV,hDict_BH_3p5TeV
 # ---------------------------------------------------------------------------------
-import optparse
-from optparse import OptionParser
-
-parser = OptionParser()
-parser.add_option("-f", "--file", dest="filename", type="string",
-                  help="put rootfile produced by fillTTree.py with tag BH, BG or comp in it.")
-
-(options, args) = parser.parse_args()
-
-rfname = options.filename
-# ---------------------------------------------------------------------------------
-debug = 1
-
-if rfname.count("BH") and not rfname.count('4TeV') and not rfname.count('3p5TeV'): 
-    hDict = hDict_HL_BH
-    sDict = sDict_HL_BH
-    tag   = '_BH'
-    subfolder= 'TCT/HL/nominalSettings/beamhalo/'
-
-    if debug: print "Using HL BG format", '.'*10
-
-elif rfname.count("BGac"): 
-    hDict = hDict_HL_BGac
-    sDict = sDict_HL_BGac
-    tag   = '_BGac'
-    subfolder= 'TCT/HL/nominalSettings/beamgas/'
-    if debug: print "Using HL BH format", '.'*10
-
-elif rfname.count("comp"): 
-    hDict = hDict_HL_comp
-    sDict = sDict_HL_comp
-    tag   = ''
-    subfolder= 'TCT/HL/nominalSettings/comp/'
-    if debug: print "Using HL comp format", '.'*10
-
-elif rfname.count('4TeV'): 
-    sDict = sDict_BH_4TeV
-    hDict = hDict_BH_4TeV
-    tag   = '_BH_4TeV'
-    subfolder= 'TCT/4TeV/'
-    if debug: print "Using 4 TeV format", '.'*10
-
-elif rfname.count('BG_4TeV'): 
-    sDict = sDict_BG_4TeV
-    hDict = hDict_BG_4TeV
-    tag   = '_BG_4TeV'
-    subfolder= 'TCT/4TeV/'
-    if debug: print "Using 4 TeV format", '.'*10
-
-elif rfname.count('BG_3p5TeV'): 
-    sDict = sDict_BG_3p5TeV
-    hDict = hDict_BG_3p5TeV
-    tag   = '_BG_3p5TeV'
-    subfolder= 'TCT/3p5TeV/'
-    if debug: print "Using 4 TeV format", '.'*10
-
-elif rfname.count('beam-halo_3.5TeV-R1_D1'): 
-    sDict = sDict_BH_3p5TeV
-    hDict = hDict_BH_3p5TeV
-    tag   = '_BH_3p5TeV'
-    subfolder= 'TCT/3p5TeV/'
-    if debug: print "Using 4 TeV format", '.'*10
-# ---------------------------------------------------------------------------------
-
 zmin, zmax = 2260., 14960.
-
 # to disable the zcut have zOn > zmax
 zOn = 2e4
-
-if not os.path.exists(wwwpath + subfolder):
-    print 'making dir', wwwpath + subfolder
-    os.mkdir(wwwpath + subfolder)
 # ---------------------------------------------------------------------------------
-def plotSpectra(rfname):
+def plotSpectra(bbgFile, tag):
 
+    print "Using ...", bbgFile
+    norm = float(bbgFile.split('nprim')[-1].split('_')[0])
+    tBBG = TFile.Open(bbgFile).Get(treeName)
+    yrel = '/TCT hit'
+    sDict = generate_sDict(tag, norm, tBBG, yrel)
+
+    rfname = fillTTree.resultFile(bbgFile)
+
+    if rfname.count('B1') or rfname.count('b1'): Beam, beam = 'B1', 'b1'
+    elif rfname.count('B2') or rfname.count('b2'): Beam, beam = 'B2','b2'
+    else: Beam, beam = '', ''
+
+    debug = 1
+
+    if rfname.count("BH") and not rfname.count('4TeV') and not rfname.count('3p5TeV'): 
+        hDict = hDict_HL_BH
+        tag   = '_BH'
+        subfolder= 'TCT/HL/nominalSettings/beamhalo/'
+
+        if debug: print "Using HL BG format", '.'*10
+
+    elif rfname.count("BGac"): 
+        hDict = hDict_HL_BGac
+        tag   = '_BGac'
+        subfolder= 'TCT/HL/nominalSettings/beamgas/'
+        if debug: print "Using HL BH format", '.'*10
+
+    elif rfname.count("comp"): 
+        hDict = hDict_HL_comp
+        tag   = ''
+        subfolder= 'TCT/HL/nominalSettings/comp/'
+        if debug: print "Using HL comp format", '.'*10
+
+    elif rfname.count('4TeV'): 
+        hDict = hDict_BH_4TeV
+        tag   = '_BH_4TeV' + '_' + Beam
+        subfolder= 'TCT/4TeV/'+Beam+'/'
+        if debug: print "Using 4 TeV format", '.'*10
+
+    elif rfname.count('BG_4TeV'): 
+        hDict = hDict_BG_4TeV
+        tag   = '_BG_4TeV'
+        subfolder= 'TCT/4TeV/'
+        if debug: print "Using 4 TeV format", '.'*10
+
+    elif rfname.count('BG_3p5TeV'): 
+        hDict = hDict_BG_3p5TeV
+        tag   = '_BG_3p5TeV'
+        subfolder= 'TCT/3p5TeV/'
+        if debug: print "Using 4 TeV format", '.'*10
+
+    elif rfname.count('beam-halo_3.5TeV-R1_D1'): 
+        hDict = hDict_BH_3p5TeV
+        tag   = '_BH_3p5TeV'
+        subfolder= 'TCT/3p5TeV/'
+        if debug: print "Using 4 TeV format", '.'*10
+
+
+    if not os.path.exists(wwwpath + subfolder):
+        print 'making dir', wwwpath + subfolder
+        os.mkdir(wwwpath + subfolder)
+
+    # ---------------------------------------------------------------------------------
     print 'Opening ','.'*20, rfname
     rfile = TFile.Open(rfname)
 
@@ -104,7 +100,7 @@ def plotSpectra(rfname):
       XurMin, XurMax = hDict[hkey][7],hDict[hkey][8]
       YurMin, YurMax = hDict[hkey][9],hDict[hkey][10]
       doFill = hDict[hkey][11]
-      lText  = hDict[hkey][12]
+      lText  = hDict[hkey][12] + ' ' + Beam
       lx, ly = hDict[hkey][13],hDict[hkey][14]
 
       mlegend = TLegend( x1, y1, x2, y2)
@@ -128,7 +124,7 @@ def plotSpectra(rfname):
            hcolor = sDict[hname][7]
            hists[-1].SetLineColor(hcolor)
            hists[-1].SetLineWidth(2)
-           if doFill:  hists[-1].SetFillColor(hcolor)
+           # if doFill:  hists[-1].SetFillColor(hcolor)
            
            norm   = sDict[hname][1]
            if norm != 1.: print 'normalising by ', norm
@@ -184,14 +180,5 @@ def plotSpectra(rfname):
       print('Saving file as' + pname ) 
       cv.Print(pname + '.pdf')
       #cv.Print(pname + '.png')
-    
+
 # ---------------------------------------------------------------------------------
-if __name__ == "__main__":
-
-    gROOT.SetBatch()
-    gROOT.SetStyle("Plain")
-    gROOT.LoadMacro(gitpath + "C/AtlasStyle.C")
-    gROOT.LoadMacro(gitpath + "C/AtlasUtils.C")
-    SetAtlasStyle()
-
-    plotSpectra(rfname)
