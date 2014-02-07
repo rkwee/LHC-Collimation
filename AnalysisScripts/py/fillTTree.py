@@ -308,12 +308,17 @@ def do2dScatHisto(sDict, mt, hname, nbins, xymin, xymax, particleTypes):
     # cut on energy
     ecuts = sDict[hname][8]
     if not ecuts.split(':')[0].count('-9999'):
-        emin = ecuts.split(':')[0]
-        emax = ecuts.split(':')[1]
-        cuts += [emax + ' > energy_ke && ' + emin + ' < energy_ke']
+        if len(ecuts.split(':')) > 1:
+            emin = ecuts.split(':')[0]
+            emax = ecuts.split(':')[1]
+            cuts += [emax + ' > energy_ke && ' + emin + ' < energy_ke']
+        else:
+            cuts += ['energy_ke > ' + ecuts.split(':')[0]]
+    else:
+        cuts += [encut]
 
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
-    cuts += [encut]
+
 
     # y is on y-axis, x on x-axis
     var = "y:x"

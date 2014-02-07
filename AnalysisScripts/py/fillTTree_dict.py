@@ -188,7 +188,7 @@ def generate_sDict( tag, norm, tBBG, yrel ):
     'XYNKaonsE'+tag:[ ['15','16'], norm, 120, -120, 120, tBBG, 'K^{#pm} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]',],
     'XYNKaonPlusE'+tag:[ ['15'], norm, 120, -120, 120, tBBG, 'K^{+} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]',],
     'XYNKaonMinusE'+tag:[ ['16'], norm, 120, -120, 120, tBBG, 'K^{-} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]',],
- 
+    'XYNMuonsE10'+tag:[ ['10', '11'], norm, 120, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 10 GeV', kWhite, '10.','x [cm]','y [cm]',], 
     }
     return sDict_gen
 # ---------------------------------------------------------------------------------
