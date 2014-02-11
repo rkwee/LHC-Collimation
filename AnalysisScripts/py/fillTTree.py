@@ -16,7 +16,7 @@ zmin, zmax = 2260., 14960.
 # to disable the zcut have zOn > zmax
 zOn = 2e4
 # for all use energy cut at 20 MeV
-encut = 'energy_ke > 2.e-2'
+encut = 'energy_ke > ' + EnCut
 debug = 1
 # ---------------------------------------------------------------------------------
 def getXLogAxis(nbins, xmin, xmax):

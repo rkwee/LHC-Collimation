@@ -1,38 +1,58 @@
 #!/usr/bin/python
 #
 #
-# Nov  2013, rkwee
+# Feb  2014, rkwee
 ## -------------------------------------------------------------------------------
 import ROOT, sys, glob, os
 from ROOT import *
-from helpers import workpath, mylabel
+from helpers import workpath, wwwpath, mylabel
 from createTTree import treeName
 from fillTTree_dict import generate_sDict
 ## -------------------------------------------------------------------------------
 def cv16():
 
+    fNum   = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'
+    fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
+    subfolder = wwwpath + 'TCT/4TeV/compB2oldB2new/'
+    lTextNum = 'B2 old'
+    lTextDenom = 'B2 new'
+    tagNum, tagDenom = 'BH_4TeV_B2', 'BH_4TeV_B2_20MeV'
+    nColor, dColor = kCyan+1, kTeal
+
+    fNum   = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
+    subfolder = wwwpath + 'TCT/4TeV/compB1B2/'
+    lTextNum = 'B1'
+    lTextDenom = 'B2'
+    tagNum, tagDenom = 'BH_4TeV_B1', 'BH_4TeV_B2'
+    nColor, dColor = kOrange-3, kPink-7
+
+    fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
+    fNum = workpath + 'results/results_beam-halo_3.5TeV-R1_D1_nprim2344800_66.root'
+    subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/'
+    lTextNum = 'B2 3.5 TeV'
+    lTextDenom = 'B2 4 TeV'
+    tagNum, tagDenom = 'BH_3p5TeV', 'BH_4TeV_B2_20MeV'
+    nColor, dColor = kOrange+1, kBlue-3
+
     # need one file to generate sDict
-    bbgFile = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim6971000_66.root'
+    bbgFile = fNum
     print "Opening...", bbgFile
-    tag = '_BH_4TeV_B1'
+    tag = '_BH_3p5TeV'
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
     tBBG = TFile.Open(bbgFile).Get(treeName)
     yrel = '/TCT hit'
     sDict = generate_sDict(tag, norm, tBBG, yrel)
 
-    fNum   = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim6971000_66.root'
-    fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'
-    subfolder = '4TeV/compB1B2/'
-    lTextNum = 'B1'
-    lTextDenom = 'B2'
-    tagNum, tagDenom = 'BH_4TeV_B1', 'BH_4TeV_B2'
+    if not os.path.exists(subfolder):
+        print 'making dir',  subfolder
+        os.mkdir(subfolder)
 
     rfNum = TFile.Open(fNum)
     rfDenom = TFile.Open(fDenom)
     print 'opening as numerator', fNum
     print 'opening as denominator', fDenom
 
-    nColor, dColor = kOrange-3, kPink-7
     msize = 0.05
     for skey in sDict.keys():
 
@@ -40,7 +60,7 @@ def cv16():
 
         cv = TCanvas( 'cv'+skey, 'cv'+skey, 100, 120, 600, 600 )
 
-        x1, y1, x2, y2 = 0.73,0.75,0.98,0.9
+        x1, y1, x2, y2 = 0.7,0.75,0.95,0.9
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)
         mlegend.SetFillStyle(0)
@@ -136,7 +156,7 @@ def cv16():
         hRatio.Draw('pe')
         hRatio.GetYaxis().SetTitle('ratio ' + lTextNum + '/' + lTextDenom + " ")
         l.DrawLine(XurMin,1,XurMax,1)
-        pname =  '/Users/rkwee/Documents/RHUL/work/results/www/TCT/'+subfolder+hnameRatio.split('_')[0]+'.pdf'
+        pname = subfolder+hnameRatio.split('_')[0]+'.pdf'
 
         print pname
         cv.SaveAs(pname)
