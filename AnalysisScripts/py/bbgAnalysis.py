@@ -29,15 +29,14 @@ if __name__ == "__main__":
     # ---------------------
     #TTreeFileName = createTTree.ctree(datafile)
 
-    TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'
-    #TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_b2_nprim4976000_66.root'
-    tag = '_BH_4TeV_B2' 
+    #TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'        
+    TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
+    # TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20GeV_b2_nprim158890000_66.root'
+    #TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
 
-    TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim6971000_66.root'
-    tag = '_BH_4TeV_B1' 
-
-
-    fillTTree.fillHistos(TTreeFileName, tag)
     # ---------------------
+    # define tag in helpers!
+    tag = tag_BH_4TeV
+    #fillTTree.fillHistos(TTreeFileName, tag)
 
     plotSpectra.plotSpectra(TTreeFileName, tag)

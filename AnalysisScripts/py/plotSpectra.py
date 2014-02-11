@@ -29,48 +29,45 @@ def plotSpectra(bbgFile, tag):
     elif rfname.count('B2') or rfname.count('b2'): Beam, beam = 'B2','b2'
     else: Beam, beam = '', ''
 
+    if rfname.count('20MeV'): EnCutOff = '20MeV'
+    elif rfname.count('20GeV'): EnCutOff = '20GeV'
+    else: print 'no energycutoff?!'
+
     debug = 1
 
     if rfname.count("BH") and not rfname.count('4TeV') and not rfname.count('3p5TeV'): 
         hDict = hDict_HL_BH
-        tag   = '_BH'
         subfolder= 'TCT/HL/nominalSettings/beamhalo/'
 
         if debug: print "Using HL BG format", '.'*10
 
     elif rfname.count("BGac"): 
         hDict = hDict_HL_BGac
-        tag   = '_BGac'
         subfolder= 'TCT/HL/nominalSettings/beamgas/'
         if debug: print "Using HL BH format", '.'*10
 
     elif rfname.count("comp"): 
         hDict = hDict_HL_comp
-        tag   = ''
         subfolder= 'TCT/HL/nominalSettings/comp/'
         if debug: print "Using HL comp format", '.'*10
 
     elif rfname.count('4TeV'): 
         hDict = hDict_BH_4TeV
-        tag   = '_BH_4TeV' + '_' + Beam
-        subfolder= 'TCT/4TeV/'+Beam+'/'
+        subfolder= 'TCT/4TeV/'+Beam+'/' + EnCutOff + '/'
         if debug: print "Using 4 TeV format", '.'*10
 
     elif rfname.count('BG_4TeV'): 
         hDict = hDict_BG_4TeV
-        tag   = '_BG_4TeV'
         subfolder= 'TCT/4TeV/'
         if debug: print "Using 4 TeV format", '.'*10
 
     elif rfname.count('BG_3p5TeV'): 
         hDict = hDict_BG_3p5TeV
-        tag   = '_BG_3p5TeV'
         subfolder= 'TCT/3p5TeV/'
         if debug: print "Using 4 TeV format", '.'*10
 
     elif rfname.count('beam-halo_3.5TeV-R1_D1'): 
         hDict = hDict_BH_3p5TeV
-        tag   = '_BH_3p5TeV'
         subfolder= 'TCT/3p5TeV/'
         if debug: print "Using 4 TeV format", '.'*10
 
@@ -78,6 +75,7 @@ def plotSpectra(bbgFile, tag):
     if not os.path.exists(wwwpath + subfolder):
         print 'making dir', wwwpath + subfolder
         os.mkdir(wwwpath + subfolder)
+    else: "Writing plot to ", wwwpath + subfolder
 
     # ---------------------------------------------------------------------------------
     print 'Opening ','.'*20, rfname

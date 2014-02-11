@@ -15,6 +15,14 @@ workpath = '/Users/rkwee/Documents/RHUL/work/runs/TCT/'
 wwwpath  = '/Users/rkwee/Documents/RHUL/work/results/www/'
 gitpath  = '/Users/rkwee/Documents/RHUL/work/HL-LHC-Collimation/AnalysisScripts/'
 # ------------------------------------------------------------------------------------------------
+# tags for bbG analysis
+tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
+tag_BH_4TeV = '_BH_4TeV_B1_20MeV'
+tag_BH_4TeV = '_BH_4TeV_B2_20MeV'
+# ................................................................................................
+EnCut = '2.e-2'
+if tag_BH_4TeV.count('20GeV'): EnCut = '20.'
+# ------------------------------------------------------------------------------------------------
 length_LHC = 26659
 IPs = [
  ("IP1",        0.000000  ),      
