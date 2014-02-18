@@ -30,14 +30,13 @@ if __name__ == "__main__":
     gROOT.LoadMacro(gitpath + "C/AtlasUtils.C")
     SetAtlasStyle()
 
-    #gStyle.SetOptStat(1000100110)
+    gStyle.SetOptStat(111)
     gStyle.SetPalette(1)
     gStyle.SetStatX(0.95)
     gStyle.SetStatY(0.95)
     gStyle.SetTitleX(0.1)
     gStyle.SetTitleY(.955)
 
-    gStyle.SetOptStat(0)
     #gStyle.SetCanvasColor(10)
     # gStyle.SetPalette(100,prepPalette())
  

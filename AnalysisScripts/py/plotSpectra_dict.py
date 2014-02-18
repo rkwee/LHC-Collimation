@@ -124,6 +124,10 @@ hDict_HL_BGac = { # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
 lText = 'beamhalo 4 TeV' 
+
+if tag_BH_4TeV.count('20GeV'): scaleFactor = 0.1
+else: scaleFactor = 1.
+
 hDict_BH_4TeV = { 
 
     # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText #13 lx #14 ly #15 ZurMin #16 ZurMax
@@ -153,7 +157,7 @@ hDict_BH_4TeV = {
     'YcoorNChar' + tag_BH_4TeV: [ ['YcoorNNeg', 'YcoorNPos', 'YcoorNNeu'],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1, 0, lText, 0.2,0.9, -1,-1, ],
 
     'XYNAll' + tag_BH_4TeV         : [ ['XYNAll'],0.5, 0.92, 0.7, 1., 1,0, 1e-5,2e-1,-1,-1, 0, lText, 0.2,0.9, 1e-8,1e-3, ],
-    'XYNMuons' + tag_BH_4TeV       : [ ['XYNMuons'], 0.5, 0.92, 0.7, 1., 1,0, 5e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, 1e-7,2e-6, ],
+    'XYNMuons' + tag_BH_4TeV       : [ ['XYNMuons'], 0.5, 0.92, 0.7, 1., 1,0, 5e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, 1e-6*scaleFactor,2e-5*scaleFactor, ],
     'XYNPhotons' + tag_BH_4TeV     : [ ['XYNPhotons'], 0.5, 0.92, 0.7, 1., 1,0, 1e-5,2e-1,-1,-1, 0, lText, 0.2,0.9, 5e-10,1e-3, ],
     'XYNElecPosi' + tag_BH_4TeV    : [ ['XYNElecPosi'],0.5, 0.92, 0.7, 1., 1,0, 1e-5,2e-1,-1,-1, 0, lText, 0.2,0.9, 1e-10,3e-5, ],
     'XYNChar' + tag_BH_4TeV        : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, 1e-7,2e-3,-1,-1, 0, lText, 0.2,0.9, 1e-8,1e-3, ],
@@ -166,7 +170,7 @@ hDict_BH_4TeV = {
     'XYNKaonPlusE' + tag_BH_4TeV   : [ ['XYNKaonPlusE'] ,0.5, 0.92, 0.7, 1., 1,0, 1e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, 1e-8,3e-5, ],
     'XYNKaonMinusE' + tag_BH_4TeV  : [ ['XYNKaonMinusE'] ,0.5, 0.92, 0.7, 1., 1,0, 1e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, 1e-8,3e-5, ],
 
-    'XYNMuonsE10' + tag_BH_4TeV    : [ ['XYNMuonsE10'], 0.5, 0.92, 0.7, 1., 1,0, 5e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, 1e-8,1e-5, ],
+    'XYNMuonsE10' + tag_BH_4TeV    : [ ['XYNMuonsE10'], 0.5, 0.92, 0.7, 1., 1,0, 5e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, 1e-6*scaleFactor,2e-5*scaleFactor, ],
     }
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
 lText = 'beamgas 4 TeV'
