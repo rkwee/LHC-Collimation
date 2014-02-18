@@ -97,6 +97,7 @@ def plotSpectra(bbgFile, tag):
       pname = wwwpath + subfolder + hkey 
       XurMin, XurMax = hDict[hkey][7],hDict[hkey][8]
       YurMin, YurMax = hDict[hkey][9],hDict[hkey][10]
+      ZurMin, ZurMax = hDict[hkey][15],hDict[hkey][16]
       doFill = hDict[hkey][11]
       lText  = hDict[hkey][12] + ' ' + Beam
       lx, ly = hDict[hkey][13],hDict[hkey][14]
@@ -144,15 +145,14 @@ def plotSpectra(bbgFile, tag):
       if not hists[-1] or not hists[0]:
           continue
 
-      if XurMin is not -1:                        
-        if type(hists[0]) == TH2F: hists[0].GetZaxis().SetRangeUser(XurMin, XurMax)
-        else: hists[0].GetXaxis().SetRangeUser(XurMin, XurMax)
+      if XurMin is not -1 and not type(hists[0]) == TH2F:
+          hists[0].GetXaxis().SetRangeUser(XurMin, XurMax)
 
-      if YurMin is not -1:         
-        if type(hists[0]) == TH2F:  
-            hists[0].GetXaxis().SetRangeUser(-YurMin, YurMin)
-            hists[0].GetYaxis().SetRangeUser(-YurMax, YurMax)
-        else: hists[0].GetYaxis().SetRangeUser(YurMin, YurMax)
+      if YurMin is not -1 and not type(hists[0]) == TH2F:
+          hists[0].GetYaxis().SetRangeUser(YurMin, YurMax)
+
+      if ZurMin is not -1 and type(hists[0]) == TH2F: 
+          hists[0].GetZaxis().SetRangeUser(ZurMin, ZurMax)
         
       hists[0].GetYaxis().SetTitleSize(0.04)
       hists[0].GetYaxis().SetLabelSize(0.035)
