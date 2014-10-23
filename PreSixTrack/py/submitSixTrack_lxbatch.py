@@ -65,8 +65,8 @@ cList += [[ '4TeV_vHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4446
 cList += [[ '4TeV_hHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_vHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_hHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
-cList += [[ 'HL_TCT_hHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
-cList += [[ 'HL_TCT_vHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
+cList += [[ 'HL_TCT_hHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_gfortran_O4', '7000000' ]]]
+cList += [[ 'HL_TCT_vHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_gfortran_O4', '7000000' ]]]
 
 cDict = dict(cList)
 
@@ -107,11 +107,12 @@ collPos     = source_dir +'CollPositions.'+beam+'.dat'
 apertfile   = source_dir +'allapert.' + beam
 surveyfile  = source_dir +'SurveyWithCrossing_XP_lowb_'+beam+'.dat'
 beamlossExe = commonsource +'BeamLossPattern_2005-04-30_gcc2.9'
-cleanIneExe = commonsource +'CleanInelastic'
+cleanIneExe = commonsource +'CleanInelastic_2013-08-19'
+cleanColExe = commonsource +'CleanCollScatter_2014.09.10'
 cleancoll   = commonsource +'correct_coll_summary.sh'
 
 if ckey.count('HL'): collDB = source_dir +'CollDB.ats.11t.'+beam + tcs
-inputFiles  = [sixtrackExe,beamlossExe,cleanIneExe,fort2,collPos,apertfile,surveyfile,cleancoll]
+inputFiles  = [sixtrackExe,beamlossExe,cleanIneExe,cleanColExe,fort2,collPos,apertfile,surveyfile,cleancoll]
 
 cnt = 0
 for i in inputFiles:
@@ -200,10 +201,19 @@ for job in newrange:
     run_job.write('./'+beamlossExe.split('/')[-1] + ' lowb tracks2.dat BLP_out ' + apertfile.split('/')[-1]  + '\n')
     run_job.write("perl -pi -e 's/\\0/ /g' LPI_BLP_out.s" + '\n')
     run_job.write('./'+cleanIneExe.split('/')[-1] + ' FLUKA_impacts.dat LPI_BLP_out.s '+ collPos.split('/')[-1] + ' coll_summary.dat\n')
+    run_job.write('./'+cleanColExe.split('/')[-1] + ' Coll_Scatter.dat LPI_BLP_out.s ' + collPos.split('/')[-1] + ' coll_summary.dat\n')
     run_job.write('./'+cleancoll.split('/')[-1] + '\n')
 
     # gzip log file
     cmd = 'gzip FirstImpacts.dat \n'
+    run_job.write(cmd)
+
+    # gzip impacts file
+    cmd = 'gzip impacts* \n'
+    run_job.write(cmd)
+
+    # gzip impacts file
+    cmd = 'gzip Coll_Scatter* \n'
     run_job.write(cmd)
 
     # copy back
@@ -212,7 +222,7 @@ for job in newrange:
         cmd_copy = 'cp coll_summary.dat collgaps* screen* LP* FirstImpacts.dat* sigmasettings.out impacts* ' + subdir
         cmd_copy = "cp * " + subdir
     else:
-        cmd_copy = 'cp coll_summary.dat LP* FirstImpacts.dat* impacts* ' + subdir
+        cmd_copy = 'cp coll_summary.dat LP* FirstImpacts.dat* impacts* Coll_Sc* ' + subdir
 
     run_job.write(cmd_copy)
 
@@ -223,7 +233,7 @@ for job in newrange:
     os.system(cmd)
 
     # submit to batch
-    cmd = 'bsub '+mailOpt+' -q ' + queuename + ' -R "rusage[pool=30000]" < ' + run_job_fname
+    cmd = 'bsub '+mailOpt+' -q ' + queuename + ' -R "rusage[pool=50000]" < ' + run_job_fname
     print cmd
 
     if doRun:        
