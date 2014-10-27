@@ -10,10 +10,11 @@ import gzip
 workpath = '/afs/cern.ch/work/r/rkwee/HL-LHC/'
 wwwpath  = '/afs/cern.ch/user/r/rkwee/public/www/HL-LHC/'
 source_dir  = workpath + 'runs/sourcedirs/'
+gitpath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/'
 
-workpath = '/Users/rkwee/Documents/RHUL/work/runs/TCT/'
-wwwpath  = '/Users/rkwee/Documents/RHUL/work/results/www/'
-gitpath  = '/Users/rkwee/Documents/RHUL/work/HL-LHC-Collimation/AnalysisScripts/'
+#workpath = '/Users/rkwee/Documents/RHUL/work/runs/TCT/'
+#wwwpath  = '/Users/rkwee/Documents/RHUL/work/results/www/'
+
 # ------------------------------------------------------------------------------------------------
 # tags for bbG analysis
 tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
