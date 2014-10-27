@@ -179,7 +179,7 @@ for job in newrange:
     for inpfile in inputFiles:
         
         # copy to the local, randomly attributed path on the lxbatch
-        cmd =  'cp ' + inpfile + ' . \n'
+        cmd =  'ln -s ' + inpfile + ' . \n'
         run_job.write(cmd)
 
     # hardcoded in BeamLossPattern
@@ -233,7 +233,7 @@ for job in newrange:
     os.system(cmd)
 
     # submit to batch
-    cmd = 'bsub '+mailOpt+' -q ' + queuename + ' -R "rusage[pool=50000]" < ' + run_job_fname
+    cmd = 'bsub '+mailOpt+' -q ' + queuename + ' -R "rusage[pool=60000]" < ' + run_job_fname
     print cmd
 
     if doRun:        
