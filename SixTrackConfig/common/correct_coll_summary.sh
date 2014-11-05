@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-if [ $(echo "`awk '$8==1 {print $0}' impacts_fake.dat | wc -l |cut -f 1 -d ' '` > 1" |bc -l) = 1 ];then
+if [ $(echo "`awk '$8==1 {print $0}' impacts_fake.dat | wc -l |cut -f 1 -d ' '` > 0" |bc -l) = 1 ];then
 	cp coll_summary.dat Coll_Summary.original.dat
 	awk 'NR>1&&$8==1 {print $1}'  impacts_fake.dat>list
 	for i in `cat list`;do

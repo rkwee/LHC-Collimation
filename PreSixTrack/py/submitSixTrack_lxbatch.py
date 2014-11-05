@@ -14,7 +14,7 @@
 # 2013, June
 #
 # -----------------------------------------------------------
-import os, stat, sys
+import os, stat, sys, random
 from optparse import OptionParser
 
 parser = OptionParser()
@@ -28,8 +28,8 @@ parser.add_option("-p", dest="npacks", type="string",
                   help="put number of packs")
 parser.add_option("-k", dest="ckey", type="string",
                   help="put key dictionary (similar as or same run_dir)")
-parser.add_option("-t", dest="tcs", type="string",
-                  help="put name of TCS as in collDB, otherwise ignore (tcs is any appendix to CollDB*.data<tcs>")
+parser.add_option("-t", dest="tag", type="string",
+                  help="put name of TCS as in collDB, otherwise ignore (tcs is any appendix to CollDB*.data<tag>")
 
 (options, args) = parser.parse_args()
 
@@ -38,8 +38,8 @@ queuename = options.queuename
 npacks = options.npacks
 run_dir = options.run_dir
 ckey = options.ckey
-tcs = options.tcs
-#tcs  = '.'+ run_dir.split('7TeVPostLS1_')[-1]
+tag = options.tag
+#tag  = '.'+ run_dir.split('7TeVPostLS1_')[-1]
 
 # use the agruments
 #njobs=10
@@ -67,6 +67,7 @@ cList += [[ '4TeV_vHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4446
 cList += [[ '4TeV_hHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
 cList += [[ 'HL_TCT_hHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_gfortran_O4', '7000000' ]]]
 cList += [[ 'HL_TCT_vHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_gfortran_O4', '7000000' ]]]
+
 
 cDict = dict(cList)
 
@@ -102,7 +103,7 @@ if not os.path.exists(afs_run_dir):
 sixtrackExe = commonsource +cDict[ckey][1]
 fort2       = source_dir +'fort.2'
 fort3       = thissource + haloType + 'fort.3'
-collDB      = thissource +'CollDB_V6.503_lowb_st.'+beam+'.data' + tcs
+collDB      = thissource +'CollDB_V6.503_lowb_st.'+beam+'.data' + tag
 collPos     = source_dir +'CollPositions.'+beam+'.dat'
 apertfile   = source_dir +'allapert.' + beam
 surveyfile  = source_dir +'SurveyWithCrossing_XP_lowb_'+beam+'.dat'
@@ -111,8 +112,8 @@ cleanIneExe = commonsource +'CleanInelastic_2013-08-19'
 cleanColExe = commonsource +'CleanCollScatter_2014.09.10'
 cleancoll   = commonsource +'correct_coll_summary.sh'
 
-if ckey.count('HL'): collDB = source_dir +'CollDB.ats.11t.'+beam + tcs
-inputFiles  = [sixtrackExe,beamlossExe,cleanIneExe,cleanColExe,fort2,collPos,apertfile,surveyfile,cleancoll]
+if ckey.count('HL'): collDB = source_dir +'CollDB.ats.11t.'+beam + tag
+inputFiles  = [sixtrackExe,beamlossExe,cleanIneExe,cleanColExe,fort2,collPos,apertfile,cleancoll]
 
 cnt = 0
 for i in inputFiles:
@@ -187,17 +188,25 @@ for job in newrange:
     run_job.write(cmd)
 
     # collDB
-    if len(tcs) > 1:
-        cmd =  'cp ' + collDB + ' ' +collDB.split('/')[-1].split(tcs)[0]+ ' \n'
+    if len(tag) > 1:
+        cmd =  'cp ' + collDB + ' ' +collDB.split('/')[-1].split(tag)[0]+ ' \n'
     else:
         cmd =  'cp ' + collDB + ' . \n'
     run_job.write(cmd)
 
     # now fort3 file
-    cmd_npacks = "sed 's\\1 "+energy+"\\" + npacks + " "+energy+"\\' " + fort3 + " > " + fort3.split('/')[-1] + '\n'
+    cmd_npacks = "sed 's\\1 "+energy+"\\" + npacks + " "+energy+"\\' " + fort3 + " > " + fort3.split('/')[-1]+'.tmp' + '\n'
     run_job.write(cmd_npacks)
 
-    run_job.write('./'+sixtrackExe.split('/')[-1] + ' >| screenout\n' ) 
+    # fix random number
+    rndm = str(random.random()*1e7)
+    rndm = rndm[:7]
+
+    cmd_rnd = "sed 's\\LSE. .FALSE. 0 .TRU\\LSE. .FALSE. " + rndm +" .TRU\\' " + fort3.split('/')[-1]+'.tmp' + " > " + fort3.split('/')[-1] + '\n'
+    run_job.write(cmd_rnd)
+    run_job.write('rm ' + fort3.split('/')[-1]+'.tmp\n')
+
+    run_job.write('./'+sixtrackExe.split('/')[-1] + ' >& screenout\n' ) 
     run_job.write('./'+beamlossExe.split('/')[-1] + ' lowb tracks2.dat BLP_out ' + apertfile.split('/')[-1]  + '\n')
     run_job.write("perl -pi -e 's/\\0/ /g' LPI_BLP_out.s" + '\n')
     run_job.write('./'+cleanIneExe.split('/')[-1] + ' FLUKA_impacts.dat LPI_BLP_out.s '+ collPos.split('/')[-1] + ' coll_summary.dat\n')
@@ -222,7 +231,7 @@ for job in newrange:
         cmd_copy = 'cp coll_summary.dat collgaps* screen* LP* FirstImpacts.dat* sigmasettings.out impacts* ' + subdir
         cmd_copy = "cp * " + subdir
     else:
-        cmd_copy = 'cp coll_summary.dat LP* FirstImpacts.dat* impacts* Coll_Sc* ' + subdir
+        cmd_copy = 'cp coll_summary.dat LP* FirstImpacts.dat* impacts*real* Coll_Sc*real* ' + subdir
 
     run_job.write(cmd_copy)
 
@@ -233,12 +242,13 @@ for job in newrange:
     os.system(cmd)
 
     # submit to batch
-    cmd = 'bsub '+mailOpt+' -q ' + queuename + ' -R "rusage[pool=60000]" < ' + run_job_fname
+    cmd = 'bsub '+mailOpt+' -q ' + queuename + ' -R "rusage[pool=30000]" < ' + run_job_fname
     print cmd
 
     if doRun:        
         os.system(cmd)
-    
+        cmd = "sleep 2"
+        os.system(cmd)
 # -----------------------------------------------------------
 
 cnt = len(newrange)

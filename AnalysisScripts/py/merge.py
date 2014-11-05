@@ -26,7 +26,6 @@ tag    = options.tag
 fApp = [
     ('FirstImpacts.dat',1),
     ('LPI_BLP_out.s',   0),    
-    ('impacts_fake.dat',0),
     ('impacts_real.dat',0),
     #('impacts_all_fake.dat',0),
     #('impacts_all_real.dat',0),
@@ -311,6 +310,7 @@ def doAddup(fAdd,rundir):
 # -----------------------------------------------------------------
 if __name__ == "__main__":
 
+    os.system('date')
     t0 = time.time()
     doAppend(fApp,rundir)
     t1 = time.time()
@@ -318,3 +318,4 @@ if __name__ == "__main__":
     doAddup(fAdd,rundir)
     t2 = time.time()
     print(str(t2-t1)+" for doAddup")
+    os.system('date')
