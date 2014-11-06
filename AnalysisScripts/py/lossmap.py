@@ -10,8 +10,9 @@ import ROOT, sys, glob, os, commands
 from ROOT import *
 import helpers, gzip, time
 from helpers import *
+from array import array
 ## -------------------------------------------------------------------------------
-def lossmap(beam,path,tag,f3):
+def lossmap(beam,path,tag,f3, shiftVal):
 
     print ' losses on collimator '
 
@@ -70,15 +71,22 @@ def lossmap(beam,path,tag,f3):
     # -- plot 
     tA = time.time()
     print(str(tA-tH)+" for filling data into lists")
-    
-    nbins, xmin, xmax = 10*length_LHC,0., length_LHC
 
-    coll_loss = TH1F("coll_loss" + tag,"coll_loss" + tag,nbins, xmin, xmax)
-    cold_loss = TH1F("cold_loss" + tag,"cold_loss" + tag,nbins, xmin, xmax)
-    warm_loss = TH1F("warm_loss" + tag,"warm_loss" + tag,nbins, xmin, xmax)
+    nbins, xmin, xmax = 10*length_LHC,shiftVal-length_LHC, shiftVal
+
+    # coll_loss = TH1F("coll_loss" + tag,"coll_loss" + tag,nbins, xmin, xmax)
+    # cold_loss = TH1F("cold_loss" + tag,"cold_loss" + tag,nbins, xmin, xmax)
+    # warm_loss = TH1F("warm_loss" + tag,"warm_loss" + tag,nbins, xmin, xmax)
+
+    myX = [xmin+i*10 for i in range(1,length_LHC+1)]
+    myX = array('f', myX)
+
+    coll_loss = TH1F("coll_loss" + tag,"coll_loss" + tag,len(myX)-1, myX)
+    cold_loss = TH1F("cold_loss" + tag,"cold_loss" + tag,len(myX)-1, myX)
+    warm_loss = TH1F("warm_loss" + tag,"warm_loss" + tag,len(myX)-1, myX)
 
     xtitle = 's [m]'
-    ytitle = "Cleaning inefficiency #eta"
+    ytitle = "Cleaning inefficiency #eta [m^{-1}]"
     coll_loss.GetXaxis().SetTitleOffset(.9)
     coll_loss.GetYaxis().SetTitleOffset(1.06)
     coll_loss.GetXaxis().SetTitle(xtitle)
@@ -97,11 +105,16 @@ def lossmap(beam,path,tag,f3):
         cnt = 0                                                                                                   
         for i in range(f1_nlines):
 
-            for k in k_warm:                
+            for k in k_warm:
+
+                shifted_loss = losses[i]
+                if shifted_loss >= xmax:
+                    shifted_loss -= length_LHC
+                
                 if losses[i] >= warm[k] and losses[i] <= warm[k+1]:
-                    warm_loss.Fill(losses[i])                                                                   
+                    warm_loss.Fill(shifted_loss) 
                 elif k<n_warm-1 and losses[i] >= warm[k+1] and losses[i] <= warm[k+2]:
-                    cold_loss.Fill(losses[i])                        
+                    cold_loss.Fill(shifted_loss)                     
                 else:
                     cnt += 1        
 
