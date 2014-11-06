@@ -2,6 +2,7 @@
 #
 # Nov, 2014 rkwee
 # -----------------------------------------------------------------------------------
+import gzip
 from optparse import OptionParser
 
 parser = OptionParser()
@@ -31,6 +32,23 @@ def collsummary(fname,colls):
             with open(fname) as ifile:
                 for line in ifile:
                     if line.startswith("  "+coll): nhits += 1
+
+            collHits += [nhits]
+
+        for i,j in enumerate(colls):
+            print("collimator " + j + " absorbed " + str(collHits[i]) + " protons.")
+
+    elif fname.count(".gz"):
+
+        collHits = []
+
+        for coll in colls:
+
+            nhits = 0
+            ifile = gzip.open(fname)
+
+            for line in ifile:
+                if line.startswith("  "+coll): nhits += 1
 
             collHits += [nhits]
 
