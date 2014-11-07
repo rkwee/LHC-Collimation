@@ -21,17 +21,17 @@ from array import array
 def cv20():
 
     debug        = 1
-    doWriteRFile = 0
+    doWriteRFile = 1
     plotLossMaps = 1
 
-    # subfolder in wwwpath for result plots
-    subfolder = './' 
-    
+    thiscase = 'relaxedColl'
+    thiscase = 'nominalColl'
+
     colls = [
-         'HL_TCT5LIN_relaxedColl_hHalo_B1_60GBtmp_lns',
-         'HL_TCT5LIN_relaxedColl_vHalo_B1_60GBtmp_lns',
-         'HL_TCT5LOUT_relaxedColl_hHalo_B1',
-         'HL_TCT5LOUT_relaxedColl_vHalo_B1',
+         # 'HL_TCT5LIN_relaxedColl_hHalo_B1_60GBtmp_lns',
+         # 'HL_TCT5LIN_relaxedColl_vHalo_B1_60GBtmp_lns',
+         'HL_TCT5LOUT_'+thiscase+'_hHalo_B1',
+         'HL_TCT5LOUT_'+thiscase+'_vHalo_B1',
          ]
 
     for coll in colls:
@@ -50,13 +50,13 @@ def cv20():
         # my results 
         thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/' + tag + '/'
 
-        rfname = thispath + 'lossmap'+ coll +'_IR1.root'
-        #rfname = thispath + 'lossmap'+ coll +'.root'
+        # rfname = thispath + 'lossmap'+ coll +'_IR1.root'
+        rfname = thispath + 'lossmap'+ coll +'.root'
         
         trname = 'normtree' + coll
         colNumber = 4
             
-        f3 = gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/'+beam+'/CollPositions.'+beam+'.dat'
+        f3 = gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_'+thiscase+'Settings/'+beam+'/CollPositions.'+beam+'.dat'
 
         # use for normalisation the sum of nabs (col 4)
         f4 = thispath + 'coll_summary' + coll + '.dat'
@@ -78,8 +78,8 @@ def cv20():
 
             t0 = time.time()
 
-            # not shifted
-            shiftVal = 1e4#  length_LHC
+            # not shifted if shiftVal = length_LHC
+            shiftVal = length_LHC
 
             h_tot_loss, h_cold, h_warm = lossmap.lossmap(beam,thispath,coll,f3,shiftVal) 
             t1 = time.time()
@@ -288,7 +288,7 @@ def cv20():
                 gPad.SetLogy(1)
 
                 pname  = wwwpath
-                subfolder = 'TCT/HL/relaxedColl/test/'
+                subfolder = 'TCT/HL/'+thiscase+'/'
                 pname += subfolder + hname + '_' + doZoom + '.png'
 
                 print('Saving file as' + pname ) 
