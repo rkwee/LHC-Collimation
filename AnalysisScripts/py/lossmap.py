@@ -74,18 +74,18 @@ def lossmap(beam,path,tag,f3, shiftVal):
 
     nbins, xmin, xmax = 10*length_LHC,shiftVal-length_LHC, shiftVal
 
-    # coll_loss = TH1F("coll_loss" + tag,"coll_loss" + tag,nbins, xmin, xmax)
-    # cold_loss = TH1F("cold_loss" + tag,"cold_loss" + tag,nbins, xmin, xmax)
-    # warm_loss = TH1F("warm_loss" + tag,"warm_loss" + tag,nbins, xmin, xmax)
+    coll_loss = TH1F("coll_loss" + tag,"coll_loss" + tag,nbins, xmin, xmax)
+    cold_loss = TH1F("cold_loss" + tag,"cold_loss" + tag,nbins, xmin, xmax)
+    warm_loss = TH1F("warm_loss" + tag,"warm_loss" + tag,nbins, xmin, xmax)
 
-    # -- makes the lines fat
+    # # -- makes the lines fat
 
-    myX = [xmin+i*10 for i in range(1,length_LHC+1)]
-    myX = array('f', myX)
+    # myX = [xmin+i*10 for i in range(1,length_LHC+1)]
+    # myX = array('f', myX)
 
-    coll_loss = TH1F("coll_loss" + tag,"coll_loss" + tag,len(myX)-1, myX)
-    cold_loss = TH1F("cold_loss" + tag,"cold_loss" + tag,len(myX)-1, myX)
-    warm_loss = TH1F("warm_loss" + tag,"warm_loss" + tag,len(myX)-1, myX)
+    # coll_loss = TH1F("coll_loss" + tag,"coll_loss" + tag,len(myX)-1, myX)
+    # cold_loss = TH1F("cold_loss" + tag,"cold_loss" + tag,len(myX)-1, myX)
+    # warm_loss = TH1F("warm_loss" + tag,"warm_loss" + tag,len(myX)-1, myX)
 
     coll_loss.SetLineWidth(1)
     warm_loss.SetLineWidth(1)
