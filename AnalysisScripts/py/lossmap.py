@@ -78,12 +78,18 @@ def lossmap(beam,path,tag,f3, shiftVal):
     # cold_loss = TH1F("cold_loss" + tag,"cold_loss" + tag,nbins, xmin, xmax)
     # warm_loss = TH1F("warm_loss" + tag,"warm_loss" + tag,nbins, xmin, xmax)
 
+    # -- makes the lines fat
+
     myX = [xmin+i*10 for i in range(1,length_LHC+1)]
     myX = array('f', myX)
 
     coll_loss = TH1F("coll_loss" + tag,"coll_loss" + tag,len(myX)-1, myX)
     cold_loss = TH1F("cold_loss" + tag,"cold_loss" + tag,len(myX)-1, myX)
     warm_loss = TH1F("warm_loss" + tag,"warm_loss" + tag,len(myX)-1, myX)
+
+    coll_loss.SetLineWidth(1)
+    warm_loss.SetLineWidth(1)
+    cold_loss.SetLineWidth(1)
 
     xtitle = 's [m]'
     ytitle = "Cleaning inefficiency #eta [m^{-1}]"
@@ -130,8 +136,14 @@ def lossmap(beam,path,tag,f3, shiftVal):
             # if we're at the same collimator
             if names_sum[i] == names_pos[j]:
 
+                shifted_losspos = coll_pos[j]
+
+                # shift
+                if shifted_losspos >= xmax:
+                    shifted_losspos -= length_LHC
+
                 # normalise the weight nabs by collimator length
-                coll_loss.Fill(coll_pos[j],nabs[i]/length[i])
+                coll_loss.Fill(shifted_losspos,nabs[i]/length[i])
 
     tB = time.time()
     print(str(tB -tA)+" for filling histograms")
