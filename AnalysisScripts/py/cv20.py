@@ -51,7 +51,7 @@ def cv20():
         thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/' + tag + '/'
 
         rfname = thispath + 'lossmap'+ coll +'_IR1.root'
-        rfname = thispath + 'lossmap'+ coll +'.root'
+        #rfname = thispath + 'lossmap'+ coll +'.root'
         
         trname = 'normtree' + coll
         colNumber = 4
@@ -79,7 +79,7 @@ def cv20():
             t0 = time.time()
 
             # not shifted
-            shiftVal = 1e4#length_LHC
+            shiftVal = 1e4#  length_LHC
 
             h_tot_loss, h_cold, h_warm = lossmap.lossmap(beam,thispath,coll,f3,shiftVal) 
             t1 = time.time()
@@ -159,9 +159,6 @@ def cv20():
                 cold_loss = rf.Get('cold_loss' +coll)
                 warm_loss = rf.Get('warm_loss' +coll)
 
-                coll_loss.SetLineWidth(1)
-                warm_loss.SetLineWidth(1)
-                cold_loss.SetLineWidth(1)
                 coll_loss.SetLineColor(kBlack)
                 warm_loss.SetLineColor(kRed)
                 cold_loss.SetLineColor(kBlue)
@@ -291,8 +288,8 @@ def cv20():
                 gPad.SetLogy(1)
 
                 pname  = wwwpath
-                subfolder = 'TCT/HL/relaxedColl/'
-                pname += subfolder + hname + '_' + doZoom + '.pdf'
+                subfolder = 'TCT/HL/relaxedColl/test/'
+                pname += subfolder + hname + '_' + doZoom + '.png'
 
                 print('Saving file as' + pname ) 
                 cv.Print(pname)
