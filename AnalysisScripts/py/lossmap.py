@@ -124,8 +124,6 @@ def lossmap(beam,path,tag,f3, shiftVal):
                 else:
                     cnt += 1        
 
-    print "cnt of neither warm nor cold losses =", cnt, "in file LPI"
-
     # -- losses on collimator
     # loop over coll_summary file
     for i in range(f2_nlines):

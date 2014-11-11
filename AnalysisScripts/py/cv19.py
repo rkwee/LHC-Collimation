@@ -14,31 +14,34 @@
 import ROOT, sys, glob, os, time, math
 from ROOT import *
 import lossmap, helpers, array
-from helpers import wwwpath, file_len, length_LHC, mylabel, addCol, gitpath
+from helpers import wwwpath, file_len, length_LHC, mylabel, addCol, gitpath, workpath
 from array import array
 ## -------------------------------------------------------------------------------
 
 def cv19():
 
     debug        = 1
-    doWriteRFile = 0
-    plotLossMaps = 1
+    doWriteRFile = 1
+    plotLossMaps = 0
 
     # subfolder in wwwpath for result plots
     subfolder = './' 
     
     colls = [
 
-        ('hHalo', 'TCT_4TeV_B1hHalo'),
-        ('vHalo', 'TCT_4TeV_B1vHalo'),
-        ('hHalo', 'TCT_4TeV_B2hHalo'),
-        ('vHalo', 'TCT_4TeV_B2vHalo'),
+        ('TCT_4TeV_B1hHalo'),
+        ('TCT_4TeV_B1vHalo'),
+        ('TCT_4TeV_B2hHalo'),
+        ('TCT_4TeV_B2vHalo'),
 
         ]
 
-    for haloType,coll in colls:
+    for coll in colls:
 
-        if not coll.startswith('_'): coll = '_'+coll
+        if not coll.startswith('_'): 
+            tag  = coll
+            coll = '_'+coll
+
 
         beam   = 'b2'            
         beamn  = '2'        
@@ -47,7 +50,7 @@ def cv19():
             beamn = '1'
 
         # my results 
-        thispath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/TCT/4TeV/TCT_4TeV_B'+beamn+haloType+'/'
+        thispath  = workpath + 'runs/' + tag +'/'
 
         rfname = thispath + 'lossmap'+ coll +'.root'
         trname = 'normtree' + coll
@@ -74,7 +77,7 @@ def cv19():
                 continue
 
             t0 = time.time()
-            h_tot_loss, h_cold, h_warm = lossmap.lossmap(beam,thispath,coll, f3) 
+            h_tot_loss, h_cold, h_warm = lossmap.lossmap(beam,thispath,coll, f3, length_LHC) 
             t1 = time.time()
             print(str(t1-t0)+' for returning lossmap histograms of ' + coll )
 
