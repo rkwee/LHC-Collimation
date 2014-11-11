@@ -45,7 +45,7 @@ tag = options.tag
 #njobs=10
 #queuename='8nh'
 #npacks='50'
-doTest=0
+doTest=1
 doRun=1
 showInfo=1
 mailOpt = '-u Regina.Kwee@gmail.com'
@@ -61,10 +61,10 @@ cList += [[ '7TeV_hHaloB1',     [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446
 cList += [[ '7TeV_hHaloB2',     [sourcepath + 'NewColl7TeVB2/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 cList += [[ '7TeV_vHaloB1',     [sourcepath + 'NewColl7TeVB1/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
 cList += [[ '7TeV_vHaloB2',     [sourcepath + 'NewColl7TeVB2/'   ,'SixTrack_4446_coll_gfortran_O4', '7000000' ]]]
-cList += [[ '4TeV_vHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
-cList += [[ '4TeV_hHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
-cList += [[ '4TeV_vHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
-cList += [[ '4TeV_hHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4446_coll_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_vHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_hHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_vHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_hHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_gfortran_O4', '4000000' ]]]
 cList += [[ 'HL_TCT_hHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_gfortran_O4', '7000000' ]]]
 cList += [[ 'HL_TCT_vHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_gfortran_O4', '7000000' ]]]
 
@@ -247,7 +247,7 @@ for job in newrange:
 
     if doRun:        
         os.system(cmd)
-        cmd = "sleep 2"
+        cmd = "sleep 4"
         os.system(cmd)
 # -----------------------------------------------------------
 
