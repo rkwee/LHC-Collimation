@@ -16,27 +16,27 @@ import ROOT, sys, glob, os
 from ROOT import *
 import helpers
 from helpers import *
-import createTTree, fillTTree, plotSpectra
+import createTTree
 ## -----------------------------------------------------------------------------------
 if __name__ == "__main__":
     gROOT.SetBatch()
     gROOT.Reset()
     gROOT.SetStyle("Plain")
-    gROOT.LoadMacro(gitpath + "C/AtlasStyle.C")
-    gROOT.LoadMacro(gitpath + "C/AtlasUtils.C")
+    gROOT.LoadMacro(gitpath + "AnalysisScripts/C/AtlasStyle.C")
+    gROOT.LoadMacro(gitpath + "AnalysisScripts/C/AtlasUtils.C")
     SetAtlasStyle()
 
     # ---------------------
-    #TTreeFileName = createTTree.ctree(datafile)
+    TTreeFileName = createTTree.ctree(datafile)
 
     #TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'        
-    TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
+    # TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
     # TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20GeV_b2_nprim158890000_66.root'
     #TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
 
     # ---------------------
     # define tag in helpers!
-    tag = tag_BH_4TeV
-    #fillTTree.fillHistos(TTreeFileName, tag)
+    # tag = tag_BH_4TeV
+    # fillTTree.fillHistos(TTreeFileName, tag)
 
-    plotSpectra.plotSpectra(TTreeFileName, tag)
+    # plotSpectra.plotSpectra(TTreeFileName, tag)
