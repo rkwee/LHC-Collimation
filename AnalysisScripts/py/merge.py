@@ -1,6 +1,9 @@
 #!/usr/bin/python
 #
-
+# merges SixTrack output of single runs
+# needs to be pointed to a directory that contains sub-directories for each run result
+# like: rundir == main_run_dir and in are the main_run_dir/run_XXXXX
+# 
 # Regina Kwee-Hinzmann @ RHUL
 # 2013, June
 # -----------------------------------------------------------------
@@ -51,6 +54,8 @@ def findGoodFiles(targetfile,rundir):
     # find the correct path 
     subdirs = os.listdir(rundir)
 
+    #if debug: print "Found these files ", subdirs
+
     # exclude dirs
     #excludeDirs =  [ 'run_000'+str(i) for i in range(1,10)]
     #excludeDirs += [ 'run_00'+str(i) for i in range(10,21)]
@@ -70,7 +75,7 @@ def findGoodFiles(targetfile,rundir):
         # directory with results 
         rdir = rundir + subdir + "/"
 
-        #if debug: print("Finding " + rdir)
+        if debug: print("Finding " + rdir)
 
         if not os.path.isdir(rdir): continue
 
