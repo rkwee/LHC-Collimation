@@ -6,7 +6,7 @@
 import ROOT, sys, glob, os, time, math
 from ROOT import *
 import lossmap, helpers, array
-from helpers import wwwpath, file_len, length_LHC, mylabel, addCol, gitpath
+from helpers import wwwpath, file_len, length_LHC,  addCol, gitpath
 from operator import add
 ## -------------------------------------------------------------------------------
 
