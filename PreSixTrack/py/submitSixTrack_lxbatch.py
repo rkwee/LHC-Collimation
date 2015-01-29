@@ -45,7 +45,7 @@ tag = options.tag
 #njobs=10
 #queuename='8nh'
 #npacks='50'
-doTest=1
+doTest=0
 doRun=1
 showInfo=1
 mailOpt = '-u Regina.Kwee@gmail.com'
@@ -68,6 +68,10 @@ cList += [[ '4TeV_hHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518
 cList += [[ 'HL_TCT_hHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_gfortran_O4', '7000000' ]]]
 cList += [[ 'HL_TCT_vHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_gfortran_O4', '7000000' ]]]
 
+cList += [[ '4TeV_vHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_hHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_vHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_hHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
 
 cDict = dict(cList)
 
@@ -82,8 +86,11 @@ afs_run_dir = afsRunMain + run_dir + '/'
 loc_run_dir = run_dir.split('/')[-1] + '/'
 energy      = cDict[ckey][2]
 haloType    = ''
+doH5        = False
 if ckey.count('vHalo'): haloType = 'vHalo/'
 if ckey.count('hHalo'): haloType = 'hHalo/'
+if cDict[ckey][1].count('h5'): doH5 = True
+
 # -----------------------------------------------------------
 beam        = 'b1'
 if source_dir.count('B2') or source_dir.count('b2'):
@@ -107,7 +114,12 @@ collDB      = thissource +'CollDB_V6.503_lowb_st.'+beam+'.data' + tag
 collPos     = source_dir +'CollPositions.'+beam+'.dat'
 apertfile   = source_dir +'allapert.' + beam
 surveyfile  = source_dir +'SurveyWithCrossing_XP_lowb_'+beam+'.dat'
-beamlossExe = commonsource +'BeamLossPattern_2005-04-30_gcc2.9'
+beamlossExe = commonsource +'beamLossPattern'
+reserveDS   = ''
+if not doH5:
+    beamlossExe = commonsource +'BeamLossPattern_2005-04-30_gcc2.9'
+    reserveDS   = ' -R "rusage[pool=30000]" '
+
 cleanIneExe = commonsource +'CleanInelastic_2013-08-19'
 cleanColExe = commonsource +'CleanCollScatter_2014.09.10'
 cleancoll   = commonsource +'correct_coll_summary.sh'
@@ -180,7 +192,7 @@ for job in newrange:
     for inpfile in inputFiles:
         
         # copy to the local, randomly attributed path on the lxbatch
-        cmd =  'ln -s ' + inpfile + ' . \n'
+        cmd =  'cp ' + inpfile + ' . \n'
         run_job.write(cmd)
 
     # hardcoded in BeamLossPattern
@@ -201,14 +213,20 @@ for job in newrange:
     # fix random number
     rndm = str(random.random()*1e7)
     rndm = rndm[:7]
+    if rndm.endswith("."): rndm = rndm.rstrip(".")
 
     cmd_rnd = "sed 's\\LSE. .FALSE. 0 .TRU\\LSE. .FALSE. " + rndm +" .TRU\\' " + fort3.split('/')[-1]+'.tmp' + " > " + fort3.split('/')[-1] + '\n'
     run_job.write(cmd_rnd)
     run_job.write('rm ' + fort3.split('/')[-1]+'.tmp\n')
 
     run_job.write('./'+sixtrackExe.split('/')[-1] + ' >& screenout\n' ) 
-    run_job.write('./'+beamlossExe.split('/')[-1] + ' lowb tracks2.dat BLP_out ' + apertfile.split('/')[-1]  + '\n')
-    run_job.write("perl -pi -e 's/\\0/ /g' LPI_BLP_out.s" + '\n')
+
+    if not doH5:
+        run_job.write('./'+beamlossExe.split('/')[-1] + ' lowb tracks2.dat BLP_out ' + apertfile.split('/')[-1]  + '\n')
+        run_job.write("perl -pi -e 's/\\0/ /g' LPI_BLP_out.s" + '\n')
+    else:
+        run_job.write('./'+beamlossExe.split('/')[-1] + ' tracks2.h5 BLP_out ' + apertfile.split('/')[-1] + ' SurveyWithCrossing_XP_lowb.dat' + '\n')
+
     run_job.write('./'+cleanIneExe.split('/')[-1] + ' FLUKA_impacts.dat LPI_BLP_out.s '+ collPos.split('/')[-1] + ' coll_summary.dat\n')
     run_job.write('./'+cleanColExe.split('/')[-1] + ' Coll_Scatter.dat LPI_BLP_out.s ' + collPos.split('/')[-1] + ' coll_summary.dat\n')
     run_job.write('./'+cleancoll.split('/')[-1] + '\n')
@@ -242,7 +260,7 @@ for job in newrange:
     os.system(cmd)
 
     # submit to batch
-    cmd = 'bsub '+mailOpt+' -q ' + queuename + ' -R "rusage[pool=30000]" < ' + run_job_fname
+    cmd = 'bsub '+mailOpt+' -q ' + queuename + reserveDS + ' < ' + run_job_fname
     print cmd
 
     if doRun:        
