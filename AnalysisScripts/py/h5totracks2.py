@@ -95,7 +95,7 @@ def convert(fname):
 
                 # print 'dataChunk', dataChunk
                 
-                if len(wholeData)%incr == 0:
+                if len(dataChunk)%incr == 0:
                     writeToFile(dataChunk, outfile)
                     # print "Writing full chunk at ", cnt, dataChunk 
                     dataChunk = []
@@ -104,9 +104,9 @@ def convert(fname):
             except IndexError:
                 print "This line didnt work", line
 
-        writeToFile(dataChunk, outfile)
-        outfile.close()
-        print "closing " , outfilename
+    writeToFile(dataChunk, outfile)
+    outfile.close()
+    print "closing " , outfilename
 
 if __name__ == "__main__":
 
