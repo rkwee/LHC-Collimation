@@ -16,15 +16,20 @@ fname = options.fname
 
 def convert(fname):
 
-    cnt = 0
+    cnt = 1
     part1, part2 = [],[]
-    incr = 1000
+    incr = 1024
 
     outfilename = fname + '.rawlist'
     print("writing ... " + outfilename )
 
     outfile = open(outfilename, 'w')
     dataChunk = []
+    part1, part2 = [],[]
+    ncol = 9
+    nextData, dmiss= 0, 0
+    parts = []
+    wholeData = ''
 
     def writeToFile(somelist, somefile):
         for ele in somelist: somefile.write(' '.join(ele) + '\n')
@@ -33,47 +38,75 @@ def convert(fname):
     with open(fname) as mf:
 
         for line in mf:
-
-            if not line.split()[0].count("("): continue
+            
+            if len(line.split()):                                
+                if not line.split()[0].count("("): continue
+            #print '-'*23
 
             try:
-                datacols = line.split("): ")[1].split(',')[:-1]
+                # -- col and row index
+                r = int(line.split(":")[0].split('(')[1].split(')')[0].split(',')[0])
+                c = int(line.split(":")[0].split('(')[1].split(')')[0].split(',')[1])
+                dataCols = line.split("): ")[1].split(',')[:-1]
+                lenData = len(dataCols)
+                moodulo = cnt%2
+                # print "dataCols", dataCols
+                # print 'moodulo', moodulo
+                # print "col", c
+                # print "row ", r
+                # print "lenData", lenData
 
-                if cnt%2==0: 
-                    part1 = datacols 
-                    # print "part1 =", part1
-                else:   
-                    if line.split()[0].count(',0)'):
-                        print "getting rubbish", line, "for part2 at ",cnt," !! returning."
-                        return
+                if moodulo == 1:
+                    line1 = dataCols
+                    parts += dataCols
+                    dmiss = ncol - len(parts)
+                    # print "parts is", parts
 
-                    part2 = datacols
-                    # print "part2 =", part2
+                    # print 'dmiss in mod1', dmiss
 
-                    wholeData = part1 + part2             
+                    if len(parts)==ncol:
+                        wholeData = parts             
+                        dataChunk += [wholeData]
+                        parts = []
+                        # print 'saving row ',r,'in chunk'
+                elif moodulo == 0:
+                    line2 = dataCols
+                    if dmiss: parts += dataCols[:dmiss]
+                    else: parts = dataCols
+                    # print "parts now", parts
+
+                    if len(parts)==ncol:
+                        wholeData = parts             
+                        dataChunk += [wholeData]
+                        parts = []
+                        # print 'saving row ',r,'in chunk'
+
+                        nextData = lenData - dmiss 
+                        # print "Is data left ? ", nextData
+
+                        # if there is data, fill new
+                        if nextData:
+                            parts = line2[nextData-1:]
+                            nextData = lenData - dmiss 
+                            # print "parts refilled", parts
+
                     # print "whole data", wholeData
+                #     print 'dmiss in mod0', dmiss
 
-                    dataChunk += [wholeData]
-
-                    if cnt == 0:
-                        k = len(dataChunk)
-                        # print "Size of DataChunk ", k, " : ", dataChunk
-                        dataChunk.pop(0)
-                        # print "Size of DataChunk now ", k, " : ", dataChunk
-
-                if cnt%incr == 0:
+                # print 'dataChunk', dataChunk
+                
+                if len(wholeData)%incr == 0:
                     writeToFile(dataChunk, outfile)
                     # print "Writing full chunk at ", cnt, dataChunk 
                     dataChunk = []
-
+                    
                 cnt += 1
+            except IndexError:
+                print "This line didnt work", line
 
-            except:
-                print line        
-
-    writeToFile(dataChunk, outfile)
-    outfile.close()
-    print "closing " , outfilename
+        writeToFile(dataChunk, outfile)
+        outfile.close()
+        print "closing " , outfilename
 
 if __name__ == "__main__":
 
