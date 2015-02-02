@@ -17,19 +17,17 @@ fname = options.fname
 def convert(fname):
 
     cnt = 1
-    part1, part2 = [],[]
-    incr = 1024
+    cnt_l = -9999
+    incr = 9
 
     outfilename = fname + '.rawlist'
     print("writing ... " + outfilename )
 
     outfile = open(outfilename, 'w')
     dataChunk = []
-    part1, part2 = [],[]
     ncol = 9
     nextData, dmiss= 0, 0
     parts = []
-    wholeData = ''
 
     def writeToFile(somelist, somefile):
         for ele in somelist: somefile.write(' '.join(ele) + '\n')
@@ -47,7 +45,10 @@ def convert(fname):
                 # -- col and row index
                 r = int(line.split(":")[0].split('(')[1].split(')')[0].split(',')[0])
                 c = int(line.split(":")[0].split('(')[1].split(')')[0].split(',')[1])
-                dataCols = line.split("): ")[1].split(',')[:-1]
+                dataCols = line.split("): ")[1].split(',')
+                if dataCols[-1] == '' or dataCols[-1] == '\n': 
+                    dataCols = dataCols[:-1]
+                    print "removing last element, datacols becomes", dataCols
                 lenData = len(dataCols)
                 moodulo = cnt%2
                 # print "dataCols", dataCols
@@ -55,9 +56,11 @@ def convert(fname):
                 # print "col", c
                 # print "row ", r
                 # print "lenData", lenData
+                # print "line", line
+
+                if cnt == 1: cnt_l = r-1 # -1 because it is going to be increased by 1
 
                 if moodulo == 1:
-                    line1 = dataCols
                     parts += dataCols
                     dmiss = ncol - len(parts)
                     # print "parts is", parts
@@ -65,48 +68,48 @@ def convert(fname):
                     # print 'dmiss in mod1', dmiss
 
                     if len(parts)==ncol:
-                        wholeData = parts             
-                        dataChunk += [wholeData]
+                        dataChunk += [parts]
                         parts = []
+                        cnt_l += 1
                         # print 'saving row ',r,'in chunk'
+
                 elif moodulo == 0:
-                    line2 = dataCols
                     if dmiss: parts += dataCols[:dmiss]
                     else: parts = dataCols
-                    # print "parts now", parts
 
                     if len(parts)==ncol:
-                        wholeData = parts             
-                        dataChunk += [wholeData]
+                        dataChunk += [parts]
                         parts = []
+                        cnt_l += 1
                         # print 'saving row ',r,'in chunk'
 
                         nextData = lenData - dmiss 
                         # print "Is data left ? ", nextData
 
-                        # if there is data, fill new
+                        ## -- #if there is data, fill new
                         if nextData:
-                            parts = line2[nextData-1:]
+                            parts = dataCols[nextData-1:]
                             nextData = lenData - dmiss 
                             # print "parts refilled", parts
 
-                    # print "whole data", wholeData
+
                 #     print 'dmiss in mod0', dmiss
 
-                # print 'dataChunk', dataChunk
-                
-                if len(dataChunk)%incr == 0:
+                if len(dataChunk) == incr:
                     writeToFile(dataChunk, outfile)
-                    # print "Writing full chunk at ", cnt, dataChunk 
+                    # print "Writing full chunk at line ", cnt_l, " last element:", dataChunk[-1]
                     dataChunk = []
-                    
+
                 cnt += 1
             except IndexError:
                 print "This line didnt work", line
 
-    writeToFile(dataChunk, outfile)
-    outfile.close()
-    print "closing " , outfilename
+        print "writing last chunk of ", len(dataChunk), " elments with incr =", incr
+        print("last element is ", dataChunk[-1])
+
+        writeToFile(dataChunk, outfile)
+        outfile.close()
+        print "closing " , outfilename
 
 if __name__ == "__main__":
 
