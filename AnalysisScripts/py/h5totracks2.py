@@ -48,7 +48,7 @@ def convert(fname):
                 dataCols = line.split("): ")[1].split(',')
                 if dataCols[-1] == '' or dataCols[-1] == '\n': 
                     dataCols = dataCols[:-1]
-                    print "removing last element, datacols becomes", dataCols
+                    # print "removing last element, datacols becomes", dataCols
                 lenData = len(dataCols)
                 moodulo = cnt%2
                 # print "dataCols", dataCols

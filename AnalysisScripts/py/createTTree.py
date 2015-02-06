@@ -11,7 +11,7 @@ treeName     = "particle"
 fortformat66 = "event/I:generation/I:particle/I:energy_ke/F:weight/F:x/F:y/F:xp/F:yp/F:age/F:energy_tot/F:x_interact/F:y_interact/F:z_interact/F:t_interact/F"
 fortformat30 = "event/I:particle/I:generation/I:weight/F:x/F:y/F:xp/F:yp/F:energy_tot/F:energy_ke/F:age/F:x_interact/F:y_interact/F:z_interact/F"
 impactsformat= "icoll/I:c_rotation/F:s/F:x/F:xp/F:y/F:yp/F:nabs/I:np/I:ntu/I"
-tracks2format= "icoll/I:turn/I:s/F:x/F:xp/F:y/F:yp/F:dEoverE/F:type"
+tracks2format= "name/I:turn/I:s/F:x/F:xp/F:y/F:yp/F:dEoverE/F:type"
 # ---------------------------------------------------------------------------------
 # fname (=input) are the merged fort.66 or fort.30 file from fluka runs"
 def ctree(fname):
