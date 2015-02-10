@@ -181,14 +181,14 @@ def checkSameOutput():
     if f2 not in rundirs_f1: missing1 += [f2]
     else:                    present1 += [f2]
 
-  print len(missing1),' missing directories in ', direct1, missing1
+  print len(missing1),' missing directories in ', direct1
   # ................................................................................
   present2, missing2 = [], []
   for f1 in rundirs_f1: 
     if f1 not in rundirs_f2: missing2 += [f1]
     else:                    present2 += [f1]
 
-  print len(missing2),' missing directories in ', direct2, missing2
+  print len(missing2),' missing directories in ', direct2
   # ................................................................................
 
   cmd = 'rm ' + direct1 + 'tmp*'

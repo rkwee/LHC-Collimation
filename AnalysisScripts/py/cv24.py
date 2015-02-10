@@ -2,11 +2,12 @@
 #
 # if doWriteRFile == 1
 #    writes out root file : histograms for lossmaps and 1 ttree with normalisation factor
-#    
+#     
 # use cv25 to plot lossmaps comparing different files
+# 
+# plots also traditional lossmaps 
 #
-#
-# Oct 2014, rkwee
+# Feb 2015, rkwee
 ## -------------------------------------------------------------------------------
 import ROOT, sys, glob, os, time, math
 from ROOT import *

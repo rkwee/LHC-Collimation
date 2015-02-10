@@ -39,7 +39,7 @@ def cv26():
     hDict = {
         # #0 nbin, #1 xmin, #2 xmax, #3 xtitle #4 ytitle #5 vPos #6 YurMin #7 YurMax #8 doLogy
         # 'name':[ 11, -0.5, 10.5,'difference', 'entries', 1],
-         'turn':[ 200, 0.5, 200.5,'turn number', 'entries', 2, 1, 400, 1],
+         'turn':[ 200, 0.5, 200.5,'turn number', 'entries', 2, 1, 400, 0],
         's':[ 200, 0, 27100,'s [m]', 'entries', 3, 1, 3000., 0],
         # 'x':[ 100, -0.1, 0.1,'difference', 'entries', 4],
         # 'xp':[ 100, -0.1, 0.1,'difference', 'entries', 5],

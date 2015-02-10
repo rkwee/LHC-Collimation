@@ -63,20 +63,23 @@ def findGoodFiles(targetfile,rundir):
     excludeDirs = []
 
     missing1, missing2 = helpers.checkSameOutput()
-    missing = missing1+missing2
+    miss = missing1 + missing2
 
-    newMissing = []
-    for n in missing: 
-        if n < 100: continue
-        else: newMissing += [n]
+    missing0 = []
 
-    for m in newMissing:
+    for n in range(100):
+        if n not in miss:
+            missing0 += [n]
+
+    missing = missing0+miss
+    for m in missing:
         index = str(m)
 
         if len(index) < 5:
             index = '0'*(5-len(str(m)))+str(m)
             mdir = 'run_' + index
             excludeDirs += [mdir]
+
 
     if excludeDirs:
         print("INFO: Excluding " + str(len(excludeDirs)) + " run dirs.")
@@ -143,7 +146,7 @@ def doAppend(fApp,rundir):
         print len(resFiles),' for targetfile', targetfile
         # ------------
         if g == 0:
-            h = 'goodfilelist'
+            h = 'goodfilelist.txt'
             outfile = open(h, 'w')
             for t in resFiles: outfile.write(t+'\n')
             g = 1
