@@ -19,13 +19,18 @@ def cv24():
 
     debug        = 1
     doWriteRFile = 1
+    plotLossMaps = 1
 
     colls = [
 
-        ('NewScatt_TCT_4TeV_B1hHalo'),
-        ('NewScatt_TCT_4TeV_B2hHalo'),
-
+        #('H5_NewScatt_TCT_4TeV_B1hHalo_testfix'),
+        #('H5_NewScatt_TCT_4TeV_B2hHalo_testfix'),
+        #('NewScatt_TCT_4TeV_B1hHalo'),
+        ('twin_H5_NewScatt_TCT_4TeV_B1hHalo_trajectories'),
+        ('twin_NewScatt_TCT_4TeV_B1hHalo_trajectories'),
         ]
+
+    thiscase = 'twin'
 
     for coll in colls:
 
@@ -42,7 +47,7 @@ def cv24():
 
         # my results 
         thispath  = workpath + 'runs/' + tag +'/'
-        thispath = tag + '/'
+        #thispath = tag + '/'
 
         rfname = thispath + 'lossmap'+ coll +'.root'
         trname = 'normtree' + coll
@@ -110,3 +115,179 @@ def cv24():
             nt.Write()
             rf.Close()
 
+        # ------------------------------------------------
+        if plotLossMaps:
+            
+            if not os.path.exists(rfname): 
+                print rfname,' does not exist?!'
+                continue
+
+            print('Plotting lossmaps from ' + '.'*20 + ' '+ rfname)
+            trname = 'normtree' + coll
+
+            doZooms = ['fullring','IR7']
+            if rfname.count("IR1"): doZooms = ['IR1']
+
+            for doZoom in doZooms: 
+
+                rf = TFile.Open(rfname)            
+                nt = rf.Get(trname)
+                branchname = coll.replace('.','QQQ')
+
+                norm = -9999
+                for entry in nt: 
+                    norm = getattr(entry,branchname)
+                    print 'norm', norm
+
+                cv = TCanvas( 'cv' + coll + str(doZoom), 'cv' + coll + str(doZoom), 1200, 700)
+
+                YurMin, YurMax = 3.2e-9, 3.
+
+                hname = 'coll_loss' +coll
+
+                if debug: print('Get histograms for coll ' + coll + ', starting with ' + hname)
+
+                coll_loss = rf.Get(hname)
+                cold_loss = rf.Get('cold_loss' +coll)
+                warm_loss = rf.Get('warm_loss' +coll)
+
+                coll_loss.SetLineColor(kBlack)
+                warm_loss.SetLineColor(kRed)
+                cold_loss.SetLineColor(kBlue)
+                coll_loss.SetFillColor(kBlack)
+                warm_loss.SetFillColor(kRed)
+                cold_loss.SetFillColor(kBlue)
+
+                coll_loss.Scale(1.0/norm)
+                cold_loss.Scale(1.0/norm)
+                warm_loss.Scale(1.0/norm)
+
+                if doZoom == 'IR1': 
+                    xmin  = coll_loss.GetXaxis().GetBinLowEdge(1)
+                    xlab  = [ str(length_LHC+xmin + i*10) for i in range(int(-xmin)/10) ]
+                    xlab += [ str(i*10) for i in range(int(length_LHC+xmin)/10) ]
+
+                    # for i,xl in enumerate(xlab): coll_loss.GetXaxis().SetBinLabel(i+1, xl)
+                # legend
+                if beam.count('1') and doZoom == 'fullring':
+                    x1, y1, x2, y2 = 0.18, 0.78, 0.42, 0.9
+                elif doZoom == 'IR7' :
+                    x1, y1, x2, y2 = 0.6, 0.78, 0.91, 0.9
+                else:
+                    x1, y1, x2, y2 = 0.6, 0.78, 0.91, 0.9
+
+                # x-axis
+                XurMin, XurMax = 0., length_LHC
+                
+                if beam.count('2'):
+                    if   doZoom == 'IR5':  XurMin, XurMax = 13.e3,14e3
+                    elif doZoom == 'IR7':  XurMin, XurMax = 6.3e3,  8.0e3 
+                    elif doZoom == 'IR1':  XurMin, XurMax = -2.5e3,  2.0e3 
+                else:
+                    if   doZoom == 'IR5':  XurMin, XurMax = 13.e3,14e3
+                    elif doZoom == 'IR7':  XurMin, XurMax = 19.7e3, 20.6e3
+                    elif doZoom == 'IR1':  XurMin, XurMax = -2.5e3,  2.0e3 
+
+                coll_loss.Draw('hist')
+                warm_loss.Draw('samehist')
+                cold_loss.Draw('samehist')
+
+                lh = []
+                # YurMin = 3.2e-9
+                lhRange  = [3e-9+i*1e-9 for i in range(3,7)]
+                lhRange += [i*1.e-8 for i in range(1,11)]
+                lhRange += [i*1.e-7 for i in range(1,11)]
+                lhRange += [i*1.e-6 for i in range(1,11)]
+                lhRange += [i*1.e-5 for i in range(1,11)]
+                lhRange += [i*1.e-4 for i in range(1,11)]
+                lhRange += [i*1.e-3 for i in range(1,11)]
+                lhRange += [i*1.e-2 for i in range(1,11)]
+                lhRange += [i*1.e-1 for i in range(1,11)]
+                lhRange += [i*1. for i in range(1,int(YurMax))]
+
+                for i in lhRange:
+                    lh += [TLine()]
+                    lh[-1].SetLineStyle(1)
+                    lh[-1].SetLineColor(kGray)
+                    lh[-1].DrawLine(XurMin,i,XurMax,i)
+
+                lv = []
+                lvRange = [1000*i for i in range(0,int(length_LHC*1e-3))]
+                for s in lvRange:
+
+                    if s > XurMin and s < XurMax:
+                        lv += [TLine()]
+                        lv[-1].SetLineStyle(1)
+                        lv[-1].SetLineColor(kGray)
+                        lv[-1].DrawLine(s,YurMin,s,YurMax)
+
+                coll_loss.Draw('same')
+                warm_loss.Draw('same')
+                cold_loss.Draw('same')
+
+                coll_loss.GetXaxis().SetRangeUser(XurMin, XurMax)
+                coll_loss.GetYaxis().SetRangeUser(YurMin, YurMax)
+
+                thelegend = TLegend( x1, y1, x2, y2)
+                thelegend.SetFillColor(0)
+                thelegend.SetLineColor(0)
+                thelegend.SetTextSize(0.035)
+                thelegend.SetShadowColor(10)
+                thelegend.AddEntry(coll_loss,'losses on collimators', 'L')
+                thelegend.AddEntry(warm_loss,'warm losses', 'L')
+                thelegend.AddEntry(cold_loss,'cold losses', 'L')
+                thelegend.Draw()
+
+                case = coll.split('_60')[0].replace('_',' ')
+                lab = mylabel(60)
+                lab.SetTextSize(0.035)
+                lab.DrawLatex(0.28, y2+0.055, case)
+
+                if doZoom == 'fullring' and beam.count('1'):
+
+                    lab = mylabel(42)
+                    lab.SetTextColor(kGreen+1)
+                    lab.SetTextSize(0.04)
+                    lab.DrawLatex(0.15, 0.57, 'IR1')
+                    lab.DrawLatex(0.88, 0.57, 'IR1')
+                    lab.DrawLatex(0.23, 0.56, 'IR2')
+                    lab.DrawLatex(0.33, 0.62, 'IR3')
+                    lab.DrawLatex(0.51, 0.50, 'IR5')
+                    lab.DrawLatex(0.61, 0.58, 'IR6')
+                    lab.DrawLatex(0.70, 0.92, 'IR7')
+                    lab.DrawLatex(0.79, 0.62, 'IR8')
+                
+                elif doZoom == 'fullring' and beam.count('2'):
+
+                    lab = mylabel(42)
+                    lab.SetTextColor(kGreen+1)
+                    lab.SetTextSize(0.04)
+                    lab.DrawLatex(0.15, 0.43, 'IR1')
+                    lab.DrawLatex(0.88, 0.47, 'IR1')
+                    lab.DrawLatex(0.23, 0.30, 'IR8')
+                    lab.DrawLatex(0.33, 0.92, 'IR7')
+                    lab.DrawLatex(0.43, 0.56, 'IR6')
+                    lab.DrawLatex(0.51, 0.48, 'IR5')
+                    lab.DrawLatex(0.61, 0.34, 'IR4')
+                    lab.DrawLatex(0.70, 0.60, 'IR3')
+                    lab.DrawLatex(0.79, 0.30, 'IR2')
+
+                elif doZoom.count("IR"):
+
+                    lab = mylabel(42)
+                    lab.SetTextColor(kGreen+1)
+                    lab.SetTextSize(0.04)
+                    lab.DrawLatex(0.5, 0.83, doZoom)
+
+
+
+                gPad.RedrawAxis()
+                gPad.SetGrid(0,1)
+                gPad.SetLogy(1)
+
+                pname  = wwwpath
+                subfolder = 'TCT/4TeV/hdf5/'+thiscase+'/'
+                pname += subfolder + hname + '_' + doZoom + '.png'
+
+                print('Saving file as' + pname ) 
+                cv.Print(pname)
