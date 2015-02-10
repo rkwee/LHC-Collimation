@@ -18,7 +18,7 @@ def convert(fname):
 
     cnt = 1
     cnt_l = -9999
-    incr = 9
+    incr = 1000
 
     outfilename = fname + '.rawlist'
     print("writing ... " + outfilename )
