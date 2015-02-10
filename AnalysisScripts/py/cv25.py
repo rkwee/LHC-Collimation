@@ -55,15 +55,18 @@ def cv25():
     # hists_hdf5 , n_hdf5  = getHists('_H5_NewScatt_TCT_4TeV_B1hHalo',  hnames)
     # ----
 
-    # 9020 packs -> nprim 9020 x 64
-    hists_ascii, n_ascii = getHists('_NewScatt_TCT_4TeV_B2hHalo', hnames)
-    # 9700 packs -> nprim = 9700 x 64
-    hists_hdf5 , n_hdf5  = getHists('_H5_NewScatt_TCT_4TeV_B2hHalo',  hnames)
-    # --
 
-    for k in ['_hdf5']:
+    # hists_ascii, n_ascii = getHists('_NewScatt_TCT_4TeV_B1hHalo', hnames)
+    # hists_hdf5 , n_hdf5  = getHists('_H5_NewScatt_TCT_4TeV_B1hHalo_testfix',  hnames)
+    # --
+    hists_ascii, n_ascii = getHists('_NewScatt_TCT_4TeV_B2hHalo', hnames)
+    hists_hdf5 , n_hdf5  = getHists('_H5_NewScatt_TCT_4TeV_B2hHalo_testfix',  hnames)
+
+
+    subfolder = 'TCT/4TeV/hdf5/testfix/b2/'
+#    for k in ['_hdf5']:
 #    for k in ['_ascii']:
-#    for k in ['_both']:
+    for k in ['_both']:
         for h,hname in enumerate(hnames):
 
             cv = TCanvas( 'cv' + hname+k, 'cv' + hname+k, 1200, 700)
@@ -79,13 +82,13 @@ def cv25():
             x1, y1, x2, y2 = 0.18, 0.78, 0.42, 0.9
             YurMin, YurMax = 3.2e-9, 3.
 
-            rel = '_fullring'
+            rel = '_fullring' + k
             XurMin, XurMax = 0., length_LHC
 
-            rel = '_ir7' + k
-            XurMin, XurMax = 19.7e3, 20.6e3
+            # rel = '_ir7' + k
+            # XurMin, XurMax = 19.7e3, 20.6e3
 
-            # for B2
+            ### for B2
             XurMin, XurMax = 6.3e3, 8.0e3 
 
             if k.count('ascii'):  hists_ascii[h].Draw('hist')
@@ -153,7 +156,6 @@ def cv25():
             gPad.SetLogy(1)
 
             pname  = wwwpath
-            subfolder = 'TCT/4TeV/hdf5/'
             pname += subfolder + hname + rel + '.png'
 
             print('Saving file as' + pname ) 
