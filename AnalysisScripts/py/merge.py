@@ -8,6 +8,7 @@
 # 2013, June
 # -----------------------------------------------------------------
 import os, stat, sys, gzip, time
+import helpers
 from optparse import OptionParser
 
 parser = OptionParser()
@@ -20,7 +21,7 @@ parser.add_option("-t", "", dest="tag", type="string",
 rundir = options.rundir
 tag    = options.tag
 #tag = rundir.split('7TeVPostLS1')[-1]
-
+# -----------------------------------------------------------------
 # rundir = '/afs/cern.ch/work/r/rkwee/public/sixtrack_example/'
 
 # 2 types of merging: 1. append, 2. add up
@@ -54,16 +55,32 @@ def findGoodFiles(targetfile,rundir):
     # find the correct path 
     subdirs = os.listdir(rundir)
 
-    #if debug: print "Found these files ", subdirs
+    if debug: print "Found these files ", subdirs
 
-    # exclude dirs
+    # -- exclude dirs
     #excludeDirs =  [ 'run_000'+str(i) for i in range(1,10)]
     #excludeDirs += [ 'run_00'+str(i) for i in range(10,21)]
     excludeDirs = []
 
+    missing1, missing2 = helpers.checkSameOutput()
+    missing = missing1+missing2
+
+    newMissing = []
+    for n in missing: 
+        if n < 100: continue
+        else: newMissing += [n]
+
+    for m in newMissing:
+        index = str(m)
+
+        if len(index) < 5:
+            index = '0'*(5-len(str(m)))+str(m)
+            mdir = 'run_' + index
+            excludeDirs += [mdir]
+
     if excludeDirs:
         print("INFO: Excluding " + str(len(excludeDirs)) + " run dirs.")
-
+    
     # ------------
     # get all good files into a list
 
@@ -102,7 +119,7 @@ def findGoodFiles(targetfile,rundir):
 def doAppend(fApp,rundir):
 
     debug  = 0
-
+    g = -1
     if not rundir.endswith('/'):
         rundir += '/'
 
@@ -124,7 +141,14 @@ def doAppend(fApp,rundir):
         print(str(t1-t0)+" for finding a list")
 
         print len(resFiles),' for targetfile', targetfile
-
+        # ------------
+        if g == 0:
+            h = 'goodfilelist'
+            outfile = open(h, 'w')
+            for t in resFiles: outfile.write(t+'\n')
+            g = 1
+            print 'wrote', h
+        
         # ------------
         t0 = time.time()
         nlines = 0

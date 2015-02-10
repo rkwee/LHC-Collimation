@@ -24,7 +24,7 @@ tag_BH_4TeV = '_BH_4TeV_B2_20MeV'
 EnCut = '2.e-2'
 if tag_BH_4TeV.count('20GeV'): EnCut = '20.'
 # ------------------------------------------------------------------------------------------------
-length_LHC = 26659
+length_LHC = 26658.8832
 IPs = [
  ("IP1",        0.000000  ),      
  ("IP2",     3332.436584  ),      
@@ -138,11 +138,65 @@ def count_npart(fname,index):
 
     return len(npart)
 
-
+# ----------------------------------------------------------------------------
 def rename(fullpattern, suppresspattern):
 
     # remove suppresspattern from fullpattern
 
     return fullpattern.split(suppresspattern)[0]+ fullpattern.split(suppresspattern)[-1]
-    
+# ----------------------------------------------------------------------------
 
+def checkSameOutput():
+
+  # returns the directories in which some of the result files are missing
+
+  rundirs_f1 = []
+  rundirs_f2 = []
+
+  pattern  = 'LPI'
+
+  direct1 = 'twin_H5_NewScatt_TCT_4TeV_B1hHalo_trajectories/'
+  cmd = 'ls -1 ' + direct1 + 'run_*/'+pattern+'* >| ' + direct1 + 'tmp.f1'
+  os.system(cmd)
+
+  direct2 = 'twin_NewScatt_TCT_4TeV_B1hHalo_trajectories/'
+  cmd = 'ls -1 ' + direct2 + 'run_*/'+pattern+'* >| ' + direct2 + 'tmp.f2'
+  os.system(cmd)
+
+  fname1 = direct1 + 'tmp.f1'
+  with open(fname1) as mf:
+    for line in mf:
+      # get the run dir number
+      rundirs_f1 += [int(line.split('run_')[1].split('/'+pattern)[0])]
+
+
+  fname2 = direct2 + 'tmp.f2'
+  with open(fname2) as mf:
+    for line in mf:
+      # get the run dir number
+      rundirs_f2 += [int(line.split('run_')[1].split('/'+pattern)[0])]
+  # ................................................................................
+  present1, missing1 = [], []
+  for f2 in rundirs_f2:
+    if f2 not in rundirs_f1: missing1 += [f2]
+    else:                    present1 += [f2]
+
+  print len(missing1),' missing directories in ', direct1, missing1
+  # ................................................................................
+  present2, missing2 = [], []
+  for f1 in rundirs_f1: 
+    if f1 not in rundirs_f2: missing2 += [f1]
+    else:                    present2 += [f1]
+
+  print len(missing2),' missing directories in ', direct2, missing2
+  # ................................................................................
+
+  cmd = 'rm ' + direct1 + 'tmp*'
+  #os.system(cmd)
+  cmd = 'rm ' + direct2 + 'tmp*'
+  #os.system(cmd)
+
+  # format is list of int
+  return missing1, missing2
+
+# ----------------------------------------------------------------------------
