@@ -62,23 +62,23 @@ def findGoodFiles(targetfile,rundir):
     #excludeDirs += [ 'run_00'+str(i) for i in range(10,21)]
     excludeDirs = []
 
-    missing1, missing2 = helpers.checkSameOutput()
-    miss = missing1 + missing2
+    # missing1, missing2 = helpers.checkSameOutput()
+    # miss = missing1 + missing2
 
-    missing0 = []
+    # missing0 = []
 
-    for n in range(100):
-        if n not in miss:
-            missing0 += [n]
+    # for n in range(100):
+    #     if n not in miss:
+    #         missing0 += [n]
 
-    missing = missing0+miss
-    for m in missing:
-        index = str(m)
+    # missing = missing0+miss
+    # for m in missing:
+    #     index = str(m)
 
-        if len(index) < 5:
-            index = '0'*(5-len(str(m)))+str(m)
-            mdir = 'run_' + index
-            excludeDirs += [mdir]
+    #     if len(index) < 5:
+    #         index = '0'*(5-len(str(m)))+str(m)
+    #         mdir = 'run_' + index
+    #         excludeDirs += [mdir]
 
 
     if excludeDirs:
