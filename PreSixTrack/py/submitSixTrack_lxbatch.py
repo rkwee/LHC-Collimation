@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 #
 # this is a script to submit sixtrack jobs to lxbatch
@@ -45,7 +46,7 @@ tag = options.tag
 #njobs=10
 #queuename='8nh'
 #npacks='50'
-doTest=0
+doTest=1
 doRun=1
 showInfo=1
 mailOpt = '-u Regina.Kwee@gmail.com'
@@ -65,13 +66,13 @@ cList += [[ '4TeV_vHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518
 cList += [[ '4TeV_hHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_vHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_hHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_gfortran_O4', '4000000' ]]]
-cList += [[ 'HL_TCT_hHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_gfortran_O4', '7000000' ]]]
-cList += [[ 'HL_TCT_vHaloB1',   [sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_gfortran_O4', '7000000' ]]]
 
-cList += [[ '4TeV_vHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
-cList += [[ '4TeV_hHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
-cList += [[ '4TeV_vHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
-cList += [[ '4TeV_hHaloB2',     [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
+cList += [[ 'HL_TCT_hHaloB1_h5',[sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_h5_gfortran_O4', '7000000' ]]]
+cList += [[ 'HL_TCT_vHaloB1_h5',[sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_h5_gfortran_O4', '7000000' ]]]
+cList += [[ '4TeV_vHaloB1_h5',  [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_hHaloB1_h5',  [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_vHaloB2_h5',  [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_hHaloB2_h5',  [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
 
 cDict = dict(cList)
 
@@ -89,8 +90,10 @@ haloType    = ''
 doH5        = False
 if ckey.count('vHalo'): haloType = 'vHalo/'
 if ckey.count('hHalo'): haloType = 'hHalo/'
-if cDict[ckey][1].count('h5'): doH5 = True
+if cDict[ckey][1].count('h5') or cDict[ckey][1].count('H5'): doH5 = True
 
+if doH5: print "=" * 22, "running h5 format ", "="*22
+else: print "=" * 22, "running traditional format ", "="*22
 # -----------------------------------------------------------
 beam        = 'b1'
 if source_dir.count('B2') or source_dir.count('b2'):
@@ -106,16 +109,18 @@ if not os.path.exists(afs_run_dir):
     os.mkdir(afs_run_dir)
 
 # prepare runfiles: these files should be present in source_dir
-
 sixtrackExe = commonsource +cDict[ckey][1]
 fort2       = source_dir +'fort.2'
 fort3       = thissource + haloType + 'fort.3'
-collDB      = thissource +'CollDB_V6.503_lowb_st.'+beam+'.data' + tag
+collDB      = thissource +'CollDB_V6.503_lowb_st.'+beam+'.data'
 collPos     = source_dir +'CollPositions.'+beam+'.dat'
 apertfile   = source_dir +'allapert.' + beam
 surveyfile  = source_dir +'SurveyWithCrossing_XP_lowb_'+beam+'.dat'
 beamlossExe = commonsource +'beamLossPattern'
+reserveDS   = ' -R "rusage[pool=10000]" '
 reserveDS   = ''
+h5dumpExe   = "/afs/cern.ch/user/r/rkwee/public/hdf5/hdf5-1.8.14/bin/h5dump"
+
 if not doH5:
     beamlossExe = commonsource +'BeamLossPattern_2005-04-30_gcc2.9'
     reserveDS   = ' -R "rusage[pool=30000]" '
@@ -124,7 +129,9 @@ cleanIneExe = commonsource +'CleanInelastic_2013-08-19'
 cleanColExe = commonsource +'CleanCollScatter_2014.09.10'
 cleancoll   = commonsource +'correct_coll_summary.sh'
 
-if ckey.count('HL'): collDB = source_dir +'CollDB.ats.11t.'+beam + tag
+if ckey.count('HL'): 
+    collDB = source_dir +'CollDB.ats.11t.'+beam
+    fort2 = fort2 + tag
 inputFiles  = [sixtrackExe,beamlossExe,cleanIneExe,cleanColExe,fort2,collPos,apertfile,cleancoll]
 
 cnt = 0
@@ -184,6 +191,7 @@ for job in newrange:
     run_job = open(run_job_fname,'w')
     run_job.write('#!/bin/bash\n\n')
 
+    run_job.write('date +"%T %d.%m.%Y %Z" \n')
     run_job.write('mkdir ' + loc_run_dir +'\n')
     run_job.write('mkdir ' + loc_run_dir +'run_' + str(index)+ '\n')
     run_job.write('cd ' + loc_run_dir + 'run_'+ str(index) +'\n')
@@ -195,15 +203,17 @@ for job in newrange:
         cmd =  'cp ' + inpfile + ' . \n'
         run_job.write(cmd)
 
+    # fort2 file
+    if not fort2.endswith(".2"):
+        cmd = "mv fort.2* fort.2\n"
+        run_job.write(cmd)
+
     # hardcoded in BeamLossPattern
     cmd = 'cp ' + surveyfile + ' SurveyWithCrossing_XP_lowb.dat \n'
     run_job.write(cmd)
 
     # collDB
-    if len(tag) > 1:
-        cmd =  'cp ' + collDB + ' ' +collDB.split('/')[-1].split(tag)[0]+ ' \n'
-    else:
-        cmd =  'cp ' + collDB + ' . \n'
+    cmd =  'cp ' + collDB + ' . \n'
     run_job.write(cmd)
 
     # now fort3 file
@@ -212,10 +222,10 @@ for job in newrange:
 
     # fix random number
     rndm = str(random.random()*1e7)
-    rndm = rndm[:7]
-    if rndm.endswith("."): rndm = rndm.rstrip(".")
+    if rndm.count("."): rndm = rndm.replace('.','')
+    rndm = rndm[:7]    
 
-    cmd_rnd = "sed 's\\LSE. .FALSE. 0 .TRU\\LSE. .FALSE. " + rndm +" .TRU\\' " + fort3.split('/')[-1]+'.tmp' + " > " + fort3.split('/')[-1] + '\n'
+    cmd_rnd = "sed 's\\LSE. .FALSE. 0 .TRU\\LSE. .FALSE. " + str(rndm) +" .TRU\\' " + fort3.split('/')[-1]+'.tmp' + " > " + fort3.split('/')[-1] + '\n'
     run_job.write(cmd_rnd)
     run_job.write('rm ' + fort3.split('/')[-1]+'.tmp\n')
 
@@ -224,6 +234,7 @@ for job in newrange:
     if not doH5:
         run_job.write('./'+beamlossExe.split('/')[-1] + ' lowb tracks2.dat BLP_out ' + apertfile.split('/')[-1]  + '\n')
         run_job.write("perl -pi -e 's/\\0/ /g' LPI_BLP_out.s" + '\n')
+
     else:
         run_job.write('./'+beamlossExe.split('/')[-1] + ' tracks2.h5 BLP_out ' + apertfile.split('/')[-1] + ' SurveyWithCrossing_XP_lowb.dat' + '\n')
 
@@ -243,16 +254,20 @@ for job in newrange:
     cmd = 'gzip Coll_Scatter* \n'
     run_job.write(cmd)
 
+    # gzip impacts file
+    cmd = 'ls -lrt tracks2* \n'
+    run_job.write(cmd)
+
     # copy back
     # cmd_copy = 'cp amplitude.dat efficiency.dat coll_summary.dat screen* survival.dat LP* FLUKA* FirstImpacts.dat sigmasettings.out impacts* ' + subdir
     if doTest:
-        cmd_copy = 'cp coll_summary.dat collgaps* screen* LP* FirstImpacts.dat* sigmasettings.out impacts* ' + subdir
-        cmd_copy = "cp * " + subdir
+        cmd_copy = 'mv coll_summary.dat collgaps* screen* LP* FirstImpacts.dat* sigmasettings.out impacts* ' + subdir +'\n'
+        cmd_copy = "mv * " + subdir +'\n'
     else:
-        cmd_copy = 'cp coll_summary.dat LP* FirstImpacts.dat* impacts*real* Coll_Sc*real* ' + subdir
+        cmd_copy = 'mv coll_summary.dat LP* FirstImpacts.dat* impacts*real* Coll_Sc*real* ' + subdir +'\n'
 
     run_job.write(cmd_copy)
-
+    run_job.write('date +"%T %d.%m.%Y %Z" \n')
     run_job.close()
 
     # make it executable 
