@@ -52,7 +52,8 @@ def mean(vec):
     for n in vec:
         meanVal += n
 
-    if N > 0:
+    meanVal*=1.
+    if N:
         meanVal /= N
     return meanVal
 
@@ -145,10 +146,10 @@ def rename(fullpattern, suppresspattern):
 
     return fullpattern.split(suppresspattern)[0]+ fullpattern.split(suppresspattern)[-1]
 # ----------------------------------------------------------------------------
-
 def checkSameOutput():
-
+# Feb 2015  
   # returns the directories in which some of the result files are missing
+
 
   rundirs_f1 = []
   rundirs_f2 = []
@@ -198,5 +199,14 @@ def checkSameOutput():
 
   # format is list of int
   return missing1, missing2
+# ----------------------------------------------------------------------------
+
+def stringDateToTimeStamp(stringTime, format):
+
+    # format can be "%Y-%m-%d %H:%M:%S"
+    st_tup = time.strptime(stringTime, format)
+    ts = time.mktime(st_tup)
+    # to re-convert to string use time.ctime(ts)
+    return ts
 
 # ----------------------------------------------------------------------------
