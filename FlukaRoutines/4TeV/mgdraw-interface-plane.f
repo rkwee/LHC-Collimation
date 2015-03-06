@@ -156,9 +156,9 @@ D    &      CALL FLABRT ( 'MGDRAW', 'MTRACK=0 .NEQV. MEDIUM <=2' )
      &        nint(runNr),ncase,JTRACK, ! ID of primary, particle type
      &        etrack-AA,wtrack, ! kinetic energy of particle (tot. en. - mass), statistical weight of particle
      &        XSCO,YSCO,CXTRCK,CYTRCK,ATRACK, ! x,y, directional cosines at interface plane,time since start of primary
-     &        etrack,xStart,yStart,zStart,tStart
+     &        etrack,xStart,yStart,zStart,tStart,
 *     &        ,xtrack(0),ytrack(0),ztrack(0) ! total energy, coordinates of initial proton
-         
+     &        SPAUSR(1), SPAUSR(2), SPAUSR(3) ! only non-zero if it's a muon. x,y,z coordinates of origin of creation.
       ENDIF
 
 
