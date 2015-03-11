@@ -1,0 +1,51 @@
+! Belen Salvachua 28-11-2012
+! Add TCLA-Hor and TCLA-Ver in IR6 infront of the magnets
+! Increase length of TCDQ 
+
+ tcla:rcollimator,l:=0.0;
+ tcdq.half:rcollimator,l:=0.0;
+
+ seqedit,sequence=lhcb1;
+   flatten;
+ endedit;
+
+ seqedit,sequence=lhcb2;
+   flatten;
+ endedit;
+
+! TCLA's at IR6
+!  seqedit, sequence=lhcb1;
+!    install, element=tcla.a4r6.b1, class=tcla, at=160.973, from=ip6;
+!    install, element=tcla.b4r6.b1, class=tcla, at=162.973, from=ip6;
+!  endedit;  
+
+! Latest TCDQ geometry
+ seqedit, sequence=lhcb1;
+   remove, element=bpmsb.a4r6.b1;
+   remove, element=bpmsb.b4r6.b1;
+   remove, element=tcdqa.a4r6.b1;
+   remove, element=tcdqa.b4r6.b1;
+   install,element=tcdqa.a4r6.b1, class=tcdq.half, at=143.24, from=ip6;
+   install,element=tcdqa.b4r6.b1, class=tcdq.half, at=146.79, from=ip6;
+   install,element=tcdqa.c4r6.b1, class=tcdq.half, at=150.34, from=ip6;
+ endedit;
+
+! TCLA's at IR6
+!  seqedit, sequence=lhcb2;
+!    install, element=tcla.a4l6.b2, class=tcla, at=160.973, from=ip6;
+!    install, element=tcla.b4l6.b2, class=tcla, at=162.973, from=ip6;
+!  endedit;  
+
+! Latest TCDQ geometry
+ seqedit, sequence=lhcb2;
+   remove, element=bpmsb.a4l6.b2;
+   remove, element=bpmsb.b4l6.b2;
+   remove, element=tcdqa.a4l6.b2;
+   remove, element=tcdqa.b4l6.b2;
+   install,element=tcdqa.a4l6.b2, class=tcdq.half, at=143.24, from=ip6;
+   install,element=tcdqa.b4l6.b2, class=tcdq.half, at=146.79, from=ip6;
+   install,element=tcdqa.c4l6.b2, class=tcdq.half, at=150.34, from=ip6;
+ endedit;
+
+
+return;

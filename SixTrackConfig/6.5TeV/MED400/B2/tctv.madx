@@ -1,0 +1,82 @@
+! Change the TCTVB.4L2 for a TCTVA.4L2.B1
+! Change the TCTVB.4R2 for a TCTVA.4R2.B2
+
+ tctva:rcollimator,l:=0.0;
+
+ seqedit,sequence=lhcb1;
+   flatten;
+ endedit;
+
+ seqedit,sequence=lhcb2;
+   flatten;
+ endedit;
+
+! TCTs IR2
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 
+! TCTVA.B1 at IR2 (already installed in as-built sequence!
+ seqedit,sequence=lhcb1;
+   remove, element=tctvb.4l2;
+   remove, element=tctvb.4r2;
+   install,element=tctva.4l2.b1, class= tctva,at= -116.533, from= ip2;
+! endedit;
+ 
+! TCTVA.B2 at IR2 (NOT included in sequence)
+ seqedit,sequence=lhcb2;
+   remove, element=tctvb.4l2;
+   remove, element=tctvb.4r2;
+   install,element=tctva.4r2.b2, class= tctva,at= -116.533, from= ip2;
+ endedit;
+
+ 
+! move TCLIA IR2
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!  move TCLIA at IP2 (injection B1)
+ seqedit,sequence=lhcb1;
+   remove, element=tclia.4r2;
+   install,element=tclia.4r2, class= tclia,at= 73.748, from= ip2;
+ endedit;
+ 
+ !  move TCLIA
+ seqedit,sequence=lhcb2;
+   remove, element=tclia.4r2;
+   install,element=tclia.4r2, class= tclia,at= -73.748, from= ip2;
+ endedit;
+
+ 
+ 
+ 
+ ! TCTs IR8
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+! TCTVB.B1 at IR8,
+ seqedit,sequence=lhcb1;
+   remove, element=tctvb.4l8;
+   remove, element=tctvb.4r8;
+   install,element=tctva.4l8.b1, class= tctva,at= -116.233, from= ip8;
+ endedit;
+ 
+ ! TCTVB.B2 at IR8
+ seqedit,sequence=lhcb2;
+   remove, element=tctvb.4l8;
+   remove, element=tctvb.4r8;
+   install,element=tctva.4r8.b2, class= tctva,at= -116.233, from= ip8;
+ endedit;
+
+! move TCLIA IR8
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!  move TCLIA
+ seqedit,sequence=lhcb1;
+   remove, element=tclia.4l8;
+   install,element=tclia.4l8, class= tclia,at= -73.748, from= ip8;
+ endedit;
+ 
+ !  move TCLIA
+ seqedit,sequence=lhcb2;
+   remove, element=tclia.4l8;
+   install,element=tclia.4l8, class= tclia,at= 73.748, from= ip8;
+ endedit;
+ 
+return;
+
