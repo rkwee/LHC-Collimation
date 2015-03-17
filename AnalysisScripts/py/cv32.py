@@ -1,7 +1,8 @@
 #!/usr/bin/python
 #
+# plot pressure profiles 4 TeV (2011/12)
+#
 # Mar 2015, rkwee
-## -------------------------------------------------------------------------------
 ## -------------------------------------------------------------------------------
 import ROOT, sys, os, time, math
 from ROOT import *
@@ -9,13 +10,18 @@ import lossmap, helpers, array
 from helpers import wwwpath, length_LHC, mylabel, gitpath, workpath
 from array import array
 ## -------------------------------------------------------------------------------
-pressureData = 'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv'
-#pressureData = 'beam-gas-sixtrack/pressure_profiles_2012/test.csv'
+pData = [ 
+    ('beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv',  "distance from IP4 [m]"),
+    ('beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv', "distance from IP1 [m]"),
+    ('beam-gas-sixtrack/pressure_profiles_2012/LSS2_B1_Fill2736_Roderik.csv', "distance from IP2 [m]"),
+    ('beam-gas-sixtrack/pressure_profiles_2012/LSS7_B1_Fill2736_Roderik.csv', "distance from IP7 [m]"),
+    ('beam-gas-sixtrack/pressure_profiles_2011/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv', "distance from IP1 [m]"),
+    ]
 # -----------------------------------------------------------------------------------
-def getdata():
+def getdata(pFile):
 
     c = [ [] for i in range(14) ]
-    with open(pressureData) as mf:
+    with open(pFile) as mf:
         for l,line in enumerate(mf):
 
             for i in range(14):
@@ -48,13 +54,14 @@ def makeGraph(data, xKey, yKey, color, mStyle):
     for i in range(1,len(xarrayV)-1):
         x=float(xarrayV[i+1])
         y=float(yarrayV[i+1])
+        #print x, y
         gr.SetPoint(i+1, x, y)
 
     return gr
 # ----------------------------------------------------------------------------
-def cv32a():
+def cv32a(pFile,xTitle):
 
-    data = getdata()
+    data = getdata(pFile)
 
     cv = TCanvas( 'cv', 'cv', 2100, 900)
 
@@ -94,24 +101,24 @@ def cv32a():
     gPad.SetLogy(1)
     gPad.RedrawAxis()
 
-    mg.SetTitle("2012 pressure profiles")
-    mg.GetXaxis().SetTitle("s ")
+    mg.SetTitle("pressure profiles")
+    mg.GetXaxis().SetTitle(xTitle)
     mg.GetYaxis().SetTitle("density #rho [molecules/m^{3}]")
-
+    mg.GetYaxis().SetRangeUser(1e7,1e17)
     mlegend.Draw()
 
     # pname  = wwwpath
     # subfolder = 'TCT/HL/relaxedColl/newScatt/'
     # pname += subfolder + hname + '_' + doZoom + '.png'
 
-    pname = pressureData.split('.csv')[0] + "a_pressure_2012.png"    
+    pname = pFile.split('.csv')[0] + "a_pressure.png"    
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 
 # ----------------------------------------------------------------------------
-def cv32b():
+def cv32b(pFile,xTitle):
 
-    data = getdata()
+    data = getdata(pFile)
 
     cv = TCanvas( 'cv', 'cv', 2100, 900)
 
@@ -151,10 +158,10 @@ def cv32b():
     gPad.SetLogy(1)
     gPad.RedrawAxis()
 
-    mg.SetTitle("2012 pressure profiles")
-    mg.GetXaxis().SetTitle("s ")
+    mg.SetTitle("pressure profiles")
+    mg.GetXaxis().SetTitle(xTitle)
     mg.GetYaxis().SetTitle("N_{2} Eq")
-    #    mgclone.GetYaxis().SetRangeUser(-3,0)
+    mg.GetYaxis().SetRangeUser(1e-16,1e-7)
 
     mlegend.Draw()
 
@@ -162,15 +169,15 @@ def cv32b():
     # subfolder = 'TCT/HL/relaxedColl/newScatt/'
     # pname += subfolder + hname + '_' + doZoom + '.png'
 
-    pname = pressureData.split('.csv')[0] + "b_pressure_2012.png"    
+    pname = pFile.split('.csv')[0] + "b_pressure.png"    
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 
 
 # ----------------------------------------------------------------------------
-def cv32c():
+def cv32c(pFile, xTitle):
 
-    data = getdata()
+    data = getdata(pFile)
     a,b = 1,2
     cv = TCanvas( 'cv', 'cv', a*2100, b*900)
     cv.Divide(a,b)
@@ -187,12 +194,12 @@ def cv32c():
 
     mgr = TMultiGraph()
 
-    xKey, yKey, color, mStyle, lg = 's','avPress', kGreen, 22, 'aver. pressure'
+    xKey, yKey, color, mStyle, lg = 's','avPress', kGreen, 23, 'aver. pressure'
     g0 = makeGraph(data, xKey, yKey, color, mStyle)
     mylegend.AddEntry(g0, lg, "p")    
     mgr.Add(g0)
 
-    xKey, yKey, color, mStyle, lg = 's','avPressCorr', kBlue, 23, 'aver. pressure corr.'
+    xKey, yKey, color, mStyle, lg = 's','avPressCorr', kBlue, 24, 'aver. pressure corr.'
     g1 = makeGraph(data, xKey, yKey, color, mStyle)
     mylegend.AddEntry(g1, lg, "p") 
     mgr.Add(g1)
@@ -202,9 +209,10 @@ def cv32c():
     gPad.SetLogy(1)
     gPad.RedrawAxis()
 
-    mgr.SetTitle("2012 pressure profiles")
-    mgr.GetXaxis().SetTitle("s ")
+    mgr.SetTitle("pressure profiles")
+    mgr.GetXaxis().SetTitle(xTitle)
     mgr.GetYaxis().SetTitle("av. pressure")
+    mgr.GetYaxis().SetRangeUser(1e-12,1e-6)
 
     mylegend.Draw()
 
@@ -222,12 +230,12 @@ def cv32c():
 
     mg = TMultiGraph()
 
-    xKey, yKey, color, mStyle, lg = 's','H2Eq', kRed, 20, 'H_{2} Eq'
+    xKey, yKey, color, mStyle, lg = 's','H2Eq', kBlue, 23, 'H_{2} Eq'
     g2 = makeGraph(data, xKey, yKey, color, mStyle)
     mlegend.AddEntry(g2, lg, "p") 
     mg.Add(g2)
 
-    xKey, yKey, color, mStyle, lg = 's','H2EqCorr', kMagenta, 21, 'H_{2} Eq corr.'
+    xKey, yKey, color, mStyle, lg = 's','H2EqCorr', kMagenta, 24, 'H_{2} Eq corr.'
     g3 = makeGraph(data, xKey, yKey, color, mStyle)
     mlegend.AddEntry(g3, lg, "p") 
     mg.Add(g3)
@@ -237,25 +245,28 @@ def cv32c():
     gPad.SetLogy(1)
     gPad.RedrawAxis()
 
-    mg.SetTitle("2012 pressure profiles")
-    mg.GetXaxis().SetTitle("s ")
+    mg.SetTitle("pressure profiles")
+    mg.GetXaxis().SetTitle(xTitle)
     mg.GetYaxis().SetTitle("H_{2} Eq")
-    
+    mg.GetYaxis().SetRangeUser(2e10,9e17)
+
     mlegend.Draw()
 
     # pname  = wwwpath
     # subfolder = 'TCT/HL/relaxedColl/newScatt/'
     # pname += subfolder + hname + '_' + doZoom + '.png'
 
-    pname = pressureData.split('.csv')[0] + "c_pressure_2012.png"    
+    pname = pFile.split('.csv')[0] + "c_pressure.png"    
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 
 # ----------------------------------------------------------------------------
 
 def cv32():
-    cv32a()
-    cv32b()
-    cv32c()
+
+    for pFile,xTitle in pData:
+        #cv32a(pFile,xTitle)
+        #cv32b(pFile,xTitle)
+        cv32c(pFile,xTitle)
 
 # ----------------------------------------------------------------------------
