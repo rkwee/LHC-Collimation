@@ -20,20 +20,41 @@ pData = [
     ('beam-gas-sixtrack/pressure_profiles_2011/LSS7_Fill2028_Roderick.csv', "distance from IP7 [m]"),
 ]
 
+# 11 colum format
+pData1 = [ 
+    ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv',  "distance from IP4 [m]"),
+    ]
+
 # 7 colum format
 pData2 = [ 
     ('beam-gas-sixtrack/pressure_profiles_2011/LSS8_Fill_2028_B1_Roderik.csv', "distance from IP8 [m]"),
     ('beam-gas-sixtrack/pressure_profiles_2011/LSS2_B1_Blue_Fill2028_Roderick.csv',"distance from IP2 [m]"),
+    ('beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_Beam_1_Fill2736_Regina.csv',"distance from IP4 [m]"),
+    ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv',"distance from IP4 [m]"),
 ]
 
-# comparison
+# comparison : filenames must appear in either pData or pData2 to define the format!
 pData3 = [
-    ('beam-gas-sixtrack/pressure_profiles_2011/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv', \
-     'beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv' ,"distance from IP1 [m]"),
-    ('beam-gas-sixtrack/pressure_profiles_2011/LSS2_B1_Blue_Fill2028_Roderick.csv', \
-     'beam-gas-sixtrack/pressure_profiles_2012/LSS2_B1_Fill2736_Roderik.csv', "distance from IP2 [m]"),
+#     ('beam-gas-sixtrack/pressure_profiles_2011/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv', \
+#      'beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv' ,"distance from IP1 [m]", 'H2Eq', 'H_{2} Eq 2011', 'H_{2} Eq 2012'),
+#     ('beam-gas-sixtrack/pressure_profiles_2011/LSS2_B1_Blue_Fill2028_Roderick.csv', \
+#      'beam-gas-sixtrack/pressure_profiles_2012/LSS2_B1_Fill2736_Roderik.csv', "distance from IP2 [m]", 'H2Eq', 'H_{2} Eq 2011', 'H_{2} Eq 2012'),
 #    ('beam-gas-sixtrack/pressure_profiles_2011/LSS7_Fill2028_Roderick.csv', \
-#     'beam-gas-sixtrack/pressure_profiles_2012/LSS7_B1_Fill2736_Roderik.csv', "distance from IP7 [m]"),
+#     'beam-gas-sixtrack/pressure_profiles_2012/LSS7_B1_Fill2736_Roderik.csv', "distance from IP7 [m]", 'H2Eq', 'H_{2} Eq 2011', 'H_{2} Eq 2012'),
+    ('beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_Beam_1_Fill2736_Regina.csv', \
+     'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'H2Eq', 'H_{2} Eq for Roderik', 'H_{2} Eq for Regina'),
+#     ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv', \
+#          'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'rho_H2', '#rho_{H_{2}} 2011', '#rho_{H_{2}} 2012'),
+#     ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv', \
+#          'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'rho_CH4', '#rho_{CH_{4}} 2011', '#rho_{CH_{4}} 2012'),
+#     ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv', \
+#          'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'rho_CO', '#rho_{CO} 2011', '#rho_{CO} 2012'),
+#     ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv', \
+#          'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'rho_CO2', '#rho_{CO_{2}} 2011', '#rho_{CO_{2}} 2012'),
+#     ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv', \
+#          'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'H2_N2Eq', 'H_{2} Eq 2011', 'H_{2} Eq 2012'),
+#     ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv', \
+#          'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'avPress', 'average pressure 2011', 'average pressure 2012'),
 ]
 # -----------------------------------------------------------------------------------
 def getdata14c(pFile):
@@ -51,6 +72,24 @@ def getdata14c(pFile):
 
     data = dict(s=c[0], l_total=c[1], rho_H2=c[2], rho_CH4=c[3], rho_CO=c[4], rho_CO2=c[5], \
                 H2_N2Eq=c[6], CH4_N2Eq=c[7], CO_N2Eq=c[8], CO2_N2Eq=c[9], avPress=c[10], avPressCorr=c[11], H2Eq=c[12], H2EqCorr=c[13])
+
+    return data
+# -----------------------------------------------------------------------------------
+def getdata11c(pFile):
+    ncol = 11
+    c = [ [] for i in range(ncol) ]
+    with open(pFile) as mf:
+        for l,line in enumerate(mf):
+
+            for i in range(ncol):
+                
+                if i != ncol-1:
+                    c[i] += [ line.split(',')[i] ]
+                else:
+                    c[i] += [ line.split(',')[i].rstrip('\r\n') ]
+
+    data = dict(s=c[0], l_total=c[1], rho_H2=c[2], rho_CH4=c[3], rho_CO=c[4], rho_CO2=c[5], \
+                 H2_N2Eq=c[6], CH4_N2Eq=c[7], CO_N2Eq=c[8], CO2_N2Eq=c[9], avPress=c[10])
 
     return data
 # -----------------------------------------------------------------------------------
@@ -314,7 +353,7 @@ def cv32c(pFile, xTitle, data, doCorr):
     cv.Print(pname)
 
 # ----------------------------------------------------------------------------
-def cv32d( data2011, data2012, xTitle):
+def cv32d( data2011, data2012, datacol, xTitle, lA, lB):
 
     LSS = 'LSS' + xTitle.split('IP')[1][0]
     cv = TCanvas( 'cv', 'cv', 2100, 900)
@@ -330,13 +369,13 @@ def cv32d( data2011, data2012, xTitle):
 
     mg = TMultiGraph()
 
-    xKey, yKey, color, mStyle, lg = 's','H2Eq', kBlue, 23, 'H_{2} Eq 2011'
+    xKey, yKey, color, mStyle, lg = 's', datacol, kBlue, 23, lA
     g0 = makeGraph(data2011, xKey, yKey, color, mStyle)
     mlegend.AddEntry(g0, lg, "p") 
     mg.Add(g0)
 
 
-    xKey, yKey, color, mStyle, lg = 's','H2Eq', kMagenta, 24, 'H_{2} Eq 2012'
+    xKey, yKey, color, mStyle, lg = 's',datacol, kMagenta, 24, lB
     g1 = makeGraph(data2012, xKey, yKey, color, mStyle)
     mlegend.AddEntry(g1, lg, "p") 
     mg.Add(g1)
@@ -348,8 +387,13 @@ def cv32d( data2011, data2012, xTitle):
 
     mg.SetTitle("pressure profiles")
     mg.GetXaxis().SetTitle(xTitle)
-    mg.GetYaxis().SetTitle("H_{2} Eq")
-    mg.GetYaxis().SetRangeUser(2e10,9e17)
+    mg.GetYaxis().SetTitle(datacol)
+
+#     print TMath.MaxElement(g0.GetN(),g0.GetY())
+#     print g0.GetY()
+
+#     if m0 < m1: YurMin = m0
+#     mg.GetYaxis().SetRangeUser(YurMin,YurMax)
 
     mlegend.Draw()
 
@@ -357,33 +401,42 @@ def cv32d( data2011, data2012, xTitle):
     # subfolder = 'TCT/HL/relaxedColl/newScatt/'
     # pname += subfolder + hname + '_' + doZoom + '.png'
 
-    pname = "comparison_"+ LSS +".png"
+    pname = "comparison_" + datacol + '_' + LSS +".png"
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 # ----------------------------------------------------------------------------
 
 def cv32():
 
+    # for comparison
     data2011, data2012 = {}, {}
 
     pDataFiles  = [p[0] for p in pData]
+    pData1Files = [p[0] for p in pData1]
     pData2Files = [p[0] for p in pData2]
 
-    for p2011, p2012, xTitle in pData3:
+    for p2011, p2012, xTitle, datacol, lA, lB in pData3:
         if p2011 in pDataFiles:
             data2011 = getdata14c(p2011)
+        elif p2011 in pData1Files:
+            data2011 = getdata11c(p2011)
         elif p2011 in pData2Files:
             data2011 = getdata7c(p2011)
 
         if p2012 in pDataFiles:
             data2012 = getdata14c(p2012)
+        elif p2012 in pData1Files:
+            data2012 = getdata11c(p2012)
         elif p2012 in pData2Files:
             data2012 = getdata7c(p2012)
 
         if data2011 and data2012:
-            cv32d( data2011, data2012, xTitle)
+            cv32d( data2011, data2012, datacol, xTitle, lA, lB)
+        else:
+            print 'data2011', data2011
+            print 'data2012', data2012
 
-
+    # single data plots
     if 0:
         for pFile,xTitle in pData:
             print '.'*22,pFile,'.'*22
