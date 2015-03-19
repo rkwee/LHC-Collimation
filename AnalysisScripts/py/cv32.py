@@ -12,12 +12,12 @@ from array import array
 ## -------------------------------------------------------------------------------
 # 14 colum format
 pData = [ 
-    ('beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv',  "distance from IP4 [m]"),
-    ('beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv', "distance from IP1 [m]"),
-    ('beam-gas-sixtrack/pressure_profiles_2012/LSS2_B1_Fill2736_Roderik.csv', "distance from IP2 [m]"),
-    ('beam-gas-sixtrack/pressure_profiles_2012/LSS7_B1_Fill2736_Roderik.csv', "distance from IP7 [m]"),
-    ('beam-gas-sixtrack/pressure_profiles_2011/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv', "distance from IP1 [m]"),
-    ('beam-gas-sixtrack/pressure_profiles_2011/LSS7_Fill2028_Roderick.csv', "distance from IP7 [m]"),
+#    ('beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv',  "distance from IP4 [m]"),
+#     ('beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv', "distance from IP1 [m]"),
+#     ('beam-gas-sixtrack/pressure_profiles_2012/LSS2_B1_Fill2736_Roderik.csv', "distance from IP2 [m]"),
+#     ('beam-gas-sixtrack/pressure_profiles_2012/LSS7_B1_Fill2736_Roderik.csv', "distance from IP7 [m]"),
+#     ('beam-gas-sixtrack/pressure_profiles_2011/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv', "distance from IP1 [m]"),
+#     ('beam-gas-sixtrack/pressure_profiles_2011/LSS7_Fill2028_Roderick.csv', "distance from IP7 [m]"),
 ]
 
 # 11 colum format
@@ -27,10 +27,9 @@ pData1 = [
 
 # 7 colum format
 pData2 = [ 
-    ('beam-gas-sixtrack/pressure_profiles_2011/LSS8_Fill_2028_B1_Roderik.csv', "distance from IP8 [m]"),
-    ('beam-gas-sixtrack/pressure_profiles_2011/LSS2_B1_Blue_Fill2028_Roderick.csv',"distance from IP2 [m]"),
-    ('beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_Beam_1_Fill2736_Regina.csv',"distance from IP4 [m]"),
-    ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv',"distance from IP4 [m]"),
+#     ('beam-gas-sixtrack/pressure_profiles_2011/LSS8_Fill_2028_B1_Roderik.csv', "distance from IP8 [m]"),
+#     ('beam-gas-sixtrack/pressure_profiles_2011/LSS2_B1_Blue_Fill2028_Roderick.csv',"distance from IP2 [m]"),
+#    ('beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_Beam_1_Fill2736_Regina.csv',"distance from IP4 [m]"),
 ]
 
 # comparison : filenames must appear in either pData or pData2 to define the format!
@@ -41,8 +40,8 @@ pData3 = [
 #      'beam-gas-sixtrack/pressure_profiles_2012/LSS2_B1_Fill2736_Roderik.csv', "distance from IP2 [m]", 'H2Eq', 'H_{2} Eq 2011', 'H_{2} Eq 2012'),
 #    ('beam-gas-sixtrack/pressure_profiles_2011/LSS7_Fill2028_Roderick.csv', \
 #     'beam-gas-sixtrack/pressure_profiles_2012/LSS7_B1_Fill2736_Roderik.csv', "distance from IP7 [m]", 'H2Eq', 'H_{2} Eq 2011', 'H_{2} Eq 2012'),
-    ('beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_Beam_1_Fill2736_Regina.csv', \
-     'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'H2Eq', 'H_{2} Eq for Roderik', 'H_{2} Eq for Regina'),
+#     ('beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_Beam_1_Fill2736_Regina.csv', \
+#      'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'H2Eq', 'H_{2} Eq for Roderik', 'H_{2} Eq for Regina'),
 #     ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv', \
 #          'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'rho_H2', '#rho_{H_{2}} 2011', '#rho_{H_{2}} 2012'),
 #     ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv', \
@@ -52,7 +51,7 @@ pData3 = [
 #     ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv', \
 #          'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'rho_CO2', '#rho_{CO_{2}} 2011', '#rho_{CO_{2}} 2012'),
 #     ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv', \
-#          'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'H2_N2Eq', 'H_{2} Eq 2011', 'H_{2} Eq 2012'),
+#          'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'H2_N2Eq', 'H_{2} N_{2} Eq 2011', 'H_{2} N_{2} Eq 2012'),
 #     ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv', \
 #          'beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv', "distance from IP4 [m]", 'avPress', 'average pressure 2011', 'average pressure 2012'),
 ]
@@ -197,6 +196,8 @@ def cv32a(pFile,xTitle,data):
 # ----------------------------------------------------------------------------
 def cv32b(pFile,xTitle,data):
 
+    # single N2 equivalents
+
     lText = '2012'
     if pFile.count('2011'): lText = '2011'
 
@@ -258,12 +259,14 @@ def cv32b(pFile,xTitle,data):
 
 
 # ----------------------------------------------------------------------------
-def cv32c(pFile, xTitle, data, doCorr):
+def cv32c(pFile, xTitle, data, doCorr, var):
 
     lText = '2012'
     if pFile.count('2011'): lText = '2011'
 
-    a,b = 1,2
+    if not var: a,b = 1,2
+    else: a,b, = 1,1
+
     cv = TCanvas( 'cv', 'cv', a*2100, b*900)
     cv.Divide(a,b)
 
@@ -437,19 +440,25 @@ def cv32():
             print 'data2012', data2012
 
     # single data plots
-    if 0:
+    if 1:
         for pFile,xTitle in pData:
             print '.'*22,pFile,'.'*22
             data = getdata14c(pFile)
             cv32a(pFile,xTitle,data)
             cv32b(pFile,xTitle,data)
-            cv32c(pFile,xTitle,data,1)
+            cv32c(pFile,xTitle,data,1,'')
 
+        for pFile,xTitle in pData1:
+            print '.'*22,pFile,'.'*22
+            data = getdata11c(pFile)
+            cv32a(pFile,xTitle,data)
+            cv32b(pFile,xTitle,data)
+            cv32c(pFile,xTitle,data,0,'avPress')
 
         for pFile,xTitle in pData2:
             print '.'*22,pFile,'.'*22
             data = getdata7c(pFile)
             cv32a(pFile,xTitle,data)
-            cv32c(pFile,xTitle,data,0)
+            cv32c(pFile,xTitle,data,0,'')
 
 # ----------------------------------------------------------------------------
