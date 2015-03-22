@@ -18,7 +18,7 @@ LPIfile     = options.lossfile
 
 # -----------------------------------------------------------------------------------
 
-outfilename = "tracks2_extract.dat"
+outfilename = tracks2File + ".extract"
 outfile = open(outfilename,'w')
 print "writing ", outfilename
 

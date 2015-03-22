@@ -58,7 +58,7 @@ for t in tracks2['tracks']:
     
     #Stop halfway for debugging
     i = i+1
-    if (i%10000==0):
+    if (i%1000000==0):
         print "i = ",i, " rows converted"
     if imax > 0 and i >= imax:
         break
