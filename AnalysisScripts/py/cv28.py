@@ -37,21 +37,21 @@ def cv28():
     f_ascii = pathtofile + 'tree_ascii.log'
     f_hdf5  = pathtofile + 'tree_hdf5.log'
 
-    pathtofile = '/home/scratch-rkwee/'
-    f_ascii = pathtofile + "HL_TCT5IN_relaxColl_vHaloB1_roundthin/run_05538/tracks2_extract.dat"
-    f_hdf5  = pathtofile + "H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin/run_05538/tracks2.h5.dat.extract" 
+    pathtofile = '/tmp/rkwee/'
+    f_ascii = pathtofile + "tracks2_extract.dat"
+    f_hdf5  = pathtofile + "tracks2.h5.dat.extract" 
 
     hDict = {
         ## x,y in [m] #0 var #1 xnbins, xmin, xmax, ynbins, ymin, ymax, #2 xtitle, #3 ytitle, # position in treefile
         # 'name':[ 11, -0.5, 10.5,'difference', 'entries', 1],
-        'turn':[ 10, -2.5, 7.5,'difference', 'entries', 2],
-        's':[ 100, -0.1, 0.1,'difference', 'entries', 3],
-        'x':[ 100, -0.1, 0.1,'difference', 'entries', 4],
-        'xp':[ 100, -0.1, 0.1,'difference', 'entries', 5],
-        'y':[ 100, -0.1, 0.1,'difference', 'entries', 6],
-        'yp':[ 100, -0.1, 0.1,'difference', 'entries', 7],
-        'dEoverE':[ 100, -0.1, 0.1,'difference', 'entries', 8],
-        'type':[ 100, -0.1, 0.1,'difference', 'entries', 9],
+        'turn':[ 201, -0.5, 200.5,'difference', 'entries', 2],
+        's':[ 100, -0.001, 0.02,'difference', 'entries', 3],
+        'x':[ 100, -0.001, 0.02,'difference', 'entries', 4],
+        'xp':[ 100, -0.001, 0.02,'difference', 'entries', 5],
+        'y':[ 100, -0.001, 0.02,'difference', 'entries', 6],
+        'yp':[ 100, -0.001, 0.02,'difference', 'entries', 7],
+        'dEoverE':[ 100, -0.001, 0.001,'difference', 'entries', 8],
+        'type':[ 100, -0.001, 0.1,'difference', 'entries', 9],
         }
 
     def cleanline(listeof, pattern):
@@ -70,30 +70,47 @@ def cv28():
 
         with open(f_ascii) as fA:
             for line in fA:
-                try:                    
-                    cline = cleanline(line.split(), "*")
-                    vA += [ float(cline[vPos]) ]
-                except ValueError:
-                    print "ignoring", line
-                except IndexError:
-                    print "ignoring as well", line
+                if line.count("*"):
+                    try:                    
+                        cline = cleanline(line.split(), "*")
+                        vA += [ float(cline[vPos]) ]
+                    except ValueError:
+                        print "ignoring", line
+                    except IndexError:
+                        print "ignoring as well", line
+                else:
+                    try:
+                        vA += [ float( line.split()[vPos-1]) ]
+                    except:
+                        print line.split(), vPos-1
+                        print line.split()[vPos-1]
+
+                        print "Couldn't read", line
+                        sys.exit()
 
         with open(f_hdf5) as fH:
             for line in fH:
-                try:                    
-                    cline = cleanline(line.split(), "*")
-                    vH += [ float(cline[vPos]) ]
-                except ValueError:
-                    print "ignoring", line
-                except IndexError:
-                    print "ignoring as well", line
+                if line.count("*"):
+                    try:                    
+                        cline = cleanline(line.split(), "*")
+                        vH += [ float(cline[vPos]) ]
+                    except ValueError:
+                        print "ignoring", line
+                    except IndexError:
+                        print "ignoring as well", line
+                else:
+                    try:
+                        vH += [ float(line.split()[vPos-1]) ]
+                    except:
+                        print "Couldn't read", line
+                        sys.exit()
 
         
         for i,v in enumerate(vH):
             hist.Fill(fabs(fabs(vA[i]) - fabs(vH[i])))
 
         cv = TCanvas( 'cv'+hname, 'cv'+hname, 10, 10, 900, 600) 
-        gPad.SetLogy(0)
+        gPad.SetLogy(1)
 
         x1, y1, x2, y2 = 0.2, 0.98, 0.84, 0.9
         hist.Draw('hist')
