@@ -34,14 +34,17 @@ def cv26():
     f_hdf5  = workpath + 'runs/' + tag_hdf5 + '/LPI_BLP_out_' + tag_hdf5 + '.s'
     f_ascii = workpath + 'runs/' + tag_ascii + '/LPI_BLP_out_' + tag_ascii + '.s'
 
+    lText_hdf5 = 'hdf5'
+    lText_ascii = 'ascii'
+
     # h5 with fix
 
     hDict = {
         # #0 nbin, #1 xmin, #2 xmax, #3 xtitle #4 ytitle #5 vPos #6 YurMin #7 YurMax #8 doLogy
         # 'name':[ 11, -0.5, 10.5,'difference', 'entries', 1],
-         'turn':[ 200, 0.5, 200.5,'turn number', 'entries', 2, 1, 400, 0],
-        's':[ 200, 0, 27100,'s [m]', 'entries', 3, 1, 3000., 0],
-        # 'x':[ 100, -0.1, 0.1,'difference', 'entries', 4],
+        #  'turn':[ 200, 0.5, 200.5,'turn number', 'entries', 2, 1, 400, 0],
+        # 's':[ 200, 0, 27100,'s [m]', 'entries', 3, 1, 3000., 0],
+         'x':[ 100, -0.1, 0.1,'x [mm]', 'entries', 4, -1, -1, 0],
         # 'xp':[ 100, -0.1, 0.1,'difference', 'entries', 5],
         # 'y':[ 100, -0.1, 0.1,'difference', 'entries', 6],
         # 'yp':[ 100, -0.1, 0.1,'difference', 'entries', 7],
@@ -109,8 +112,8 @@ def cv26():
         thelegend.SetLineColor(0)
         thelegend.SetTextSize(0.035)
         thelegend.SetShadowColor(10)
-        thelegend.AddEntry(hist_ascii, 'ascii', 'LF')
-        thelegend.AddEntry(hist_hdf5, 'hdf5', 'LF')
+        thelegend.AddEntry(hist_ascii, lText_ascii, 'LF')
+        thelegend.AddEntry(hist_hdf5, lText_hdf5, 'LF')
         thelegend.Draw()
 
         pname = wwwpath

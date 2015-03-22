@@ -41,10 +41,11 @@ def cv23():
 
     hDict = {
         ## x,y in [m] #0 var #1 xnbins, xmin, xmax, ynbins, ymin, ymax, #2 xtitle, #3 ytitle
-        'xxpHist':['xp:x', [100,-30.,30., 100,-0.6,0.6],'x', 'x\'[mrad]'],
-        'yypHist':['yp:y', [100,-30.,30., 100,-0.6,0.6],'y', 'y\'[mrad]'],
+        # 'xxpHist':['xp:x', [100,-30.,30., 100,-0.6,0.6],'x', 'x\'[mrad]'],
+        # 'yypHist':['yp:y', [100,-30.,30., 100,-0.6,0.6],'y', 'y\'[mrad]'],
         # 'xsHist' :['x:s',  [100,0,1, 100,-30,30],'s[m]', 'x[m]'],
         # 'ysHist' :['y:s',  [100,0,1,100,-20,20],'s[m]', 'y[m]'],
+        'xyHist':['y:x', [100,-30.,30., 100,-20.,20.],'x [mm]', 'y [mm]'],
         }
 
     icollsB1 = [
