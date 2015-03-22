@@ -37,12 +37,18 @@ def cv28():
     f_ascii = pathtofile + 'tree_ascii.log'
     f_hdf5  = pathtofile + 'tree_hdf5.log'
 
+    # trajectories
     pathtofile = '/tmp/rkwee/'
     f_ascii = pathtofile + "tracks2_extract.dat"
     f_hdf5  = pathtofile + "tracks2.h5.dat.extract" 
 
+    # LPI file
+    pathtofile = ''
+    f_ascii = pathtofile + 'H5testFix_HL_TCT5IN_relaxColl_vHaloB1_roundthin/run_05538/LPI_BLP_out.s'
+    f_hdf5  = pathtofile + 'H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin/run_05538/LPI_BLP_out.s'
+
     hDict = {
-        ## x,y in [m] #0 var #1 xnbins, xmin, xmax, ynbins, ymin, ymax, #2 xtitle, #3 ytitle, # position in treefile
+        # #0 nbin, #1 xmin, #2 xmax, #3 xtitle #4 ytitle #5 vPos #6 YurMin #7 YurMax #8 doLogy
         # 'name':[ 11, -0.5, 10.5,'difference', 'entries', 1],
         'turn':[ 201, -0.5, 200.5,'difference', 'entries', 2],
         's':[ 100, -0.001, 0.02,'difference', 'entries', 3],
@@ -119,6 +125,6 @@ def cv28():
 
         pname = wwwpath
         # pname += 'TCT/4TeV/hdf5/checkPrecision/' + hname  +'.png'
-        pname += 'TCT/4TeV/hdf5/trajectories/' + hname  +'.png'
+        pname += 'TCT/4TeV/hdf5/trajectories/LPI_' + hname  +'.png'
         cv.SaveAs(pname)
                 
