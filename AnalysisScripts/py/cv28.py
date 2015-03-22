@@ -29,25 +29,29 @@ def cv28():
 
     pathtofile = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/testHDF5_1Pack/run_test_3/'
 
-    # h5 with fix
+    # h5 with fix ## not directly used
     rootfile_hdf5  = pathtofile + 'incr10k_dbg/tracks2.h5-to-dat.rawlist.root'
     rootfile_ascii = pathtofile + 'ascii/tracks2.dat.root'        
 
-    # TTree:Scan output
+    # TTree:Scan output ## for precision
     f_ascii = pathtofile + 'tree_ascii.log'
     f_hdf5  = pathtofile + 'tree_hdf5.log'
+
+    pathtofile = '/home/scratch-rkwee/'
+    f_ascii = pathtofile + "HL_TCT5IN_relaxColl_vHaloB1_roundthin/run_05538/tracks2_extract.dat"
+    f_hdf5  = pathtofile + "H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin/run_05538/tracks2.h5.dat.extract" 
 
     hDict = {
         ## x,y in [m] #0 var #1 xnbins, xmin, xmax, ynbins, ymin, ymax, #2 xtitle, #3 ytitle, # position in treefile
         # 'name':[ 11, -0.5, 10.5,'difference', 'entries', 1],
         'turn':[ 10, -2.5, 7.5,'difference', 'entries', 2],
-        # 's':[ 100, -0.1, 0.1,'difference', 'entries', 3],
-        # 'x':[ 100, -0.1, 0.1,'difference', 'entries', 4],
-        # 'xp':[ 100, -0.1, 0.1,'difference', 'entries', 5],
-        # 'y':[ 100, -0.1, 0.1,'difference', 'entries', 6],
-        # 'yp':[ 100, -0.1, 0.1,'difference', 'entries', 7],
-        # 'dEoverE':[ 100, -0.1, 0.1,'difference', 'entries', 8],
-        # 'type':[ 100, -0.1, 0.1,'difference', 'entries', 9],
+        's':[ 100, -0.1, 0.1,'difference', 'entries', 3],
+        'x':[ 100, -0.1, 0.1,'difference', 'entries', 4],
+        'xp':[ 100, -0.1, 0.1,'difference', 'entries', 5],
+        'y':[ 100, -0.1, 0.1,'difference', 'entries', 6],
+        'yp':[ 100, -0.1, 0.1,'difference', 'entries', 7],
+        'dEoverE':[ 100, -0.1, 0.1,'difference', 'entries', 8],
+        'type':[ 100, -0.1, 0.1,'difference', 'entries', 9],
         }
 
     def cleanline(listeof, pattern):
@@ -97,6 +101,7 @@ def cv28():
         lab.DrawLatex(x1, y1-0.1, 'difference in ' + var)
 
         pname = wwwpath
-        pname += 'TCT/4TeV/hdf5/checkPrecision/' + hname  +'.png'
+        # pname += 'TCT/4TeV/hdf5/checkPrecision/' + hname  +'.png'
+        pname += 'TCT/4TeV/hdf5/trajectories/' + hname  +'.png'
         cv.SaveAs(pname)
                 
