@@ -1,4 +1,3 @@
-
 #!/usr/bin/python
 #
 # this is a script to submit sixtrack jobs to lxbatch
@@ -31,6 +30,8 @@ parser.add_option("-k", dest="ckey", type="string",
                   help="put key dictionary (similar as or same run_dir)")
 parser.add_option("-t", dest="tag", type="string",
                   help="put name of TCS as in collDB, otherwise ignore (tcs is any appendix to CollDB*.data<tag>")
+parser.add_option("-o", dest="opticstag", type="string",
+                  help="put extension of optics tag, otherwise ignore")
 
 (options, args) = parser.parse_args()
 
@@ -40,19 +41,22 @@ npacks = options.npacks
 run_dir = options.run_dir
 ckey = options.ckey
 tag = options.tag
+opticstag = options.opticstag
+
 #tag  = '.'+ run_dir.split('7TeVPostLS1_')[-1]
 
 # use the agruments
 #njobs=10
 #queuename='8nh'
 #npacks='50'
-doTest=1
+doTest=0
 doRun=1
 showInfo=1
 mailOpt = '-u Regina.Kwee@gmail.com'
 # -----------------------------------------------------------
 
 sourcepath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/sourcedirs/'
+gitpath    = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/'
 commonsource = sourcepath + 'common/'
 
 # assume all exectutables are in sourcepath + 'common/'
@@ -73,6 +77,10 @@ cList += [[ '4TeV_vHaloB1_h5',  [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518
 cList += [[ '4TeV_hHaloB1_h5',  [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_vHaloB2_h5',  [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_hHaloB2_h5',  [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
+cList += [[ '6.5TeV_hHaloB1_h5',[gitpath + '6.5TeV/MED800/B1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '6500000' ]]]
+
+cList += [[ '4TeV_pencilB1_h5',  [gitpath + '4TeV/TCThaloStudies/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
+cList += [[ '4TeV_pencilB2_h5',  [gitpath + '4TeV/TCThaloStudies/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
 
 cDict = dict(cList)
 
@@ -90,6 +98,7 @@ haloType    = ''
 doH5        = False
 if ckey.count('vHalo'): haloType = 'vHalo/'
 if ckey.count('hHalo'): haloType = 'hHalo/'
+if ckey.count('pencil'): haloType = 'pencil/'
 if cDict[ckey][1].count('h5') or cDict[ckey][1].count('H5'): doH5 = True
 
 if doH5: print "=" * 22, "running h5 format ", "="*22
@@ -110,15 +119,15 @@ if not os.path.exists(afs_run_dir):
 
 # prepare runfiles: these files should be present in source_dir
 sixtrackExe = commonsource +cDict[ckey][1]
-fort2       = source_dir +'fort.2'
+fort2       = source_dir +'fort.2' + opticstag
 fort3       = thissource + haloType + 'fort.3'
-collDB      = thissource +'CollDB_V6.503_lowb_st.'+beam+'.data'
+collDB      = thissource +'CollDB_V6.503_lowb_st.'+beam+'.data' + tag
 collPos     = source_dir +'CollPositions.'+beam+'.dat'
 apertfile   = source_dir +'allapert.' + beam
 surveyfile  = source_dir +'SurveyWithCrossing_XP_lowb_'+beam+'.dat'
 beamlossExe = commonsource +'beamLossPattern'
-reserveDS   = ' -R "rusage[pool=10000]" '
-reserveDS   = ''
+reserveDS   = ' -R "rusage[pool=14000]" '
+#reserveDS   = ''
 h5dumpExe   = "/afs/cern.ch/user/r/rkwee/public/hdf5/hdf5-1.8.14/bin/h5dump"
 
 if not doH5:
@@ -130,8 +139,8 @@ cleanColExe = commonsource +'CleanCollScatter_2014.09.10'
 cleancoll   = commonsource +'correct_coll_summary.sh'
 
 if ckey.count('HL'): 
-    collDB = source_dir +'CollDB.ats.11t.'+beam
-    fort2 = fort2 + tag
+    collDB = source_dir +'CollDB.ats.11t.'+beam + tag
+
 inputFiles  = [sixtrackExe,beamlossExe,cleanIneExe,cleanColExe,fort2,collPos,apertfile,cleancoll]
 
 cnt = 0
@@ -213,7 +222,11 @@ for job in newrange:
     run_job.write(cmd)
 
     # collDB
-    cmd =  'cp ' + collDB + ' . \n'
+    if not tag.count("thin") and tag != '':
+        cmd = 'cp ' + collDB + ' ' +collDB.split('/')[-1].split(tag)[0]+ ' \n'
+    else:
+        cmd =  'cp ' + collDB + ' . \n'
+
     run_job.write(cmd)
 
     # now fort3 file
@@ -264,7 +277,7 @@ for job in newrange:
         cmd_copy = 'mv coll_summary.dat collgaps* screen* LP* FirstImpacts.dat* sigmasettings.out impacts* ' + subdir +'\n'
         cmd_copy = "mv * " + subdir +'\n'
     else:
-        cmd_copy = 'mv coll_summary.dat LP* FirstImpacts.dat* impacts*real* Coll_Sc*real* ' + subdir +'\n'
+        cmd_copy = 'mv coll_summary.dat LP* FirstImpacts.dat* impacts_real* Coll_Sc*real* ' + subdir +'\n'
 
     run_job.write(cmd_copy)
     run_job.write('date +"%T %d.%m.%Y %Z" \n')
@@ -280,7 +293,8 @@ for job in newrange:
 
     if doRun:        
         os.system(cmd)
-        cmd = "sleep 4"
+        if not doH5: cmd = "sleep 4"
+        else: cmd = "sleep 1"
         os.system(cmd)
 # -----------------------------------------------------------
 
