@@ -210,3 +210,21 @@ def stringDateToTimeStamp(stringTime, format):
     return ts
 
 # ----------------------------------------------------------------------------
+
+def collDict(collsummary):
+    # -- needs a coll_summary_jdfsijdhf.dat file -- #
+    
+    collList = []
+    with open(collsummary) as cs:
+        for line in cs:
+            line = line.rstrip()
+            collname = line.split()[1]
+            collInfo = line.split()
+
+            collList += [[collname, collInfo]]
+            #print collList[-1]
+
+    return dict(collList)
+
+
+# ----------------------------------------------------------------------------

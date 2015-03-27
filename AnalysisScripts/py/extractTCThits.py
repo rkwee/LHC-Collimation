@@ -8,34 +8,60 @@ from helpers import *
 from optparse import OptionParser
 
 parser = OptionParser()
-parser.add_option("-f", dest="file", type="string",
-                  help="impacts real file")
+parser.add_option("-d", dest="dirs", type="string",
+                  help="directories with impacts real file")
 
 (options, args) = parser.parse_args()
-f = options.file
-dirs = 'H5_HL*TCT5IN*relaxColl*B1*'
+
+dirs = options.dirs
+#dirs = 'H5_HL*TCT5IN*relaxColl*vHaloB1*sround*'
+#dirs = 'pencil*B*'
 # -----------------------------------------------------------------------------------
 def extractHits(f):
 
+    # -- HL runs
     colls = [
-        ('54', 'TCTH.5L1.B1'),
-        ('55', 'TCTVA.5L1.B1'),
-        ('52', 'TCTH.4L1.B1'), 
-        ('53', 'TCTVA.4L1.B1'),
-    #     ]
-    # collsIR5 = [
-        ('56', 'TCTH.5L5.B1'),
-        ('57', 'TCTVA.5L5.B1'), 
-        ('19', 'TCTH.4L5.B1'),  
-        ('20', 'TCTVA.4L5.B1'), 
+         'TCTH.5L1.B1',
+         'TCTVA.5L1.B1',
+         'TCTH.4L1.B1', 
+         'TCTVA.4L1.B1',
         ]
 
+         # 'TCTH.5L5.B1',
+         # 'TCTVA.5L5.B1', 
+         # 'TCTH.4L5.B1',  
+         # 'TCTVA.4L5.B1', 
 
+    # -- pencil beam run
+
+    # colls = [
+
+    #     'TCP.6L3.B1', 
+    #     'TCTH.4L1.B1', 
+    #     'TCTVA.4L1.B1',
+    #     'TCTH.4L5.B1',  
+    #     'TCTVA.4L5.B1', 
+
+    #     'TCP.6R3.B2',
+    #     'TCTH.4R5.B2',    
+    #     'TCTVA.4R5.B2',   
+    #     'TCTH.4R1.B2',    
+    #     'TCTVA.4R1.B2',   
+    #     ]
+    tag = f.split('/')[0]
+    tagOnly = tag.split('/')[-1]
+    collsummary = tag + '/coll_summary_' + tagOnly + '.dat'
+    print 'using this collsummary file', collsummary
+
+    
+    cDict = collDict(collsummary)
 
     if f.endswith('gz'):
 
-        mf = gzip.open(f)
-        for icoll,coll in colls:
+        for coll in colls:
+            mf = gzip.open(f)
+            icoll = cDict[coll][0]
+            print coll, icoll
             filename = f.split('.dat.gz')[0] + '_' + icoll + '_' + coll + '.txt'
             print('writing', filename)
             
@@ -43,8 +69,10 @@ def extractHits(f):
             for line in mf: 
                 if line.split()[0].count(icoll): 
                     hfile.write(line)
-        print('line cnt')
-        os.system('wc -l ' + filename)
+
+            cmd = 'wc -l ' + filename
+            print cmd
+            os.system(cmd)
 
     else:
         
@@ -60,8 +88,10 @@ def extractHits(f):
                     if line.split()[0].count(icoll): 
                         hfile.write(line)
 
-        print('line cnt')
-        os.system('wc -l ' + filename)
+
+                cmd = 'wc -l ' + filename
+                print cmd
+                os.system(cmd)
 
 
 
@@ -93,6 +123,8 @@ def normaliseTCThits():
         del wcResult[-1]
         del wcResult[-1]
 
+        print "using", wcResult
+
         for res in wcResult:
 
             try:
@@ -112,11 +144,12 @@ if __name__ == "__main__":
     myStdOut = process.stdout.read()
     files = myStdOut.split()
 
-    files = []
+    print "Taking ",len(files)," files: ", files
+    #files = []
     
     for f in files: 
         print '.'*30, f, '.'*30
         extractHits(f)
 
-    extractHits(f)
+    #extractHits(f)
     #normaliseTCThits()
