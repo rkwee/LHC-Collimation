@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 #
 # this is a script to submit fluka jobs to lxbatch
@@ -44,8 +45,8 @@ ckey = options.ckey
 #njobs=10
 #queuename='8nh'
 #ncycles='50'
-doTest=0
-doRun=1
+doTest=1
+doRun=0
 showInfo=1
 mailOpt = '-u Regina.Kwee@gmail.com'
 # -----------------------------------------------------------
@@ -55,9 +56,11 @@ commonsource = sourcepath + 'common/'
 
 # assume all exectutables are in sourcepath + 'common/'
 
-cList  = [[ 'fluka_4TeV_haloB2',     [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', ]]]
-cList += [[ 'fluka_4TeV_haloB1',     [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', ]]]
-cList += [[ 'fluka_HL_TCT_haloB2',   [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts_myexe/my.exe', '*fort.*','RANDOMIZ         1.0  9875214.',]]]
+cList  = [['fluka_4TeV_haloB2',   [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', ]]]
+cList += [['fluka_4TeV_haloB1',   [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', ]]]
+cList += [['fluka_HL_TCT_haloB2', [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts_myexe/my.exe', '*fort.*','RANDOMIZ         1.0  9875214.',]]]
+
+cList += [[ 'testHL',     [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','hybridHL.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', 'tct5inrd']]]
 
 cDict = dict(cList)
 
@@ -91,6 +94,9 @@ fortfiles  = cDict[ckey][2]
 # specific to each inp file the RAND seed string
 iniRand    = cDict[ckey][3]
 
+# name of datafile to be replaced in inp file (ONLY done if string to be replace is present!)
+tctlosses  = cDict[ckey][4]
+
 if not ckey.count("HL"):
     haloData    = source_dir + beam +'/HALO.dat'
     magfile1    = source_dir + 'MB.dat'
@@ -103,11 +109,21 @@ if not ckey.count("HL"):
     inputFiles  = [haloData, magfile1,magfile2,magfile3,magfile4,magfile5,magfile6, inpFile]
 
 else:
+
+    # HL v1.0
     haloData    = source_dir + 'TCTIMPAC.dat'
     magfile1    = source_dir + 'MBXF_150.dat'
     magfile2    = source_dir + 'MQXFv3.dat'
     inpFile     = source_dir + beam + '/hllhc_ir1_tightsett_'+beam+'.inp'
     inputFiles  = [haloData, magfile1,magfile2, inpFile]
+
+    # HYBRID version, HL v1.1 geo and v1.0 collimator 
+    haloData    = source_dir + '/'+ tctlosses+'.dat'
+    magfile1    = source_dir + 'MBXF.dat'
+    magfile2    = source_dir + 'MQXFv3.dat'
+    magfile3    = source_dir + 'MQYana.dat'
+    inpFile     = source_dir + beam + '/hilumi_ir1_hybrid_'+beam+'_exp.inp'
+    inputFiles  = [haloData,magfile1,magfile2,magfile3, inpFile, flukaExe]
 
 cnt = 0
 for i in inputFiles:
@@ -171,8 +187,8 @@ for job in newrange:
     run_job = open(run_job_fname,'w')
     run_job.write('#!/bin/bash\n\n')
 
-    run_job.write('export FLUKA=/afs/cern.ch/work/r/rkwee/Fluka/fluka20112blinuxAA/ \n')
-    run_job.write('export FLUPRO=/afs/cern.ch/work/r/rkwee/Fluka/fluka20112blinuxAA/ \n')
+    run_job.write('export FLUKA=/afs/cern.ch/work/r/rkwee/Fluka/fluka20112clinuxAA/ \n')
+    run_job.write('export FLUPRO=/afs/cern.ch/work/r/rkwee/Fluka/fluka20112clinuxAA/ \n')
     run_job.write('export PATH=${FLUPRO}:${FLUPRO}/flutil:${PATH} \n')
 
     run_job.write('mkdir ' + run_dir +'\n')
@@ -184,8 +200,21 @@ for job in newrange:
         
         # copy to the local, randomly attributed path on the lxbatch
         cmd =  'cp ' + inpfile + ' . \n'
-        cmd =  'ln -s ' + inpfile + ' . \n'
+        #cmd =  'ln -s ' + inpfile + ' . \n'
         run_job.write(cmd)
+
+
+    flukaInp  = inpFile.split('/')[-1]
+    flukaInpA = flukaInp + '.l'
+
+    # change name of tct losses file
+    sourceline = "SOURCE                      1.                            1.          linksour"
+    newsourceline = "SOURCE                      1.                            1.          " + tctlosses 
+    cmd = "sed 's\\" + sourceline + "\\" + newsourceline + "\\' " + flukaInp +  " > "+ flukaInpA + "\n" 
+    run_job.write(cmd)
+
+    cmd = "mv " + flukaInpA + " " + flukaInp + " \n"
+    run_job.write(cmd)
 
     # random seed
     nDigits = 7
@@ -195,7 +224,6 @@ for job in newrange:
       rndm += '.'
 
     # sed needs new filenames
-    flukaInp  = inpFile.split('/')[-1]
     flukaInp1 = flukaInp  + '.t'
     flukaInp2 = flukaInp1 + '.tp'
 
@@ -210,7 +238,7 @@ for job in newrange:
     run_job.write(cmd)
 
     # executable
-    cmd = '$FLUPRO/flutil/rfluka -e '+flukaExe+' -M ' + ncycles + ' ' + inpFile.split('/')[-1].rstrip('.inp') + ' \n'
+    cmd = '$FLUPRO/flutil/rfluka -e '+flukaExe.split('/')[-1] +' -M ' + ncycles + ' ' + flukaInp.split('.')[0] + ' \n'
     run_job.write(cmd)
 
     # gzip log file
@@ -219,7 +247,7 @@ for job in newrange:
     
     # copy back
     if doTest:
-        cmd_copy = "cp * " + subdir 
+        cmd_copy = "cp * " + subdir
     else:
         cmd_copy = 'cp '+fortfiles+' *inp *out* ' + subdir
 
