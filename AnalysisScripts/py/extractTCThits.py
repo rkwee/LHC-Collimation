@@ -56,9 +56,14 @@ def extractHits(f):
     
     cDict = collDict(collsummary)
 
+    allcolls = cDict.keys()
+
     if f.endswith('gz'):
 
         for coll in colls:
+            if coll not in allcolls:
+                print "Did not find ", coll, "in ", collsummary
+                continue
             mf = gzip.open(f)
             icoll = cDict[coll][0]
             print coll, icoll
