@@ -16,10 +16,11 @@ gitpath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/'
 #wwwpath  = '/Users/rkwee/Documents/RHUL/work/results/www/'
 
 # ------------------------------------------------------------------------------------------------
-# tags for bbG analysis
+# tags for bbG analysis *only for giving name!*
 tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
 tag_BH_4TeV = '_BH_4TeV_B1_20MeV'
 tag_BH_4TeV = '_BH_4TeV_B2_20MeV'
+tag_BH_7TeV = '_BH_7TeV_HL_tct5inrd_B1_20MeV'
 # ................................................................................................
 EnCut = '2.e-2'
 if tag_BH_4TeV.count('20GeV'): EnCut = '20.'
@@ -213,7 +214,10 @@ def stringDateToTimeStamp(stringTime, format):
 
 def collDict(collsummary):
     # -- needs a coll_summary_jdfsijdhf.dat file -- #
-    
+    # returns a dictionary of collsummary file with collimator name as key
+    # header is 
+    # 1=icoll 	 2=collname 	 3=nimp 	 4=nabs 	 5=imp_av 	 6=imp_sig 	
+
     collList = []
     with open(collsummary) as cs:
         for line in cs:

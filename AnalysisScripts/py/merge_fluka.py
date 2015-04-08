@@ -14,7 +14,7 @@ parser.add_option("-r", dest="rundir", type="string",
                       help="put rundir in which file are to be merged")
 
 parser.add_option("-s", dest="scoringType", type="string",
-                      help="put scoringtype usrtrack, usrbin or usrbdx")
+                      help="put scoringtype usrtrack, usrbin or usrbdx or text")
 
 parser.add_option("-u", dest="unit", type="string",
                       help="put corresponding fluka unit. if several seperate by ,")
@@ -37,7 +37,7 @@ debug      = 1
 doRun      = 0
 
 flukatool  = ''
-flukapath  = '/afs/cern.ch/work/r/rkwee/Fluka/fluka20112blinuxAA/'
+flukapath  = '/afs/cern.ch/work/r/rkwee/Fluka/fluka20112clinuxAA/'
 if scoringType.count('usrbin'):   flukatool   = flukapath + 'flutil/usbsuw'
 elif scoringType.count('usrtrk'): flukatool   = flukapath + 'flutil/ustsuw'
 elif scoringType.count('usrbdx'): flukatool   = flukapath + 'flutil/usxsuw'
