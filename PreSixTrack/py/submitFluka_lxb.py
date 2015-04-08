@@ -45,8 +45,8 @@ ckey = options.ckey
 #njobs=10
 #queuename='8nh'
 #ncycles='50'
-doTest=1
-doRun=0
+doTest=0
+doRun=1
 showInfo=1
 mailOpt = '-u Regina.Kwee@gmail.com'
 # -----------------------------------------------------------
@@ -56,11 +56,14 @@ commonsource = sourcepath + 'common/'
 
 # assume all exectutables are in sourcepath + 'common/'
 
-cList  = [['fluka_4TeV_haloB2',   [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', ]]]
-cList += [['fluka_4TeV_haloB1',   [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', ]]]
-cList += [['fluka_HL_TCT_haloB2', [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts_myexe/my.exe', '*fort.*','RANDOMIZ         1.0  9875214.',]]]
+cList  = [['fluka_4TeV_haloB2',   [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', '']]]
+cList += [['fluka_4TeV_haloB1',   [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', '']]]
+cList += [['fluka_HL_TCT_haloB2', [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts_myexe_new/mynew.exe', '*fort.*','RANDOMIZ         1.0  9875214.','']]]
 
-cList += [[ 'testHL',     [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','hybridHL.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', 'tct5inrd']]]
+cList += [[ 'fl_HL_B1_tct5IN',   [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','hybridHL.exe', '*fort.30', 'RANDOMIZ       1.0  9875214.', 'tct5inrd']]]
+cList += [[ 'fl_HL_B1_tct5IN_anton',   [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','hybridHL_anton.exe', '*fort.*', 'RANDOMIZ       1.0  9875214.', 'tct5inrd']]]
+cList += [[ 'fl_HL_B1_tct5lOUT', [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','hybridHL.exe', '*fort.30', 'RANDOMIZ       1.0  9875214.', 'tct5otrd']]]
+cList += [[ 'fl_HL_B1_dump',     [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','hybrid_HL_dumpHits.exe', '*fort.30', 'RANDOMIZ       1.0  9875214.', 'tct5otrd']]]
 
 cDict = dict(cList)
 
@@ -115,7 +118,7 @@ else:
     magfile1    = source_dir + 'MBXF_150.dat'
     magfile2    = source_dir + 'MQXFv3.dat'
     inpFile     = source_dir + beam + '/hllhc_ir1_tightsett_'+beam+'.inp'
-    inputFiles  = [haloData, magfile1,magfile2, inpFile]
+    inputFiles  = [haloData, magfile1,magfile2, inpFile, flukaExe]
 
     # HYBRID version, HL v1.1 geo and v1.0 collimator 
     haloData    = source_dir + '/'+ tctlosses+'.dat'
@@ -124,6 +127,7 @@ else:
     magfile3    = source_dir + 'MQYana.dat'
     inpFile     = source_dir + beam + '/hilumi_ir1_hybrid_'+beam+'_exp.inp'
     inputFiles  = [haloData,magfile1,magfile2,magfile3, inpFile, flukaExe]
+
 
 cnt = 0
 for i in inputFiles:
@@ -244,12 +248,16 @@ for job in newrange:
     # gzip log file
     cmd = 'gzip *out \n'
     run_job.write(cmd)
+
+    # gzip inp file
+    cmd = 'gzip *.inp \n'
+    run_job.write(cmd)
     
     # copy back
     if doTest:
         cmd_copy = "cp * " + subdir
     else:
-        cmd_copy = 'cp '+fortfiles+' *inp *out* ' + subdir
+        cmd_copy = 'cp '+fortfiles+' *inp.gz *out* ' + subdir
 
     run_job.write(cmd_copy)
 
@@ -266,7 +274,8 @@ for job in newrange:
 
     if doRun:        
         os.system(cmd)
-    
+        cmd = "sleep 1"
+        os.system(cmd)
 # -----------------------------------------------------------
 
 cnt = len(newrange)
