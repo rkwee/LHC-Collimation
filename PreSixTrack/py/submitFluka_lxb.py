@@ -1,4 +1,3 @@
-
 #!/usr/bin/python
 #
 # this is a script to submit fluka jobs to lxbatch
@@ -60,10 +59,9 @@ cList  = [['fluka_4TeV_haloB2',   [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/
 cList += [['fluka_4TeV_haloB1',   [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', '']]]
 cList += [['fluka_HL_TCT_haloB2', [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts_myexe_new/mynew.exe', '*fort.*','RANDOMIZ         1.0  9875214.','']]]
 
-cList += [[ 'fl_HL_B1_tct5IN',   [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','hybridHL.exe', '*fort.30', 'RANDOMIZ       1.0  9875214.', 'tct5inrd']]]
-cList += [[ 'fl_HL_B1_tct5IN_anton',   [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','hybridHL_anton.exe', '*fort.*', 'RANDOMIZ       1.0  9875214.', 'tct5inrd']]]
-cList += [[ 'fl_HL_B1_tct5lOUT', [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','hybridHL.exe', '*fort.30', 'RANDOMIZ       1.0  9875214.', 'tct5otrd']]]
-cList += [[ 'fl_HL_B1_dump',     [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','hybrid_HL_dumpHits.exe', '*fort.30', 'RANDOMIZ       1.0  9875214.', 'tct5otrd']]]
+cList += [['fl_HL_TCT5LOUT_rdB1', [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/'  ,'withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tct5otrd']]]
+cList += [['fl_HL_TCT5IN_rdB1',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tct5inrd']]]
+
 
 cDict = dict(cList)
 
@@ -114,20 +112,20 @@ if not ckey.count("HL"):
 else:
 
     # HL v1.0
-    haloData    = source_dir + 'TCTIMPAC.dat'
+    haloData    = source_dir + beam +'/'+ tctlosses+'.dat'
+    # haloData    = source_dir + 'TCTIMPAC.dat'
     magfile1    = source_dir + 'MBXF_150.dat'
     magfile2    = source_dir + 'MQXFv3.dat'
-    inpFile     = source_dir + beam + '/hllhc_ir1_tightsett_'+beam+'.inp'
+    inpFile     = source_dir + beam + '/hllhc_ir1_'+beam+'_relaxColl_20MeV.inp'
     inputFiles  = [haloData, magfile1,magfile2, inpFile, flukaExe]
 
     # HYBRID version, HL v1.1 geo and v1.0 collimator 
-    haloData    = source_dir + '/'+ tctlosses+'.dat'
+    haloData    = source_dir + beam +'/'+ tctlosses+'.dat'
     magfile1    = source_dir + 'MBXF.dat'
     magfile2    = source_dir + 'MQXFv3.dat'
     magfile3    = source_dir + 'MQYana.dat'
-    inpFile     = source_dir + beam + '/hilumi_ir1_hybrid_'+beam+'_exp.inp'
+    inpFile     = source_dir + beam + '/hilumi_ir1_hybrid_'+beam+'_exp_20MeV.inp'
     inputFiles  = [haloData,magfile1,magfile2,magfile3, inpFile, flukaExe]
-
 
 cnt = 0
 for i in inputFiles:
@@ -212,8 +210,9 @@ for job in newrange:
     flukaInpA = flukaInp + '.l'
 
     # change name of tct losses file
-    sourceline = "SOURCE                      1.                            1.          linksour"
-    newsourceline = "SOURCE                      1.                            1.          " + tctlosses 
+    sourceline = "linksour"
+    newsourceline = tctlosses
+
     cmd = "sed 's\\" + sourceline + "\\" + newsourceline + "\\' " + flukaInp +  " > "+ flukaInpA + "\n" 
     run_job.write(cmd)
 
@@ -268,13 +267,12 @@ for job in newrange:
     os.system(cmd)
 
     # submit to batch
-    cmd = 'bsub '+mailOpt+' -q ' + queuename + ' -R "rusage[pool=30000]" < ' + run_job_fname
     cmd = 'bsub '+mailOpt+' -q ' + queuename + ' < ' + run_job_fname
     print cmd
 
     if doRun:        
         os.system(cmd)
-        cmd = "sleep 1"
+        cmd = "sleep 2"
         os.system(cmd)
 # -----------------------------------------------------------
 
