@@ -38,30 +38,31 @@ def cv31():
         # 'ysHist' :['y:s',  [100,0,1,100,-20,20],'s[m]', 'y[m]'],
         }
 
-    icollsIR1 = [
-       # ('54', 'TCTH.5L1.B1'),
-       # ('55', 'TCTVA.5L1.B1'),
-        ('52', 'TCTH.4L1.B1'), 
-       # ('53', 'TCTVA.4L1.B1'),
-    #     ]
-    #    icollsIR5 = [
-        # ('56', 'TCTH.5L5.B1'),
-        # ('57', 'TCTVA.5L5.B1'), 
-        # ('19', 'TCTH.4L5.B1'),  
-        # ('20', 'TCTVA.4L5.B1'), 
+    colls = [
+         'TCTH.5L1.B1',
+         'TCTVA.5L1.B1',
+         'TCTH.4L1.B1', 
+         'TCTVA.4L1.B1',
+         'TCTH.5R1.B2',
+         'TCTVA.5R1.B2',
+         'TCTH.4R1.B2', 
+         'TCTVA.4R1.B2',
         ]
 
     for tag in tags:
-
+        collsummary = workpath + "runs/" + tag + "/coll_summary_" + tag + ".dat"
+        cDict = collDict(collsummary)
         rfname = workpath + 'runs/'+tag+'/impacts_real_'+tag+'.dat.root'
-        icolls= icollsIR1
-        
+        rfname = workpath + "runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/tct5otrd.dat.root"       
+        rfname = workpath + "runs/sourcedirs/HL_TCT_7TeV/fluka/TCTIMPAC.dat.root"
+
+        rel = rfname.split('/')[-1].split('.')[0]
 
         print "Opening","."*33, rfname
         rf = TFile.Open(rfname)
         mt = rf.Get('particle')
 
-        for collid,collName in icolls:
+        for collName in colls:
 
             for hname in hDict.keys():
 
@@ -81,6 +82,7 @@ def cv31():
                 var = hDict[hname][0]
                 if showInfo: print 'INFO: will fill these variables ', var, 'into', hname
 
+                collid = cDict[collName][0]
                 cut = 'icoll == ' + collid
 
                 if showInfo: print 'INFO: will apply a cut of ', cut, 'to', hname
@@ -88,17 +90,19 @@ def cv31():
                 if showInfo: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname, ' for ', collName
 
                 cv = TCanvas( 'cv'+hname, 'cv'+hname, 10, 10, 900, 600) 
+                cv.SetRightMargin(0.15)
 
                 hist.Draw('colz')
 
                 x1, y1, x2, y2 = 0.2, 0.98, 0.84, 0.9
                 lab = mylabel(60)
-                lab.DrawLatex(x1, y1-0.1, tag)
+                lab.DrawLatex(x1, y1-0.1, rel)
                 lab = mylabel(60)
                 lab.DrawLatex(x1, y1-0.15, collName)
 
                 pname = wwwpath
-                pname += 'TCT/HL/relaxedColl/newScatt/' + hname + '_' + tag + '_' + collName + '.png'
+                # pname += 'TCT/HL/relaxedColl/newScatt/' + hname + '_' + rel + '_' + collName + '.png'
+                pname += 'TCT/HL/nominalColl/beamhalo/' + hname + '_' + rel + '_' + collName + '.png'
 
                 cv.SaveAs(pname)
 

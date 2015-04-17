@@ -28,15 +28,15 @@ def cv35():
     thisIR = 'IR1'
     colls = collsIR1
 
-    collsIR5 = [
-        'TCTH.5L5.B1',
-        'TCTVA.5L5.B1',
-        'TCTH.4L5.B1', 
-        'TCTVA.4L5.B1',
-        ]
-    YurMin, YurMax = 1e-8, 1e-2
-    thisIR = 'IR5'
-    colls = collsIR5
+    # collsIR5 = [
+    #     'TCTH.5L5.B1',
+    #     'TCTVA.5L5.B1',
+    #     'TCTH.4L5.B1', 
+    #     'TCTVA.4L5.B1',
+    #     ]
+    # YurMin, YurMax = 1e-8, 1e-2
+    # thisIR = 'IR5'
+    # colls = collsIR5
 
     fTCT5IN_hB1_rd = workpath + 'runs/H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin.dat'
     cDict_tct5in_hB1rd = collDict(fTCT5IN_hB1_rd)
@@ -95,10 +95,28 @@ def cv35():
     # define histo
     hname, nbins, xmin, xmax = "compTCT5IN", 4, -0.5, 3.5
     hist_ir1_tct5in = TH1F(hname, hname, nbins, xmin, xmax)
+    hname, nbins, xmin, xmax = "compTCT5IN_hB1", 4, -0.5, 3.5
+    hist_ir1_tct5in_hB1 = TH1F(hname, hname, nbins, xmin, xmax)
+    hname, nbins, xmin, xmax = "compTCT5IN_vB1", 4, -0.5, 3.5
+    hist_ir1_tct5in_vB1 = TH1F(hname, hname, nbins, xmin, xmax)
+
     hname, nbins, xmin, xmax = "compTCT5LOUT", 4, -0.5, 3.5
     hist_ir1_tct5lout = TH1F(hname, hname, nbins, xmin, xmax)
+    hname, nbins, xmin, xmax = "compTCT5LOUT_hB1", 4, -0.5, 3.5
+    hist_ir1_tct5lout_hB1 = TH1F(hname, hname, nbins, xmin, xmax)
+    hname, nbins, xmin, xmax = "compTCT5LOUT_vB1", 4, -0.5, 3.5
+    hist_ir1_tct5lout_vB1 = TH1F(hname, hname, nbins, xmin, xmax)
 
+    hist_ir1_tct5in_hB1.SetMarkerStyle(23)
+    hist_ir1_tct5in_vB1.SetMarkerStyle(22)
+    hist_ir1_tct5in_hB1.SetMarkerColor(kGray+1)
+    hist_ir1_tct5in_vB1.SetMarkerColor(kGray+1)
     hist_ir1_tct5in.SetMarkerStyle(21)
+
+    hist_ir1_tct5lout_hB1.SetMarkerStyle(32)
+    hist_ir1_tct5lout_vB1.SetMarkerStyle(26)
+    hist_ir1_tct5lout_hB1.SetMarkerColor(kGray+2)
+    hist_ir1_tct5lout_vB1.SetMarkerColor(kGray+2)
     hist_ir1_tct5lout.SetMarkerStyle(20)
 
     for bin,tct in enumerate(colls):
@@ -106,10 +124,14 @@ def cv35():
         val = normhitsDict[tct][0] + normhitsDict[tct][1]
         print val, tct
         hist_ir1_tct5in.SetBinContent(bin+1,val)
+        hist_ir1_tct5in_hB1.SetBinContent(bin+1, normhitsDict[tct][0])
+        hist_ir1_tct5in_vB1.SetBinContent(bin+1, normhitsDict[tct][1])
         #hist_ir1_tct5in.SetBinError(bin+1,1./(nprims[0]+nprims[1]))
 
         val = normhitsDict[tct][2] + normhitsDict[tct][3]
         hist_ir1_tct5lout.SetBinContent(bin+1,val)
+        hist_ir1_tct5lout_hB1.SetBinContent(bin+1, normhitsDict[tct][2])
+        hist_ir1_tct5lout_vB1.SetBinContent(bin+1, normhitsDict[tct][3])
         #hist_ir1_tct5lout.SetBinError(bin+1,1./(nprims[2]+nprims[3]))
 
     a,b = 1,1
@@ -118,34 +140,39 @@ def cv35():
     cv.SetGridx(1)
     cv.SetGridy(1)
     cv.SetLogy(1)
-    hist_ir1_tct5in.GetYaxis().SetTitle('h+v loss per primary')
+    hist_ir1_tct5in.GetYaxis().SetTitle('loss per primary')
     hist_ir1_tct5in.GetYaxis().SetRangeUser(YurMin, YurMax)
     hist_ir1_tct5in.Draw('p')
+    hist_ir1_tct5in_hB1.Draw('psame')
+    hist_ir1_tct5in_vB1.Draw('psame')
     hist_ir1_tct5lout.Draw('psame')
+    hist_ir1_tct5lout_hB1.Draw('psame')
+    hist_ir1_tct5lout_vB1.Draw('psame')
 
-    x1, y1, x2, y2 = 0.63,0.8,0.95,0.93
+    x1, y1, x2, y2 = 0.63,0.7,0.95,0.93
     thelegend = TLegend( x1, y1, x2, y2)
     thelegend.SetFillColor(0)
     thelegend.SetFillStyle(0)
     thelegend.SetLineColor(0)
-    thelegend.SetTextSize(0.035)
+    thelegend.SetTextSize(0.03)
     thelegend.SetShadowColor(0)
     thelegend.SetBorderSize(0)
-    thelegend.AddEntry(hist_ir1_tct5in, 'TCT4 + TCT5', "p")
-    thelegend.AddEntry(hist_ir1_tct5lout, 'TCT4 only', "p")
+    thelegend.AddEntry(hist_ir1_tct5in, 'h+v TCT4 + TCT5', "p")
+    thelegend.AddEntry(hist_ir1_tct5lout, 'h+v TCT4 only', "p")
+    thelegend.AddEntry(hist_ir1_tct5in_hB1, 'h TCT4 + TCT5', "p")
+    thelegend.AddEntry(hist_ir1_tct5in_vB1, 'v TCT4 + TCT5', "p")
+    thelegend.AddEntry(hist_ir1_tct5lout_hB1, 'h TCT4 only', "p")
+    thelegend.AddEntry(hist_ir1_tct5lout_vB1, 'v TCT4 only', "p")
     thelegend.Draw()
 
     lab = mylabel(60)
-    lab.DrawLatex(x1-0.44, y1+0.015, thisIR)
-
-    lab = mylabel(60)
-    lab.DrawLatex(x1-0.26, y1+0.015, '')
+    lab.DrawLatex(x1-0.44, y1+0.1, thisIR)
 
     lab = mylabel(42)
-    lab.DrawLatex(x1-0.44, y1+0.08, 'incoming B1    round beam optics')
+    lab.DrawLatex(x1-0.44, y1+0.16, 'incoming B1    round beam optics')
 
     pname = wwwpath
-    pname += 'TCT/HL/relaxedColl/newScatt/fluka/compTCT5LINOUT_'+thisIR+'.png'
+    pname += 'TCT/HL/relaxedColl/newScatt/fluka/compTCT5LINOUT_roundthin_B1_'+thisIR+'.png'
 
 
     cv.SaveAs(pname)
