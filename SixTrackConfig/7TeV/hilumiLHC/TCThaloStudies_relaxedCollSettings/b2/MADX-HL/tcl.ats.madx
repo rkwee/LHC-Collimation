@@ -1,0 +1,45 @@
+! Change the TCTVB.4L2 for a TCTVA.4L2.B1
+! Change the TCTVB.4R2 for a TCTVA.4R2.B2
+
+ tcl:rcollimator,l:=0.0;
+
+ seqedit,sequence=lhcb1;
+   flatten;
+ endedit;
+
+ seqedit,sequence=lhcb2;
+   flatten;
+ endedit;
+
+! TCLs at IR1,
+ seqedit,sequence=lhcb1;
+!    remove, element=tclp.4r1.b1;
+    
+!   install,element=tcl.4r1.b1, class= tcl,at= 135.73,    from= ip1; 
+   install,element=tcl.5r1.b1, class= tcl,at= 184.357,   from= ip1;
+   install,element=tcl.6r1.b1, class= tcl,at= 219.6,  from= ip1;
+!   install,element=tcl.7r1.b1, class= tcl,at= 258.8,     from= ip1;
+   
+!   install,element=tcl.4r5.b1, class= tcl,at= 135.73,   from= ip5;
+   install,element=tcl.5r5.b1, class= tcl,at= 184.357,   from= ip5;
+   install,element=tcl.6r5.b1, class= tcl,at= 221.6,  from= ip5;
+!   install,element=tcl.7r5.b1, class= tcl,at= 258.8,     from= ip5;
+
+ endedit;
+ 
+ seqedit,sequence=lhcb2;
+
+!   install,element=tcl.4l5.b2, class= tcl,at= 135.73,    from= ip5;
+   install,element=tcl.5l5.b2, class= tcl,at= 184.357,   from= ip5;
+   install,element=tcl.6l5.b2, class= tcl,at= 221.6,  from= ip5;
+!   install,element=tcl.7l5.b2, class= tcl,at= 258.8,     from= ip5;
+
+ !remove, element=tclp.4l1.b2;   
+ !  install,element=tcl.4l1.b2, class= tcl,at= 135.73,    from= ip1.l1;
+   install,element=tcl.5l1.b2, class= tcl,at= 184.357,   from= ip1.l1;
+   install,element=tcl.6l1.b2, class= tcl,at= 219.6,    from= ip1.l1;
+       
+ endedit;
+ 
+ 
+return;

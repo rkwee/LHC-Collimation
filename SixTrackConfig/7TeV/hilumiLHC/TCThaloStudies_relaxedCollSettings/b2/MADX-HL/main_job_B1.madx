@@ -1,0 +1,81 @@
+option, warn,info;
+system,"ln -fns /afs/cern.ch/eng/lhc/optics/HLLHCV1.0 slhc";
+system,"ln -fns /afs/cern.ch/eng/lhc/optics/V6.503 db5";
+option,-echo,-info,-warn;
+
+call,file="slhc/toolkit/macro.madx";
+
+on_disp=1;
+
+mylhcbeam=1;
+!mylhcbeam=4;! For Beam 4
+
+Option, -echo,-warn,-info;
+REAL CONST l.TAN   = 3.7  ;REAL CONST l.TANAL = l.TAN;
+REAL CONST l.TANAR = l.TAN;REAL CONST l.TANC  = l.TAN;
+REAL CONST l.TCT   = 1.0;REAL CONST l.TCTH  = l.TCT;REAL CONST l.TCTVA = l.TCT;
+
+! call sequence file
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+if (mylhcbeam>2){
+  call,file="slhc/hllhc_thinb4.seq";
+} else {
+  call,file="slhc/hllhc_thin.seq";
+};
+
+
+! install DS collimators in IR7
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!call, file = "ds_coll_cell_8R7.madx";
+!call, file = "ds_coll_cell_10R7.madx";
+
+! call strength file
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+call,file="slhc/opt_round_thin.madx";  ! beta*=15 cm, round optics
+
+
+
+
+! install new collimators for post-LS1 operation - same as for HL - as markers in thin sequence
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ call, file = "tcdq_ir6_2012.thin.madx";   	! longer TCDQ in IR6
+ call, file = "tcl.ats.madx";  			! TCL4 and TCL6 in IR1/5
+ call, file = "tctv.madx";			! TCTVA in IR2/8
+ call, file = "tct_cell_5.madx";		! TCTs in front of Q5 in IR1/5
+
+
+
+!exec,crossing_disable;
+exec,mk_beam(7000);
+!if (mylhcbeam<=2){
+!  exec,check_ip(b1); survey,file="survey_lhcb1.tfs";
+!  exec,check_ip(b2); survey,file="survey_lhcb2.tfs";
+!} else {
+!  exec,check_ip(b2); survey,file="survey_lhcb4.tfs";
+!};
+
+
+! crossing angle, separation, spectrometers
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+on_x1:=1.; on_sep1:=0;
+on_x2:=1; on_sep2:=0; on_alice:=1;
+on_x5:=1.; on_sep5:=0;
+on_x8:=1; on_sep8:=0; on_lhcb:=1;
+
+
+
+! twiss B1 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+set,format="12.6f"; 
+use,period=lhcb1;
+select, flag=twiss, clear;
+select, flag=twiss, column=keyword,name,s,l,betx,alfx,bety,alfy,mux,muy,dx,dpx,x,px,y,py,dy,k0l,k1l;
+twiss,  sequence=lhcb1, file=twiss.HLLHCV1.B1.tfs, save;
+
+sixtrack, radius=17E-03;
+
+system, "mv fc.2 fort.2--B1";
+
+system, "rm db5 slhc";
+
+return;
