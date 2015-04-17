@@ -297,9 +297,9 @@ def do1dYcoorHisto(sDict, mt, hname, xaxis, particleTypes):
     return hist
 
 # ---------------------------------------------------------------------------------
-def do2dScatHisto(sDict, mt, hname, nbins, xymin, xymax, particleTypes):
+def do2dScatHisto(var, sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes):
 
-    hist = TH2F(hname, hname, nbins, xymin, xymax, nbins, xymin, xymax)
+    hist = TH2F(hname, hname, nbins, xmin, xmax, ynbins, ymin, ymax)
     cuts = []
 
     # store sum of squares of weights 
@@ -321,7 +321,7 @@ def do2dScatHisto(sDict, mt, hname, nbins, xymin, xymax, particleTypes):
 
 
     # y is on y-axis, x on x-axis
-    var = "y:x"
+    # var = "y:x"
 
     if debug: print 'INFO: will fill these variables ', var, 'into', hname
 
@@ -337,9 +337,9 @@ def do2dScatHisto(sDict, mt, hname, nbins, xymin, xymax, particleTypes):
     mt.Project(hname, var, cut)
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
 
-    for i in range(nbins):
-        content = hist.GetBinContent(i)
-        hist.SetBinContent(i,content/hist.GetBinWidth(i))
+    # for i in range(nbins):
+    #     content = hist.GetBinContent(i)
+    #     hist.SetBinContent(i,content/hist.GetBinWidth(i))
 
     return hist
 # ---------------------------------------------------------------------------------
@@ -352,6 +352,10 @@ def getHistogram(sDict, skey, mt):
     nbins         = sDict[skey][2]
     xmin          = sDict[skey][3]
     xmax          = sDict[skey][4]
+    ynbins        = sDict[skey][11]
+    ymin          = sDict[skey][12]
+    ymax          = sDict[skey][13]
+
 
     if hname.startswith("Ekin"):
         xaxis = getXLogAxis(nbins, xmin, xmax)
@@ -387,14 +391,16 @@ def getHistogram(sDict, skey, mt):
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
         hist  = do1dYcoorHisto(sDict, mt, hname, xaxis, particleTypes) 
 
-    elif hname.startswith("XYN"):
-        # only same binning in x and y for now
-        hist  = do2dScatHisto(sDict, mt, hname, nbins, xmin, xmax, particleTypes) 
+    elif hname.startswith("XYN"):        
+        var = 'y:x'
+        hist  = do2dScatHisto(var,sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes) 
 
     return hist
 # ---------------------------------------------------------------------------------
 def resultFile(bbgFile):
-    return    workpath + 'results/results_'+bbgFile.split('/')[-1]
+    k=bbgFile
+    n='/'.join(k.split('/')[:-1]) + '/results_' + k.split('/')[-1]
+    return  n
 # ---------------------------------------------------------------------------------
 # main local function
 # ---------------------------------------------------------------------------------
@@ -405,7 +411,10 @@ def fillHistos(bbgFile, tag):
 
     print "Opening...", bbgFile
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
-    tBBG = TFile.Open(bbgFile).Get(treeName)
+
+    rf = TFile.Open(bbgFile)
+    tBBG = rf.Get(treeName)
+
     yrel = '/TCT hit'
     sDict = generate_sDict(tag, norm, tBBG, yrel)
 

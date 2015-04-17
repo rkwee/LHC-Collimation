@@ -9,11 +9,12 @@ from array import array
 import fillTTree
 from fillTTree_dict import generate_sDict
 from createTTree import treeName
-from plotSpectra_dict import hDict_BH_4TeV,hDict_HL_BGac, hDict_HL_BH, hDict_HL_comp,hDict_BG_4TeV,hDict_BH_3p5TeV
+from plotSpectra_dict import hDict_BH_4TeV,hDict_HL_BGac, hDict_HL_BH, hDict_HL_comp,hDict_BG_4TeV,hDict_BH_3p5TeV, hDict_BH_HL_hybrid
 # ---------------------------------------------------------------------------------
-zmin, zmax = 2260., 14960.
+zmin, zmax = 2260., 14960. # HL v1.0
+zmin, zmax = 2260., 21460. # HL v1.hybrid
 # to disable the zcut have zOn > zmax
-zOn = 2e4
+zOn = 3e4
 # ---------------------------------------------------------------------------------
 def plotSpectra(bbgFile, tag):
 
@@ -71,6 +72,20 @@ def plotSpectra(bbgFile, tag):
         subfolder= 'TCT/3p5TeV/'
         if debug: print "Using 4 TeV format", '.'*10
 
+    elif rfname.count('beam-halo_3.5TeV-R1_D1'): 
+        hDict = hDict_BH_3p5TeV
+        subfolder= 'TCT/3p5TeV/'
+        if debug: print "Using 4 TeV format", '.'*10
+
+    elif rfname.count('hybrid'): 
+        hDict = hDict_BH_HL_hybrid
+        if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/tct5otrd/'
+        elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/tct5inrd/'
+        else: print "define where to put the plots?"
+    else:
+        print "no dictionary defined"
+        sys.exit()
+
 
     if not os.path.exists(wwwpath + subfolder):
         print 'making dir', wwwpath + subfolder
@@ -88,8 +103,8 @@ def plotSpectra(bbgFile, tag):
       cv = TCanvas( 'cv'+hkey, 'cv'+hkey, 1200, 900)
 
       gStyle.SetPalette(1)
-      gPad.SetRightMargin(1.4)
-      # gPad.SetLeftMargin(-0.2)
+      cv.SetRightMargin(0.15)
+      #cv.SetLeftMargin(-0.1)
 
       hList = hDict[hkey][0] 
       x1, y1, x2, y2 = hDict[hkey][1],hDict[hkey][2],hDict[hkey][3],hDict[hkey][4]
@@ -145,13 +160,13 @@ def plotSpectra(bbgFile, tag):
       if not hists[-1] or not hists[0]:
           continue
 
-      if XurMin is not -1 and not type(hists[0]) == TH2F:
+      if XurMin != -1:
           hists[0].GetXaxis().SetRangeUser(XurMin, XurMax)
 
-      if YurMin is not -1 and not type(hists[0]) == TH2F:
+      if YurMin != -1:
           hists[0].GetYaxis().SetRangeUser(YurMin, YurMax)
 
-      if ZurMin is not -1 and type(hists[0]) == TH2F: 
+      if ZurMin != -1 and type(hists[0]) == TH2F: 
           hists[0].GetZaxis().SetRangeUser(ZurMin, ZurMax)
         
       hists[0].GetYaxis().SetTitleSize(0.04)

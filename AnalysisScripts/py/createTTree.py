@@ -12,6 +12,7 @@ fortformat66 = "event/I:generation/I:particle/I:energy_ke/F:weight/F:x/F:y/F:xp/
 fortformat30 = "event/I:particle/I:generation/I:weight/F:x/F:y/F:xp/F:yp/F:energy_tot/F:energy_ke/F:age/F:x_interact/F:y_interact/F:z_interact/F"
 impactsformat= "icoll/I:c_rotation/F:s/F:x/F:xp/F:y/F:yp/F:nabs/I:np/I:ntu/I"
 tracks2format= "name/I:turn/I:s/F:x/F:xp/F:y/F:yp/F:dEoverE/F:type"
+antInpformat = "ipart/I:icoll/I:x/F:y/F:s/F:xp/F:yp/F:zp"
 # ---------------------------------------------------------------------------------
 # fname (=input) are the merged fort.66 or fort.30 file from fluka runs"
 def ctree(fname):
@@ -29,6 +30,9 @@ def ctree(fname):
 
     elif fname.count("tracks2"):
         fortformat = tracks2format
+
+    elif fname.count("anton"):
+        fortformat = antInpformat
 
     else:
         print "no format defined."
