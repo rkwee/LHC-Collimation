@@ -37,24 +37,30 @@ def cv28():
     f_ascii = pathtofile + 'tree_ascii.log'
     f_hdf5  = pathtofile + 'tree_hdf5.log'
 
-    # trajectories
-    pathtofile = '/tmp/rkwee/'
-    f_ascii = pathtofile + "tracks2_extract.dat"
-    f_hdf5  = pathtofile + "tracks2.h5.dat.extract" 
+    # # trajectories
+    # pathtofile = '/tmp/rkwee/'
+    # f_ascii = pathtofile + "tracks2_extract.dat"
+    # f_hdf5  = pathtofile + "tracks2.h5.dat.extract" 
 
-    # LPI file
-    pathtofile = ''
-    f_ascii = pathtofile + 'H5testFix_HL_TCT5IN_relaxColl_vHaloB1_roundthin/run_05538/LPI_BLP_out.s'
-    f_hdf5  = pathtofile + 'H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin/run_05538/LPI_BLP_out.s'
+    # # LPI file
+    # pathtofile = workpath
+    # f_ascii = pathtofile + 'runs/LPI_BLP_out_H5testFix_HL_TCT5IN_relaxColl_vHaloB1_roundthin.s'
+    # f_hdf5  = pathtofile + 'runs/LPI_BLP_out_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin.s'
+    # # EXACTLY the same
+
+    # pathtofile = workpath
+    # f_ascii = pathtofile + 'runs/LPI_BLP_out_HL_TCT5IN_relaxColl_vHaloB1_roundthin.s'
+    # f_hdf5  = pathtofile + 'runs/LPI_BLP_out_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin.s'
+
 
     hDict = {
         # #0 nbin, #1 xmin, #2 xmax, #3 xtitle #4 ytitle #5 vPos #6 YurMin #7 YurMax #8 doLogy
         # 'name':[ 11, -0.5, 10.5,'difference', 'entries', 1],
         'turn':[ 201, -0.5, 200.5,'difference', 'entries', 2],
         's':[ 100, -0.001, 0.02,'difference', 'entries', 3],
-        'x':[ 100, -0.001, 0.05,'difference', 'entries', 4],
-        'xp':[ 100, -0.001, 0.05,'difference', 'entries', 5],
-        'y':[ 100, -0.001, 0.05,'difference', 'entries', 6],
+        'x':[ 100, -0.001, 0.1,'difference', 'entries', 4],
+        'xp':[ 100, -0.001, 1.e-1,'difference', 'entries', 5],
+        'y':[ 100, -0.001, 1.e-1,'difference', 'entries', 6],
         'yp':[ 100, -0.001, 0.1,'difference', 'entries', 7],
         'dEoverE':[ 100, -0.001, 0.001,'difference', 'entries', 8],
         'type':[ 100, -0.001, 0.1,'difference', 'entries', 9],
@@ -71,6 +77,7 @@ def cv28():
         vPos  = hDict[var][5]
         hname = var + '_difference'
         nbins, xmin, xmax = hDict[var][0], hDict[var][1], hDict[var][2]
+
         hist  = TH1F(hname, hname, nbins, xmin, xmax)
         vA, vH = [], []
 
@@ -113,18 +120,25 @@ def cv28():
 
         
         for i,v in enumerate(vH):
-            hist.Fill(fabs(fabs(vA[i]) - fabs(vH[i])))
+            denom = fabs(vA[i]) + fabs(vH[i])
+            if denom:
+                vdiff = (fabs(vA[i]) - fabs(vH[i]))*2./(denom)
+                # print vdiff, hist.GetName()
+            else: vdiff = 0.0
+
+            hist.Fill(fabs(vdiff))
 
         cv = TCanvas( 'cv'+hname, 'cv'+hname, 10, 10, 900, 600) 
         gPad.SetLogy(1)
+        gPad.SetLogx(1)
 
         x1, y1, x2, y2 = 0.2, 0.98, 0.84, 0.9
         hist.Draw('hist')
         lab = mylabel(60)
-        lab.DrawLatex(x1, y1-0.1, 'difference in ' + var)
+        lab.DrawLatex(x1, y1-0.1, 'relative difference in ' + var)
 
         pname = wwwpath
-        # pname += 'TCT/4TeV/hdf5/checkPrecision/' + hname  +'.png'
-        pname += 'TCT/4TeV/hdf5/trajectories/LPI_' + hname  +'.png'
+        pname += 'TCT/4TeV/hdf5/checkPrecision/' + hname  +'.png'
+        # pname += 'TCT/4TeV/hdf5/trajectories/LPI_' + hname  +'.png'
         cv.SaveAs(pname)
                 

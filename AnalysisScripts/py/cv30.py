@@ -24,11 +24,18 @@ def cv30():
     doIR1 = 1
 
     colls = [
-
-        ('H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin'),
-        ('H5_HL_TCT5IN_relaxColl_hHaloB1_sroundthin'),
-        ('H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin'),
-        ('H5_HL_TCT5IN_relaxColl_hHaloB1_sflatthin'),
+        ('H5_HL_TCT5LOUT_relaxColl_hHaloB1_flatthin'),
+        ('H5_HL_TCT5LOUT_relaxColl_vHaloB1_flatthin'),
+        # ('H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin'),
+        # ('H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin'),
+        # ('H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin'),
+        # ('H5_HL_TCT5IN_relaxColl_vHaloB1_sroundthin'),
+        # ('H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin'),
+        # ('H5_HL_TCT5IN_relaxColl_vHaloB1_sflatthin'),
+        # ('H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin'),
+        # ('H5_HL_TCT5IN_relaxColl_hHaloB1_sroundthin'),
+        # ('H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin'),
+        # ('H5_HL_TCT5IN_relaxColl_hHaloB1_sflatthin'),
         ]
 
 

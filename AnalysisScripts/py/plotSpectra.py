@@ -7,24 +7,32 @@ from ROOT import *
 from helpers import *
 from array import array
 import fillTTree
-from fillTTree_dict import generate_sDict
+from fillTTree_dict import generate_sDict, sDict_HL_hybridComp
 from createTTree import treeName
-from plotSpectra_dict import hDict_BH_4TeV,hDict_HL_BGac, hDict_HL_BH, hDict_HL_comp,hDict_BG_4TeV,hDict_BH_3p5TeV, hDict_BH_HL_hybrid
+from plotSpectra_dict import hDict_BH_4TeV,hDict_HL_BGac, hDict_HL_BH, hDict_HL_comp,hDict_BG_4TeV,hDict_BH_3p5TeV, hDict_BH_HL_hybrid, hDict_HLhybrid_comp
 # ---------------------------------------------------------------------------------
 zmin, zmax = 2260., 14960. # HL v1.0
 zmin, zmax = 2260., 21460. # HL v1.hybrid
 # to disable the zcut have zOn > zmax
 zOn = 3e4
 # ---------------------------------------------------------------------------------
-def plotSpectra(bbgFile, tag):
+def plotSpectra(bbgFile, tag, doComp):
 
     print "Using ...", bbgFile
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
     tBBG = TFile.Open(bbgFile).Get(treeName)
     yrel = '/TCT hit'
-    sDict = generate_sDict(tag, norm, tBBG, yrel)
+ 
+    if doComp:
+        # for comparisons plots, also edit rel
+        sDict = sDict_HL_hybridComp
+        rel = 'hybridComp_'
+    else:
+        sDict = generate_sDict(tag, norm, tBBG, yrel)
+        rel = ''
 
-    rfname = fillTTree.resultFile(bbgFile)
+    rfname = fillTTree.resultFile(bbgFile,rel)
+    print "Want to open ", rfname
 
     if rfname.count('B1') or rfname.count('b1'): Beam, beam = 'B1', 'b1'
     elif rfname.count('B2') or rfname.count('b2'): Beam, beam = 'B2','b2'
@@ -77,15 +85,19 @@ def plotSpectra(bbgFile, tag):
         subfolder= 'TCT/3p5TeV/'
         if debug: print "Using 4 TeV format", '.'*10
 
-    elif rfname.count('hybrid'): 
+    elif rfname.count('hybrid') and not rfname.count('Comp'): 
         hDict = hDict_BH_HL_hybrid
         if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/tct5otrd/'
         elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/tct5inrd/'
         else: print "define where to put the plots?"
+
+    elif rfname.count('hybrid') and rfname.count('Comp'): 
+        hDict = hDict_HLhybrid_comp
+        subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/comp/'
+
     else:
         print "no dictionary defined"
         sys.exit()
-
 
     if not os.path.exists(wwwpath + subfolder):
         print 'making dir', wwwpath + subfolder
@@ -95,6 +107,8 @@ def plotSpectra(bbgFile, tag):
     # ---------------------------------------------------------------------------------
     print 'Opening ','.'*20, rfname
     rfile = TFile.Open(rfname)
+    if rfname.count('comp') or rfname.count('Comp'):
+        tag = ''
 
     for hkey in hDict.keys():
       
@@ -114,7 +128,7 @@ def plotSpectra(bbgFile, tag):
       YurMin, YurMax = hDict[hkey][9],hDict[hkey][10]
       ZurMin, ZurMax = hDict[hkey][15],hDict[hkey][16]
       doFill = hDict[hkey][11]
-      lText  = hDict[hkey][12] + ' ' + Beam
+      lText  = hDict[hkey][12] 
       lx, ly = hDict[hkey][13],hDict[hkey][14]
 
       mlegend = TLegend( x1, y1, x2, y2)
@@ -143,15 +157,19 @@ def plotSpectra(bbgFile, tag):
            norm   = sDict[hname][1]
            if norm != 1.: print 'normalising by ', norm
            #hists[-1].Scale(1./norm)
-
+           leg = "l"
            if not i: 
                if   type(hists[-1]) == TH1F: hists[-1].Draw("HIST")
                elif type(hists[-1]) == TH2F: hists[-1].Draw("COLZ")
+               elif type(hists[-1]) == TProfile: 
+                   hists[-1].SetMarkerColor(hcolor)
+                   hists[-1].Draw("P")
+                   leg = "lp"
            else:
                if   type(hists[-1]) == TH1F: hists[-1].Draw("HISTSAME")
 
            prettyName = sDict[hname][6]
-           mlegend.AddEntry(hists[-1],prettyName, "l")
+           mlegend.AddEntry(hists[-1],prettyName, leg)
            
            xtitle = sDict[hname][9]
            ytitle = sDict[hname][10]
@@ -182,13 +200,16 @@ def plotSpectra(bbgFile, tag):
       mlegend.Draw()
       lab = mylabel(62)
       lab.DrawLatex(lx,ly,lText)
+      #lab.DrawLatex(0.74,ly,Beam)
 
       gPad.RedrawAxis()
       if type(hists[0]) == TH2F: 
           gPad.SetLogz(doLogx)
       else:
-          gPad.SetLogx(doLogx)
-          gPad.SetLogy(doLogy)
+          cv.SetGridx(0)
+          cv.SetGridy(0)
+          cv.SetLogx(doLogx)
+          cv.SetLogy(doLogy)
       
       print('Saving file as' + pname ) 
       cv.Print(pname + '.pdf')

@@ -8,6 +8,20 @@ from ROOT import *
 from helpers import workpath, addCol
 ## -------------------------------------------------------------------------------
 if 1:
+    sometext = 'HL hybrid case'
+    csfile_H = workpath + 'runs/H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin.dat'
+    csfile_V = workpath + 'runs/H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin.dat'
+    Ntct_H   = 8242+1496 # wc -l  H5_HL_TCT5LOUT_relaxColl_*HaloB1_roundthin/i*52*txt
+    Ntct_V   = 778+1575 # wc -l  H5_HL_TCT5LOUT_relaxColl_*HaloB1_roundthin/i*53*txt
+    NtotBeam = 2.2e11*2808
+elif 0:
+    sometext = 'HL hybrid case'
+    csfile_H = workpath + 'runs/H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin.dat'
+    csfile_V = workpath + 'runs/H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin/coll_summary_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin.dat'
+    Ntct_H   = 8242+1496 # wc -l  H5_HL_TCT5IN_relaxColl_*HaloB1_roundthin/i*52*txt
+    Ntct_V   = 778+1575 # wc -l  H5_HL_TCT5IN_relaxColl_*HaloB1_roundthin/i*53*txt
+    NtotBeam = 2.2e11*2808
+elif 0:
     sometext = 'HL case'
     csfile_H = workpath + 'runs/TCT/ats-HL_LHC_1.0/nominal_settings/hor-B1/coll_summary_hor-B1.dat'
     csfile_V = workpath + 'runs/TCT/ats-HL_LHC_1.0/nominal_settings/ver-B1/coll_summary_ver-B1.dat'
@@ -50,7 +64,7 @@ def cv07():
     R1det = int(0.5*( R1det_H + R1det_V ))
     R2det = int(0.5*( R2det_H + R2det_V ))
 
-    print  "rate at det if beam is lost in 12'",R1det, 'Hz'
+    print  "rate at det if beam is lost in 12 min'",R1det, 'Hz'
     print  "rate at det if beam is lost in 100h",R2det, 'Hz'
 
 

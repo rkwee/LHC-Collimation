@@ -17,8 +17,8 @@ def doTCTs(var, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, tct, s):
     # store sum of squares of weights 
     hist.Sumw2()
 
-    zB = 100*fabs(s-length_LHC)
-    zA = 100*fabs(s-length_LHC+1.)
+    zA = 100*fabs(s-length_LHC)
+    zB = 100*fabs(s-length_LHC-1.)
 
     cuts += [ 'z_interact <= ' + str(zB) + " && z_interact > " + str(zA)]
 
@@ -54,6 +54,7 @@ def cv33():
     gStyle.SetTitleY(.955)
 
     bbgFile = workpath + 'runs/FL_TCT5IN_roundthin/hilumi_ir1_hybrid_b1_20MeV_exp_nprim1635000_30.root'
+    bbgFile = workpath + 'runs/FL_TCT5IN_roundthin/hilumi_ir1_hybrid_b1_exp_20MeV_nprim5851000_30.root'
 
     print "Opening...", bbgFile
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
@@ -61,13 +62,11 @@ def cv33():
     rf   = TFile.Open(bbgFile)
     mt   = rf.Get('particle')
 
-    yrel = '/TCT hit'
-
     tcts = [
-        ( 52    ,'TCTH.4L1.B1',  26525.36),
-        ( 53   ,'TCTVA.4L1.B1',  26527.04),
-        ( 54    ,'TCTH.5L1.B1',  26445.00),
-        ( 55   ,'TCTVA.5L1.B1',  26446.70),
+        ( 52    ,'TCTH.4L1.B1',  26526.290200),
+        ( 53   ,'TCTVA.4L1.B1',  26527.910200),
+        ( 54    ,'TCTH.5L1.B1',  26445.093200),
+        ( 55   ,'TCTVA.5L1.B1',  26447.093200),
         ]
 
     # histograms which should be written one to rootfile
@@ -90,6 +89,8 @@ def cv33():
         cv.SetRightMargin(0.15)
         gPad.SetLeftMargin(-0.1)
 
+        cv.SetGridx(1)
+        cv.SetGridy(1)
         xnbins, xmin, xmax, ynbins, ymin, ymax = 200, -12., -2, 100, -5., 5
         hname = "OrigXYNAll" + tct.replace('.','_') + tag_BH_7TeV
         var = 'y_interact:x_interact'
@@ -119,9 +120,12 @@ def cv33():
         # ......................................................................
 
         cv = TCanvas( 'cvv'+tct, 'cvv'+tct, 1200, 900)
+        cv.SetGridx(1)
+        cv.SetGridy(1)
         cv.SetRightMargin(0.15)
-        zB = 100*fabs(s-length_LHC)
-        zA = 100*fabs(s-length_LHC+1.)
+
+        zA = 100*fabs(s-length_LHC)
+        zB = 100*fabs(s-length_LHC-1.)
 
         xnbins, xmin, xmax, ynbins, ymin, ymax = 200, zA, zB, 100, -12., -2.
         hname = "OrigZXNAll" + tct.replace('.','_') + tag_BH_7TeV
@@ -152,6 +156,8 @@ def cv33():
         # ......................................................................
 
         cv = TCanvas( 'cvvr'+tct, 'cvvr'+tct, 1200, 900)
+        cv.SetGridx(1)
+        cv.SetGridy(1)
         cv.SetRightMargin(0.15)
 
         xnbins, xmin, xmax, ynbins, ymin, ymax = 200, zA, zB, 100, -5, 5.

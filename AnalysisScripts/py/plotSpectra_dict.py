@@ -1,3 +1,4 @@
+import math
 from helpers import tag_BH_4TeV, tag_BH_7TeV
 tag_HL   = 'HL_BH'
 # ---------------------------------------------------------------------------------
@@ -54,7 +55,7 @@ hDict_HL_BH = {
     'RadNDist' + tag_HL: [ ['RadNAll', 'RadNMuons', 'RadNNeutrons', 'RadNProtons', 'RadNPhotons', 'RadNElecPosi', 'RadNPions', 'RadNKaons'],0.72, 0.7, 0.98, 0.9, 0,1, 0,1200,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'RadNChar' + tag_HL: [ ['RadNNeg', 'RadNPos', 'RadNNeu','RadNNeutrons','RadNPhotons'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,1200.,1e-5,2, 0, lText, 0.2,0.9, -1,-1, ],
 
-    'RadNMuons' + tag_HL: [ ['RadNMuonsEAll', 'RadNMuonsE20', 'RadNMuonsE100','RadNMuonsE1000'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,1200.,1e-8,1e-4, 1, lText, 0.2,0.9, -1,-1, ],
+    'RadNMuons' + tag_HL: [ ['RadNMuonsEAll', 'RadNMuonsE20', 'RadNMuonsE100','RadNMuonsE500', 'RadNMuonsE1000'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,1200.,1e-8,1e-4, 1, lText, 0.2,0.9, -1,-1, ],
     'RadEnChar' + tag_HL: [ ['RadEnNeg', 'RadEnPos', 'RadEnNeu','RadEnNeutrons','RadEnPhotons'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,1200.,1e-10,1, 0, lText, 0.2,0.9, -1,-1, ],
     'RadEnDist' + tag_HL:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.72, 0.65, 0.98, 0.9, 0,1, 0,1200,1e-10,1, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiNDist' + tag_HL: [ ['PhiNAll', 'PhiNMuons','PhiNNeutrons','PhiNProtons','PhiNPhotons', 'PhiNElecPosi', 'PhiNPionsChar', 'PhiNKaonsChar'],0.72, 0.74, 0.98, 0.92, 0,1, -1,-1,1e-3,9, 0, lText, 0.2,0.9, -1,-1, ],
@@ -79,6 +80,7 @@ hDict_HL_BH = {
     'XYNKaonMinusE' + tag_HL     : [ ['XYNKaonMinusE'] ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
 
     }
+# --------------------------------------------------------------------------------------------------------------------------------------------------------
 lText = 'BG a.c.'
 tag_HL = '_BGac'
 hDict_HL_BGac = { # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText #13 lx #14 ly #15 ZurMin #16 ZurMax
@@ -269,8 +271,8 @@ hDict_BH_3p5TeV = {
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 tag = tag_BH_7TeV
-if tag.count('tct5ot'): lText = 'HL TCT5 out, TCT4 in, round '
-else: lText = 'HL TCT5 and TCT4 in, round '
+if tag.count('tct5ot'): lText = 'HL TCT5 out, TCT4 in, round B1'
+else: lText = 'HL TCT5 and TCT4 in, round B1'
 hDict_BH_HL_hybrid = { 
 
     # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText #13 lx (label) #14 ly (label) #15 ZurMin #16 ZurMax
@@ -283,7 +285,7 @@ hDict_BH_HL_hybrid = {
     'RadNDist' + tag: [ ['RadNAll', 'RadNMuons', 'RadNNeutrons', 'RadNProtons', 'RadNPhotons', 'RadNElecPosi', 'RadNPions', 'RadNKaons'],0.65, 0.7, 0.98, 0.9, 0,1, 0,600,-1,-1, 0, lText, 0.2,0.955, -1,-1, ],
     'RadNChar' + tag: [ ['RadNNeg', 'RadNPos', 'RadNNeu','RadNNeutrons','RadNPhotons'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,600.,-1,-1, 0, lText, 0.2,0.955, -1,-1, ],
 
-    'RadNMuons' + tag: [ ['RadNMuonsEAll', 'RadNMuonsE20', 'RadNMuonsE100','RadNMuonsE1000'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,600.,-1,-1, 1, lText, 0.2,0.955, -1,-1, ],
+    'RadNMuons' + tag: [ ['RadNMuonsEAll', 'RadNMuonsE20', 'RadNMuonsE100','RadNMuonsE500', 'RadNMuonsE1000'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,600.,-1,-1, 1, lText, 0.2,0.955, -1,-1, ],
     'RadEnChar' + tag: [ ['RadEnNeg', 'RadEnPos', 'RadEnNeu','RadEnNeutrons','RadEnPhotons'],0.6, 0.7, 0.9, 0.9, 0,1, 0.,600.,-1,-1, 0, lText, 0.2,0.955, -1,-1, ],
     'RadEnDist' + tag:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.65, 0.65, 0.98, 0.9, 0,1, 0,200,1e-5,1, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiNDist' + tag: [ ['PhiNAll', 'PhiNMuons','PhiNNeutrons','PhiNProtons','PhiNPhotons', 'PhiNElecPosi', 'PhiNPionsChar', 'PhiNKaonsChar'],0.65, 0.74, 0.98, 0.92, 0,1, -1,-1,1e-5,1e1, 0, lText, 0.2,0.955, -1,-1, ],
@@ -292,10 +294,41 @@ hDict_BH_HL_hybrid = {
     'PhiEnMu' + tag: [ ['PhiEnMuons','PhiEnMuR10','PhiEnMuR50','PhiEnMuR100','PhiEnMuR200','PhiEnMuR300','PhiEnMuR400','PhiEnMuR500','PhiEnMuR1000'],0.6, 0.6, 0.9,0.9, 0,1, -1,-1,1e-5,1e3, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiEnDist' + tag:[ [ 'PhiEnAll', 'PhiEnMuons', 'PhiEnNeutrons', 'PhiEnProtons', 'PhiEnPhotons', 'PhiEnElecPosi', 'PhiEnPions','PhiEnKaons'],0.65, 0.7, 0.98, 0.9, 0,1, -1,-1,1e-3,1e2, 0, lText, 0.2,0.955, -1,-1, ],
 
-    'XYNAll' + tag           : [ ['XYNAll'],0.5, 0.92, 0.7, 1., 1,0, 1e-5,2e-1,-1,-1, 0, lText, 0.2,0.955, -1,-1, ],
-    'XYNMuons' + tag         : [ ['XYNMuons'], 0.5, 0.92, 0.7, 1., 1, 0, -1, -1, -1, -1, 0, lText, 0.2,0.955, -1,-1, ],
-    'XYNPhotons' + tag       : [ ['XYNPhotons'], 0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.955, -1,-1, ],
-    'XYNElecPosi' + tag      : [ ['XYNElecPosi'],0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.955, -1,-1, ],
-    'XYNChar' + tag          : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.955, -1,-1, ],
-    'XYNCharZoom' + tag      : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -5,5,-5.,5., 0, lText, 0.2,0.955, -1,-1, ],
+    'ZcoorOrigMu' + tag: [ ['ZcoorOrigMu'],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1e-2, 0, lText, 0.2,0.9, -1,-1, ],
+
+    'XYNAll' + tag           : [ ['XYNAll'],0.5, 0.92, 0.7, 1., 1,0, 1e-5,2e-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'XYNMuons' + tag         : [ ['XYNMuons'], 0.5, 0.92, 0.7, 1., 1, 0, -1, -1, -1, -1, 0, lText, 0.2,0.9, -1,-1, ],
+    'XYNPhotons' + tag       : [ ['XYNPhotons'], 0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'XYNElecPosi' + tag      : [ ['XYNElecPosi'],0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'XYNChar' + tag          : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'XYNCharZoom' + tag      : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -5,5,-5.,5., 0, lText, 0.2,0.9, -1,-1, ],
+
+    'OrigXYMuons' + tag       : [ ['OrigXYMuon'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    'OrigXZMuons' + tag       : [ ['OrigXZMuon'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    'OrigYZMuons' + tag       : [ ['OrigYZMuon'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    'OrigXYMuonsE100' + tag       : [ ['OrigXYMuonsE100'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    'OrigXZMuonsE100' + tag       : [ ['OrigXZMuonsE100'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    'OrigYZMuonsE100' + tag       : [ ['OrigYZMuonsE100'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+
+    'ProfOrigXZMuons' + tag       : [ ['ProfOrigXZMuon'],0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    'ProfOrigYZMuons' + tag       : [ ['ProfOrigYZMuon'],0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    }
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------
+hDict_HLhybrid_comp = {
+
+    # ---------------------------------------------------------------------------------
+    # comp plots
+    # ---------------------------------------------------------------------------------
+    # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText #13 lx #14 ly #15 ZurMin #16 ZurMax
+
+    'EkinAllComp' : [['EkinAllIN', 'EkinAllOUT' ],0.55,0.77,0.95,0.9, 1,1, 2e-2,9e3,1,1.e10, 0, '', 0.45,0.85, -1,-1, ],
+    'EkinNeComp' : [['EkinNeIN', 'EkinNeOUT' ],0.55,0.77,0.95,0.9, 1,1, 2e-2,9e3,1,1.e10, 0, 'n', 0.45,0.85, -1,-1, ],
+    'EkinPrComp' : [['EkinPrIN', 'EkinPrOUT' ],0.55,0.77,0.95,0.9, 1,1, 2e-2,9e3,1,1.e10, 0, 'p', 0.45,0.85, -1,-1, ],
+    'EkinMuComp' : [['EkinMuIN', 'EkinMuOUT' ],0.55,0.77,0.95,0.9, 1,1, 2e-2,9e3,1,1.e10, 0, '#mu^{#pm}', 0.45,0.85, -1,-1, ],
+    'RadEnAllComp' : [['RadEnAllIN','RadEnAllOUT'], 0.55,0.77,0.95,0.9, 0,1, 0.,600.,1,8e8, 0, 'all', 0.45,0.85, -1,-1, ],
+    'RadEnChComp' :  [['RadEnChIN','RadEnChOUT'], 0.55,0.77,0.95,0.9, 0,1, 0.,600.,1,8e8, 0, '#pi^{#pm}, K^{#pm}', 0.45,0.85, -1,-1, ],
+    'RadEnMuComp' :  [['RadEnMuIN','RadEnMuOUT'], 0.55,0.77,0.95,0.9, 0,1, 0.,600.,1,8e8, 0, '#mu^{#pm}', 0.45,0.85, -1,-1, ],
+    'RadNMuComp' :  [['RadNMuIN','RadNMuOUT'], 0.55,0.77,0.95,0.9, 0,1, 0.,600.,1e-2,8e2, 0, '#mu^{#pm}', 0.45,0.85, -1,-1, ],
+    'PhiNAllComp' :  [['PhiNAllIN','PhiNAllOUT'], 0.55,0.77,0.95,0.9, 0,1, -math.pi, math.pi-0.5*math.pi,3e6,1.e8, 0, 'all', 0.45,0.85, -1,-1, ],
     }

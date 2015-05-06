@@ -73,7 +73,6 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'EkinNeu'+tag:[ ['7','24','8'], norm, 60, 1e-2, 1e4, tBBG, 'n,K^{0},#gamma', kBlue, '-9999','E [GeV]', '#frac{dN(counts'+yrel+')}{dlog E}', -9999, -9999, -9999, ],
  'EkinPiPlus'+tag:[ ['13'], norm, 60, 1e-2, 1e4, tBBG, '#pi^{+}', kPink+2, '-9999','E [GeV]', '#frac{dN(counts'+yrel+')}{dlog E}', -9999, -9999, -9999, ],
  'EkinPiMinus'+tag:[ ['14'], norm, 60, 1e-2, 1e4, tBBG, '#pi^{-}', kPink+3, '-9999','E [GeV]', '#frac{dN(counts'+yrel+')}{dlog E}', -9999, -9999, -9999, ],
- 'EkinPiZero'+tag:[ ['23'], norm, 60, 1e-2, 1e4, tBBG, '#pi^{0}', kPink, '-9999','E [GeV]', '#frac{dN(counts'+yrel+')}{dlog E}', -9999, -9999, -9999, ],
 
  'EkinAllRInBP'+tag:[ ['all'],norm,60, 1e-2, 1e4, tBBG, 'all r < r_{bp}', kBlue-3, '<:6.9','E [GeV]', '#frac{dN(counts'+yrel+')}{dlog E}', -9999, -9999, -9999, ],
  'EkinAllROutBP'+tag:[ ['all'],norm,60, 1e-2, 1e4, tBBG, 'all r #geq r_{bp}', kMagenta, '>=:6.9','E [GeV]', '#frac{dN(counts'+yrel+')}{dlog E}', -9999, -9999, -9999, ],
@@ -97,6 +96,7 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'RadNMuonsEAll'+tag:[ ['10', '11'], norm, 240, 0, 1200, tBBG, '#mu^{#pm}', kRed-10, '-9999','r [cm]', 'particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
  'RadNMuonsE20'+tag:[ ['10', '11'], norm, 240, 0, 1200, tBBG, '#mu^{#pm} with E_{kin} > 20 GeV', kRed-7,'20.','r [cm]', 'particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
  'RadNMuonsE100'+tag:[ ['10', '11'], norm, 240, 0, 1200, tBBG, '#mu^{#pm} with E_{kin} > 100 GeV', kRed-6,'100.','r [cm]', 'particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+ 'RadNMuonsE500'+tag:[ ['10', '11'], norm, 240, 0, 1200, tBBG, '#mu^{#pm} with E_{kin} > 500 GeV', kRed-1,'500.','r [cm]', 'particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
  'RadNMuonsE1000'+tag:[ ['10', '11'], norm, 240, 0, 1200, tBBG, '#mu^{#pm} with E_{kin} > 1 TeV', kRed-1,'1000.','r [cm]', 'particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
  
  'RadNNeg'+ tag:[ ['11','3','14','16'], norm, 240, 0, 1200, tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}', kMagenta+1, '-9999','r [cm]', 'particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
@@ -115,7 +115,6 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'RadEnNeg'+tag:[ ['11','3','14','16'], norm, 240, 0, 1200, tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}', kMagenta+1, '-9999','r [cm]', 'particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
  'RadEnPos'+tag:[ ['1','10','4','15','13'], norm, 240, 0, 1200, tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}', kGreen+1, '-9999','r [cm]', 'particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
  'RadEnNeu'+tag:[ ['7','24','8'], norm, 240, 0, 1200, tBBG, 'n,K^{0},#gamma', kBlue, '-9999','r [cm]', 'particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
-
 
  'PhiNAll'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all',kBlack, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNMuons'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} ',kAzure, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
@@ -173,27 +172,38 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'YcoorNPos'+tag:[ ['1','10','4','15','13'], norm, 160, -400., 400., tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','y [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
  'YcoorNNeu'+tag:[ ['7','24','8'], norm, 160, -400., 400., tBBG, 'n,K^{0},#gamma',kBlue,'-9999','y [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
  
- 'XYNAll'+tag:[ ['all'],norm, 120, -120, 120, tBBG, 'all', kWhite, '-9999','x [cm]','y [cm]', 120, -120, 120, ],
- 'XYNPhotons'+tag:[ ['7'], norm, 120, -120, 120, tBBG, '#gamma', kWhite, '-9999','x [cm]','y [cm]', 120, -120, 120, ],
- 'XYNElecPosi'+tag:[ ['3','4'], norm, 120, -120, 120, tBBG, 'e^{#pm}', kWhite, '-9999','x [cm]','y [cm]', 120, -120, 120, ],
- 'XYNMuons'+tag:[ ['10', '11'], norm, 120, -120, 120, tBBG, '#mu^{#pm} ', kWhite, '-9999','x [cm]','y [cm]', 120, -120, 120, ],
+ 'XYNAll'+tag:[ ['all'],norm, 240, -120, 120, tBBG, 'all', kWhite, '-9999','x [cm]','y [cm]', 120, -120, 120, ],
+ 'XYNPhotons'+tag:[ ['7'], norm, 240, -120, 120, tBBG, '#gamma', kWhite, '-9999','x [cm]','y [cm]', 120, -120, 120, ],
+ 'XYNElecPosi'+tag:[ ['3','4'], norm, 240, -120, 120, tBBG, 'e^{#pm}', kWhite, '-9999','x [cm]','y [cm]', 120, -120, 120, ],
+ 'XYNMuons'+tag:[ ['10', '11'], norm, 240, -120, 120, tBBG, '#mu^{#pm} ', kWhite, '-9999','x [cm]','y [cm]', 120, -120, 120, ],
  'XYNChar'+tag:[ ['11','3','14','16','1','10','4','15','13'], norm, 960, -120, 120, tBBG, 'p,K^{#pm},e^{#pm},#mu^{#pm},#pi^{#pm} ', kWhite, '-9999','x [cm]','y [cm]', 120, -120, 120, ],
  
- 'XYNElecPosiE'+tag:[ ['3','4'], norm, 120, -120, 120, tBBG, 'e^{#pm} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 120, -120, 120, ],
- 'XYNPhotonsE'+tag:[ ['7'], norm, 120, -120, 120, tBBG, '#gamma 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 120, -120, 120, ],
- 'XYNNeutronsE'+tag:[ ['8'], norm, 120, -120, 120, tBBG, 'neutrons 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 120, -120, 120, ],
- 'XYNProtonsE'+tag:[ ['1'], norm, 120, -120, 120, tBBG, 'protons 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]', 120, -120, 120, ],
- 'XYNPiPlusE'+tag:[ ['13'], norm, 120, -120, 120, tBBG, '#pi^{+} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 120, -120, 120, ],
- 'XYNPiMinusE'+tag:[ ['14'], norm, 120, -120, 120, tBBG, '#pi^{-} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 120, -120, 120, ],
- 'XYNKaonsE'+tag:[ ['15','16'], norm, 120, -120, 120, tBBG, 'K^{#pm} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 120, -120, 120, ],
- 'XYNKaonPlusE'+tag:[ ['15'], norm, 120, -120, 120, tBBG, 'K^{+} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]', 120, -120, 120, ],
- 'XYNKaonMinusE'+tag:[ ['16'], norm, 120, -120, 120, tBBG, 'K^{-} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]', 120, -120, 120, ],
- 'XYNMuonsE10'+tag:[ ['10', '11'], norm, 120, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 10 GeV', kWhite, '10.','x [cm]','y [cm]', 120, -120, 120, ], 
+ 'XYNElecPosiE'+tag:[ ['3','4'], norm, 240, -120, 120, tBBG, 'e^{#pm} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
+ 'XYNPhotonsE'+tag:[ ['7'], norm, 240, -120, 120, tBBG, '#gamma 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
+ 'XYNNeutronsE'+tag:[ ['8'], norm, 240, -120, 120, tBBG, 'neutrons 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
+ 'XYNProtonsE'+tag:[ ['1'], norm, 240, -120, 120, tBBG, 'protons 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
+ 'XYNPiPlusE'+tag:[ ['13'], norm, 240, -120, 120, tBBG, '#pi^{+} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
+ 'XYNPiMinusE'+tag:[ ['14'], norm, 240, -120, 120, tBBG, '#pi^{-} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
+ 'XYNKaonsE'+tag:[ ['15','16'], norm, 240, -120, 120, tBBG, 'K^{#pm} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
+ 'XYNKaonPlusE'+tag:[ ['15'], norm, 240, -120, 120, tBBG, 'K^{+} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
+ 'XYNKaonMinusE'+tag:[ ['16'], norm, 240, -120, 120, tBBG, 'K^{-} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
+ 'XYNMuonsE10'+tag:[ ['10', '11'], norm, 240, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 10 GeV', kWhite, '10.','x [cm]','y [cm]', 240, -120, 120, ], 
+ 'XYNMuonsE500'+tag:[ ['10', '11'], norm, 240, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 500 GeV', kWhite, '100.','x [cm]','y [cm]', 240, -120, 120, ], 
  
+ 'OrigXYMuon'+tag:[ ['10', '11'],  norm, 240, -120, 120, tBBG, '#mu^{#pm} ', kWhite, '-9999','x [cm]','y [cm]', 240, -120, 120, ],
+ 'OrigXZMuon'+tag:[ ['10', '11'],  norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} ', kWhite, '-9999','z [cm]','x [cm]', 240, -120, 120, ],
+ 'ProfOrigXZMuon'+tag:[ ['10', '11'],  norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} ', kBlue-3, '-9999','z [cm]','x [cm]', 240, -120, 120, ],
+ 'ProfOrigYZMuon'+tag:[ ['10', '11'],  norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} ', kBlue-3, '-9999','z [cm]','y [cm]', 240, -120, 120, ],
+ 'OrigYZMuon'+tag:[ ['10', '11'],  norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} ', kWhite, '-9999','z [cm]','y [cm]', 240, -120, 120, ],
+ 'OrigXYMuonsE100'+tag:[ ['10', '11'], norm, 240, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 100 GeV', kWhite, '100.','x [cm]','y [cm]', 240, -120, 120, ], 
+ 'OrigXZMuonsE100'+tag:[ ['10', '11'], norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} E_{kin} > 100 GeV', kWhite, '100.','z [cm]','x [cm]', 240, -120, 120, ], 
+ 'OrigYZMuonsE100'+tag:[ ['10', '11'], norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} E_{kin} > 100 GeV', kWhite, '100.','z [cm]','y [cm]', 240, -120, 120, ], 
+
+ 'ZcoorOrigMu'+tag:[ ['11','10'], norm, 386, 2260., 21560., tBBG, '#mu^{#pm}',kMagenta+1,'-9999','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
  }
     return sDict_gen
 # ---------------------------------------------------------------------------------
-# comp plots
+# comp plots BG vs BH
 # ---------------------------------------------------------------------------------
 # BG norm: scaling to higher bunch intensity
 normBGst = 1.15/2.2
@@ -203,7 +213,7 @@ R12m    = 146563140 # Hz from cv07
 R100h   = 293126 #Hz from cv07      
 
 # norm is already appplied when root file was produced
-R12m ,R100h,nprim = 1.,1.,1.
+#R12m ,R100h,nprim = 1.,1.,1.
 # HL -2013-
 
 treeName = 'particle'
@@ -317,4 +327,80 @@ sDict_HL_comp = {
  "RadEnEpBGac": [ ['3', '4'], normBGac, 242, 0, 1210, tBGac, 'BG after cond', kAzure-3,'-9999','r [cm]','GeV/cm^{2}/s'],
  "RadEnEpBHds": [ ['3', '4'], nprim/R12m, 242, 0, 1210, tBH, 'BH 12 min loss', kPink-9,'-9999','r [cm]','GeV/cm^{2}/s'],
  "RadEnEpBHop": [ ['3', '4'], nprim/R100h, 242, 0, 1210, tBH, 'BH 100h loss', kGreen+2,'-9999','r [cm]','GeV/cm^{2}/s'],
+}
+
+
+# ---------------------------------------------------------------------------------
+# comp plots TCT5IN vs TCT5LOUT
+# ---------------------------------------------------------------------------------
+tau_12m = 60*12
+N_beam = 2736*2.2e11
+# wc -l sourcedirs/HL_TCT_7TeV/fluka/hybrid/b1/tct5inrd.dat 
+N_tcts = 13073 
+# awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin.dat
+# awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin/coll_summary_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin.dat
+N_abs  = 63740261+61392508
+R12m = N_beam*N_tcts/(tau_12m * N_abs)
+
+
+treeName = 'particle'
+bbgFile  = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim3972000_30.root'
+print "Opening...", bbgFile
+rf_tct5inrd  = TFile(bbgFile)
+tIN = rf_tct5inrd.Get(treeName)
+nprimIN = float(bbgFile.split('nprim')[-1].split('_')[0])
+normIN = nprimIN/R12m
+print "r12m", R12m
+
+# .................................................................................
+
+# wc -l sourcedirs/HL_TCT_7TeV/fluka/hybrid/b1/tct5otrd.dat 
+N_tcts = 12091.
+# awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin.dat
+# awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin.dat
+N_abs  = 63828643 + 61405975
+R12m = N_beam/tau_12m * N_tcts/N_abs
+R12m = 81889013 # from cv07
+
+bbgFile  = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim3929000_30.root'
+print "Opening...", bbgFile
+rf_tct5otrd  = TFile(bbgFile)
+tOUT = rf_tct5otrd.Get(treeName)
+nprimOUT = float(bbgFile.split('nprim')[-1].split('_')[0])
+normOUT = nprimOUT/R12m
+
+print "r12m", R12m
+# ---------------------------------------------------------------------------------
+# dict  key = hname  #0 particleTypes #1 norm #2 nbins #3 xmin #4 xmax #5 ttree #6 prettyName 
+                     #7 hcolor #8 othercut[as string OR float/int] #9 xtitle #10 ytitle #11 ynbin #12 ymin #13 ymax
+# ---------------------------------------------------------------------------------
+yrel = '/primary'
+yrel = '/s'
+sDict_HL_hybridComp = {
+ "EkinAllIN": [ ['all'], normIN,60, 1e-2,1e4, tIN, 'TCT5 and TCT4',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', -9999, -9999, -9999, ],
+ "EkinAllOUT": [ ['all'], normOUT,60, 1e-2,1e4, tOUT, 'TCT4 only',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', -9999, -9999, -9999, ],
+
+ "EkinPrIN": [ ['1'], normIN,60, 1e-2,1e4, tIN, 'TCT5 and TCT4',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', -9999, -9999, -9999, ],
+ "EkinPrOUT": [ ['1'], normOUT,60, 1e-2,1e4, tOUT, ' TCT4 only',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', -9999, -9999, -9999, ],
+
+ "EkinNeIN": [ ['8'], normIN,60, 1e-2,1e4, tIN, 'TCT5 and TCT4',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', -9999, -9999, -9999, ],
+ "EkinNeOUT": [ ['8'], normOUT,60, 1e-2,1e4, tOUT, ' TCT4 only',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', -9999, -9999, -9999, ],
+
+ "EkinMuIN": [ ['10', '11'], normIN,60, 1e-2,1e4, tIN, 'TCT5 and TCT4',kBlue-1, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', -9999, -9999, -9999, ],
+ "EkinMuOUT": [ ['10', '11'], normOUT,60, 1e-2,1e4, tOUT, 'TCT4 only',kAzure-3, '-9999','E [GeV]', '#frac{dN(counts/s)}{dlog E}', -9999, -9999, -9999, ],
+
+ "RadEnAllIN": [ ['all'], normIN, 242, 0, 1210, tIN, 'TCT5 and TCT4',kBlue-1, '-9999','r [cm]','GeV/cm^{2}/s', -9999, -9999, -9999, ],
+ "RadEnAllOUT": [ ['all'], normOUT, 242, 0,1210, tOUT, 'TCT4 only',kAzure-3, '-9999','r [cm]','GeV/cm^{2}/s', -9999, -9999, -9999, ],
+
+ "RadEnChIN": [ ['13','14','15','16'], normIN, 242, 0, 1210, tIN, 'TCT5 and TCT4', kBlue-1,'-9999','r [cm]','GeV/cm^{2}/s', -9999, -9999, -9999, ],
+ "RadEnChOUT": [ ['13','14','15','16'], normOUT, 242, 0, 1210, tOUT, 'TCT4 only', kAzure-3,'-9999','r [cm]','GeV/cm^{2}/s', -9999, -9999, -9999, ],
+
+ "RadEnMuIN": [ ['10', '11'], normIN, 242, 0, 1210, tIN, 'TCT5 and TCT4', kBlue-1,'-9999','r [cm]','GeV/cm^{2}/s', -9999, -9999, -9999, ],
+ "RadEnMuOUT": [ ['10', '11'], normOUT, 242, 0, 1210, tOUT, 'TCT4 only', kAzure-3,'-9999','r [cm]','GeV/cm^{2}/s', -9999, -9999, -9999, ],
+
+ "RadNMuIN": [ ['10', '11'], normIN, 242, 0, 1210, tIN, 'TCT5 and TCT4', kBlue-1,'-9999','r [cm]','particles/cm^{2}/s', -9999, -9999, -9999, ],
+ "RadNMuOUT": [ ['10', '11'], normOUT, 242, 0, 1210, tOUT, 'TCT4 only', kAzure-3,'-9999','r [cm]','particles/cm^{2}/s', -9999, -9999, -9999, ],
+
+ "PhiNAllIN" : [ ['all'],normIN, 100, -math.pi, math.pi, tIN, 'TCT5 and TCT4',kBlue-1, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ "PhiNAllOUT" : [ ['all'],normOUT, 100, -math.pi, math.pi, tOUT, 'TCT4 only',kAzure-3, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
 }

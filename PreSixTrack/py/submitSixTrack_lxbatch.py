@@ -73,6 +73,9 @@ cList += [[ '4TeV_hHaloB1',     [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518
 
 cList += [[ 'HL_TCT_hHaloB1_h5',[sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_h5_gfortran_O4', '7000000' ]]]
 cList += [[ 'HL_TCT_vHaloB1_h5',[sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_h5_gfortran_O4', '7000000' ]]]
+cList += [[ 'HL_TCT_hHaloB2_h5',[gitpath + '7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/' ,'SixTrack_4518_cernlib_coll_h5_gfortran_O4', '7000000' ]]]
+cList += [[ 'HL_TCT_vHaloB2_h5',[gitpath + '7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/' ,'SixTrack_4518_cernlib_coll_h5_gfortran_O4', '7000000' ]]]
+
 cList += [[ '4TeV_vHaloB1_h5',  [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_hHaloB1_h5',  [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_vHaloB2_h5',  [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]

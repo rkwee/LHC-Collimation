@@ -6,15 +6,16 @@ import ROOT, sys, glob, os, math, helpers
 from ROOT import *
 from helpers import *
 from array import array
-from fillTTree_dict import generate_sDict
+from fillTTree_dict import generate_sDict, sDict_HL_hybridComp
 from createTTree import treeName
 # ---------------------------------------------------------------------------------
 # helper functions first, then main local function //
 # global variables
 # ---------------------------------------------------------------------------------
 zmin, zmax = 2260., 14960.
+zmin, zmax = 2260., 21560.
 # to disable the zcut have zOn > zmax
-zOn = 2e4
+zOn = 3e4
 # for all use energy cut at 20 MeV
 encut = 'energy_ke > ' + EnCut
 debug = 1
@@ -113,6 +114,7 @@ def do1dRadHisto(sDict, mt, hname, xaxis, particleTypes):
         binArea = math.pi * (xaxis[i+1]**2 - xaxis[i]**2)
         content = hist.GetBinContent(i)
         hist.SetBinContent(i,content/binArea)
+        hist.SetBinError(i,hist.GetBinError(i)/binArea)
 
     return hist
 # ---------------------------------------------------------------------------------
@@ -148,6 +150,7 @@ def do1dRadEnHisto(mt, hname, xaxis, particleTypes):
         binArea = math.pi * (xaxis[i+1]**2 - xaxis[i]**2)
         content = hist.GetBinContent(i)
         hist.SetBinContent(i,content/binArea)
+        hist.SetBinError(i,hist.GetBinError(i)/binArea)
 
     return hist
 # ---------------------------------------------------------------------------------
@@ -184,7 +187,9 @@ def do1dPhiHisto(sDict, mt, hname, xaxis, particleTypes):
 
     for i in range(nbins):
         content = hist.GetBinContent(i)
-        hist.SetBinContent(i,content/hist.GetBinWidth(i))
+        binWidth = hist.GetBinWidth(i)
+        hist.SetBinContent(i,content/binWidth)
+        hist.SetBinError(i,hist.GetBinError(i)/binWidth)
 
     return hist
 # ---------------------------------------------------------------------------------
@@ -222,11 +227,13 @@ def do1dPhiEnHisto(sDict, mt, hname, xaxis, particleTypes):
 
     for i in range(nbins):
         content = hist.GetBinContent(i)
-        hist.SetBinContent(i,content/hist.GetBinWidth(i))
+        binWidth = hist.GetBinWidth(i)
+        hist.SetBinContent(i,content/binWidth)
+        hist.SetBinError(i,hist.GetBinError(i)/binWidth)
 
     return hist
 # ---------------------------------------------------------------------------------
-def do1dXcoorHisto(sDict, mt, hname, xaxis, particleTypes):
+def do1dTcoorHisto(var,sDict, mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
@@ -241,8 +248,6 @@ def do1dXcoorHisto(sDict, mt, hname, xaxis, particleTypes):
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
     cuts += [encut]
 
-    var = 'x'
-
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
       pcut  = '||'.join(pcuts)
@@ -257,11 +262,13 @@ def do1dXcoorHisto(sDict, mt, hname, xaxis, particleTypes):
 
     for i in range(nbins):
         content = hist.GetBinContent(i)
-        hist.SetBinContent(i,content/hist.GetBinWidth(i))
+        binWidth = hist.GetBinWidth(i)
+        hist.SetBinContent(i,content/binWidth)
+        hist.SetBinError(i,hist.GetBinError(i)/binWidth)
 
     return hist
 # ---------------------------------------------------------------------------------
-def do1dYcoorHisto(sDict, mt, hname, xaxis, particleTypes):
+def do1dZcoorHisto(sDict, mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
@@ -273,10 +280,9 @@ def do1dYcoorHisto(sDict, mt, hname, xaxis, particleTypes):
     # cut - not used
     rcut = sDict[hname][8]
 
-    if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
     cuts += [encut]
 
-    var = 'y'
+    var = 'z_interact'
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
@@ -292,10 +298,126 @@ def do1dYcoorHisto(sDict, mt, hname, xaxis, particleTypes):
 
     for i in range(nbins):
         content = hist.GetBinContent(i)
-        hist.SetBinContent(i,content/hist.GetBinWidth(i))
+        binWidth = hist.GetBinWidth(i)
+        hist.SetBinContent(i,content/binWidth)
+        hist.SetBinError(i,hist.GetBinError(i)/binWidth)
 
     return hist
+# ---------------------------------------------------------------------------------
+def doOrigXYHisto(sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes):
+    print nbins, ynbins
+    hist    = TH2F(hname, hname, nbins, xmin, xmax, ynbins, ymin, ymax)
+    cuts    = []
 
+    # store sum of squares of weights 
+    hist.Sumw2()
+
+    # cut - not used
+    rcut = sDict[hname][8]
+
+    if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+    cuts += [encut]
+
+    var = 'y_interact:x_interact'
+
+    if not particleTypes[0].count('ll'):
+      pcuts = [ 'particle ==' + p for p in particleTypes  ]
+      pcut  = '||'.join(pcuts)
+      cuts += ['('+ pcut + ')']
+
+    if cuts: cut = 'weight * (' + ' && '.join(cuts) + ')'
+    else: cut = 'weight'
+
+    if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
+    mt.Project(hname, var, cut)
+    if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
+
+    return hist
+# ---------------------------------------------------------------------------------
+def doOrigXZHisto(sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes):
+
+    hist    = TH2F(hname, hname, nbins, xmin, xmax, ynbins, ymin, ymax)
+    cuts    = []
+
+    # store sum of squares of weights 
+    hist.Sumw2()
+
+    # cut - not used
+    rcut = sDict[hname][8]
+
+    cuts += [encut]
+
+    var = 'x_interact:z_interact'
+
+    if not particleTypes[0].count('ll'):
+      pcuts = [ 'particle ==' + p for p in particleTypes  ]
+      pcut  = '||'.join(pcuts)
+      cuts += ['('+ pcut + ')']
+
+    if cuts: cut = 'weight * (' + ' && '.join(cuts) + ')'
+    else: cut = 'weight'
+
+    if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
+    mt.Project(hname, var, cut)
+    if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
+
+    return hist
+# ---------------------------------------------------------------------------------
+def doProfOrigHisto(var,sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes):
+
+    hist    = TProfile(hname, hname, nbins, xmin, xmax, ymin, ymax)
+    cuts    = []
+
+    # store sum of squares of weights 
+    hist.Sumw2()
+
+    # cut - not used
+    rcut = sDict[hname][8]
+
+    cuts += [encut]
+
+    if not particleTypes[0].count('ll'):
+      pcuts = [ 'particle ==' + p for p in particleTypes  ]
+      pcut  = '||'.join(pcuts)
+      cuts += ['('+ pcut + ')']
+
+    if cuts: cut = 'weight * (' + ' && '.join(cuts) + ')'
+    else: cut = 'weight'
+
+    if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
+    mt.Project(hname, var, cut)
+    if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
+
+    return hist
+## ---------------------------------------------------------------------------------
+def doOrigYZHisto(sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes):
+
+    hist    = TH2F(hname, hname, nbins, xmin, xmax, ynbins, ymin, ymax)
+    cuts    = []
+
+    # store sum of squares of weights 
+    hist.Sumw2()
+
+    # cut - not used
+    rcut = sDict[hname][8]
+
+    cuts += [encut]
+
+    var = 'y_interact:z_interact'
+
+    if not particleTypes[0].count('ll'):
+      pcuts = [ 'particle ==' + p for p in particleTypes  ]
+      pcut  = '||'.join(pcuts)
+      cuts += ['('+ pcut + ')']
+
+    if cuts: cut = 'weight * (' + ' && '.join(cuts) + ')'
+    else: cut = 'weight'
+
+    if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
+    mt.Project(hname, var, cut)
+    if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
+
+    return hist
 # ---------------------------------------------------------------------------------
 def do2dScatHisto(var, sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes):
 
@@ -384,12 +506,44 @@ def getHistogram(sDict, skey, mt):
     elif hname.startswith("Xcoor"):
         binwidth = (xmax-xmin)/nbins
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
-        hist  = do1dXcoorHisto(sDict, mt, hname, xaxis, particleTypes) 
+        hist  = do1dTcoorHisto('x',sDict, mt, hname, xaxis, particleTypes) 
 
     elif hname.startswith("Ycoor"):
         binwidth = (xmax-xmin)/nbins
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
-        hist  = do1dYcoorHisto(sDict, mt, hname, xaxis, particleTypes) 
+        hist  = do1dTcoorHisto('y',sDict, mt, hname, xaxis, particleTypes) 
+
+    elif hname.startswith("Zcoor"):
+        binwidth = (xmax-xmin)/nbins
+        xaxis = [xmin+i*binwidth for i in range(nbins+1)]
+        hist  = do1dZcoorHisto(sDict, mt, hname, xaxis, particleTypes) 
+
+    elif hname.startswith("OrigXY"):
+        binwidth = (xmax-xmin)/nbins
+        xaxis = [xmin+i*binwidth for i in range(nbins+1)]
+        hist  = doOrigXYHisto(sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes)
+
+    elif hname.startswith("OrigXZ"):
+        binwidth = (xmax-xmin)/nbins
+        xaxis = [xmin+i*binwidth for i in range(nbins+1)]
+        hist  = doOrigXZHisto(sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes)
+
+    elif hname.startswith("OrigYZ"):
+        binwidth = (xmax-xmin)/nbins
+        xaxis = [xmin+i*binwidth for i in range(nbins+1)]
+        hist  = doOrigYZHisto(sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes)
+
+    elif hname.startswith("ProfOrigXZ"):
+        binwidth = (xmax-xmin)/nbins
+        xaxis = [xmin+i*binwidth for i in range(nbins+1)]
+        var = 'x_interact:z_interact'
+        hist  = doProfOrigHisto(var, sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes)
+
+    elif hname.startswith("ProfOrigYZ"):
+        binwidth = (xmax-xmin)/nbins
+        xaxis = [xmin+i*binwidth for i in range(nbins+1)]
+        var = 'y_interact:z_interact'
+        hist  = doProfOrigHisto(var, sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes)
 
     elif hname.startswith("XYN"):        
         var = 'y:x'
@@ -397,14 +551,14 @@ def getHistogram(sDict, skey, mt):
 
     return hist
 # ---------------------------------------------------------------------------------
-def resultFile(bbgFile):
+def resultFile(bbgFile,rel):
     k=bbgFile
-    n='/'.join(k.split('/')[:-1]) + '/results_' + k.split('/')[-1]
+    n='/'.join(k.split('/')[:-1]) + '/results_' + rel + k.split('/')[-1]
     return  n
 # ---------------------------------------------------------------------------------
 # main local function
 # ---------------------------------------------------------------------------------
-def fillHistos(bbgFile, tag):
+def fillHistos(bbgFile, tag, doComp):
     
     # bbgFile is the rootfile with the TTree, use this to fill histograms
     # write out a rootfile with histograms
@@ -415,14 +569,21 @@ def fillHistos(bbgFile, tag):
     rf = TFile.Open(bbgFile)
     tBBG = rf.Get(treeName)
 
-    yrel = '/TCT hit'
-    sDict = generate_sDict(tag, norm, tBBG, yrel)
+    yrel = '/primary'
+
+    if doComp:
+        # for comparisons plots, also edit rel
+        sDict = sDict_HL_hybridComp
+        rel = 'hybridComp_'
+    else:
+        sDict = generate_sDict(tag, norm, tBBG, yrel)
+        rel = ''
 
     # histograms which should be written one to rootfile
     rHists = []
 
     # rootfile with results
-    rfoutname = resultFile(bbgFile)
+    rfoutname = resultFile(bbgFile,rel)
 
     print 'writing ','.'*20, rfoutname
     rfile = TFile.Open(rfoutname, "RECREATE")
@@ -442,7 +603,7 @@ def fillHistos(bbgFile, tag):
        rHists += [skey]
 
        norm   = sDict[skey][1]
-       if norm != 1.: print 'normalising by ', norm
+       if norm != 1.: print 'scaling by ', 1./norm
        hists[-1].Scale(1./norm)
 
        hcolor = sDict[skey][7]
@@ -452,6 +613,9 @@ def fillHistos(bbgFile, tag):
        if not i: 
            if   type(hists[-1]) == TH1F: hists[-1].Draw("HIST")
            elif type(hists[-1]) == TH2F: hists[-1].Draw("COLZ")
+           elif type(hists[-1]) == TProfile: 
+               hists[-1].SetMarkerColor(hcolor)
+               hists[-1].Draw("P")
        else:
            if   type(hists[-1]) == TH1F: hists[-1].Draw("HISTSAME")
 
