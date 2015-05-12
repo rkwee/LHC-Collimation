@@ -117,7 +117,7 @@ This will produce the following output files:
 \item \texttt{sigmasettings.out}
 \item \texttt{survival.dat} In two colums of this file, it is counted down how many halo particles actually continue tracking even though they have hit a collimator or are lost somewhere else. It indicates how many particles are left after a certain number of turns.
 
-\item \texttt{tracks2.dat} This is usually a massive file with information of all halo particles per turn. There are \texttt{\# 1=name 2=turn 3=s 4=x 5=xp 6=y 7=yp 8=DE/E 9=type} with no.~1 being the particle ID.
+\item \texttt{tracks2.dat} This is usually a massive file (see also Section~\ref{hdf5}) with information of all halo particles per turn. There are \texttt{\# 1=name 2=turn 3=s 4=x 5=xp 6=y 7=yp 8=DE/E 9=type} with no.~1 being the particle ID.
 \item \texttt{twisslike.out}
 \end{enumerate}
 
@@ -142,11 +142,17 @@ This will produce the following output files:
 In \texttt{fort.3} one can configure a pencil beam distribution (instead of simulating a halo one uses only the particles that would be directly lost on the collimator on the first turn.) See also Roderiks {\href{https://indico.cern.ch/event/276974/}{talk}. The parameters to be adjusted are 
 
 \begin{itemize}
-\item the line which is usually used for horizontal halo definition: use opening of the specific collimator in units of $\sigma$ instead halo radius parameter, and impact parameter (10~$\mu$m) b and beam size in collimation plane $\sigma_{x,y}$ in b/$\sigma_{x,y}$ instead halo smear parameter.
-\item the line before the the CollDB file is read: first number is \texttt{collid} and last is $3$ to activate new pencil beam distribution.
+\item the line which is usually used for horizontal halo definition: use opening of the specific collimator in units of $\sigma$ instead halo radius parameter, and impact parameter (10~$\mu$m) b and beam size in collimation plane $\sigma_{x,y}$ in b/$\sigma_{x,y}$ instead halo smear parameter. This parameter is used to multiply the random number sampled for the single-particle emittance.
+
+\item the line before the the CollDB file is read: first number is \texttt{collid} and last is $3$ to activate new pencil beam distribution. 
+
 \end{itemize}
 
 To check if the pencil beam was used all hits should be lost on the first turn on the correct collimator (number of entries in \texttt{FirstImpacts.dat} must equal the number of lost particles in \texttt{coll\_summary.dat} on the specified collimator.
+
+\subsection{Binary format in SixTrack -- using HDF5\label{hdf5}}
+
+In order to avoid job failures due to pool space availability on lxbatch, one can use binary (HDF5) instead of ascii format for the massive file \texttt{tracks2.dat}. A file, \texttt{tracks2.h5} will be written out that can be used by a modified BeamLossPattern. Other post-processing steps remain unchanged. A detailed {\href{https://twiki.cern.ch/twiki/bin/viewauth/LHCAtHome/SixTrackBuildHDF5}{twiki}} has been setup with the necessary build instructions. 
 
 \section{Post-processing}
 
@@ -212,4 +218,16 @@ The \textbf{output} files are:
 \subsection{Correction of the collimation summary}
 
 In the last step, \texttt{impacts\_fake.dat} is used to update the output \texttt{coll\_summary.dat} from lost particles. A dedicated script, \texttt{correct\_coll\_summary.sh} does it for you.
+
+
+\section{git repository}
+A public git repository has been created with the aim to collect all configuration files, analysis scripts, modified post-processing code and SixTrack documentation at one place:
+ {\href{https://github.com/rkwee/LHC-Collimation}{\texttt{https://github.com/rkwee/LHC-Collimation}}}.
+
+
+
+
+
+
+
 \end{document}  
