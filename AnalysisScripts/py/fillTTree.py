@@ -312,11 +312,19 @@ def doOrigXYHisto(sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, parti
     # store sum of squares of weights 
     hist.Sumw2()
 
-    # cut - not used
-    rcut = sDict[hname][8]
+    # cut on energy
+    ecuts = sDict[hname][8]
+    if not ecuts.split(':')[0].count('-9999'):
+        if len(ecuts.split(':')) > 1:
+            emin = ecuts.split(':')[0]
+            emax = ecuts.split(':')[1]
+            cuts += [emax + ' > energy_ke && ' + emin + ' < energy_ke']
+        else:
+            cuts += ['energy_ke > ' + ecuts.split(':')[0]]
+    else:
+        cuts += [encut]
 
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
-    cuts += [encut]
 
     var = 'y_interact:x_interact'
 
@@ -342,10 +350,18 @@ def doOrigXZHisto(sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, parti
     # store sum of squares of weights 
     hist.Sumw2()
 
-    # cut - not used
-    rcut = sDict[hname][8]
+    # cut on energy
+    ecuts = sDict[hname][8]
+    if not ecuts.split(':')[0].count('-9999'):
+        if len(ecuts.split(':')) > 1:
+            emin = ecuts.split(':')[0]
+            emax = ecuts.split(':')[1]
+            cuts += [emax + ' > energy_ke && ' + emin + ' < energy_ke']
+        else:
+            cuts += ['energy_ke > ' + ecuts.split(':')[0]]
+    else:
+        cuts += [encut]
 
-    cuts += [encut]
 
     var = 'x_interact:z_interact'
 
@@ -371,10 +387,17 @@ def doProfOrigHisto(var,sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax,
     # store sum of squares of weights 
     hist.Sumw2()
 
-    # cut - not used
-    rcut = sDict[hname][8]
-
-    cuts += [encut]
+    # cut on energy
+    ecuts = sDict[hname][8]
+    if not ecuts.split(':')[0].count('-9999'):
+        if len(ecuts.split(':')) > 1:
+            emin = ecuts.split(':')[0]
+            emax = ecuts.split(':')[1]
+            cuts += [emax + ' > energy_ke && ' + emin + ' < energy_ke']
+        else:
+            cuts += ['energy_ke > ' + ecuts.split(':')[0]]
+    else:
+        cuts += [encut]
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
@@ -398,10 +421,17 @@ def doOrigYZHisto(sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, parti
     # store sum of squares of weights 
     hist.Sumw2()
 
-    # cut - not used
-    rcut = sDict[hname][8]
-
-    cuts += [encut]
+    # cut on energy
+    ecuts = sDict[hname][8]
+    if not ecuts.split(':')[0].count('-9999'):
+        if len(ecuts.split(':')) > 1:
+            emin = ecuts.split(':')[0]
+            emax = ecuts.split(':')[1]
+            cuts += [emax + ' > energy_ke && ' + emin + ' < energy_ke']
+        else:
+            cuts += ['energy_ke > ' + ecuts.split(':')[0]]
+    else:
+        cuts += [encut]
 
     var = 'y_interact:z_interact'
 
