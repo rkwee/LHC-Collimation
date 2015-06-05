@@ -31,8 +31,6 @@ fApp = [
     ('FirstImpacts.dat',1),
     ('LPI_BLP_out.s',   0),    
     ('impacts_real.dat',0),
-    #('impacts_all_fake.dat',0),
-    #('impacts_all_real.dat',0),
     ]
 
 # specified to work only with this file!
@@ -105,9 +103,9 @@ def findGoodFiles(targetfile,rundir):
 
         if not os.path.exists(thisfile) and not os.path.exists(thisfile + '.gz'): continue
 
-        if os.path.exists(thisfile):
+        if os.path.exists(thisfile) and thisfile.count('run'):
             resFiles += [thisfile]
-        elif os.path.exists(thisfile + '.gz'):
+        elif os.path.exists(thisfile + '.gz') and thisfile.count('run'):
             resFiles += [thisfile+'.gz']
 
         if debug:
@@ -230,9 +228,6 @@ def doAddup(fAdd,rundir):
         for rFile in resFiles:
 
             cnt += 1
-
-            if debug:
-                print("opening file # " + str(cnt) + ": " + rFile)
             
             if cnt == 1:
                 # create dict while reading first file
@@ -241,11 +236,14 @@ def doAddup(fAdd,rundir):
             # - if not gzipped
             if not rFile.endswith('.gz'):
 
+                if debug:
+                    print("opening file # " + str(cnt) + ": " + rFile)
+                
                 with open(rFile) as rf:
 
                     for line in rf:
 
-                        if cnt < 1 and line.count("#"):
+                        if cnt == 1 and line.count("#"):
                             fileout.write(line)
 
                         if not line.count('#'):
@@ -260,6 +258,7 @@ def doAddup(fAdd,rundir):
 
                             # single line     # 0        1     2      3      4        5
                             sline = [ icoll, [collname, nimp, nabs, imp_av, imp_sig, length] ]
+                            if debug: print sline
 
                             if cnt == 1:
                                 allLines += [sline]
@@ -319,10 +318,14 @@ def doAddup(fAdd,rundir):
         # ----------
 
         print('saving data in dictionary done')
-        # use sorted keys
-        cKeys = [str(i) for i in range(73)]
+        # print sorted by icoll
+        ckeys = cDict.keys()
+        cKeys = [int(i) for i in ckeys]
+        cKeys.sort()
+        cK    = [ str(i) for i in cKeys ]
+        if debug: print cK
 
-        for k in cKeys:
+        for k in cK:
 
             try:
 
