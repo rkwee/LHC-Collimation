@@ -10,21 +10,23 @@ from helpers import *
 def cv02():
     print 'run cv02 : plotting betafunctions'
 
-    debug = False
-    path = "/tmp/rkwee/HL_TCT_hHaloB1/run_00000/"
-    text = 'b1'
-    pname  = wwwpath + 'TCT/'
+    debug = 0
+    path = workpath + "runs/6.5TeV_hHaloB2_h5/test/"
+    path = workpath + "runs/H5_NewScatt_TCT_4TeV_B1vHalo/run_00000/"
+    beam = 'B2'
+    pname  = wwwpath + 'TCT/4TeV/'
+    #pname  = './'
 
     # 1=ielem 2=name 3=s 4=TBETAX 5=TBETAY
     f1    = path + 'betafunctions.dat'
 
     # around Q8
-    XurMin, XurMax, YurMin, YurMax, = 19500., 20500., 0., 500.
+    # XurMin, XurMax, YurMin, YurMax, = 19500., 20500., 0., 500.
 
-    #XurMin, XurMax = 9000., 19000., -1, -1
-    #  XurMin, XurMax,  YurMin, YurMax = 0., length_LHC, -1, -1
+    XurMin, XurMax = 9000., 19000.#, -1, -1
+    XurMin, XurMax,  YurMin, YurMax = 0., length_LHC, -1, -1
   
-    rel = '_00_' + text
+    rel = '_' + path.split('/')[-3]
 
     xarray, bxarray, byarray = [],[],[]
 
@@ -39,10 +41,12 @@ def cv02():
             if debug:
                 print line
 
-            scoor = float(line.split()[-3])
-            betaX = float(line.split()[-2])
-            betaY = float(line.split()[-1])
+            scoor = float(line.split()[2])
+            betaX = float(line.split()[3])
+            betaY = float(line.split()[4])
 
+            #betaX = 2
+            #betaY = 1
             xarray  += [scoor]
             bxarray += [betaX]
             byarray += [betaY]
@@ -98,7 +102,7 @@ def cv02():
     thelegend.Draw()
 
     lab = mylabel(70)
-    lab.DrawLatex(x1, y1-0.1, text)
+    lab.DrawLatex(x1, y1-0.1, beam)
     
     pname += 'betafunction'+rel+'.png'
     print("printing " + pname)
