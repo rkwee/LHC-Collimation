@@ -47,13 +47,13 @@ def cv39():
 
     S_shifted.sort()
     XurMin, XurMax = length_LHC-300, length_LHC
-    rel = '_IR1Left'
+    rel = '_sigma_IR1Left'
     XurMin, XurMax = 0,300
-    rel = '_IR1Right'
-    XurMin, XurMax = IP5-300, IP5+300
-    rel = '_IP5'
-    XurMin, XurMax = IP8-300, IP8+300
-    rel = '_IP8'
+    rel = '_sigma_IR1Right'
+    # XurMin, XurMax = IP5-300, IP5+300
+    # rel = '_IP5'
+    # XurMin, XurMax = IP8-300, IP8+300
+    # rel = '_IP8'
 
     cv = TCanvas( 'cv', 'cv', 2100, 900)
 
@@ -70,26 +70,36 @@ def cv39():
     # marker in legend
     lm = 'lp'
 
-    xList, yList, color, mStyle, lg = S_shifted, X, kGreen-1, 22, 'x'
-    g0 = makeTGraph(xList, yList, color, mStyle)
+    emittance_norm = 3.75e-6
+    gamma_rel = 6.5e3/0.938
+    emittance_geo = emittance_norm/gamma_rel
 
+    SIGX = [math.sqrt(betax * emittance_geo) for betax in BETX]
+    SIGY = [math.sqrt(betay * emittance_geo) for betay in BETY]
+
+    xList, yList, color, mStyle, lg = S_shifted, SIGX, kGreen-1, 22, '#sigma_{x}'
+    g0 = makeTGraph(xList, yList, color, mStyle)
     mlegend.AddEntry(g0, lg, lm)    
     mg.Add(g0)
-
-    xList, yList, color, mStyle, lg = S_shifted, PX, kGreen+1, 21, "x'"
+    xList, yList, color, mStyle, lg = S_shifted, SIGY, kGreen-2, 20, '#sigma_{y}'
     g1 = makeTGraph(xList, yList, color, mStyle)
-    mlegend.AddEntry(g1, lg, lm) 
+    mlegend.AddEntry(g1, lg, lm)    
     mg.Add(g1)
 
-    xList, yList, color, mStyle, lg = S_shifted, Y, kBlue-1, 20, "y"
-    g2 = makeTGraph(xList, yList, color, mStyle)
-    mlegend.AddEntry(g2, lg, lm) 
-    mg.Add(g2)
+    # xList, yList, color, mStyle, lg = S_shifted, PX, kGreen+1, 21, "x'"
+    # g1 = makeTGraph(xList, yList, color, mStyle)
+    # mlegend.AddEntry(g1, lg, lm) 
+    # mg.Add(g1)
 
-    xList, yList, color, mStyle, lg = S_shifted, PY, kBlue+1, 27, "y'"
-    g3 = makeTGraph(xList, yList, color, mStyle)
-    mlegend.AddEntry(g3, lg, lm) 
-    mg.Add(g3)
+    # xList, yList, color, mStyle, lg = S_shifted, Y, kBlue-1, 20, "y"
+    # g2 = makeTGraph(xList, yList, color, mStyle)
+    # mlegend.AddEntry(g2, lg, lm) 
+    # mg.Add(g2)
+
+    # xList, yList, color, mStyle, lg = S_shifted, PY, kBlue+1, 27, "y'"
+    # g3 = makeTGraph(xList, yList, color, mStyle)
+    # mlegend.AddEntry(g3, lg, lm) 
+    # mg.Add(g3)
 
     mg.Draw("a"+lm)
     mg.GetXaxis().SetTitle('s [m]')

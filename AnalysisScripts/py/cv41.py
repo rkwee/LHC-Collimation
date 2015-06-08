@@ -32,9 +32,12 @@ def cv41():
     gauss2 = TF1('gauss2', 'exp(-0.5*(x**2))', -5.,5.)
     gauss3 = TF1('gauss3', 'exp(-0.5*(x**2))', -5.,5.)
     gauss4 = TF1('gauss4', 'exp(-0.5*(x**2))', -5.,5.)
+    gauss5 = TF1('gauss5', 'exp(-0.5*(x**2))', -5.,5.)
+    gauss6 = TF1('gauss6', 'exp(-0.5*(x**2))', -5.,5.)
 
     h1 = TH2F("f1","f1",100,-1e-2,1e-2,100,-1e-3,1e-3)
     h2 = TH2F("f2","f2",100,-1e-2,1e-2,100,-1e-3,1e-3)
+    h3 = TH2F("f3","f3",100,-1e-2,1e-2,100,-1e-2,1e-2)
 
     for i in range(len(X)):
         big_x  = gauss1.GetRandom()
@@ -49,8 +52,13 @@ def cv41():
         small_y  = math.sqrt(BETY[i]*emittance_geo) * big_yp - emittance_geo * ALFY[i] * big_y
         h2.Fill(small_y,small_yp)
 
-    cv = TCanvas( 'cv', 'cv', 2*900, 900)
-    cv.Divide(2,1)
+        sigmaX = math.sqrt(emittance_geo * BETX[i])
+        sigmaY = math.sqrt(emittance_geo * BETY[i])
+        h3.Fill(sigmaX, sigmaY)
+
+    a,b = 3,1
+    cv = TCanvas( 'cv', 'cv', a*600, b*600)
+    cv.Divide(a,b)
     cv.SetRightMargin(0.3)
     cv.SetLeftMargin(0.2)
     cv.SetTopMargin(0.15)
@@ -66,11 +74,20 @@ def cv41():
     h2.GetZaxis().SetLabelSize(0.03)
     h2.GetXaxis().SetTitle(xtitle)
     h2.GetYaxis().SetTitle(ytitle)
+    xtitle, ytitle = '#sigma_{x}', "#sigma_{y}"
+    h3.GetXaxis().SetLabelSize(0.02)
+    h3.GetYaxis().SetLabelSize(0.03)
+    h3.GetZaxis().SetLabelSize(0.03)
+    h3.GetXaxis().SetTitle(xtitle)
+    h3.GetYaxis().SetTitle(ytitle)
+
 
     cv.cd(1)
     h1.Draw('colz')
     cv.cd(2)
     h2.Draw('colz')
+    cv.cd(3)
+    h3.Draw('colz')
 
     rel = 'gauss'
     pname  = wwwpath
