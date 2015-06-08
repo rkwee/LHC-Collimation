@@ -6,7 +6,7 @@ import pymadx
 ## -------------------------------------------------------------------------------
 import ROOT, sys, os, time, math
 from ROOT import *
-import lossmap, helpers, array
+import lossmap, helpers, array, random
 from helpers import wwwpath, length_LHC, mylabel, gitpath, makeTGraph
 from array import array
 # -----------------------------------------------------------------------------------
@@ -15,15 +15,11 @@ def cv41():
     # twiss file
     tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/twiss_lhcb1_med_new_thin_800.tfs')
 
-    BETX = tf.GetColumn('BETX')
-    BETY = tf.GetColumn('BETY')
-    ALFX = tf.GetColumn('ALFX')
-    ALFY = tf.GetColumn('ALFY')
-    X    = tf.GetColumn('X')
-    Y    = tf.GetColumn('Y')
-    PX   = tf.GetColumn('PX')
-    PY   = tf.GetColumn('PY')
-    S    = tf.GetColumn('S')
+    # locations of sampling the beam-size
+    pointsName = ['TCTH.4L1.B1', 'TCTVA.4L1.B1']
+
+    # number of randomly produced values per s location
+    N = 1000
 
     emittance_norm = 3.75e-6
     gamma_rel = 6.5e3/0.938
@@ -35,68 +31,135 @@ def cv41():
     gauss5 = TF1('gauss5', 'exp(-0.5*(x**2))', -5.,5.)
     gauss6 = TF1('gauss6', 'exp(-0.5*(x**2))', -5.,5.)
 
-    h1 = TH2F("f1","f1",100,-1e-2,1e-2,100,-1e-3,1e-3)
-    h2 = TH2F("f2","f2",100,-1e-2,1e-2,100,-1e-3,1e-3)
-    h3 = TH2F("f3","f3",100,-1e-2,1e-2,100,-1e-2,1e-2)
+    h1 = TH2F("f1","f1",200,-0.004,0.004,200,-0.1e-4,0.1e-4)
+    h2 = TH2F("f2","f2",200,-0.2e-2,0.2e-2,200,-3.e-5,3.e-5)
 
-    for i in range(len(X)):
-        big_x  = gauss1.GetRandom()
-        big_xp = gauss2.GetRandom()
-        small_xp = math.sqrt(emittance_geo/BETX[i]) * (big_xp - ALFX[i]*big_x)
-        small_x  = math.sqrt(BETX[i]*emittance_geo) * big_xp - emittance_geo * ALFX[i] * big_x
-        h1.Fill(small_x,small_xp)
+    c1 = TGraph()
+    c1.Set(N)
+    c2 = TGraph()
+    c2.Set(N)
+    c3 = TGraph()
+    c3.Set(N)
+    c_y1 = TGraph()
+    c_y1.Set(N)
+    c_y2 = TGraph()
+    c_y2.Set(N)
+    c_y3 = TGraph()
+    c_y3.Set(N)
+    for name in pointsName:
 
-        big_y  = gauss3.GetRandom()
-        big_yp = gauss4.GetRandom()
-        small_yp = math.sqrt(emittance_geo/BETY[i]) * (big_yp - ALFY[i]*big_y)
-        small_y  = math.sqrt(BETY[i]*emittance_geo) * big_yp - emittance_geo * ALFY[i] * big_y
-        h2.Fill(small_y,small_yp)
+        for i in range(N):
 
-        sigmaX = math.sqrt(emittance_geo * BETX[i])
-        sigmaY = math.sqrt(emittance_geo * BETY[i])
-        h3.Fill(sigmaX, sigmaY)
+            row = tf.GetRowDict(name)
+            betx = row['BETX']
+            alfx = row['ALFX']
+            bety = row['BETY']
+            alfy = row['ALFY']
 
-    a,b = 3,1
-    cv = TCanvas( 'cv', 'cv', a*600, b*600)
-    cv.Divide(a,b)
-    cv.SetRightMargin(0.3)
-    cv.SetLeftMargin(0.2)
-    cv.SetTopMargin(0.15)
-    xtitle, ytitle = 'x [m]', "x' [rad]"
-    h1.GetXaxis().SetLabelSize(0.02)
-    h1.GetYaxis().SetLabelSize(0.03)
-    h1.GetZaxis().SetLabelSize(0.03)
-    h1.GetXaxis().SetTitle(xtitle)
-    h1.GetYaxis().SetTitle(ytitle)
-    xtitle, ytitle = 'y [m]', "y' [rad]"
-    h2.GetXaxis().SetLabelSize(0.02)
-    h2.GetYaxis().SetLabelSize(0.03)
-    h2.GetZaxis().SetLabelSize(0.03)
-    h2.GetXaxis().SetTitle(xtitle)
-    h2.GetYaxis().SetTitle(ytitle)
-    xtitle, ytitle = '#sigma_{x}', "#sigma_{y}"
-    h3.GetXaxis().SetLabelSize(0.02)
-    h3.GetYaxis().SetLabelSize(0.03)
-    h3.GetZaxis().SetLabelSize(0.03)
-    h3.GetXaxis().SetTitle(xtitle)
-    h3.GetYaxis().SetTitle(ytitle)
+            sigx = math.sqrt(emittance_geo * betx)
+            sigy = math.sqrt(emittance_geo * bety)
+            big_x  = gauss1.GetRandom()
+            big_xp = gauss2.GetRandom()
+            small_xp = math.sqrt(emittance_geo/betx) * (big_xp - alfx*big_x)
+            small_x  = big_x*sigx 
+            h1.Fill(small_x,small_xp)
+
+            phi = 2*random.random()*math.pi
+            big_x  = math.cos(phi)
+            big_xp = math.sin(phi)
+            small_xp = math.sqrt(emittance_geo/betx) * (big_xp - alfx*big_x)
+            small_x  = big_x*sigx 
+            c1.SetPoint(i+1,small_x,small_xp)
+
+            big_x  = 2*math.cos(phi)
+            big_xp = 2*math.sin(phi)
+            small_xp = math.sqrt(emittance_geo/betx) * (big_xp - alfx*big_x)
+            small_x  = big_x*sigx 
+            c2.SetPoint(i+1,small_x,small_xp)
+
+            big_x  = 3*math.cos(phi)
+            big_xp = 3*math.sin(phi)
+            small_xp = math.sqrt(emittance_geo/betx) * (big_xp - alfx*big_x)
+            small_x  = big_x*sigx 
+            c3.SetPoint(i+1,small_x,small_xp)
+
+            big_y  = gauss3.GetRandom()
+            big_yp = gauss4.GetRandom()
+            small_yp = math.sqrt(emittance_geo/bety) * (big_yp - alfy*big_y)
+            small_y  = math.sqrt(bety*emittance_geo) * big_y
+            h2.Fill(small_y,small_yp)
+
+            phi = 2*random.random()*math.pi
+            big_y  = math.cos(phi)
+            big_yp = math.sin(phi)
+            small_yp = math.sqrt(emittance_geo/bety) * (big_yp - alfy*big_y)
+            small_y  = big_y*sigy 
+            c_y1.SetPoint(i+1,small_y,small_yp)
+
+            big_y  = 2*math.cos(phi)
+            big_yp = 2*math.sin(phi)
+            small_yp = math.sqrt(emittance_geo/bety) * (big_yp - alfy*big_y)
+            small_y  = big_y*sigy
+            c_y2.SetPoint(i+1,small_y,small_yp)
+
+            big_y  = 3*math.cos(phi)
+            big_yp = 3*math.sin(phi)
+            small_yp = math.sqrt(emittance_geo/bety) * (big_yp - alfy*big_y)
+            small_y  = big_y*sigy 
+            c_y3.SetPoint(i+1,small_y,small_yp)
 
 
-    cv.cd(1)
-    h1.Draw('colz')
-    cv.cd(2)
-    h2.Draw('colz')
-    cv.cd(3)
-    h3.Draw('colz')
+        a,b = 2,1
+        cv = TCanvas( 'cv'+name, 'cv' + name, a*600, b*600)
+        cv.Divide(a,b)
+        cv.SetRightMargin(0.3)
+        cv.SetLeftMargin(0.2)
+        cv.SetTopMargin(0.15)
+        xtitle, ytitle = 'x [m]', "x' [rad]"
+        h1.GetXaxis().SetLabelSize(0.02)
+        h1.GetYaxis().SetLabelSize(0.03)
+        h1.GetZaxis().SetLabelSize(0.03)
+        h1.GetXaxis().SetTitle(xtitle)
+        h1.GetYaxis().SetTitle(ytitle)
+        c1.SetMarkerSize(0.3)
+        c1.SetMarkerColor(kRed+2)
+        c2.SetMarkerSize(0.4)
+        c2.SetMarkerColor(kRed)
+        c3.SetMarkerSize(0.4)
+        c3.SetMarkerColor(kRed-7)
+        xtitle, ytitle = 'y [m]', "y' [rad]"
+        h2.GetXaxis().SetLabelSize(0.02)
+        h2.GetYaxis().SetLabelSize(0.03)
+        h2.GetZaxis().SetLabelSize(0.03)
+        h2.GetXaxis().SetTitle(xtitle)
+        h2.GetYaxis().SetTitle(ytitle)
+        c_y1.SetMarkerSize(0.3)
+        c_y1.SetMarkerColor(kGreen+2)
+        c_y2.SetMarkerSize(0.4)
+        c_y2.SetMarkerColor(kGreen+1)
+        c_y3.SetMarkerSize(0.4)
+        c_y3.SetMarkerColor(kGreen-10)
+        xtitle, ytitle = '#sigma_{x}', "#sigma_{y}"
 
-    rel = 'gauss'
-    pname  = wwwpath
-    subfolder = 'TCT/6.5TeV/beamgas/'
-    pname += subfolder + 'twiss_b1'+rel+'.png'
+        cv.cd(1)
+        h1.Draw('colz')
+        c1.Draw("SAMEP")
+        c2.Draw("SAMEP")
+        c3.Draw("SAMEP")
+        cv.cd(2)
+        h2.Draw('colz')
+        c_y1.Draw("SAMEP")
+        c_y2.Draw("SAMEP")
+        c_y3.Draw("SAMEP")
 
-    print('Saving file as ' + pname ) 
-    cv.SaveAs(pname)
+        rel = 'gauss_' + name
+        pname  = wwwpath
+        subfolder = 'TCT/6.5TeV/beamgas/'
+        pname += subfolder + 'twiss_b1'+rel+'.png'
 
+        print('Saving file as ' + pname ) 
+        cv.SaveAs(pname)
+        
 # ----------------------------------------------------------------------------
 
 
