@@ -17,7 +17,7 @@ parser.add_option("-f", "--file", dest="filename", type="string",
 
 
 (options, args) = parser.parse_args()
-fname = options.filename
+#fname = options.filename
 path  = '/afs/cern.ch/user/r/rkwee/public/www/RR/bg/'
 dpath = '/afs/cern.ch/user/r/rkwee/scratch0/RR/bg/'
 dpath = '/home/rkwee/RR/RR/bg/'
@@ -56,7 +56,15 @@ fillsI[3] = [
 
 fills    = fillsI[0] + fillsI[1] + fillsI[2] + fillsI[3]
 LHCfills = [dpath + 'TIMBER_DATA_VGPB_VGI_fill'+str(f)+'_stable.csv' for f in fills]
-fills = [3835]
+fills = [
+3819,
+3820,
+3824,
+3829,
+3833,
+3835,
+3846,
+]
 
 vDict    = {  ##position of vacuum pipe 0, YurMin 1, YurMax 2, beamcolor 3, averaged gas density per block [b1, ..., bN] 4, maximum gas density per block
 
@@ -94,10 +102,10 @@ vDict    = {  ##position of vacuum pipe 0, YurMin 1, YurMax 2, beamcolor 3, lTex
 
 'VGI.220.1L1.X.PR' : ['at -22 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
 'VGPB.220.1L1.X.PR' : ['at -22 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
-'VGI.188.1R1.X.PR' : ['at -18.8 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
-'VGPB.188.1R1.X.PR' : ['at -18.8 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
-'VGI.188.1L1.X.PR' : ['at 18.8 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
-'VGPB.188.1L1.X.PR' : ['at 18.8 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
+'VGI.188.1R1.X.PR' : ['at 18.8 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
+'VGPB.188.1R1.X.PR' : ['at 18.8 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
+'VGI.188.1L1.X.PR' : ['at -18.8 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
+'VGPB.188.1L1.X.PR' : ['at -18.8 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
 'VGI.220.1R1.X.PR' : ['at 22 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
 'VGPB.220.1R1.X.PR' : ['at 22 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
 'VGPB.222.1R1.X.PR' : ['at 22.18 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
@@ -135,9 +143,12 @@ def stringDateToTimeStamp(sDateTime):
 
 ## -----------------------------------------------------------------------------------
 
-def compN(fname, doHistos, doGraphs):
+def makeRootFile(fname, doHistos, doGraphs):
     kB = 1.3806503e-23 # J/K
     T  = 293        # K
+
+    # shift UTC to local time (adding two hours)
+    shift = 432000
 
     #  collect data in list (actually in tDict)
     tDict = {}
@@ -166,8 +177,8 @@ def compN(fname, doHistos, doGraphs):
                 # UTC date time, human readable
                 dt = line.split(',')[0].split('.')[0]
 
-                # UTC timestamp in seconds
-                ts = stringDateToTimeStamp(dt)
+                # UTC timestamp in seconds, add shift to convert to local cern time
+                ts = stringDateToTimeStamp(dt) 
 
                 # pressure in mbar
                 pr = float(line.split(',')[-1])
@@ -184,7 +195,7 @@ def compN(fname, doHistos, doGraphs):
                 dt = line.split(',')[0].split('.')[0]
 
                 # UTC timestamp in seconds
-                ts = stringDateToTimeStamp(dt)
+                ts = stringDateToTimeStamp(dt) 
 
                 # beam intensity
                 bi = float(line.split(',')[-1])
@@ -199,9 +210,18 @@ def compN(fname, doHistos, doGraphs):
     keys = tDict.keys()
 
     print 'have data from ',len(keys),' detectors'
+
+    foutname = 'bg_' + str(fill) + '.root'
+    rfile = TFile.Open(foutname, "RECREATE")
+    print 'writing............', foutname
                
     for k in keys:
+        nval = len(tDict[k])
         print 'detector',k, 'has', len(tDict[k]), 'entries'
+
+        if not nval:
+            print 'skipping detector ', k
+            continue
 
         xarray, labels, yarray = [],[],[]
 
@@ -212,13 +232,13 @@ def compN(fname, doHistos, doGraphs):
             yarray += [y] #Scale here!
             labels += [l]
 
-
         if key in vDict.keys():
             if doHistos:   ob = doHisto(k, xarray, yarray)
             elif doGraphs: ob = doGraph(k, xarray, yarray)
-        if doSave:
+
             ob.Write()    
         
+    rfile.Close()
 
 ## -----------------------------------------------------------------------------------
 
@@ -276,75 +296,65 @@ def doHisto( k, xarray, yarray):
     return hist
 
 ## -----------------------------------------------------------------------------------
-def makeRootFile(doHistos, doGraphs):
 
-    if doSave:
-
-        rfile = TFile.Open(foutname +'.root', "RECREATE")
-
-        print 'reading file', fname
-        compN(fname, doHistos, doGraphs)
-
-    if doSave:
-        rfile.Close()
-        print 'wrote file '+ foutname + '.root'
-
-
-## -----------------------------------------------------------------------------------
-
-def makeSeparatePlot():
+def makeSeparatePlot(f):
     # ------------------------------------------------------------ 
     #     
     #  correlates beam intensity with pressure/beamgas density    
     #
     # ------------------------------------------------------------
 
-    fname = foutname + '.root'
-    print 'opening ......', fname
-    rfile = TFile.Open(fname)
     vkeys = vDict.keys()
     vkeys.sort()
-    for f in fills:
+    fill = str(f)
 
-        gr = []
-        cnt = 0
+    foutname = 'bg_' + str(f) + '.root'
+    print 'opening ......', foutname
+    rfile = TFile.Open(foutname)
+    gr = []
+    cnt = 0
+    print rfile
+    a,b  = 1, len(vDict)
+    cv = TCanvas( 'cv' + str(f), 'cv' + str(f), 10, 10, a*800, b*300 )
+    cv.Divide(a,b)
 
-        a,b  = 1, len(vDict)
-        cv = TCanvas( 'cv', 'cv', 10, 10, a*800, b*300 )
-        cv.Divide(a,b)
+    thelegend = TLegend(0.6,0.82,0.92,0.92)
+    thelegend.SetFillColor(ROOT.kWhite)
+    thelegend.SetShadowColor(ROOT.kWhite)
+    thelegend.SetLineColor(ROOT.kWhite)
+    thelegend.SetLineStyle(0)
+    thelegend.SetTextSize(0.04)        
 
-        thelegend = TLegend(0.6,0.82,0.92,0.92)
-        thelegend.SetFillColor(ROOT.kWhite)
-        thelegend.SetShadowColor(ROOT.kWhite)
-        thelegend.SetLineColor(ROOT.kWhite)
-        thelegend.SetLineStyle(0)
-        thelegend.SetTextSize(0.04)        
+    for k in vkeys:
+        cnt += 1
+        # -- plot with vacuum values
+        kname    = getkname(k)
+        thisgr = rfile.Get(kname)
+        if not thisgr:
+            print 'skipping graph for', k
+            continue
 
-        fill = str(f) 
+        gr      += [thisgr  ]
 
-        for k in vkeys:
-            cnt += 1
-            # -- plot with vacuum values
-            kname    = getkname(k)
-            gr      += [ rfile.Get(kname) ]
-            print 'retrieved......', kname, gr[-1]
-            
-            position = vDict[k][0]
-            ytitle = vDict[k][5]
+        print 'retrieved......', kname, gr[-1]
 
-            cv.cd(cnt)            
-            gr[-1].SetLineColor(vDict[k][3])
-            gr[-1].GetYaxis().SetTitleOffset(0.8)
-            gr[-1].SetMarkerSize(0.3)
-            gr[-1].GetXaxis().SetTimeFormat("%d.%m. %Hh")
-            gr[-1].GetYaxis().SetTitle(ytitle)
-            lText = k + ' ' + vDict[k][4] + position
-            X1, Y1 = 0.34, 0.98
-            drawOpt = 'lp'
-            gr[-1].Draw(drawOpt)
-            ml = mylabel(42)
-            ml.SetTextSize(0.06)
-            ml.DrawLatex(X1, Y1, lText)
+        position = vDict[k][0]
+        ytitle = vDict[k][5]
+
+        cv.cd(cnt)            
+        gr[-1].SetLineColor(vDict[k][3])
+        gr[-1].GetYaxis().SetTitleOffset(0.8)
+        gr[-1].SetMarkerSize(0.3)
+        gr[-1].GetXaxis().SetTimeFormat("%d.%m. %Hh")
+        gr[-1].GetYaxis().SetTitle(ytitle)
+        gr[-1].GetXaxis().SetTitle('UTC time')
+        lText = k + ' ' + vDict[k][4] + position
+        X1, Y1 = 0.34, 0.98
+        drawOpt = 'lp'
+        gr[-1].Draw(drawOpt)
+        ml = mylabel(42)
+        ml.SetTextSize(0.06)
+        ml.DrawLatex(X1, Y1, lText)
 
     pname = path + 'fill' + fill + '.png'
     print "Saving", pname
@@ -352,7 +362,7 @@ def makeSeparatePlot():
 
 ## -----------------------------------------------------------------------------------    
 
-def makeCommonPlot():
+def makeCommonPlot(fname):
     # ------------------------------------------------------------ 
     #     
     #  correlates beam intensity with pressure/beamgas density
@@ -360,7 +370,6 @@ def makeCommonPlot():
     #
     # ------------------------------------------------------------
 
-    fname = foutname + '.root'
     print 'opening ......', fname
     rfile = TFile.Open(fname)
     vkeys = vDict.keys()
@@ -428,7 +437,11 @@ if __name__ == "__main__":
     gROOT.LoadMacro(gitpath + "AnalysisScripts/C/AtlasUtils.C")
     SetAtlasStyle()
 
-    #makeRootFile(1,0)
-    makeSeparatePlot()
+    for fill in fills:
+        fname = 'TIMBER_DATA_fill'+str(fill)+'.csv'
+        print 'reading file', fname
+
+        makeRootFile(fname,1,0)
+        makeSeparatePlot(fill)
 
     #calcInt()
