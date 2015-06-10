@@ -1,0 +1,244 @@
+\documentclass{cernatsnote} % Specifies the document style.
+%
+%
+% This texfile is a modified version from 
+% http://frs.home.cern.ch/frs/Source/NL_MD_02.07.2011/NL-MD.tex
+%
+%
+%
+\usepackage{vmargin,times,graphicx,amsmath,amssymb,color} % ,draftcopyÅ†use draftcopy for experiments
+\usepackage{verbatim} % to allow for verbatim and comment
+\usepackage{lineno} % to allow for linenumbers in the draft version
+\usepackage{tabularx}
+\usepackage{multirow}
+
+
+\newcommand{\lumi}[1]{\ensuremath{{\mathcal{L}= 10^{#1}\,\mathrm{cm}^{-2}\,\mathrm{s}^{-1}}}}
+\newcommand{\lumiapprox}[1]{\ensuremath{{\mathcal{L} \approx 10^{#1}\,\mathrm{cm}^{-2}\,\mathrm{s}^{-1}}}}
+\newcommand{\lumif}[2]{\ensuremath{{\mathcal{L}= {#1} \times 10^{#2}\,\mathrm{cm}^{-2}\,\mathrm{s}^{-1}}}}
+\newcommand{\ifb}{\mbox{fb$^{-1}$}}%  Inverse femtobarns.
+\newcommand{\ipb}{\mbox{pb$^{-1}$}}%  Inverse picobarns.
+\newcommand{\inb}{\mbox{nb$^{-1}$}}%  Inverse nanobarns.
+\newcommand{\sph}{\mbox{$\mu$Sv/h}}%  mu Sv/h
+\newcommand{\nseu}{$N_{\mathrm{SEU}}$}
+\newcommand{\hehf}{\ensuremath{\Phi_{\mathrm{HEH}}}}
+\newcommand{\thnf}{\ensuremath{\Phi_{\mathrm{thn}}}}
+\newcommand{\neqf}{\ensuremath{\Phi_{\mathrm{neq}}}}
+\newcommand{\mypercent}{\%}
+
+% now optionally modify manually to fill better the page (drop at end
+% ?)
+\setmarginsrb{22mm}{10mm}{20mm}{10mm}{12pt}{11mm}{0pt}{11mm}
+%
+\title{Beam Halo induced Background Simulation Studies at IR1 for final HL-LHC Collimation Layout}
+%
+\author{R.~Kwee-Hinzmann, R.~Bruce, L.~S.~Esposito}
+%
+\date{\today}
+\email{\small{Regina.Kwee@rhul.ac.uk}}
+%
+\makeindex
+%
+\documentlabel{CERN-ATS-Note-2015-XXX PERF}\keywords{HL-LHC, collimation, SixTrack, IR1, FLUKA, incoming beam, halo, TCT5}
+%
+% End of preamble and beginning of text.
+\begin{document}
+%
+% Produces the title block.
+\maketitle
+
+\renewcommand{\textfraction}{0.1}       % the minimum fraction of a text page that must be devoted to text
+\renewcommand{\floatpagefraction}{0.8}  % the minimum fraction of a float page that must be occupied by floats
+\renewcommand{\topfraction}{1.}         % the maximum fraction float on top, usually .7
+
+%
+%\linenumbers
+% ----------------------------------------------------------------------------------------------
+\begin{abstract}
+%
+This note is contains the simulation results for beam halo induced background at IR1 in the HL-LHC scenario using the final HL-LHC collimation layout. SixTrack and Fluka simulations were performed to quantify the effect of the installation of additional tertiary collimators in cell 5 upstream the tertiary collimator pair that is already installed to protect the inner triplet magnets in IR1 and 5.
+\end{abstract}
+%
+% ----------------------------------------------------------------------------------------------
+\tableofcontents
+\newpage
+\newpage
+
+% uncomment to only show section header
+\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+%-------------------------------------------------------------------------------------------
+\section{Introduction}
+
+\section{Beam Halo Background}
+
+\section{Simulation Setup}
+
+some test ~\cite{SixTrackRef,flukaRef1,claudiasThesis,flukaRef2,opticsWebRef}
+\section{Simulation Results}
+
+\subsection{SixTrack Results}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/compTCT5LINOUT_roundthin_B1_IR1IR5}
+\includegraphics[width=0.495\textwidth]{figures/compTCT5LINOUT_flatthin_B1_IR1IR5}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Summary of hits load of the single TCTs for the cases TCT5 are out and in for round (a) and flat (b) beam optics.
+  \label{compTCT5INOUT}}
+\end{figure}
+
+
+\subsection{Shower simulation results}
+
+% ------------------------------------------------------------------------------------------
+% 
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/OrigYZMuons_BH_HL_tct5otrdB1_20MeV}
+\includegraphics[width=0.495\textwidth]{figures/OrigYZMuonsE100_BH_HL_tct5otrdB1_20MeV}
+\includegraphics[width=0.495\textwidth]{figures/OrigYZMuons_BH_HL_tct5inrdB1_20MeV}
+\includegraphics[width=0.495\textwidth]{figures/OrigYZMuonsE100_BH_HL_tct5inrdB1_20MeV}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,7.35){(a)}
+    \put ( 12.4,7.35){(b)}
+    \put ( 4.,1.){(c)}
+    \put ( 12.4,1.){(d)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Origin of muons for all energies (a,c) and for an energy above 100~GeV (b,d) in the y-z plane with TCT5 out (a,b) and TCT5 in (c,d).
+  \label{OrigMuonE}}
+\end{figure}
+
+% ------------------------------------------------------------------------------------------
+% comparisons
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/ratioEkinAll}
+\includegraphics[width=0.495\textwidth]{figures/ratioEkinMuons}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Energy distribution for all particles (a) and muons (b) at the interface plane.
+  \label{compEkin}}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/ratioEkinAllRInBP}
+\includegraphics[width=0.495\textwidth]{figures/ratioEkinAllROutBP}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Energy distribution of all particles inside (a) and outside (b) the beampipe.
+  \label{compEkinBP}}
+\end{figure}
+
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/ratioPhiNAll}
+\includegraphics[width=0.495\textwidth]{figures/ratioPhiNMuons}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Azimuthal distribution of all particles (a) and muons (b) at the interface plane.
+  \label{compPhiN}}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/ratioPhiEnAll}
+\includegraphics[width=0.495\textwidth]{figures/ratioPhiEnMuons}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Azimuthal energy distribution of all particles (a) and muons (b) at the interface plane.
+  \label{compPhiEn}}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/ratioRadNAll}
+\includegraphics[width=0.495\textwidth]{figures/ratioRadNMuons}
+\includegraphics[width=0.495\textwidth]{figures/ratioRadEnAll}
+\includegraphics[width=0.495\textwidth]{figures/ratioRadEnMuons}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.05,8.95){(a)}
+    \put ( 12.45,8.95){(b)}
+    \put ( 4.05,1.){(c)}
+    \put ( 12.45,1.){(d)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Tranverse radial distribution of all particles (a) and muons (b) at the interface plane.
+  \label{compRadN}}
+\end{figure}
+
+\section{Conclusion and outlook}
+
+%-------------------------------------------------------------------------------------------
+\section*{Acknowledgments}
+%
+The authors would like to thank F.~Cerutti and A.~Lechner of the FLUKA team (EN-STI-EET) for helpful discussions. 
+%-------------------------------------------------------------------------------------------
+\newpage
+\clearpage
+\appendix
+
+%\include{appendixA}
+\newpage
+% ---------------------------------------------------------------------------------------------------------------------
+\section{Appendix B}
+\newpage
+
+        \bibliographystyle{abbrv}
+        \bibliography{bibliography}
+
+%% \begin{thebibliography}{99}
+%% \bibitem{lastYear} R.~Kwee-Hinzmann et al., \textit{First Background Studies at IR1}, Proceedings IPAC14, 2014.
+
+%% \end{thebibliography}
+%
+\end{document}
+%
