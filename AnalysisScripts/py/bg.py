@@ -57,13 +57,14 @@ fillsI[3] = [
 fills    = fillsI[0] + fillsI[1] + fillsI[2] + fillsI[3]
 LHCfills = [dpath + 'TIMBER_DATA_VGPB_VGI_fill'+str(f)+'_stable.csv' for f in fills]
 fills = [
-3819,
-3820,
-3824,
-3829,
+#3819,
+#3820,
+#3824,
+#3829,
 3833,
 3835,
-3846,
+#3846,
+3851,
 ]
 
 vDict    = {  ##position of vacuum pipe 0, YurMin 1, YurMax 2, beamcolor 3, averaged gas density per block [b1, ..., bN] 4, maximum gas density per block
@@ -438,7 +439,7 @@ if __name__ == "__main__":
     SetAtlasStyle()
 
     for fill in fills:
-        fname = 'TIMBER_DATA_fill'+str(fill)+'.csv'
+        fname = 'TIMBER_DATA_localtime_fill'+str(fill)+'.csv'
         print 'reading file', fname
 
         makeRootFile(fname,1,0)
