@@ -22,10 +22,23 @@ def cv30():
     plotLossMaps = 1
 
     doIR1 = 1
+    
+    subfolder = 'TCT/HL/relaxedColl/newScatt/'
+    subfolder = 'TCT/6.5TeV/'
+#    subfolder = 'TCT/4TeV/'
 
     colls = [
-        ('H5_HL_TCT5LOUT_relaxColl_hHaloB1_flatthin'),
-        ('H5_HL_TCT5LOUT_relaxColl_vHaloB1_flatthin'),
+
+        # ('6.5TeV_hHaloB1_h5'),
+        # ('6.5TeV_vHaloB1_h5'),
+        # ('6.5TeV_hHaloB2_h5'),
+        ('6.5TeV_vHaloB2_h5'),
+        #('H5_HL_TCT5LOUT_relaxColl_hHaloB2_roundthin'),
+        #('H5_HL_TCT5LOUT_relaxColl_vHaloB2_roundthin'),
+        # ('H5_HL_TCT5IN_relaxColl_hHaloB2_roundthin'),
+        # ('H5_HL_TCT5IN_relaxColl_vHaloB2_roundthin'),
+        # ('H5_HL_TCT5LOUT_relaxColl_hHaloB1_flatthin'),
+        # ('H5_HL_TCT5LOUT_relaxColl_vHaloB1_flatthin'),
         # ('H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin'),
         # ('H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin'),
         # ('H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin'),
@@ -49,9 +62,11 @@ def cv30():
 
         beam   = 'b2'            
         beamn  = '2'        
+        beamColor = kRed
         if coll.count('B1'):
             beam  = 'b1'
             beamn = '1'
+            beamColor = kBlue
 
         # my results 
         thispath  = workpath + 'runs/' + tag +'/'
@@ -153,6 +168,15 @@ def cv30():
                     print 'norm', norm
 
                 cv = TCanvas( 'cv' + coll + str(doZoom), 'cv' + coll + str(doZoom), 1200, 700)
+                # x1,y1,x2,y2 = 0.2, 0.7,0.5,0.7
+                # ar2 = TArrow(x1,y1,x2,y2,0.02,"-|>")
+                # ar2.SetLineWidth(2)
+                # ar2.SetLineColor(beamColor)
+                # ar2.SetFillColor(beamColor)
+                # ar2.Draw()
+                # lBeam = mylabel(42)
+                # lBeam.SetTextColor(beamColor)
+                # lBeam.DrawLatex(0.3, 0.7, "B" + beamn)
 
                 YurMin, YurMax = 3.2e-9, 3.
 
@@ -261,12 +285,12 @@ def cv30():
                     lab = mylabel(42)
                     lab.SetTextColor(kGreen+1)
                     lab.SetTextSize(0.04)
-                    lab.DrawLatex(0.15, 0.57, 'IR1')
-                    lab.DrawLatex(0.88, 0.57, 'IR1')
-                    lab.DrawLatex(0.23, 0.56, 'IR2')
+                    lab.DrawLatex(0.15, 0.62, 'IR1')
+                    lab.DrawLatex(0.88, 0.62, 'IR1')
+                    lab.DrawLatex(0.23, 0.62, 'IR2')
                     lab.DrawLatex(0.33, 0.62, 'IR3')
-                    lab.DrawLatex(0.51, 0.50, 'IR5')
-                    lab.DrawLatex(0.61, 0.58, 'IR6')
+                    lab.DrawLatex(0.51, 0.62, 'IR5')
+                    lab.DrawLatex(0.61, 0.62, 'IR6')
                     lab.DrawLatex(0.70, 0.92, 'IR7')
                     lab.DrawLatex(0.79, 0.62, 'IR8')
                 
@@ -275,15 +299,15 @@ def cv30():
                     lab = mylabel(42)
                     lab.SetTextColor(kGreen+1)
                     lab.SetTextSize(0.04)
-                    lab.DrawLatex(0.15, 0.43, 'IR1')
-                    lab.DrawLatex(0.88, 0.47, 'IR1')
-                    lab.DrawLatex(0.23, 0.30, 'IR8')
+                    lab.DrawLatex(0.15, 0.6, 'IR1')
+                    lab.DrawLatex(0.88, 0.6, 'IR1')
+                    lab.DrawLatex(0.23, 0.6, 'IR8')
                     lab.DrawLatex(0.33, 0.92, 'IR7')
-                    lab.DrawLatex(0.43, 0.56, 'IR6')
-                    lab.DrawLatex(0.51, 0.48, 'IR5')
-                    lab.DrawLatex(0.61, 0.34, 'IR4')
-                    lab.DrawLatex(0.70, 0.60, 'IR3')
-                    lab.DrawLatex(0.79, 0.30, 'IR2')
+                    lab.DrawLatex(0.43, 0.6, 'IR6')
+                    lab.DrawLatex(0.52, 0.6, 'IR5')
+                    lab.DrawLatex(0.61, 0.6, 'IR4')
+                    lab.DrawLatex(0.70, 0.6, 'IR3')
+                    lab.DrawLatex(0.79, 0.6, 'IR2')
 
                 elif doZoom.count("IR"):
 
@@ -292,14 +316,11 @@ def cv30():
                     lab.SetTextSize(0.04)
                     lab.DrawLatex(0.5, 0.83, doZoom)
 
-
-
                 gPad.RedrawAxis()
                 gPad.SetGrid(0,1)
                 gPad.SetLogy(1)
 
                 pname  = wwwpath
-                subfolder = 'TCT/HL/relaxedColl/newScatt/'
                 pname += subfolder + hname + '_' + doZoom + '.png'
 
                 print('Saving file as' + pname ) 
