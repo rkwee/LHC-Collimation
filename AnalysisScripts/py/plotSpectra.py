@@ -9,7 +9,7 @@ from array import array
 import fillTTree
 from fillTTree_dict import generate_sDict, sDict_HL_hybridComp
 from createTTree import treeName
-from plotSpectra_dict import hDict_BH_4TeV,hDict_HL_BGac, hDict_HL_BH, hDict_HL_comp,hDict_BG_4TeV,hDict_BH_3p5TeV, hDict_BH_HL_hybrid, hDict_HLhybrid_comp
+from plotSpectra_dict import hDict_BH_4TeV,hDict_HL_BGac, hDict_HL_BH, hDict_HL_comp,hDict_BG_4TeV,hDict_BH_3p5TeV, hDict_BH_HL_hybrid, hDict_HLhybrid_comp, hDict_BH_6p5TeV
 # ---------------------------------------------------------------------------------
 zmin, zmax = 2260., 14960. # HL v1.0
 zmin, zmax = 2260., 21460. # HL v1.hybrid
@@ -30,6 +30,7 @@ def plotSpectra(bbgFile, tag, doComp):
     else:
         sDict = generate_sDict(tag, norm, tBBG, yrel)
         rel = ''
+        print "using standard dictionary"
 
     rfname = fillTTree.resultFile(bbgFile,rel)
     print "Want to open ", rfname
@@ -87,13 +88,19 @@ def plotSpectra(bbgFile, tag, doComp):
 
     elif rfname.count('hybrid') and not rfname.count('Comp'): 
         hDict = hDict_BH_HL_hybrid
-        if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/tct5otrd/'
-        elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/tct5inrd/'
-        else: print "define where to put the plots?"
+        if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5otrd/'
+        elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/'
+        else: 
+            print "define where to put the plots?"
+            sys.exit()
 
     elif rfname.count('hybrid') and rfname.count('Comp'): 
         hDict = hDict_HLhybrid_comp
         subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/comp/'
+
+    elif rfname.count('6500GeV') and rfname.count('Halo'): 
+        hDict = hDict_BH_6p5TeV
+        subfolder = 'TCT/6.5TeV/haloShower/'+beam+'/'
 
     else:
         print "no dictionary defined"

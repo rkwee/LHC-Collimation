@@ -14,6 +14,7 @@ def cv39():
 
     # twiss file
     tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/twiss_lhcb1_med_new_thin_800.tfs')
+    tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/1cm/twiss_lhcb1_med_new_thin_800_1cm.tfs')
 
     BETX = tf.GetColumn('BETX')
     BETY = tf.GetColumn('BETY')
@@ -48,8 +49,8 @@ def cv39():
     S_shifted.sort()
     XurMin, XurMax = length_LHC-300, length_LHC
     rel = '_sigma_IR1Left'
-    XurMin, XurMax = 0,300
-    rel = '_sigma_IR1Right'
+    XurMin, XurMax = 0,600
+    rel = '_sigma_IR1Right_1cm'
     # XurMin, XurMax = IP5-300, IP5+300
     # rel = '_IP5'
     # XurMin, XurMax = IP8-300, IP8+300

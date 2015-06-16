@@ -161,7 +161,8 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'PhiEnMuR1000'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r > 1000 cm ',kCyan-8,'1000','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
 
  'PhiEnNeg'+tag:[ ['11','3','14','16'], norm, 100, -math.pi, math.pi, tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}',kMagenta+1,'-9999','r [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
- 'PhiEnPos'+tag:[ ['1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','r [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnPosP'+tag:[ ['1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','r [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnPos'+tag:[ ['10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','r [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
  'PhiEnNeu'+tag:[ ['7','24','8'], norm, 100, -math.pi, math.pi, tBBG, 'n,K^{0},#gamma',kBlue,'-9999','r [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
         
  'XcoorNNeg'+tag:[ ['11','3','14','16'], norm, 160, -400., 400., tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}',kMagenta+1,'-9999','x [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
@@ -333,15 +334,22 @@ sDict_HL_comp = {
 # ---------------------------------------------------------------------------------
 # comp plots TCT5IN vs TCT5LOUT
 # ---------------------------------------------------------------------------------
-tau_12m = 60*12
 N_beam = 2736*2.2e11
+tau_12m = 60*12
+def calcR12m(N_tcts, N_abs):
+    tau_12m = 60*12
+    N_beam = 2736*2.2e11
+    r=N_beam*N_tcts/(tau_12m * N_abs)
+    return r
+
+
 # wc -l sourcedirs/HL_TCT_7TeV/fluka/hybrid/b1/tct5inrd.dat 
 N_tcts = 13073 
 # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin.dat
 # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin/coll_summary_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin.dat
 N_abs  = 63740261+61392508
-R12m = N_beam*N_tcts/(tau_12m * N_abs)
 
+R12m = calcR12m(N_tcts, N_abs)
 
 treeName = 'particle'
 bbgFile  = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim3972000_30.root'
@@ -362,7 +370,7 @@ N_abs  = 63828643 + 61405975
 R12m = N_beam/tau_12m * N_tcts/N_abs
 R12m = 81889013 # from cv07
 
-bbgFile  = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim3929000_30.root'
+bbgFile  = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'
 print "Opening...", bbgFile
 rf_tct5otrd  = TFile(bbgFile)
 tOUT = rf_tct5otrd.Get(treeName)

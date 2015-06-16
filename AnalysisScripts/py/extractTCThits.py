@@ -29,7 +29,7 @@ def extractHits(f):
          'TCTVA.5R1.B2',
          'TCTH.4R1.B2', 
          'TCTVA.4R1.B2',
-        ]
+         ]
 
     collsB2 = [
          'TCTH.5R5.B2',
