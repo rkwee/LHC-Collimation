@@ -8,7 +8,6 @@
 # 2013, June
 # -----------------------------------------------------------------
 import os, stat, sys, gzip, time
-import helpers
 from optparse import OptionParser
 
 parser = OptionParser()

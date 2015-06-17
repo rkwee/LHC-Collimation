@@ -4,7 +4,7 @@
 # R Kwee, June 2013
 
 import os, math, time, ROOT
-from ROOT import TLatex
+from ROOT import TLatex, TGraph
 import gzip
 # ------------------------------------------------------------------------------------------------
 workpath = '/afs/cern.ch/work/r/rkwee/HL-LHC/'
@@ -20,8 +20,10 @@ gitpath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/'
 tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
 tag_BH_4TeV = '_BH_4TeV_B1_20MeV'
 tag_BH_4TeV = '_BH_4TeV_B2_20MeV'
-tag_BH_7TeV = '_BH_HL_tct5inrdB1_20MeV'
-#tag_BH_7TeV = '_BH_HL_tct5otrdB1_20MeV'
+tag_BH_7TeV = '_BH_HL_tct5inrdB2_20MeV'
+tag_BH_7TeV = '_BH_HL_tct5otrdB2_20MeV'
+tag_BH_6p5TeV = '_BH_6500GeV_haloB1_20MeV'
+tag_BH_6p5TeV = '_BH_6500GeV_haloB2_20MeV'
 # ................................................................................................
 EnCut = '2.e-2'
 if tag_BH_4TeV.count('20GeV'): EnCut = '20.'
@@ -222,6 +224,7 @@ def collDict(collsummary):
     collList = []
     with open(collsummary) as cs:
         for line in cs:
+            if line.count("#"): continue
             line = line.rstrip()
             collname = line.split()[1]
             collInfo = line.split()
@@ -230,6 +233,43 @@ def collDict(collsummary):
             #print collList[-1]
 
     return dict(collList)
+# ----------------------------------------------------------------------------
+def collgapsDict(collgaps):
+    # -- needs a collgaps.dat file -- #
+    # returns a dictionary of collgaps content with collimator name as key
+    # header is 
+    # #0 ID #1 name #2 angle[rad] #3 betax[m] #4 betay[m] #5 halfgap[m] #6 Material # 7 Length[m] # 8 sigx[m] # 9 sigy[m] # 10 tilt1[rad] #11 tilt2[rad] #12 nsig
 
+    collList = []
+    with open(collgaps) as cg:
+        for line in cg:
+            if line.count("#"): continue
+            line = line.rstrip()
+            collname = line.split()[1]
+            collInfo = line.split()
 
+            collList += [[collname, collInfo]]
+            #print collList[-1]
+
+    return dict(collList)
+# ----------------------------------------------------------------------------
+def makeTGraph(xList, yList, color, mStyle):
+
+    """ returns TGraph of x, y """
+    gr = TGraph()
+    np = len(xList) - 1  # remove title element
+    gr.Set(np)
+
+    gr.SetMarkerStyle(mStyle)
+    gr.SetLineWidth(1)
+    gr.SetLineColor(color)
+    gr.SetMarkerColor(color)
+
+    for i in range(1,len(xList)-1):
+        x=float(xList[i+1])
+        y=float(yList[i+1])
+        #print x, y
+        gr.SetPoint(i+1, x, y)
+
+    return gr
 # ----------------------------------------------------------------------------

@@ -594,12 +594,12 @@ def fillHistos(bbgFile, tag, doComp):
     # write out a rootfile with histograms
 
     print "Opening...", bbgFile
-    norm = float(bbgFile.split('nprim')[-1].split('_')[0])
+    norm = float(bbgFile.split('nprim')[-1].split('_')[0]) 
 
     rf = TFile.Open(bbgFile)
     tBBG = rf.Get(treeName)
 
-    yrel = '/primary'
+    yrel = '/TCT hit'
 
     if doComp:
         # for comparisons plots, also edit rel
