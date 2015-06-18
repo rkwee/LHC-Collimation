@@ -85,6 +85,7 @@ def joinTextFiles(fn):
 
     fdummy   = rundir + inpfile + '_' + fn + '.dummy'
     foutname = rundir + inpfile + '_' + fn 
+    foutname = '/tmp/rkwee/' + inpfile + '_' + fn 
     fout     = open(foutname, 'w')
 
     foutdummy= open(fdummy, 'w')

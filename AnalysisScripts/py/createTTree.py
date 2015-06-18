@@ -35,7 +35,8 @@ def ctree(fname):
         fortformat = antInpformat
 
     else:
-        print "no format defined."
+        print "no format defined. "
+        #fortformat = impactsformat
         return
 
     print("Reading file", fname, "/n Using format", fortformat)

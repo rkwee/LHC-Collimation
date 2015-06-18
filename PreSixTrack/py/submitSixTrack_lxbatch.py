@@ -81,6 +81,9 @@ cList += [[ '4TeV_hHaloB1_h5',  [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518
 cList += [[ '4TeV_vHaloB2_h5',  [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_hHaloB2_h5',  [sourcepath + 'TCT_4TeV_60cm/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
 cList += [[ '6.5TeV_hHaloB1_h5',[gitpath + '6.5TeV/MED800/B1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '6500000' ]]]
+cList += [[ '6.5TeV_vHaloB1_h5',[gitpath + '6.5TeV/MED800/B1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '6500000' ]]]
+cList += [[ '6.5TeV_hHaloB2_h5',[gitpath + '6.5TeV/MED800/B2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '6500000' ]]]
+cList += [[ '6.5TeV_vHaloB2_h5',[gitpath + '6.5TeV/MED800/B2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '6500000' ]]]
 
 cList += [[ '4TeV_pencilB1_h5',  [gitpath + '4TeV/TCThaloStudies/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_pencilB2_h5',  [gitpath + '4TeV/TCThaloStudies/b2/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
@@ -130,14 +133,14 @@ apertfile   = source_dir +'allapert.' + beam
 surveyfile  = source_dir +'SurveyWithCrossing_XP_lowb_'+beam+'.dat'
 beamlossExe = commonsource +'beamLossPattern'
 reserveDS   = ' -R "rusage[pool=14000]" '
-#reserveDS   = ''
+reserveDS   = ''
 h5dumpExe   = "/afs/cern.ch/user/r/rkwee/public/hdf5/hdf5-1.8.14/bin/h5dump"
 
 if not doH5:
     beamlossExe = commonsource +'BeamLossPattern_2005-04-30_gcc2.9'
     reserveDS   = ' -R "rusage[pool=30000]" '
 
-cleanIneExe = commonsource +'CleanInelastic_2013-08-19'
+cleanIneExe = commonsource +'CleanInelastic_2013-08-19b'
 cleanColExe = commonsource +'CleanCollScatter_2014.09.10'
 cleancoll   = commonsource +'correct_coll_summary.sh'
 
@@ -280,7 +283,7 @@ for job in newrange:
         cmd_copy = 'mv coll_summary.dat collgaps* screen* LP* FirstImpacts.dat* sigmasettings.out impacts* ' + subdir +'\n'
         cmd_copy = "mv * " + subdir +'\n'
     else:
-        cmd_copy = 'mv coll_summary.dat LP* FirstImpacts.dat* impacts_real* Coll_Sc*real* ' + subdir +'\n'
+        cmd_copy = 'mv coll_summary.dat LPI* FirstImpacts.dat* impacts_real* Coll_Sc*real* ' + subdir +'\n'
 
     run_job.write(cmd_copy)
     run_job.write('date +"%T %d.%m.%Y %Z" \n')
@@ -297,7 +300,7 @@ for job in newrange:
     if doRun:        
         os.system(cmd)
         if not doH5: cmd = "sleep 4"
-        else: cmd = "sleep 1"
+        else: cmd = "sleep 2"
         os.system(cmd)
 # -----------------------------------------------------------
 

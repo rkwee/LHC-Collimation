@@ -37,6 +37,7 @@ njobs = options.njobs
 queuename = options.queuename
 ncycles = options.ncycles
 nevents = options.nevents
+if not nevents.count('.'): nevents += "."
 run_dir = options.run_dir
 ckey = options.ckey
 
@@ -49,7 +50,7 @@ doRun=1
 showInfo=1
 mailOpt = '-u Regina.Kwee@gmail.com'
 # -----------------------------------------------------------
-
+gitpath    = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/FlukaRoutines/'
 sourcepath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/sourcedirs/'
 commonsource = sourcepath + 'common/'
 
@@ -61,19 +62,28 @@ cList += [['fluka_HL_TCT_haloB2', [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_
 
 cList += [['fl_HL_TCT5LOUT_rdB1', [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/'  ,'withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tct5otrd']]]
 cList += [['fl_HL_TCT5IN_rdB1',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tct5inrd']]]
-
+cList += [['fl_HL_TCT5IN_rdB2',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tcinrdb2']]]
+cList += [['fl_HL_TCT5LOUT_rdB2',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tcotrdb2']]]
+cList += [['fluka_6.5TeV_haloB1_20MeV', [gitpath + '6.5TeV/','hybridHL.exe', '*fort.30', 'RANDOMIZ       1.0  9875214.', 'HALOB1']]]
+cList += [['fluka_6.5TeV_haloB2_20MeV', [gitpath + '6.5TeV/','hybridHL.exe', '*fort.30 *fort.*6*', 'RANDOMIZ       1.0  9875214.', 'HALOB2']]]
+cList += [['fluka_6.5TeV_beamgas_20MeV', [gitpath + '6.5TeV/','beamgas/exec/run2bg.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', 'bgpos']]]
+cList += [['fl_HL_crabfailB1',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.*3*','RANDOMIZ         1.0  1822551.','crabcfb1']]]
 
 cDict = dict(cList)
-
-afsRunMain  = "/afs/cern.ch/work/r/rkwee/HL-LHC/runs/"
-run_dir     = run_dir + "/"
-afs_run_dir = afsRunMain + run_dir
-
 try:
     source_dir  = cDict[ckey][0]
 except KeyError:
     print('KeyError, possible keys are:', cDict.keys())
     sys.exit()
+
+afsRunMain  = "/afs/cern.ch/work/r/rkwee/HL-LHC/runs/"
+afsRunMain  = "/afs/cern.ch/project/lhc_mib/bbgen/"
+
+if ckey.count('crab'): 
+    afsRunMain  = "/afs/cern.ch/project/lhc_mib/crabcf/"
+
+run_dir     = run_dir + "/"
+afs_run_dir = afsRunMain + run_dir
 # -----------------------------------------------------------
 beam        = 'b1'
 if ckey.count('B2') or ckey.count('b2'):
@@ -85,6 +95,10 @@ if showInfo: print("Using thissource " + thissource )
 if not os.path.exists(afs_run_dir):
     print 'making dir', afs_run_dir
     os.mkdir(afs_run_dir)
+
+enCut = ''
+if   ckey.count("20MeV"): enCut = "20MeV"
+elif ckey.count("20GeV"): enCut = "20GeV"
 
 # prepare runfiles: these files should be present in source_dir
 flukaExe    = source_dir + cDict[ckey][1]
@@ -98,7 +112,7 @@ iniRand    = cDict[ckey][3]
 # name of datafile to be replaced in inp file (ONLY done if string to be replace is present!)
 tctlosses  = cDict[ckey][4]
 
-if not ckey.count("HL"):
+if  ckey.count("4TeV"):
     haloData    = source_dir + beam +'/HALO.dat'
     magfile1    = source_dir + 'MB.dat'
     magfile2    = source_dir + 'MBXW.dat'
@@ -109,7 +123,25 @@ if not ckey.count("HL"):
     inpFile     = source_dir + beam + '/ir1_4TeV_settings_from_TWISS_'+beam+'.inp'
     inputFiles  = [haloData, magfile1,magfile2,magfile3,magfile4,magfile5,magfile6, inpFile]
 
-else:
+elif ckey.count("6.5TeV"):
+    if ckey.count("halo"):
+        haloData   = source_dir + beam +'/'+ tctlosses+'.dat'
+        inpFile    = source_dir + beam + '/ir1_6500GeV_'+beam+'_'+enCut+'.inp'
+    elif ckey.count("beamgas"): 
+        haloData = source_dir + 'beamgas/'+ tctlosses+'.dat'
+        inpFile     = source_dir + 'beamgas/flat/ir1_6500GeV_'+beam+'_'+enCut+'.inp'
+    else:
+        haloData = ''
+    magfile1    = source_dir + 'MB.dat'
+    magfile2    = source_dir + 'MBXW.dat'
+    magfile3    = source_dir + 'MQTL.dat'
+    magfile4    = source_dir + 'MQXA.dat'
+    magfile5    = source_dir + 'MQXB.dat'
+    magfile6    = source_dir + 'MQYana.dat'
+    inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,inpFile,flukaExe]
+    if haloData: inputFiles+= [haloData]
+
+elif ckey.count("HL"):
 
     # HL v1.0
     haloData    = source_dir + beam +'/'+ tctlosses+'.dat'

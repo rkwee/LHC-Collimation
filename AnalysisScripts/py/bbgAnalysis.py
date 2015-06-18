@@ -28,7 +28,7 @@ if __name__ == "__main__":
     SetAtlasStyle()
 
     # ---------------------
-    TTreeFileName = createTTree.ctree(datafile)
+    #TTreeFileName = createTTree.ctree(datafile)
 
     #TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'        
     # TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
@@ -36,14 +36,21 @@ if __name__ == "__main__":
     #TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
     #TTreeFileName = workpath + 'runs/FL_TCT5IN_roundthin/hilumi_ir1_hybrid_b1_20MeV_exp_nprim1635000_30.root'
     # TTreeFileName = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
-    # TTreeFileName = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'
+    # TTreeFileName = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'    
+    
+    # TTreeFileName = workpath + 'runs/FL_TCT5IN_roundthin_B2/hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30.root'
+    # TTreeFileName = workpath + 'runs/FL_TCT5LOUT_roundthin_B2/hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
 
+    TTreeFileName = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/ir1_6500GeV_b1_20MeV_nprim4752000_ntct1324_30.root'
+
+    #TTreeFileName = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
     # for comparisons plot change in plotSpectra
     # ---------------------
     # define tag in helpers!
     # tag = tag_BH_4TeV
-    #fillTTree.fillHistos(TTreeFileName, tag)
-    tag = tag_BH_7TeV
+    
+    tag = tag_BH_6p5TeV
+    #tag = tag_BH_7TeV
     doComp = 0
-    fillTTree.fillHistos(TTreeFileName, tag, doComp)
+    #fillTTree.fillHistos(TTreeFileName, tag, doComp)
     plotSpectra.plotSpectra(TTreeFileName, tag, doComp)

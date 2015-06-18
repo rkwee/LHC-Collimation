@@ -116,7 +116,7 @@ def cv16():
     lTextDenom = '4 TeV'
     normDenom, normNum = 1., 1.
     tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_4TeV'
-    nColor, dColor = kOrange-3, kPink-7
+    nColor, dColor = kOrange-3, kPink-6
 
     fNum = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
     fDenom = workpath + 'runs/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
@@ -127,6 +127,15 @@ def cv16():
     tagNum, tagDenom = '_BH_6500GeV_haloB2_20MeV', '_BH_4TeV_B2_20MeV'
     nColor, dColor = kOrange-3, kPink-3
 
+    fDenom = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
+    fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_ntct1324_30.root'
+    subfolder = wwwpath + 'TCT/6.5TeV/haloShower/compB1B2/'
+    lTextNum = 'B1'
+    lTextDenom = 'B2'
+    normDenom, normNum = 1., 1.
+    tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_6500GeV_haloB2_20MeV'
+    nColor, dColor = kOrange+2, kGreen+2
+
 
     rCol = kPink-7
     # need one file to generate sDict
@@ -135,7 +144,7 @@ def cv16():
     tag = tagNum
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
     tBBG = TFile.Open(bbgFile).Get(treeName)
-    yrel = '/s'
+    yrel = '/TCT hit'
     sDict = generate_sDict(tag, norm, tBBG, yrel)
 
     if not os.path.exists(subfolder):
