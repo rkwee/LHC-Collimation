@@ -1,0 +1,82 @@
+! install new elements, that are not yet in the
+! official sequence
+! 
+! Retrieve values from layout db with:
+!
+! select 	NAME, TYPE_NAME, FROM_IP, POSITION_FROM_IP
+! from LHCLAYOUT.MAD_SEQUENCES m
+! where m.version = 'STUDY'
+!	and USED_IN_MAD_SEQUENCES = 'YES'
+!    and m.NAME like 'YOUR_NAME'
+!
+
+! element definitions for B1
+! l_TCAPA = 1.0 m 
+! l_TCAPB = 0.2 m 
+
+tcsg:rcollimator,l:=0.0;
+
+seqedit,sequence=lhcb1;
+flatten;
+endedit;
+
+
+! installation B1
+seqedit,sequence = lhcb1;
+
+remove,element=mkd.o5l6.b1;
+install, element=tcsg.4o6.MKD.B1, class=tcsg, at=-202.93149999999877764, from=ip6;
+
+remove,element=mkd.n5l6.b1;
+install, element=tcsg.4n6.MKD.B1, class=tcsg, at=-201.22850000000107684, from=ip6;
+
+remove,element=mkd.m5l6.b1;
+install, element=tcsg.4m6.MKD.B1, class=tcsg, at=-199.24550000000090222, from=ip6;
+
+remove,element=mkd.l5l6.b1;
+install, element=tcsg.4l6.MKD.B1, class=tcsg, at=-197.54249999999956344, from=ip6;
+
+remove,element=mkd.k5l6.b1;
+install, element=tcsg.4k6.MKD.B1, class=tcsg, at=-195.55949999999938882, from=ip6;
+
+remove,element=mkd.j5l6.b1;
+install, element=tcsg.4j6.MKD.B1, class=tcsg, at=-193.70149999999921420, from=ip6;
+
+remove,element=mkd.i5l6.b1;
+install, element=tcsg.4i6.MKD.B1, class=tcsg, at=-191.71849999999903957, from=ip6;
+
+remove,element=mkd.h5l6.b1;
+install, element=tcsg.4h6.MKD.B1, class=tcsg, at=-190.01550000000133878, from=ip6;
+
+remove,element=mkd.g5l6.b1;
+install, element=tcsg.4g6.MKD.B1, class=tcsg, at=-188.31250000000000000, from=ip6;
+
+remove,element=mkd.f5l6.b1;
+install, element=tcsg.4f6.MKD.B1, class=tcsg, at=-186.32949999999982538, from=ip6;
+
+remove,element=mkd.e5l6.b1;
+install, element=tcsg.4e6.MKD.B1, class=tcsg, at=-184.47149999999965075, from=ip6;
+
+remove,element=mkd.d5l6.b1;
+install, element=tcsg.4d6.MKD.B1, class=tcsg, at=-182.48849999999947613, from=ip6;
+
+remove,element=mkd.c5l6.b1;
+install, element=tcsg.4c6.MKD.B1, class=tcsg, at=-180.78550000000177533, from=ip6;
+
+remove,element=mkd.b5l6.b1;
+install, element=tcsg.4b6.MKD.B1, class=tcsg, at=-178.80250000000160071, from=ip6;
+
+remove,element=mkd.a5l6.b1;
+install, element=tcsg.4a6.MKD.B1, class=tcsg, at=-177.09950000000026193, from=ip6;
+
+
+
+
+
+
+endedit;
+
+
+
+return;
+
