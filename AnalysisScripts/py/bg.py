@@ -31,45 +31,15 @@ fills = [
 #3820,
 #3824,
 #3829,
-3833,
-3835,
+# 3833,
+# 3835,
 #3846,
-3851,
+#3851,
+3855,
+#3857,
 ]
 
 # dictionary of vacuum pressures and other timber variables
-vDict    = {  ##position of vacuum pipe 0, YurMin 1, YurMax 2, beamcolor 3, averaged gas density per block [b1, ..., bN] 4, maximum gas density per block
-
-# --- red beam
-'VGI.137.7R1.R.PR':[' at 245 m', 1e6, 9.9e12, kRed, [], [] ],
-##'VGI.53.5R1.R.PR':[' at 177 m', 1e6, 9.9e12, kRed, [], [] ],
-##'VGI.85.6R1.R.PR':[' at 208.8 m', 1e6, 9.9e12, kRed, [], [] ],
-##'VGPB.189.5R1.R.PR':[' at 191.6 m', 1e6, 9.9e12, kRed, [], [] ],
-'VGPB.232.6R1.R.PR':[' at 223.5 m', 1e6, 9.9e13, kRed, [], [] ],
-##'VGPB.4.5R1.R.PR':[' at 173 m', 1e6, 9.9e12, kRed, [], [] ],
-##'VGPB.4.6R1.R.PR':[' at 200.7 m', 1e6, 9.9e13, kRed, [], [] ],
-'VGPB.4.7R1.R.PR':[' at 232.6 m', 1e6, 9.9e13, kRed, [], [] ],
-##'VGPB.935.4R1.R.PR':[' at 151.5 m', 1e6, 9.9e13, kRed, [], [] ],
-
-# --- blue beam
-'VGI.137.7R1.B.PR':[' at 245 m', 1e6, 9.9e12, kBlue, [], [] ],
-##'VGI.53.5R1.B.PR':[' at 177 m', 1e6, 9.9e12, kBlue, [], [] ],
-##'VGI.85.6R1.B.PR':[' at 208.8 m', 1e6, 9.9e12, kBlue, [], [] ],
-##'VGPB.189.5R1.B.PR':[' at 191.6 m', 1e6, 9.9e12, kBlue, [], [] ],
-##'VGPB.232.6R1.B.PR':[' at 173 m', 1e6, 9.9e13, kBlue, [], [] ],
-'VGPB.235.7R1.B.PR':[' at 255 m', 1e6, 9.9e13, kBlue, [], [] ],
-##'VGPB.4.5R1.B.PR':[' at 173 m', 1e6, 9.9e12, kBlue, [], [] ],
-##'VGPB.4.6R1.B.PR':[' at 200.7 m', 1e6, 9.9e13, kBlue, [], [] ],
-'VGPB.4.7R1.B.PR':[' at 232.6 m', 1e6, 9.9e13, kBlue, [], [] ],
-##'VGPB.935.4R1.B.PR':[' at 151.5 m', 1e6, 9.9e13, kBlue, [], [] ],
-
-# --- both
-##'VGI.628.4R1.X.PR':[' at 120.8 m', 1e6, 9.9e12, kBlack, [], [] ],
-
-} ### <<<<<<<<<<<<<<<
-
-
-
 vDict    = {  ##position of vacuum pipe 0, YurMin 1, YurMax 2, beamcolor 3, lText 4, ytitle 5,
 
 'VGI.220.1L1.X.PR' : ['at -22 m', 1, 1, kBlack, '', 'pressure [mbar]',  ],
@@ -87,6 +57,7 @@ vDict    = {  ##position of vacuum pipe 0, YurMin 1, YurMax 2, beamcolor 3, lTex
 'LHC.BCTFR.A6R4.B1:BEAM_INTENSITY':['', 1e6, 2e12, kBlue, '', '#protons', '', ],
 'LHC.BCTFR.A6R4.B2:BEAM_INTENSITY':['', 1e6, 2e12, kRed, '', '#protons', '', ],
 #'LHC.STATS:ENERGY':['', 1e6, 2e12, kBlack, '', 'beam energy [GeV]', '', ],
+'LHC.BOFSU:OFSU_ENERGY':['', 1e6, 2e12, kBlack, '', 'beam energy [GeV]', '', ],
 
 'ATLAS:BKGD1':['', 1e6, 2e12, kCyan, '', 'ATLAS BKGD1', '', ],
 'ATLAS:BKGD2':['', 1e6, 2e12, kCyan-1, '', 'ATLAS BKGD2', '', ],
@@ -95,16 +66,6 @@ vDict    = {  ##position of vacuum pipe 0, YurMin 1, YurMax 2, beamcolor 3, lTex
 'CMS:BKGD2':['', 1e6, 2e12, kMagenta-1, '', 'CMS BKGD2', '', ],
 'CMS:BKGD3':['', 1e6, 2e12, kMagenta-2, '', 'CMS BKGD3', '', ],
 }
-
-### append to vDict to make a rootfile once (if makeRootFile is run)
-#vDict = {  ##position of vacuum pipe 0, YurMin 1, YurMax 2,
-
-# --- otherwise
-iDict = {
-'LHC.BCTFR.A6R4.B1:BEAM_INTENSITY':['', 1e6, 2e14, kBlue, [], [] ],
-'LHC.BCTFR.A6R4.B2:BEAM_INTENSITY':['', 1e6, 2e14, kRed, [], [] ],
-}
-
 
 ## -----------------------------------------------------------------------------------
 
@@ -202,7 +163,7 @@ def makeRootFile(fname, doHistos, doGraphs):
 
         if not nval:
             print 'skipping detector ', k, tDict[k]
-            continue
+            continue        
 
         xarray, labels, yarray = [],[],[]
 
@@ -225,6 +186,8 @@ def makeRootFile(fname, doHistos, doGraphs):
                 obj.Write()
 
             goodHistos += [k]
+        else:
+            print k, ' is not defined in vDict?', nval
         
     rfile.Close()
     return goodHistos
@@ -234,8 +197,11 @@ def makeRootFile(fname, doHistos, doGraphs):
 def getkname(k):
     if k.count('.'):
         kname = k.replace('.', '_')
-        if kname.count(":"):
-            kname = kname.replace(':', '_')
+    else:
+        kname = k
+
+    if kname.count(":"):
+        kname = kname.replace(':', '_')
     else:
         kname = k
 
