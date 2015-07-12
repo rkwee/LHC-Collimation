@@ -101,41 +101,53 @@ def cv16():
     subfolder = wwwpath + 'TCT/6.5TeV/haloShower/b2'
     lTextDenom = 'TCT5 out B2'
     lTextNum = 'TCT5 out B1'
-    # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin.dat
-    # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin.dat
-    # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_hHaloB2_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_hHaloB2_roundthin.dat 
-    # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_vHaloB2_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_vHaloB2_roundthin.dat 
-    normDenom, normNum = calcR12m(21822,47196776+63051589), calcR12m(12091,63828643+61405975)
+
+    HLinitialFlux = 2808 * 2.2e11/360000
+    sixtrackHLB1 = 
+    normDenom, normNum = 1./normBH_HL, 1./normBH_HL, 
     tagDenom, tagNum = '_BH_HL_tct5otrdB2_20MeV', '_BH_HL_tct5otrdB1_20MeV'
     dColor, nColor = kRed-4, kBlue-3
 
-    fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_ntct1324_30.root'
-    fDenom = workpath + 'runs/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim4980000_ntct359_66.root'
-    subfolder = wwwpath + 'TCT/comp4TeV6.5TeVB1/'
-    lTextNum = '6.5 TeV'
-    lTextDenom = '4 TeV'
-    normDenom, normNum = 1., 1.
-    tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_4TeV'
-    nColor, dColor = kOrange-3, kPink-6
+    # norm6500GeVB1 = 2748 * 1.2e11/360000 *(739+585.)/(62515929+62692523)
+    # norm4TeVB1  = 1380 *1.4e11/360000 * (265+95.)/(61832091+12732234)
+    # norm4TeVB2 = 1380 * 1.4e11/360000 * (521.0+454.0)/(69021155+63014399)
+    # norm6500GeVB2 = 2748 * 1.2e11/360000 * (779+773.)/(50890652+63119778.)
 
-    fNum = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
-    fDenom = workpath + 'runs/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
-    subfolder = wwwpath + 'TCT/comp4TeV6.5TeVB2/'
-    lTextNum = '6.5 TeV'
-    lTextDenom = '4 TeV'
-    normDenom, normNum = 1., 1.
-    tagNum, tagDenom = '_BH_6500GeV_haloB2_20MeV', '_BH_4TeV_B2_20MeV'
-    nColor, dColor = kOrange-3, kPink-3
+    # fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_ntct1324_30.root'
+    # fDenom = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    # subfolder = wwwpath + 'TCT/comp4TeV6.5TeVB1/'
+    # lTextNum = '6.5 TeV'
+    # lTextDenom = '4 TeV'
+    # normDenom, normNum = 1./norm4TeVB1, 1./norm6500GeVB1
+    # tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_4TeV'
+    # nColor, dColor = kOrange-3, kPink-6
 
-    fDenom = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
-    fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_ntct1324_30.root'
-    subfolder = wwwpath + 'TCT/6.5TeV/haloShower/compB1B2/'
-    lTextNum = 'B1'
-    lTextDenom = 'B2'
-    normDenom, normNum = 1., 1.
-    tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_6500GeV_haloB2_20MeV'
-    nColor, dColor = kOrange+2, kGreen+2
+    # fNum = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
+    # fDenom = workpath + 'runs/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
+    # subfolder = wwwpath + 'TCT/comp4TeV6.5TeVB2/'
+    # lTextNum = '6.5 TeV'
+    # lTextDenom = '4 TeV'
+    # normNum, normDenom = 1./norm6500GeVB1, 1./norm4TeVB1
+    # tagNum, tagDenom = '_BH_6500GeV_haloB2_20MeV', '_BH_4TeV_B2_20MeV'
+    # nColor, dColor = kOrange-3, kPink-3
 
+    # fDenom = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
+    # fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_ntct1324_30.root'
+    # subfolder = wwwpath + 'TCT/6.5TeV/haloShower/compB1B2/'
+    # lTextNum = 'B1'
+    # lTextDenom = 'B2'
+    # normDenom, normNum = 1./norm6500GeVB2, 1./norm6500GeVB1
+    # tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_6500GeV_haloB2_20MeV'
+    # nColor, dColor = kOrange+2, kGreen+2
+
+    # fNum =  '/afs/cern.ch/project/lhc_mib/crabcf/FL_worstCCrabf/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim990000_30.root'
+    # fDenom = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
+    # subfolder = wwwpath + 'TCT/HL/compB1CrabCFHalo/'
+    # lTextNum = 'ccf'
+    # lTextDenom = 'halo'
+    # normNum, normDenom = 1., 1.
+    # tagDenom, tagNum =  '_BH_HL_tct5inrdB1_20MeV', '_crabcfb1'
+    # dColor, nColor = kMagenta-2, kBlue-1
 
     rCol = kPink-7
     # need one file to generate sDict
