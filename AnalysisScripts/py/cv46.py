@@ -2,7 +2,7 @@
 #
 # Mar 2015, rkwee
 ## -------------------------------------------------------------------------------
-import pymadx
+# from cv41
 ## -------------------------------------------------------------------------------
 import ROOT, sys, os, time, math
 from ROOT import *
@@ -10,20 +10,16 @@ import lossmap, helpers, array, random
 from helpers import wwwpath, length_LHC, mylabel, gitpath, length_LHC
 from array import array
 # -----------------------------------------------------------------------------------
-def cv41():
+def cv46():
 
-    # twiss file
-    # tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/twiss_lhcb1_med_new_thin_800.tfs')
-    tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/twiss_b2_mym.data')
-    # locations of sampling the beam-size
-    #pointsName = ['TCTH.4L1.B1', 'TCTVA.4L1.B1', 'MBRC.4L1.B1','MQXA.1L1..2', 'MQXB.B2L1..16', 'BPTX.5L1.B1', "MB.A8L1.B1..2", "MCD.9L1.B1", "MCBCH.10L1.B1", "MB.C13L1.B1..2"]
-    pointsName = ["MYM.S"]
 
     # number of randomly produced values per s location
     N = 1000
 
+    pointsName = ['IP1']
+
     # canvas
-    a,b = 2,len(pointsName)
+    a,b = 2,len(pointsName)+1
     cv = TCanvas( 'cv', 'cv', a*600, b*600)
     cv.Divide(a,b)
     cv.SetRightMargin(0.3)
@@ -31,8 +27,8 @@ def cv41():
     cv.SetTopMargin(0.15)
 
     emittance_norm = 3.5e-6
-    gamma_rel = 6.5e3/0.938
     gamma_rel = 4e3/0.938
+
     emittance_geo = emittance_norm/gamma_rel
     gauss1 = TF1('gauss1', 'exp(-0.5*(x**2))', -5.,5.)
     gauss2 = TF1('gauss2', 'exp(-0.5*(x**2))', -5.,5.)
@@ -42,11 +38,15 @@ def cv41():
     gauss6 = TF1('gauss6', 'exp(-0.5*(x**2))', -5.,5.)
 
     j = 1
+    name = 'IP1'
+    hxIP =  TH2F("IPf1" + name,"IPf1" + name,200,-0.01,0.01,200,-0.01,0.01) 
+    hyIP =  TH2F("IPf2" + name,"IPf2" + name,200,-0.01,0.01,200,-0.02,0.02) 
+
     hx, c_x1, c_x2, c_x3, hy, c_y1, c_y2, c_y3 = [],[],[],[], [],[],[],[]
     for name in pointsName:
 
-        hx += [ TH2F("f1" + name,"f1" + name,200,-0.004,0.004,200,-0.1e-4,0.1e-4) ]
-        hy += [ TH2F("f2" + name,"f2" + name,200,-0.2e-2,0.2e-2,200,-3.e-5,3.e-5) ]
+        hx += [ TH2F("f1" + name,"f1" + name,200,-0.0001,0.0001,200,-0.0002,0.0002) ]
+        hy += [ TH2F("f2" + name,"f2" + name,200,-0.0001,0.0001,200,-0.0002,0.0002) ]
 
         c_x1 += [ TGraph() ]
         c_x1[-1].Set(N)
@@ -61,17 +61,17 @@ def cv41():
         c_y3 += [ TGraph() ]
         c_y3[-1].Set(N)
 
-        row = tf.GetRowDict(name)
-        betx = row['BETX']
-        alfx = row['ALFX']
-        bety = row['BETY']
-        alfy = row['ALFY']
-        s    = str(row['S'])
+        betx = 0.6
+        alfx = 0.
+        bety = 0.6
+        alfy = 0.
+        s    = "0.0"
 
         sigx = math.sqrt(emittance_geo * betx)
         sigy = math.sqrt(emittance_geo * bety)
 
         foutname = name + '_N' + str(N) + '.txt'
+        foutname = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/INICON.dat'
         fot = open(foutname, 'w')
 
         for i in range(N):
@@ -82,8 +82,8 @@ def cv41():
             small_xp = math.sqrt(emittance_geo/betx) * (big_xp - alfx*big_x)
             small_x  = big_x*sigx 
             hx[-1].Fill(small_x,small_xp)
+            cx = small_xp
 
-            line = str(i) + ' ' + str(small_x) + ' ' + str(small_xp) + ' '
 
             # 3 contour lines
             phi = 2*random.random()*math.pi
@@ -111,7 +111,15 @@ def cv41():
             small_y  = math.sqrt(bety*emittance_geo) * big_y
             hy[-1].Fill(small_y,small_yp)
 
-            line  += str(small_y) + ' ' + str(small_yp) + ' \n'
+            # consider also crossing angle 
+            cy = small_yp + 145e-6
+
+            hxIP.Fill(100.*small_x, 100.*small_y)
+
+            # write out format for INICON.dat that is input for source_no_interactions_no_random_part.f
+            # convert to fluka units, ie m in cm
+            line = str(i+1) + ' ' + str(100*small_x) + ' ' + str(100.*small_y) + ' ' + ' 0.0 ' + str(cx) + ' ' + str(cy) + ' 0.0   0.0 \n'
+            line = str(i+1) + ' ' + str(100*small_x) + ' ' + str(100.*small_y) + ' ' + ' 0.0 ' + str(cx) + ' ' + str(cy) + ' 0.0   0.0 \n'
             fot.write(line)
 
             phi = 2*random.random()*math.pi
@@ -132,7 +140,6 @@ def cv41():
             small_yp = math.sqrt(emittance_geo/bety) * (big_yp - alfy*big_y)
             small_y  = big_y*sigy 
             c_y3[-1].SetPoint(i+1,small_y,small_yp)
-
 
 
         print 'wrote', foutname
@@ -185,14 +192,15 @@ def cv41():
         c_y2[-1].Draw("SAMEP")
         c_y3[-1].Draw("SAMEP")
 
-        lab.DrawLatex(0.26, 0.98, name + ' (' + row["KEYWORD"] + ')')
-
+        cv.cd(n+1)
+        hxIP.GetXaxis().SetLabelSize(0.02)
+        hxIP.Draw('colz')
         j+=1
 
     rel = '_gauss' 
     pname  = wwwpath
     subfolder = 'TCT/4TeV/beamgas/'
-    pname += subfolder + 'twiss_b2'+rel+'.png'
+    pname += subfolder + 'IP1'+rel+'.png'
 
     print('Saving file as ' + pname ) 
     cv.SaveAs(pname)

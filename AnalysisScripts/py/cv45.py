@@ -13,31 +13,43 @@ from array import array
 def cv45():
 
     # current path
-    cpath = workpath + 'runs/checkTrajectory6500GeV/'
+    cpath = workpath + 'runs/checkTrajectory6500GeV/4TeV/'
 
-    fn1 = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/madSY_b2.dat'
-    #fn1 = cpath + 'ir1b2_exp_noScoringRegion001_TRAKFILE.1425'
-    fn2 = cpath + 'ir1b2_exp001_TRAKFILE.luigi'
-    fn3 = cpath + 'ir1b2_exp001_TRAKFILE.145'
-    #fn3 = cpath + '4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b1001_TRAKFILE'
-#plot '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/ir1b2_exp001_TRAKFILE.1425' us 3:2,\
-#     
-#plot '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/ir1b2_exp001_TRAKFILE.luigi' us 3:2,\
-#plot     '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/' us 3:2
-#     '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/madSY_b1.dat' us 1:2,\
-#     '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/madSY_b2.dat' us 1:2
+    trakfiles = [
+        # filen name, Xindex, Yindex, markerstyle, 
+        # ['/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/madSY_b2.dat', 0,1, kGreen+1, 21, ],
+        # [cpath + 'ir1b2_exp001_TRAKFILE.luigi', 2,1, kBlue+1, 27, ],
+        # [cpath + 'ir1b2_exp001_TRAKFILE.145', 2,1, kBlue+1, 23, ],
+        # [cpath + 'madSYX_b2_thin.dat', 0,1, kGreen-1, 21, 'madx thin seq'], #plots x:s 2,0,  1,0 plots y:s
+        # [cpath + 'madSYX_b2_thick.dat', 0,1, kBlue-1, 22, 'madx thick seq'],
+        # [cpath + 'ir1_4TeV_settings_from_TWISS_20MeV_b1001_TRAKFILE', 2,1, kRed, 20, 'fluka incoming proton'], # 2,0 plots x:s  1,0 plots y:s]
+        # [cpath + 'ir1_4TeV_settings_from_TWISS_20MeV_b1_MYM001_TRAKFILE', 2,1, kMagenta, 23, 'fluka outgoing aproton'], # 2,0 plots x:s  1,0 plots y:s
+        # [cpath + 'ir1_4TeV_settings_from_TWISS_20MeV_b1001_TRAKFILE', 2,0, kRed, 20, 'fluka incoming proton'], # 2,0 plots x:s  1,0 plots y:s]
+        # [cpath + 'ir1_4TeV_settings_from_TWISS_20MeV_b1_MYM001_TRAKFILE', 2,0, kMagenta, 23, 'fluka outgoing aproton'], # 2,0 plots x:s  1,0 plots y:s
+        # [cpath + 'ir1_4TeV_settings_from_TWISS_20MeV_b1_MYM001_fort.89', 5,4, kBlack, 6, 'test size'], # 0cx 1cy 2cz 3x 4y 5z 6J 7A 
+        # [cpath + 'ir1_4TeV_settings_from_TWISS_20MeV_b1_orbitDump001_fort.89', 5,4, kBlack, 6, 'test size'], # 0cx 1cy 2cz 3x 4y 5z 6J 7A 
+        # [cpath + 'ir1_4TeV_settings_from_TWISS_20MeV_b1_orbitDump001_fort.89', 5,3, kBlack, 6, 'test size'], # 0cx 1cy 2cz 3x 4y 5z 6J 7A 
+        # [cpath + 'BEAMGAS.dat', 2,1, kBlack, 6, 'input fluka BEAMGAS'], # 0x 1y 2z 3u 4v 
+        # [cpath + 'startBG.dat', 2,1, kBlack, 6, 'input fluka startBG'], # 0x 1y 2z 3u 4v 
+        [cpath + 'startBG.dat', 2,0, kBlack, 6, 'input fluka startBG'], # 0x 1y 2z 3u 4v 
 
+
+       ]
+
+    rel = '_xstartBG'
+    ytitle = 'y [cm]'
+    ytitle = 'x [cm]'
 
     XurMin, XurMax = 5,57000
-    #XurMin, XurMax = -1, -1
+    XurMin, XurMax = -1, -1
 
     YurMin, YurMax = -0.02,0.03
-    
-    #YurMin, YurMax = -1,-1
+    YurMin, YurMax = -0.02, 0.7
+    YurMin, YurMax = -1,-1
 
     cv = TCanvas( 'cv', 'cv', 1000, 600)
 
-    x1, y1, x2, y2 = 0.4, 0.65, 0.9, 0.9
+    x1, y1, x2, y2 = 0.34, 0.65, 0.9, 0.9
     mlegend = TLegend( x1, y1, x2, y2)
     mlegend.SetFillColor(0)
     mlegend.SetFillStyle(0)
@@ -50,37 +62,25 @@ def cv45():
     # marker in legend
     lm = 'p'
 
-    print 'opening', fn1
-    [S,Y] = helpers.getListFromColumn([0,1], fn1)
-    xList, yList, color, mStyle, lg = S,Y, kGreen+1, 21, fn1.split(cpath)[-1]
-    g1 = makeTGraph(xList, yList, color, mStyle)
-    mlegend.AddEntry(g1, lg, lm) 
-    mg.Add(g1)
+    gr = []
 
-    print 'opening', fn2
-    [S,Y] = helpers.getListFromColumn([2,1], fn2)
-    xList, yList, color, mStyle, lg = S, Y, kBlue+1, 27, fn2.split(cpath)[-1]
-    g2 = makeTGraph(xList, yList, color, mStyle)
-    mlegend.AddEntry(g2, lg, lm) 
-    mg.Add(g2)
-
-    print 'opening', fn3
-    [S,Y] = helpers.getListFromColumn([2,1], fn3)
-    xList, yList, color, mStyle, lg = S, Y, kBlue+1, 23, fn3.split(cpath)[-1]
-    g3 = makeTGraph(xList, yList, color, mStyle)
-    mlegend.AddEntry(g3, lg, lm) 
-    mg.Add(g3)
+    for fn,Xindex,Yindex,color,mStyle,lg in trakfiles:
+        print 'opening', fn
+        [S,Y] = helpers.getListFromColumn([Xindex,Yindex], fn)
+        xList, yList = S,Y 
+        gr += [ makeTGraph(xList, yList, color, mStyle) ]
+        mlegend.AddEntry(gr[-1], lg, lm) 
+        mg.Add(gr[-1])
 
     mg.Draw("a"+lm)
-    mg.GetYaxis().SetTitle('y [cm]')
+    mg.GetYaxis().SetTitle(ytitle)
     mg.GetXaxis().SetTitle('s [cm]')
     if XurMin != -1:
         mg.GetXaxis().SetRangeUser(XurMin,XurMax)
 
-    rel = ''
     if YurMin != -1:
         mg.GetYaxis().SetRangeUser(YurMin,YurMax)
-        rel = 'Zoom'
+        rel += 'Zoom'
 
     mlegend.Draw()
 

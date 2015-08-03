@@ -40,14 +40,18 @@ def cv44a():
     #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/1cm/MYM_10cm.tfs')
     #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B2/twiss_lhcb2_med_new_thin_800.tfs')
     #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/twiss_lhcb2_med_new_thin_800_1cm_b2.tfs')
-    tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/1cm/twiss_lhcb2_med_new_thin_800_10cm.tfs')
-    # just dump S and Y
+    #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/1cm/twiss_lhcb2_med_new_thin_800_10cm.tfs')
+    #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/twiss_b2.data.thin')
+    # tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/twiss_b2.data')
+
+    # -- just dump S and Y
     row = tf.GetRowDict
     colS = tf.GetColumn('S')        
     colY = tf.GetColumn('Y')        
+    colX = tf.GetColumn('X')        
     
 
-    fileOutName = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/madSY_b2.dat'
+    fileOutName = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/madSYX_b2_thin.dat'
     print 'writing..', fileOutName
     mf = open(fileOutName, 'w')
 
@@ -56,7 +60,7 @@ def cv44a():
         sposition = (colS[i] - length_LHC) * (100)
         sposition = colS[i] * 100
 
-        line = str(sposition) + '  ' + str(colY[i]*100) + '\n'
+        line = str(sposition) + '  ' + str(colY[i]*100) + ' ' +str(colX[i]*100.) + '\n'
         mf.write(line)
 
     mf.close()

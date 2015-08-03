@@ -34,84 +34,69 @@ def cv16():
     lTextDenom = 'B2 4 TeV'
     tagNum, tagDenom = 'BH_3p5TeV', 'BH_4TeV_B2_20MeV'
     nColor, dColor = kOrange+1, kBlue-3
-
-    fNum = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'
-    fDenom = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
-    fDenom = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'
-    fNum = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
-    subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/comp/ratios/normalised/swap/'
-    lTextNum = 'TCT4 only'
-    lTextDenom = 'TCT5 in'
-    lTextDenom = 'TCT4 only'
-    lTextNum = 'TCT5 in'
-    # tagNum, tagDenom = '_BH_HL_tct5otrdB1_20MeV', '_BH_HL_tct5inrdB1_20MeV'
-    normNum, normDenom = normOUT/nprimOUT, normIN/nprimIN
-    tagDenom, tagNum = '_BH_HL_tct5otrdB1_20MeV', '_BH_HL_tct5inrdB1_20MeV'
-    normDenom, normNum = normOUT/nprimOUT, normIN/nprimIN
-    dColor, nColor = kRed-4, kBlue-3
-
-    fDenom = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'
-    fNum = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
-    subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/comp/ratios/normalised/compB1B2_TCTIN/'
-    lTextNum = 'TCT4 only'
-    lTextDenom = 'TCT5 in'
-    lTextDenom = 'TCT4 only'
-    lTextNum = 'TCT5 in'
-    # tagNum, tagDenom = '_BH_HL_tct5otrdB1_20MeV', '_BH_HL_tct5inrdB1_20MeV'
-    normNum, normDenom = normOUT/nprimOUT, normIN/nprimIN
-    tagDenom, tagNum = '_BH_HL_tct5otrdB1_20MeV', '_BH_HL_tct5inrdB1_20MeV'
-    normDenom, normNum = normOUT/nprimOUT, normIN/nprimIN
-    dColor, nColor = kRed-4, kBlue-3
-
-    fDenom = workpath + 'runs/FL_TCT5LOUT_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
-    fNum = workpath + 'runs/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30.root'
-    subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINOUTB2/'
-    lTextDenom = 'TCT4 only'
-    lTextNum = 'TCT5 in'
-    normDenom, normNum = normOUT/nprimOUT, normIN/nprimIN
-    tagDenom, tagNum = '_BH_HL_tct5otrdB2_20MeV', '_BH_HL_tct5inrdB2_20MeV'
-    dColor, nColor = kRed-4, kBlue-3
-
-    fDenom = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
-    fNum = workpath + 'runs/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30.root'
-    subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINB1B2/'
-    lTextDenom = 'TCT5 in B1'
-    lTextNum = 'TCT5 in B2'
-    # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5IN_relaxColl_hHaloB2_roundthin/coll_summary_H5_HL_TCT5IN_relaxColl_hHaloB2_roundthin.dat
-    # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5IN_relaxColl_vHaloB2_roundthin/coll_summary_H5_HL_TCT5IN_relaxColl_vHaloB2_roundthin.dat
-    normDenom, normNum = calcR12m(13073,63740261+61392508), calcR12m(11172,47203328+63096910)
-    tagDenom, tagNum = '_BH_HL_tct5inrdB1_20MeV', '_BH_HL_tct5inrdB2_20MeV'
-    dColor, nColor = kRed-4, kBlue-3
-
-    fNum = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'
-    fDenom = workpath + 'runs/FL_TCT5LOUT_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
-    subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compOUTB1B2/'
-    lTextDenom = 'TCT5 out B2'
-    lTextNum = 'TCT5 out B1'
+    # ------------------------------------------------------------------------
+    # ---- HL -
     # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin.dat
     # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin.dat
     # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_hHaloB2_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_hHaloB2_roundthin.dat 
     # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_vHaloB2_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_vHaloB2_roundthin.dat 
-    normDenom, normNum = calcR12m(21822,47196776+63051589), calcR12m(12091,63828643+61405975)
-    tagDenom, tagNum = '_BH_HL_tct5otrdB2_20MeV', '_BH_HL_tct5otrdB1_20MeV'
-    dColor, nColor = kRed-4, kBlue-3
+    HLinitialFlux = 2736*2.2e11/360000 # 1.7e9
+    normTCT5LOUTb2 = HLinitialFlux * 21822/(47196776+63051589) # 2e-4
+    normTCT5LOUTb1 = HLinitialFlux *12091./(63828643+61405975) # 9.7e-5
+    normTCT5INb1 = HLinitialFlux * 13073/(63740261+61392508) # 1e-4
+    normTCT5INb2 = HLinitialFlux * 11172./(47203328+63096910) # 1e-4
 
     fNum = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'
-    fDenom = workpath + 'runs/FL_TCT5LOUT_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
-    subfolder = wwwpath + 'TCT/6.5TeV/haloShower/b2'
-    lTextDenom = 'TCT5 out B2'
-    lTextNum = 'TCT5 out B1'
+    fDenom = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
+    subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINOUTB1/'
+    lTextNum = 'TCT4 only'
+    lTextDenom = 'TCT5 in'
+    tagDenom, tagNum = '_BH_HL_tct5inrdB1_20MeV', '_BH_HL_tct5otrdB1_20MeV'
+    normDenom, normNum = 1./normTCT5INb1, 1./normTCT5LOUTb1
+    dColor, nColor = kPink-1, kBlue-1
 
-    HLinitialFlux = 2808 * 2.2e11/360000
-    sixtrackHLB1 = 
-    normDenom, normNum = 1./normBH_HL, 1./normBH_HL, 
-    tagDenom, tagNum = '_BH_HL_tct5otrdB2_20MeV', '_BH_HL_tct5otrdB1_20MeV'
-    dColor, nColor = kRed-4, kBlue-3
+    fNum = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
+    fDenom = workpath + 'runs/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30.root'
+    subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINB1B2/'
+    lTextNum = 'TCT5 in B1'
+    lTextDenom = 'TCT5 in B2'
+    tagDenom, tagNum = '_BH_HL_tct5inrdB2_20MeV', '_BH_HL_tct5inrdB1_20MeV'
+    normDenom, normNum =  1./normTCT5INb2, 1./normTCT5INb1
+    dColor, nColor = kPink, kBlue+2
 
-    # norm6500GeVB1 = 2748 * 1.2e11/360000 *(739+585.)/(62515929+62692523)
-    # norm4TeVB1  = 1380 *1.4e11/360000 * (265+95.)/(61832091+12732234)
-    # norm4TeVB2 = 1380 * 1.4e11/360000 * (521.0+454.0)/(69021155+63014399)
-    # norm6500GeVB2 = 2748 * 1.2e11/360000 * (779+773.)/(50890652+63119778.)
+    # fNum = workpath + 'runs/FL_TCT5LOUT_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
+    # fDenom = workpath + 'runs/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30.root'
+    # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINOUTB2/'
+    # lTextNum = 'TCT4 only'
+    # lTextDenom = 'TCT5 in'
+    # normDenom, normNum = 1./normTCT5INb2, 1./normTCT5LOUTb2
+    # tagNum, tagDenom = '_BH_HL_tct5otrdB2_20MeV', '_BH_HL_tct5inrdB2_20MeV'
+    # dColor, nColor = kGreen-2, kMagenta+1
+
+    # fDenom = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
+    # fNum = workpath + 'runs/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30.root'
+    # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINB1B2/'
+    # lTextDenom = 'TCT5 in B1'
+    # lTextNum = 'TCT5 in B2'
+    # normDenom, normNum = 1./normTCT5INb1, 1./normTCT5INb2
+    # tagDenom, tagNum = '_BH_HL_tct5inrdB1_20MeV', '_BH_HL_tct5inrdB2_20MeV'
+    # dColor, nColor = kRed-3, kCyan-3
+
+    # fDenom = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'
+    # fNum = workpath + 'runs/FL_TCT5LOUT_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
+    # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compOUTB1B2/stableOpRate/'
+    # lTextNum = 'TCT5 out B2'
+    # lTextDenom = 'TCT5 out B1'
+    # normNum, normDenom = 1./normTCT5LOUTb2, 1./normTCT5LOUTb1
+    # #    normDenom, normNum = 1.,1.
+    # tagNum, tagDenom = '_BH_HL_tct5otrdB2_20MeV', '_BH_HL_tct5otrdB1_20MeV'
+    # dColor, nColor = kRed-4, kBlue-3
+
+    # # ------------------------------------------------------------------------
+    norm6500GeVB1 = 2748 * 1.2e11/360000 *(739+585.)/(62515929+62692523)
+    norm4TeVB1  = 1380 *1.4e11/360000 * (265+95.)/(61832091+12732234)
+    norm4TeVB2 = 1380 * 1.4e11/360000 * (521.0+454.0)/(69021155+63014399)
+    norm6500GeVB2 = 2748 * 1.2e11/360000 * (779+773.)/(50890652+63119778.)
 
     # fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_ntct1324_30.root'
     # fDenom = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
@@ -119,17 +104,17 @@ def cv16():
     # lTextNum = '6.5 TeV'
     # lTextDenom = '4 TeV'
     # normDenom, normNum = 1./norm4TeVB1, 1./norm6500GeVB1
-    # tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_4TeV'
+    # tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_4TeV_B1_20MeV'
     # nColor, dColor = kOrange-3, kPink-6
 
-    # fNum = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
-    # fDenom = workpath + 'runs/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
-    # subfolder = wwwpath + 'TCT/comp4TeV6.5TeVB2/'
-    # lTextNum = '6.5 TeV'
-    # lTextDenom = '4 TeV'
-    # normNum, normDenom = 1./norm6500GeVB1, 1./norm4TeVB1
-    # tagNum, tagDenom = '_BH_6500GeV_haloB2_20MeV', '_BH_4TeV_B2_20MeV'
-    # nColor, dColor = kOrange-3, kPink-3
+    fNum = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
+    fDenom = workpath + 'runs/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
+    subfolder = wwwpath + 'TCT/comp4TeV6.5TeVB2/'
+    lTextNum = '6.5 TeV'
+    lTextDenom = '4 TeV'
+    normNum, normDenom = 1./norm6500GeVB1, 1./norm4TeVB1
+    tagNum, tagDenom = '_BH_6500GeV_haloB2_20MeV', '_BH_4TeV_B2_20MeV'
+    nColor, dColor = kOrange-3, kPink-3
 
     # fDenom = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
     # fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_ntct1324_30.root'
@@ -138,7 +123,7 @@ def cv16():
     # lTextDenom = 'B2'
     # normDenom, normNum = 1./norm6500GeVB2, 1./norm6500GeVB1
     # tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_6500GeV_haloB2_20MeV'
-    # nColor, dColor = kOrange+2, kGreen+2
+    # nColor, dColor = kOrange+5, kGreen+2
 
     # fNum =  '/afs/cern.ch/project/lhc_mib/crabcf/FL_worstCCrabf/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim990000_30.root'
     # fDenom = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
@@ -148,6 +133,9 @@ def cv16():
     # normNum, normDenom = 1., 1.
     # tagDenom, tagNum =  '_BH_HL_tct5inrdB1_20MeV', '_crabcfb1'
     # dColor, nColor = kMagenta-2, kBlue-1
+    # ------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
+
 
     rCol = kPink-7
     # need one file to generate sDict
@@ -156,7 +144,8 @@ def cv16():
     tag = tagNum
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
     tBBG = TFile.Open(bbgFile).Get(treeName)
-    yrel = '/TCT hit'
+    yrel = '/s'
+#    yrel = '/TCT hit'
     sDict = generate_sDict(tag, norm, tBBG, yrel)
 
     if not os.path.exists(subfolder):
@@ -190,26 +179,31 @@ def cv16():
         mlegend.SetFillColor(0)
         mlegend.SetFillStyle(0)
         mlegend.SetLineColor(0)
-        mlegend.SetTextSize(0.055)
+        mlegend.SetTextSize(0.05)
         mlegend.SetShadowColor(0)
         mlegend.SetBorderSize(0)
 
         p1 = TPad('p1'+skey,'p1'+skey,0.01,0.35,0.99,0.99)
 
-        ymax = 2.
         XurMin, XurMax = -1, -1
         YurMin, YurMax = -1, -1
+
         dOptNum, dOptDenom = 'h', 'hsame'
+        isLogy = 0
         if skey.count('Ekin'): 
             p1.SetLogx(1)
             p1.SetLogy(1)
-            ymax = 3.
             XurMin, XurMax = 0.02, 7.0e3
+            isLogy = 1
 
-        if skey.count('En') or skey.startswith('Rad'): 
+        if skey.count('En'):
             p1.SetLogy(1)
-            ymax = 3.
-            XurMin, XurMax = 0.0, 600.
+            isLogy = 1
+
+        if skey.startswith('Rad'): 
+            p1.SetLogy(1)
+            isLogy = 1
+            XurMin, XurMax = 0.0, 1000.
 
         if skey.count('Zcoor'):
             p1.SetLogy(1)
@@ -282,8 +276,13 @@ def cv16():
             histNum.GetXaxis().SetRangeUser(XurMin,XurMax)
 
         if YurMin != -1:
-            histNum.GetXaxis().SetRangeUser(YurMin,YurMax)
+            histNum.GetYaxis().SetRangeUser(YurMin,YurMax)
 
+        if isLogy:
+            ymax = histNum.GetMaximum()
+            histNum.SetMaximum(5*ymax)
+            if skey.count('PhiEnMuPlus'): 
+                histNum.GetYaxis().SetRangeUser(20,2e4)
         if dOptNum.count("same"):
             histDenom.Draw(dOptDenom)
             histNum.Draw(dOptNum)
