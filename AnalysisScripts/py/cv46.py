@@ -6,7 +6,7 @@
 ## -------------------------------------------------------------------------------
 import ROOT, sys, os, time, math
 from ROOT import *
-import lossmap, helpers, array, random
+import helpers, array, random
 from helpers import wwwpath, length_LHC, mylabel, gitpath, length_LHC
 from array import array
 # -----------------------------------------------------------------------------------

@@ -6,7 +6,7 @@
 ## -------------------------------------------------------------------------------
 import ROOT, sys, os, time, math
 from ROOT import *
-import lossmap, helpers, array
+import helpers, array
 from helpers import *
 from array import array
 # -----------------------------------------------------------------------------------
