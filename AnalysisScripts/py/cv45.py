@@ -14,7 +14,7 @@ def cv45():
 
     # current path
     cpath = workpath + 'runs/checkTrajectory6500GeV/4TeV/'
-
+    cpath = '/afs/cern.ch/project/lhc_mib/beamgas/4TeV_beamsize/createTrajectories/'
     trakfiles = [
         # filen name, Xindex, Yindex, markerstyle, 
         # ['/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/madSY_b2.dat', 0,1, kGreen+1, 21, ],
@@ -29,16 +29,18 @@ def cv45():
         # [cpath + 'ir1_4TeV_settings_from_TWISS_20MeV_b1_MYM001_fort.89', 5,4, kBlack, 6, 'test size'], # 0cx 1cy 2cz 3x 4y 5z 6J 7A 
         # [cpath + 'ir1_4TeV_settings_from_TWISS_20MeV_b1_orbitDump001_fort.89', 5,4, kBlack, 6, 'test size'], # 0cx 1cy 2cz 3x 4y 5z 6J 7A 
         # [cpath + 'ir1_4TeV_settings_from_TWISS_20MeV_b1_orbitDump001_fort.89', 5,3, kBlack, 6, 'test size'], # 0cx 1cy 2cz 3x 4y 5z 6J 7A 
-        # [cpath + 'BEAMGAS.dat', 2,1, kBlack, 6, 'input fluka BEAMGAS'], # 0x 1y 2z 3u 4v 
+        # [cpath + 'BEAMGAS.dat', 2,1, kBlack, 6, 'input final BEAMGAS', '_yBEAMGAS', 'y cm'], # 0x 1y 2z 3u 4v 
+        [cpath + 'BEAMGAS.dat', 2,0, kBlack, 6, 'input final BEAMGAS', '_xBEAMGAS', 'x cm'], # 0x 1y 2z 3u 4v 
         # [cpath + 'startBG.dat', 2,1, kBlack, 6, 'input fluka startBG'], # 0x 1y 2z 3u 4v 
-        [cpath + 'startBG.dat', 2,0, kBlack, 6, 'input fluka startBG'], # 0x 1y 2z 3u 4v 
+        # [cpath + 'startBG.dat', 2,0, kBlack, 6, 'input fluka startBG'], # 0x 1y 2z 3u 4v 
+        # [cpath + 'THISISIT.dat', 5,4, kBlack, 6, 'input THISISIT', '_yTHISISIT', 'y cm'], # 0x 1y 2z 3u 4v 
+        #[cpath + 'THISISIT.dat', 2,0, kBlack, 6, 'input THISISIT', '_xTHISISIT', 'x cm'], # 0x 1y 2z 3u 4v 
 
 
        ]
 
-    rel = '_xstartBG'
-    ytitle = 'y [cm]'
-    ytitle = 'x [cm]'
+    rel = ''
+    ytitle = ''
 
     XurMin, XurMax = 5,57000
     XurMin, XurMax = -1, -1
@@ -64,7 +66,7 @@ def cv45():
 
     gr = []
 
-    for fn,Xindex,Yindex,color,mStyle,lg in trakfiles:
+    for fn,Xindex,Yindex,color,mStyle,lg,rel,ytitle in trakfiles:
         print 'opening', fn
         [S,Y] = helpers.getListFromColumn([Xindex,Yindex], fn)
         xList, yList = S,Y 
