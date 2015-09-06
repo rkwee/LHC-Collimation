@@ -18,8 +18,9 @@ gitpath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/'
 # ------------------------------------------------------------------------------------------------
 # tags for bbG analysis *only for giving name!*
 tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
+tag_BH_4TeV = '_BH_4TeV_B2_20MeV'
 tag_BH_4TeV = '_BH_4TeV_B1_20MeV'
-#tag_BH_4TeV = '_BH_4TeV_B2_20MeV'
+tag_BG_4TeV = '_BG_4TeV_20MeV_bs'
 tag_BH_7TeV = '_BH_HL_tct5inrdB2_20MeV'
 tag_BH_7TeV = '_BH_HL_tct5otrdB2_20MeV'
 tag_BH_6p5TeV = '_BH_6500GeV_haloB1_20MeV'

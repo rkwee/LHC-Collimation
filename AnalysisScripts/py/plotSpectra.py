@@ -61,14 +61,14 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/HL/nominalSettings/comp/'
         if debug: print "Using HL comp format", '.'*10
 
-    elif rfname.count('4TeV'): 
+    elif rfname.count('BH_4TeV'): 
         hDict = hDict_BH_4TeV
-        subfolder= 'TCT/4TeV/'+Beam+'/' + EnCutOff + '/'
+        subfolder= 'TCT/4TeV/haloShower/'+Beam+'/' + EnCutOff + '/'
         if debug: print "Using 4 TeV format", '.'*10
 
-    elif rfname.count('BG_4TeV'): 
+    elif rfname.count('BG_4TeV') or rfname.count('beam-gas_4TeV'): 
         hDict = hDict_BG_4TeV
-        subfolder= 'TCT/4TeV/'
+        subfolder= 'TCT/4TeV/beamgas/fluka/'
         if debug: print "Using 4 TeV format", '.'*10
 
     elif rfname.count('BG_3p5TeV'): 
@@ -86,7 +86,7 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/3p5TeV/'
         if debug: print "Using 4 TeV format", '.'*10
 
-    elif rfname.count('hybrid') and not rfname.count('Comp'): 
+    elif rfname.count('hybrid') and not rfname.count('Comp') and not rfname.count('worstCCrab'): 
         hDict = hDict_BH_HL_hybrid
         if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5otrd/'
         elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/'
@@ -101,6 +101,11 @@ def plotSpectra(bbgFile, tag, doComp):
     elif rfname.count('6500GeV') and rfname.count('Halo'): 
         hDict = hDict_BH_6p5TeV
         subfolder = 'TCT/6.5TeV/haloShower/'+beam+'/'
+
+    elif rfname.count('worstCCrab'): 
+        hDict = hDict_BH_HL_hybrid
+        subfolder= 'TCT/HL/crabcfb1/'
+        if debug: print "Using  format", '.'*10
 
     else:
         print "no dictionary defined"

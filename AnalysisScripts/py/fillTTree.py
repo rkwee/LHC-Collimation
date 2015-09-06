@@ -584,7 +584,6 @@ def getHistogram(sDict, skey, mt):
 def resultFile(bbgFile,rel):
     k=bbgFile
     n='/'.join(k.split('/')[:-1]) + '/results_' + rel + k.split('/')[-1]
-    n='/'.join(k.split('/')[:-1]) + 'results_' + rel + k.split('/')[-1]
     return  n
 # ---------------------------------------------------------------------------------
 # main local function
