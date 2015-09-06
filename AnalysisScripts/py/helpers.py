@@ -12,14 +12,16 @@ wwwpath  = '/afs/cern.ch/user/r/rkwee/public/www/HL-LHC/'
 source_dir  = workpath + 'runs/sourcedirs/'
 gitpath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/'
 
-#workpath = '/Users/rkwee/Documents/RHUL/work/runs/TCT/'
-#wwwpath  = '/Users/rkwee/Documents/RHUL/work/results/www/'
-
+workpath = '/Users/rkwee/Documents/RHUL/work/runs/TCT/'
+wwwpath  = '/Users/rkwee/Documents/RHUL/work/results/www/'
+gitpath  = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/'
 # ------------------------------------------------------------------------------------------------
 # tags for bbG analysis *only for giving name!*
+tag_BH_3p5TeV = "_BH_3p5TeV_B1_20MeV"
 tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
-tag_BH_4TeV = '_BH_4TeV_B1_20MeV'
 tag_BH_4TeV = '_BH_4TeV_B2_20MeV'
+tag_BH_4TeV = '_BH_4TeV_B1_20MeV'
+tag_BG_4TeV = '_BG_4TeV_20MeV_bs'
 tag_BH_7TeV = '_BH_HL_tct5inrdB2_20MeV'
 tag_BH_7TeV = '_BH_HL_tct5otrdB2_20MeV'
 tag_BH_6p5TeV = '_BH_6500GeV_haloB1_20MeV'
@@ -273,3 +275,31 @@ def makeTGraph(xList, yList, color, mStyle):
 
     return gr
 # ----------------------------------------------------------------------------
+def getListFromColumn(colList, fname):
+
+    cnt = 0
+    with open(fname) as mf:
+
+        for line in mf:            
+
+            lineCol = line.split()
+
+            if cnt == 0:
+
+                # -- list of lists for each desired column in file
+                content = [ [] for i in range(len(colList)) ]
+
+                cnt += 1
+
+                #print('Created list for ', len(colList), 'columns')
+
+
+            for i,c in enumerate(colList):
+
+                #print('Filling colum', c, 'into list', content[i])
+                try:
+                    content[i] += [float(lineCol[c])]
+                except:
+                    print 'skipping filling of ....', lineCol[c]
+
+    return content

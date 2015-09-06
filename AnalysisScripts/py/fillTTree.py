@@ -12,10 +12,11 @@ from createTTree import treeName
 # helper functions first, then main local function //
 # global variables
 # ---------------------------------------------------------------------------------
-zmin, zmax = 2260., 14960.
-zmin, zmax = 2260., 21560.
+zmin, zmax = 2260., 55060.
+#zmin, zmax = 2260., 14960.
+#zmin, zmax = 2260., 21560.
 # to disable the zcut have zOn > zmax
-zOn = 3e4
+zOn = 9e4
 # for all use energy cut at 20 MeV
 encut = 'energy_ke > ' + EnCut
 debug = 1
@@ -166,9 +167,17 @@ def do1dPhiHisto(sDict, mt, hname, xaxis, particleTypes):
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
     var = 'TMath::ATan2(y,x)'
 
-    # cut on radius 
-    rcut = sDict[hname][8]
-    if float(rcut) > 0.: cuts += ['TMath::Sqrt(x*x + y*y) > ' + rcut]
+    # cut on radius r or energy E
+    rEcut  = sDict[hname][8]
+    print "rEcut", rEcut
+    if rEcut != '-9999':
+        cutdir = rEcut.split()[1] 
+        cutval = rEcut.split()[-1]
+        if rEcut.startswith("r"): 
+            cuton = 'TMath::Sqrt(x*x + y*y) '
+        elif rEcut.startswith("E") : 
+            cuton = "energy_ke "
+        cuts += [ cuton + cutdir + ' ' + cutval]
 
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
     cuts += [encut]
@@ -208,9 +217,17 @@ def do1dPhiEnHisto(sDict, mt, hname, xaxis, particleTypes):
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
     cuts += [encut]
 
-    # cut on radius
-    rcut = sDict[hname][8]
-    if float(rcut) > 0.: cuts += ['TMath::Sqrt(x*x + y*y) > ' + rcut]
+    # cut on radius r or energy E
+    rEcut  = sDict[hname][8]
+    print "rEcut", rEcut
+    if rEcut != '-9999':
+        cutdir = rEcut.split()[1] 
+        cutval = rEcut.split()[-1]
+        if rEcut.startswith("r"): 
+            cuton = 'TMath::Sqrt(x*x + y*y) '
+        elif rEcut.startswith("E") : 
+            cuton = "energy_ke "
+        cuts += [ cuton + cutdir + ' ' + cutval]
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]

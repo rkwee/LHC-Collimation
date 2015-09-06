@@ -2,11 +2,11 @@
 #
 # Mar 2015, rkwee
 ## -------------------------------------------------------------------------------
-import pymadx
+# depths plots of FLUKA input for halo
 ## -------------------------------------------------------------------------------
 import ROOT, sys, os, time, math
 from ROOT import *
-import lossmap, helpers, array
+import helpers, array
 from helpers import *
 from array import array
 # -----------------------------------------------------------------------------------
@@ -69,8 +69,23 @@ def cv43():
               'HL 7 TeV', 1.e-3, \
           ],
 
+        # 4 TeV
+        [ workpath + 'runs/4TeV_Halo/coll_summary_TCT_4TeV_B2hHalo.dat',\
+              workpath + 'runs/4TeV_Halo/HALO4TeVB2.dat.root',\
+              gitpath + 'SixTrackConfig/4TeV/TCThaloStudies/b2/collgaps.dat',\
+              'TCT/4TeV/B2/', '4 TeV B2', 1.,
+            ],
+
+        [ workpath + 'runs/4TeV_Halo/coll_summary_TCT_4TeV_B1hHalo.dat',\
+              workpath + 'runs/sourcedirs/TCT_4TeV_60cm/fluka/impacts_real_HALO.dat.root',\
+              gitpath + 'SixTrackConfig/4TeV/TCThaloStudies/b1/collgaps.dat',\
+              'TCT/4TeV/B1/', '4 TeV B1', 1.,
+            ],
+
         ]
 
+    # activate only last entry
+    sets = [sets[-1]]
         
     nbins, xmin, xmax = 100,0., 5.
     hx = []
@@ -169,7 +184,7 @@ def cv43():
         lab.DrawLatex(0.45, y2+0.03, rel)
         lab.DrawLatex(0.2, y2-0.05, energy)
         pname  = wwwpath
-        pname += subfolder + 'impactparameter_'+rel+'.png'
+        pname += subfolder + 'inelposition_'+rel+'.pdf'
 
         print('Saving file as ' + pname ) 
         cv.SaveAs(pname)
@@ -218,7 +233,7 @@ def cv43():
             mt.Project(hname, var, cut)
             if showInfo: print 'INFO: Have ', hx[-1].GetEntries(), ' entries in', hname, ' for ', collName
 
-            xtitle, ytitle = 'b [mm]', "entries"
+            xtitle, ytitle = 'depth [mm]', "entries"
             hx[-1].GetXaxis().SetLabelSize(0.05)
             hx[-1].GetYaxis().SetLabelSize(0.05)
             hx[-1].GetXaxis().SetTitle(xtitle)
