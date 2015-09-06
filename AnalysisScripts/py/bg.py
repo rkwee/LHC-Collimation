@@ -56,8 +56,10 @@ vDict    = {  ##position of vacuum pipe 0, YurMin 1, YurMax 2, beamcolor 3, lTex
 
 'LHC.BCTFR.A6R4.B1:BEAM_INTENSITY':['', 1e6, 2e12, kBlue, '', '#protons', '', ],
 'LHC.BCTFR.A6R4.B2:BEAM_INTENSITY':['', 1e6, 2e12, kRed, '', '#protons', '', ],
-#'LHC.STATS:ENERGY':['', 1e6, 2e12, kBlack, '', 'beam energy [GeV]', '', ],
+'LHC.STATS:ENERGY':['', 1e6, 2e12, kBlack, '', 'beam energy [GeV]', '', ],
 'LHC.BOFSU:OFSU_ENERGY':['', 1e6, 2e12, kBlack, '', 'beam energy [GeV]', '', ],
+'RPMBB.RR13.ROD.A81B1:I_MEAS':['', 1e6, 2e12, kGreen+1, '', 'defocussing octupole current [A]', '', ],
+'RPMBB.RR13.ROF.A81B2:I_MEAS':['', 1e6, 2e12, kGreen+2, '', 'focussing octupole current [A]', '', ],
 
 'ATLAS:BKGD1':['', 1e6, 2e12, kCyan, '', 'ATLAS BKGD1', '', ],
 'ATLAS:BKGD2':['', 1e6, 2e12, kCyan-1, '', 'ATLAS BKGD2', '', ],
@@ -197,13 +199,9 @@ def makeRootFile(fname, doHistos, doGraphs):
 def getkname(k):
     if k.count('.'):
         kname = k.replace('.', '_')
-    else:
-        kname = k
 
     if kname.count(":"):
         kname = kname.replace(':', '_')
-    else:
-        kname = k
 
     if kname.endswith('.csv'): kname = kname.split('.')[0]
     return kname
