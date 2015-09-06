@@ -1,5 +1,5 @@
 import math
-from helpers import tag_BH_4TeV, tag_BH_7TeV, tag_BH_6p5TeV, tag_BG_4TeV
+from helpers import tag_BH_4TeV, tag_BH_7TeV, tag_BH_6p5TeV, tag_BG_4TeV, tag_BH_3p5TeV
 tag_HL   = 'HL_BH'
 
 
@@ -165,6 +165,7 @@ hDict_BH_4TeV = {
     'PhiEnChar' + tag_BH_4TeV: [ ['PhiEnNeg', 'PhiEnPos', 'PhiEnNeu','PhiEnNeutrons','PhiEnPhotons'],0.52, 0.75, 0.98, 0.9, 0,1, -1,-1.,1e-3,1e2, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiNMu' + tag_BH_4TeV: [ ['PhiNMuons','PhiNMuR10','PhiNMuR50','PhiNMuR100','PhiNMuR200','PhiNMuR300','PhiNMuR400','PhiNMuR500','PhiNMuR1000'],0.4, 0.64, 0.7, 0.92, 0,1, -1,-1,1e-5,1, 1, lText, 0.2,0.9, -1,-1, ], 
     'PhiEnMu' + tag_BH_4TeV: [ ['PhiEnMuons','PhiEnMuR10','PhiEnMuR50','PhiEnMuR100','PhiEnMuR200','PhiEnMuR300','PhiEnMuR400','PhiEnMuR500','PhiEnMuR1000'],0.6, 0.6, 0.9,0.9, 0,1, -1,-1,1e-5,1e3, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiEnMuRlt' + tag_BH_4TeV: [ ['PhiEnMuons','PhiEnMuRlt10','PhiEnMuRlt50','PhiEnMuRlt100','PhiEnMuRlt200','PhiEnMuRlt300','PhiEnMuRlt400','PhiEnMuRlt500','PhiEnMuRlt1000'],0.6, 0.6, 0.9,0.9, 0,1, -1,-1,1e-5,1e3, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiEnDist' + tag_BH_4TeV:[ [ 'PhiEnAll', 'PhiEnMuons', 'PhiEnNeutrons', 'PhiEnProtons', 'PhiEnPhotons', 'PhiEnElecPosi', 'PhiEnPions','PhiEnKaons'],0.72, 0.7, 0.98, 0.9, 0,1, -1,-1,1e-3,1e2, 0, lText, 0.2,0.9, -1,-1, ],
 
     'XcoorNChar' + tag_BH_4TeV: [ ['XcoorNNeg', 'XcoorNPos', 'XcoorNNeu'],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1, 0, lText, 0.2,0.9, -1,-1, ],

@@ -28,7 +28,7 @@ if __name__ == "__main__":
     SetAtlasStyle()
 
     # ---------------------
-    TTreeFileName = createTTree.ctree(datafile)
+    #TTreeFileName = createTTree.ctree(datafile)
 
     #TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'        
     # TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
@@ -47,6 +47,8 @@ if __name__ == "__main__":
     #TTreeFileName = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
     # TTreeFileName = 'runBG_corr/ir1_BG_4TeV_settings_from_TWISS_20MeV_b1_nprim256500_67.root'
     #TTreeFileName = "/afs/cern.ch/project/lhc_mib/bbgen/4TeV/beamgas/withoutBeamSize/beam-gas_4TeV-IR1_to_arc_20MeV_cutoff_nprim28788000_66.root"
+    #TTreeFileName = "data/ir1_BG_4TeV_settings_from_TWISS_20MeV_b1_nprim2952500_67.root"
+    if datafile.endswith("root"): TTreeFileName = datafile
     # for comparisons plot change in plotSpectra
     # ---------------------
     # define tag in helpers!
@@ -56,4 +58,4 @@ if __name__ == "__main__":
     # tag = tag_BH_7TeV
     doComp = 0
     fillTTree.fillHistos(TTreeFileName, tag, doComp)
-    plotSpectra.plotSpectra(TTreeFileName, tag, doComp)
+    # plotSpectra.plotSpectra(TTreeFileName, tag, doComp)

@@ -12,11 +12,12 @@ wwwpath  = '/afs/cern.ch/user/r/rkwee/public/www/HL-LHC/'
 source_dir  = workpath + 'runs/sourcedirs/'
 gitpath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/'
 
-#workpath = '/Users/rkwee/Documents/RHUL/work/runs/TCT/'
-#wwwpath  = '/Users/rkwee/Documents/RHUL/work/results/www/'
-
+workpath = '/Users/rkwee/Documents/RHUL/work/runs/TCT/'
+wwwpath  = '/Users/rkwee/Documents/RHUL/work/results/www/'
+gitpath  = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/'
 # ------------------------------------------------------------------------------------------------
 # tags for bbG analysis *only for giving name!*
+tag_BH_3p5TeV = "_BH_3p5TeV_B1_20MeV"
 tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
 tag_BH_4TeV = '_BH_4TeV_B2_20MeV'
 tag_BH_4TeV = '_BH_4TeV_B1_20MeV'
