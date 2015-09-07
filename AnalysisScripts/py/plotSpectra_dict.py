@@ -75,6 +75,10 @@ hDict_HL_BH = {
     'PhiEnMu' + tag_HL: [ ['PhiEnMuons','PhiEnMuR10','PhiEnMuR50','PhiEnMuR100','PhiEnMuR200','PhiEnMuR300','PhiEnMuR400','PhiEnMuR500','PhiEnMuR1000'],0.2, 0.8, 0.5, 1.0, 0,1, -3.14,3.,1e-5,9-1, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiEnDist' + tag_HL:[ [ 'PhiEnAll', 'PhiEnMuons', 'PhiEnNeutrons', 'PhiEnProtons', 'PhiEnPhotons', 'PhiEnElecPosi', 'PhiEnPions','PhiEnKaons'],0.72, 0.7, 0.98, 0.9, 0,1, -1,-1,5e-3,5e2, 0, lText, 0.2,0.9, -1,-1, ],
 
+    'PhiEnMuE' + tag:[ [ 'PhiEnAll', 'PhiEnMuons', 'PhiEnMuE100'],0.6, 0.72, 0.9,0.92, 0,1, -1,-1,1e-5,1e2, 0, lText, 0.2,0.955, -1,-1, ],
+    'PhiEnMuRlt' + tag: [ ['PhiEnMuons','PhiEnMuRlt10','PhiEnMuRlt50','PhiEnMuRlt100','PhiEnMuRlt200','PhiEnMuRlt500','PhiEnMuRlt1000'],0.6, 0.72, 0.9,0.92, 0,1, -1,-1,1e-5,1e2, 0, lText, 0.2,0.955, -1,-1, ],
+    'PhiEnMuRlt200' + tag: [ ['PhiEnMuons','PhiEnMuRlt10','PhiEnMuRlt50','PhiEnMuRlt100','PhiEnMuRlt200'],0.6, 0.72, 0.9,0.92, 0,1, -1,-1,1e-5,1e2, 0, lText, 0.2,0.955, -1,-1, ],
+
     'XcoorNChar' + tag_HL: [ ['XcoorNNeg', 'XcoorNPos', 'XcoorNNeu'],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1e1, 0, lText, 0.2,0.9, -1,-1, ],
     'YcoorNChar' + tag_HL: [ ['YcoorNNeg', 'YcoorNPos', 'YcoorNNeu'],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1e1, 0, lText, 0.2,0.9, -1,-1, ],
 
@@ -188,7 +192,8 @@ hDict_BH_4TeV = {
     'XYNMuonsE10' + tag_BH_4TeV    : [ ['XYNMuonsE10'], 0.5, 0.92, 0.7, 1., 1,0, 5e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, 1e-6*scaleFactor,2e-5*scaleFactor, ],
     }
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
-lText = 'beamgas 4 TeV with beamsize'
+#lText = 'beamgas 4 TeV with beamsize'
+lText = 'beamgas 4 TeV'
 tag = tag_BG_4TeV
 hDict_BG_4TeV = { 
 
@@ -212,8 +217,12 @@ hDict_BG_4TeV = {
     'PhiNDist' + tag: [ ['PhiNAll', 'PhiNMuons','PhiNNeutrons','PhiNProtons','PhiNPhotons', 'PhiNElecPosi', 'PhiNPionsChar', 'PhiNKaonsChar'],0.72, 0.74, 0.98, 0.92, 0,1, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiEnChar' + tag: [ ['PhiEnNeg', 'PhiEnPos', 'PhiEnNeu','PhiEnNeutrons','PhiEnPhotons'],0.52, 0.75, 0.98, 0.9, 0,1, -1,-1.,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiNMu' + tag: [ ['PhiNMuons','PhiNMuR10','PhiNMuR50','PhiNMuR100','PhiNMuR200','PhiNMuR300','PhiNMuR400','PhiNMuR500','PhiNMuR1000'],0.4, 0.64, 0.7, 0.92, 0,1, -1,-1,-1,-1, 1, lText, 0.2,0.9, -1,-1, ], 
-    'PhiEnMu' + tag: [ ['PhiEnMuons','PhiEnMuR10','PhiEnMuR50','PhiEnMuR100','PhiEnMuR200','PhiEnMuR300','PhiEnMuR400','PhiEnMuR500','PhiEnMuR1000'],0.2, 0.8, 0.5, 1.0, 0,1, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+
     'PhiEnDist' + tag:[ [ 'PhiEnAll', 'PhiEnMuons', 'PhiEnNeutrons', 'PhiEnProtons', 'PhiEnPhotons', 'PhiEnElecPosi', 'PhiEnPions','PhiEnKaons'],0.72, 0.7, 0.98, 0.9, 0,1, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiEnMu' + tag: [ ['PhiEnMuons','PhiEnMuR10','PhiEnMuR50','PhiEnMuR100','PhiEnMuR200','PhiEnMuR300','PhiEnMuR400','PhiEnMuR500','PhiEnMuR1000'],0.2, 0.8, 0.5, 1.0, 0,1, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiEnMuE' + tag:[ [ 'PhiEnAll', 'PhiEnMuons', 'PhiEnMuE100'],0.6, 0.72, 0.9,0.92, 0,1, -1,-1,1e-5,1e2, 0, lText, 0.2,0.955, -1,-1, ],
+    'PhiEnMuRlt' + tag: [ ['PhiEnMuons','PhiEnMuRlt10','PhiEnMuRlt50','PhiEnMuRlt100','PhiEnMuRlt200','PhiEnMuRlt500','PhiEnMuRlt1000'],0.6, 0.72, 0.9,0.92, 0,1, -1,-1,1e-5,1e2, 0, lText, 0.2,0.955, -1,-1, ],
+    'PhiEnMuRlt200' + tag: [ ['PhiEnMuons','PhiEnMuRlt10','PhiEnMuRlt50','PhiEnMuRlt100','PhiEnMuRlt200'],0.6, 0.72, 0.9,0.92, 0,1, -1,-1,1e-5,1e2, 0, lText, 0.2,0.955, -1,-1, ],
 
     'XcoorNChar' + tag: [ ['XcoorNNeg', 'XcoorNPos', 'XcoorNNeu'],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'YcoorNChar' + tag: [ ['YcoorNNeg', 'YcoorNPos', 'YcoorNNeu'],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
@@ -229,6 +238,14 @@ hDict_BG_4TeV = {
     'XYNPiMinusE' + tag       : [ ['XYNPiMinusE']  ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNKaonPlusE' + tag      : [ ['XYNKaonPlusE'] ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNKaonMinusE' + tag     : [ ['XYNKaonMinusE'] ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+
+    'OrigXYMuons' + tag       : [ ['OrigXYMuon'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    'OrigXZMuons' + tag       : [ ['OrigXZMuon'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    'OrigYZMuons' + tag       : [ ['OrigYZMuon'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    'OrigXYMuonsE100' + tag       : [ ['OrigXYMuonsE100'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    'OrigXZMuonsE100' + tag       : [ ['OrigXZMuonsE100'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    'OrigYZMuonsE100' + tag       : [ ['OrigYZMuonsE100'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+
 
     }
 
@@ -372,7 +389,10 @@ hDict_BH_6p5TeV = {
     'PhiNDist' + tag: [ ['PhiNAll', 'PhiNMuons','PhiNNeutrons','PhiNProtons','PhiNPhotons', 'PhiNElecPosi', 'PhiNPionsChar', 'PhiNKaonsChar'],0.65, 0.74, 0.98, 0.92, 0,1, -1,-1,1e-5,1e1, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiEnChar' + tag: [ ['PhiEnNeg', 'PhiEnPos', 'PhiEnNeu','PhiEnNeutrons','PhiEnPhotons', 'PhiEnProtons'],0.52, 0.75, 0.98, 0.9, 0,1, -1,-1.,1e-3,1e2, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiNMu' + tag: [ ['PhiNMuons','PhiNMuR10','PhiNMuR50','PhiNMuR100','PhiNMuR200','PhiNMuR300','PhiNMuR400','PhiNMuR500','PhiNMuR1000'],0.4, 0.64, 0.7, 0.92, 0,1, -1,-1,1e-5,1, 1, lText, 0.2,0.955, -1,-1, ], 
-    'PhiEnMu' + tag: [ ['PhiEnMuons','PhiEnMuR10','PhiEnMuR50','PhiEnMuR100','PhiEnMuR200','PhiEnMuR300','PhiEnMuR400','PhiEnMuR500','PhiEnMuR1000'],0.6, 0.6, 0.9,0.9, 0,1, -1,-1,1e-5,1e3, 0, lText, 0.2,0.955, -1,-1, ],
+    'PhiEnMu' + tag: [ ['PhiEnMuons','PhiEnMuR10','PhiEnMuR50','PhiEnMuR100','PhiEnMuR200','PhiEnMuR500','PhiEnMuR1000'],0.6, 0.72, 0.9,0.92, 0,1, -1,-1,1e-5,1e2, 0, lText, 0.2,0.955, -1,-1, ],
+    'PhiEnMuE' + tag:[ [ 'PhiEnAll', 'PhiEnMuons', 'PhiEnMuE100'],0.6, 0.72, 0.9,0.92, 0,1, -1,-1,1e-5,1e2, 0, lText, 0.2,0.955, -1,-1, ],
+    'PhiEnMuRlt' + tag: [ ['PhiEnMuons','PhiEnMuRlt10','PhiEnMuRlt50','PhiEnMuRlt100','PhiEnMuRlt200','PhiEnMuRlt500','PhiEnMuRlt1000'],0.6, 0.72, 0.9,0.92, 0,1, -1,-1,1e-5,1e2, 0, lText, 0.2,0.955, -1,-1, ],
+    'PhiEnMuRlt200' + tag: [ ['PhiEnMuons','PhiEnMuRlt10','PhiEnMuRlt50','PhiEnMuRlt100','PhiEnMuRlt200'],0.6, 0.72, 0.9,0.92, 0,1, -1,-1,1e-5,1e2, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiEnDist' + tag:[ [ 'PhiEnAll', 'PhiEnMuons', 'PhiEnNeutrons', 'PhiEnProtons', 'PhiEnPhotons', 'PhiEnElecPosi', 'PhiEnPions','PhiEnKaons'],0.65, 0.7, 0.98, 0.9, 0,1, -1,-1,1e-3,1e2, 0, lText, 0.2,0.955, -1,-1, ],
 
     'ZcoorOrigMu' + tag: [ ['ZcoorOrigMu'],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1e-2, 0, lText, 0.2,0.9, -1,-1, ],
