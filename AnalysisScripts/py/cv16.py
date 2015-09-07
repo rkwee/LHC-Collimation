@@ -16,6 +16,7 @@ def cv16():
     norm4TeVB2 = 1380 * 1.4e11/360000 * (521.0+454.0)/(69021155+63014399)
     norm6500GeVB2 = 2748 * 1.2e11/360000 * (779+773.)/(50890652+63119778.)
     run1iniFlux = 1380 * 1e11/360000. # from Roderiks NIM paper: 2010: 368 up to 2011 1380
+    norm3500GeVB1 = 1.02813e-5 # from http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam-halo_3.5TeV/flukaIR15.html
     norm3500GeVB2 = 2.25625e-5 # from http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam-halo_3.5TeV/flukaIR15.html
 
     fNum   = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'
@@ -34,14 +35,32 @@ def cv16():
     tagNum, tagDenom = 'BH_4TeV_B1', 'BH_4TeV_B2'
     nColor, dColor = kOrange-3, kPink-7
 
-    fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
-    fNum = workpath + 'results/results_beam-halo_3.5TeV-R1_D1_nprim2344800_66.root'
+    fDenom = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
+    fNum = workpath + 'data/3p5TeV/results_beam-halo_3.5TeV-R1_D1_20MeV_b2_nprim2344800_66.root'
     subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/normalised/'
-    lTextNum = 'B2 3.5 TeV'
-    lTextDenom = 'B2 4 TeV'
+    lTextNum, lTextDenom = 'B2 3.5 TeV', 'B2 4 TeV'
     normDenom, normNum = 1./norm4TeVB2, 1./(run1iniFlux * norm3500GeVB2)
-    tagNum, tagDenom = 'BH_3p5TeV', 'BH_4TeV_B2_20MeV'
+    tagNum, tagDenom = '_BH_3p5TeV_B2_20MeV', '_BH_4TeV_B2_20MeV'
     nColor, dColor = kOrange+1, kBlue-3
+
+    # fNum = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
+    # fDenom = workpath + 'data/3p5TeV/results_beam-halo_3.5TeV-R1_D1_20MeV_b2_nprim2344800_66.root'
+    # subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/'
+    # lTextNum, lTextDenom = 'B2 4 TeV', 'B2 3.5 TeV'
+    # normDenom, normNum = 1.,1.     
+    # tagDenom, tagNum = '_BH_3p5TeV_B2_20MeV', '_BH_4TeV_B2_20MeV'
+    # nColor, dColor = kBlue-3, kOrange+1
+
+
+    # fDenom = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    # fNum = workpath + 'data/3p5TeV/results_beam-halo_3.5TeV-L1_20MeV_b1_nprim1731200_66.root'
+    # subfolder = wwwpath + 'TCT/4TeV/compB1_3p5vs4TeV/normalised/'
+    # lTextNum, lTextDenom = '3.5 TeV', '4 TeV'
+    # normDenom, normNum = 1./norm4TeVB1, 1./(run1iniFlux * norm3500GeVB1)
+    # #normDenom, normNum = 1.,1.
+    # tagNum, tagDenom = '_BH_3p5TeV_B1_20MeV', '_BH_4TeV_B1_20MeV'
+    # nColor, dColor = kOrange+3, kMagenta-3
+
     # ------------------------------------------------------------------------
     # ---- HL -
     # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin.dat
@@ -148,7 +167,7 @@ def cv16():
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
     tBBG = TFile.Open(bbgFile).Get(treeName)
     yrel = '/s'
-#    yrel = '/TCT hit'
+    #yrel = '/TCT hit'
     sDict = generate_sDict(tag, norm, tBBG, yrel)
 
     if not os.path.exists(subfolder):

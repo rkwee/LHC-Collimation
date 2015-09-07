@@ -76,14 +76,9 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/3p5TeV/'
         if debug: print "Using 4 TeV format", '.'*10
 
-    elif rfname.count('beam-halo_3.5TeV-R1_D1'): 
+    elif rfname.count('beam-halo_3.5TeV'): 
         hDict = hDict_BH_3p5TeV
-        subfolder= 'TCT/3p5TeV/'
-        if debug: print "Using 4 TeV format", '.'*10
-
-    elif rfname.count('beam-halo_3.5TeV-R1_D1'): 
-        hDict = hDict_BH_3p5TeV
-        subfolder= 'TCT/3p5TeV/'
+        subfolder= 'TCT/3p5TeV/' + beam + '/'
         if debug: print "Using 4 TeV format", '.'*10
 
     elif rfname.count('hybrid') and not rfname.count('Comp') and not rfname.count('worstCCrab'): 
