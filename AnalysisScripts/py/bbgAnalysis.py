@@ -33,8 +33,9 @@ if __name__ == "__main__":
     #TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'        
     # TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
     # TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20GeV_b2_nprim158890000_66.root'
-    #TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
-    #TTreeFileName = workpath + 'runs/4TeV_Halo/ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    TTreeFileName = 'data/4TeV/ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+
+    # TTreeFileName = workpath + 'runs/4TeV_Halo/ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
     #TTreeFileName = workpath + 'runs/FL_TCT5IN_roundthin/hilumi_ir1_hybrid_b1_20MeV_exp_nprim1635000_30.root'
     # TTreeFileName = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
     # TTreeFileName = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'    
