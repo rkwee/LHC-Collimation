@@ -209,7 +209,8 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'XYNKaonPlusE'+tag:[ ['15'], norm, 240, -120, 120, tBBG, 'K^{+} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
  'XYNKaonMinusE'+tag:[ ['16'], norm, 240, -120, 120, tBBG, 'K^{-} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
  'XYNMuonsE10'+tag:[ ['10', '11'], norm, 240, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 10 GeV', kWhite, '10.','x [cm]','y [cm]', 240, -120, 120, ], 
- 'XYNMuonsE500'+tag:[ ['10', '11'], norm, 240, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 500 GeV', kWhite, '100.','x [cm]','y [cm]', 240, -120, 120, ], 
+ 'XYNMuonsE100'+tag:[ ['10', '11'], norm, 240, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 100 GeV', kWhite, '100.','x [cm]','y [cm]', 240, -120, 120, ], 
+ 'XYNMuonsE500'+tag:[ ['10', '11'], norm, 240, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 500 GeV', kWhite, '500.','x [cm]','y [cm]', 240, -120, 120, ], 
  
  'OrigXYMuon'+tag:[ ['10', '11'],  norm, 240, -120, 120, tBBG, '#mu^{#pm} ', kWhite, '-9999','x [cm]','y [cm]', 240, -120, 120, ],
  'OrigXZMuon'+tag:[ ['10', '11'],  norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} ', kWhite, '-9999','z [cm]','x [cm]', 240, -120, 120, ],
