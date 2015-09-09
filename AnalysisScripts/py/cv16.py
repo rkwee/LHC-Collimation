@@ -39,27 +39,27 @@ def cv16():
     tagNum, tagDenom = 'BH_4TeV_B1', 'BH_4TeV_B2'
     nColor, dColor = kOrange-3, kPink-7
 
-    fNum = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
-    fDenom = workpath + 'data/3p5TeV/results_beam-halo_3.5TeV-R1_D1_20MeV_b2_nprim2344800_66.root'
-    subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/normalised/'
-    lTextNum, lTextDenom = '4 TeV', '3.5 TeV'
-    normNum, normDenom = 1./norm4TeVB2, 1./(run1iniFlux * norm3500GeVB2)
-    tagDenom, tagNum = '_BH_3p5TeV_B2_20MeV', '_BH_4TeV_B2_20MeV'
-    nColor, dColor = kOrange+1, kBlue-3
-    yrel = '/s'
+    # fNum = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
+    # fDenom = workpath + 'data/3p5TeV/results_beam-halo_3.5TeV-R1_D1_20MeV_b2_nprim2344800_66.root'
+    # subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/normalised/'
+    # lTextNum, lTextDenom = '4 TeV', '3.5 TeV'
+    # normNum, normDenom = 1./norm4TeVB2, 1./(run1iniFlux * norm3500GeVB2)
+    # tagDenom, tagNum = '_BH_3p5TeV_B2_20MeV', '_BH_4TeV_B2_20MeV'
+    # nColor, dColor = kOrange+1, kBlue-3
+    # yrel = '/s'
 
     # subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/'
     # normDenom, normNum = 1.,1.     
     # yrel = '/TCT hit'
 
-    # fNum = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
-    # fDenom = workpath + 'data/3p5TeV/results_beam-halo_3.5TeV-L1_20MeV_b1_nprim1731200_66.root'    
-    # lTextNum, lTextDenom = '4 TeV', '3.5 TeV'
-    # normNum, normDenom, yrel, addon = 1./norm4TeVB1, 1./(run1iniFlux * norm3500GeVB1), '/s', 'normalised/'
-    # #normNum, normDenom, yrel, addon = 1.,1., '/TCT hit', ''
-    # tagDenom, tagNum = '_BH_3p5TeV_B1_20MeV', '_BH_4TeV_B1_20MeV'
-    # nColor, dColor = kOrange+3, kMagenta-3
-    # subfolder = wwwpath + 'TCT/4TeV/compB1_3p5vs4TeV/' + addon 
+    fNum = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    fDenom = workpath + 'data/3p5TeV/results_beam-halo_3.5TeV-L1_20MeV_b1_nprim1731200_66.root'    
+    lTextNum, lTextDenom = '4 TeV', '3.5 TeV'
+    #normNum, normDenom, yrel, addon = 1./norm4TeVB1, 1./(run1iniFlux * norm3500GeVB1), '/s', 'normalised/'
+    normNum, normDenom, yrel, addon = 1.,1., '/TCT hit', ''
+    tagDenom, tagNum = '_BH_3p5TeV_B1_20MeV', '_BH_4TeV_B1_20MeV'
+    nColor, dColor = kOrange+3, kMagenta-3
+    subfolder = wwwpath + 'TCT/4TeV/compB1_3p5vs4TeV/' + addon 
 
     # --
     # # beamgas
@@ -133,14 +133,16 @@ def cv16():
     # # ------------------------------------------------------------------------
     # fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_ntct1324_30.root'
     # fDenom = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
-    # fNum = workpath + 'data/6p5TeV/results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root'
-    # fDenom = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
-    # subfolder = wwwpath + 'TCT/comp4TeV6.5TeVB1/'
-    # lTextNum = '6.5 TeV'
-    # lTextDenom = '4 TeV'
-    # normDenom, normNum = 1./norm4TeVB1, 1./norm6500GeVB1
-    # tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_4TeV_B1_20MeV'
-    # nColor, dColor = kOrange-3, kPink-6
+    fNum = workpath + 'data/6p5TeV/results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root'
+    fDenom = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    lTextNum = '6.5 TeV'
+    lTextDenom = '4 TeV'
+    normDenom, normNum, yrel, addon = 1./norm4TeVB1, 1./norm6500GeVB1, '/s', ''
+    normDenom, normNum, yrel, addon = 1., 1., '/TCT hit', 'unnormalised/'
+    tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_4TeV_B1_20MeV'
+    nColor, dColor = kOrange-3, kPink-6
+    subfolder = wwwpath + 'TCT/comp4TeV6.5TeVB1/' + addon
+
 
     # fNum = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
     # fDenom = workpath + 'runs/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
@@ -155,12 +157,14 @@ def cv16():
 
     # fDenom = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
     # fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_30.root'
-    # subfolder = wwwpath + 'TCT/6.5TeV/haloShower/compB1B2/'
-    # lTextNum = 'B1'
-    # lTextDenom = 'B2'
-    # normDenom, normNum = 1./norm6500GeVB2, 1./norm6500GeVB1
-    # tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_6500GeV_haloB2_20MeV'
-    # nColor, dColor = kOrange+5, kGreen+2
+    fDenom = workpath + 'data/6p5TeV/results_ir1_BH_6500GeV_b2_20MeV_nprim3646000_30.root'
+    fNum = workpath + 'data/6p5TeV/results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root'
+    subfolder = wwwpath + 'TCT/6.5TeV/haloShower/compB1B2/'
+    lTextNum = 'B1'
+    lTextDenom = 'B2'
+    normDenom, normNum = 1./norm6500GeVB2, 1./norm6500GeVB1
+    tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_6500GeV_haloB2_20MeV'
+    nColor, dColor = kOrange+5, kGreen+2
 
     # fNum =  '/afs/cern.ch/project/lhc_mib/crabcf/FL_worstCCrabf/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim990000_30.root'
     # fDenom = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
