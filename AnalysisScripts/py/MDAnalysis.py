@@ -17,15 +17,8 @@ parser.add_option("-f", "--file", dest="filename", type="string",
 
 
 (options, args) = parser.parse_args()
-#fname = options.filename
-dpath = '/Users/rkwee/Documents/RHUL/work/beamgas/'
-dpath = ''
-path = dpath
-
-foutname = 'bg'
-doSave = 1
-debug  = 0
 ## -----------------------------------------------------------------------------------
+debug  = 0
 
 # dictionary of timber variables
 vDictTCTs = {  
@@ -190,12 +183,11 @@ def legendName(k):
     if k.count("TC"): legname += "TC" + k.split("TC")[-1].split("_LOSS")[0]
     return legname.replace("_", ".")    
 
-
 ## -----------------------------------------------------------------------------------
 
 def doGraph(vDict, k, xarray, yarray):
   
-    kname = getkname(k)        
+    kname = getkname(k) 
     gr = TGraph( len(xarray), ar('d',xarray), ar('d',yarray) )
     gr.SetName('gr_' + kname )
 
@@ -214,7 +206,7 @@ def doGraph(vDict, k, xarray, yarray):
 ## -----------------------------------------------------------------------------------
 def doHisto(vDict, k, xarray, yarray):
 
-    kname = 'hist_' + getkname(k)        
+    kname = 'hist_' + getkname(k)
     col  =  vDict[k][0]
 
     print "Creating histogram", kname
@@ -234,10 +226,9 @@ def doHisto(vDict, k, xarray, yarray):
     hist.SetMarkerColor(col)  
     
     return hist
-
 ## -----------------------------------------------------------------------------------
 
-def plotVarGroup(tDict, vDict, doLogy, timeRanges, pname):
+def plotVarGroup(tDict, vDict, doLogy, timetupel, pname):
     hists = []
     graphs = []
 
@@ -245,72 +236,75 @@ def plotVarGroup(tDict, vDict, doLogy, timeRanges, pname):
     ml.SetTextSize(0.06)
     X1, Y1 = 0.2, 0.88
 
-    for dtStart, dtEnd, labText in timeRanges:
+    (dtStart, dtEnd, labText) = timetupel
 
-        tsStart = stringDateToTimeStamp(dtStart)
-        tsEnd   = stringDateToTimeStamp(dtEnd)
+    tsStart = stringDateToTimeStamp(dtStart)
+    tsEnd   = stringDateToTimeStamp(dtEnd)
 
-        print "Starting time", dtStart
-        print "Ending time", dtEnd
-        vars = vDict.keys()
-        
-        for det in vDict.keys():
-            xarray, yarray = [], []
-            print "timber var ", det
-            detData = tDict[det]        
+    print "Starting time", dtStart
+    print "Ending time", dtEnd
+    vars = vDict.keys()
 
-            for ts, dt, val in detData:
+    for det in vDict.keys():
+        xarray, yarray = [], []
+        print "timber var ", det
+        detData = tDict[det]        
 
-                if ts > tsEnd or ts <= tsStart: 
-                    continue
+        for ts, dt, val in detData:
 
-                print "at", dt, "have", val
+            if ts > tsEnd or ts <= tsStart: 
+                continue
 
-                yarray += [val]
-                xarray += [ts]
+            print "at", dt, "have", val
 
-            print "Counted", len(xarray), "time points"
-            hists += [doHisto(vDict, det, xarray, yarray)]
-            graphs+= [doGraph(vDict, det, xarray, yarray)]
+            yarray += [val]
+            xarray += [ts]
 
-
-        a,b = 1,1
-        cv = TCanvas( 'cv' , 'cv', 10, 10, a*1200, b*500 )
-        cv.Divide(a,b)
-        cv.SetLogy(doLogy)
-        cv.SetGridy(1)
-
-        thelegend = TLegend(0.91,0.58,0.92,0.95)
-        thelegend.SetFillColor(ROOT.kWhite)
-        thelegend.SetShadowColor(ROOT.kWhite)
-        thelegend.SetLineColor(ROOT.kWhite)
-        thelegend.SetLineStyle(0)
-        thelegend.SetTextSize(0.03)
-
-        mg = TMultiGraph()
-
-        for gr in graphs:
-            kname = gr.GetName()
-            lText = legendName(kname)
-            thelegend.AddEntry(gr,lText, 'p')
-            mg.Add(gr)
+        print "Counted", len(xarray), "time points"
+        hists += [doHisto(vDict, det, xarray, yarray)]
+        graphs+= [doGraph(vDict, det, xarray, yarray)]
 
 
-        mg.Draw('ap')
-        mg.GetXaxis().SetTimeDisplay(1)
-        mg.GetXaxis().SetTimeFormat("%H:%M:%S")
-        mg.GetXaxis().SetLabelSize(0.04)
-        mg.GetXaxis().SetTitle("local time")
-        mg.GetYaxis().SetTitle("Gy/s")
-        mg.GetYaxis().SetTitleOffset(0.8)
+    a,b = 1,1
+    cv = TCanvas( 'cv', 'cv' , 10, 10, a*1200, b*500 )
+    cv.Divide(a,b)
+    cv.SetLogy(doLogy)
+    cv.SetGridy(1)
 
-        thelegend.Draw()
+    thelegend = TLegend(0.91,0.58,0.92,0.95)
+    thelegend.SetFillColor(ROOT.kWhite)
+    thelegend.SetShadowColor(ROOT.kWhite)
+    thelegend.SetLineColor(ROOT.kWhite)
+    thelegend.SetLineStyle(0)
+    thelegend.SetTextSize(0.03)
 
-        ml.DrawLatex(X1, Y1, labText.split(",")[0])
-        ml.DrawLatex(X1-0.005, Y1-0.08, labText.split(",")[1])
+    mg = TMultiGraph(pname, pname)
+    for gr in graphs:
 
-        print "Saving", pname
-        cv.Print(pname + ".png" )
+        kname = gr.GetName()
+        lText = legendName(kname)
+        thelegend.AddEntry(gr,lText, 'p')
+        mg.Add(gr)
+
+
+    mg.Draw('ap')
+    mg.GetXaxis().SetTimeDisplay(1)
+    mg.GetXaxis().SetTimeFormat("%H:%M:%S")
+    mg.GetXaxis().SetLabelSize(0.04)
+    mg.GetXaxis().SetTitle("local time")
+    mg.GetYaxis().SetTitle("Gy/s")
+    mg.GetYaxis().SetTitleOffset(0.8)
+
+    thelegend.Draw()
+
+    ml.DrawLatex(X1, Y1, labText.split(",")[0])
+    ml.DrawLatex(X1-0.005, Y1-0.08, labText.split(",")[1])
+
+    TCTsett = labText.split(",")[0].split("#")[0].split()[-1]
+    TCLAsett = labText.split(",")[-1].split("#")[0].split()[-1]
+    pname += "_TCT" + TCTsett + "_TCLA" + TCLAsett
+    print "Saving", pname
+    cv.Print(pname + ".png" )
 
 def plotLossesForTimeRange():
     # ------------------------------------------------------------ 
@@ -324,11 +318,13 @@ def plotLossesForTimeRange():
     tDict = dictionizeData(fname)
 
     timeRanges = [
-        ('2015-08-28 05:52:00','2015-08-28 05:55:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma")
+        ('2015-08-28 05:50:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
+        ('2015-08-28 06:06:01','2015-08-28 06:13:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma"),
     ]
 
-    plotVarGroup(tDict, vDictTCTs, 1,timeRanges, "BLM_TCTs")
-    plotVarGroup(tDict, vDictTCPs, 1,timeRanges, "BLM_TCPs")
+    for timetupel in timeRanges:
+        plotVarGroup(tDict, vDictTCTs, 1,timetupel, "BLM_TCTs")
+        plotVarGroup(tDict, vDictTCPs, 1,timetupel, "BLM_TCPs")
 
 ## -----------------------------------------------------------------------------------    
 
