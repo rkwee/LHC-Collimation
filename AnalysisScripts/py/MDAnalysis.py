@@ -8,7 +8,7 @@ from ROOT import *
 from optparse import OptionParser
 from array import array as ar
 # # # # # needs H4 folder # # # # # # # 
-from helpers import mylabel, gitpath
+from helpers import mylabel, mean,gitpath, stddev
 
 ## -----------------------------------------------------------------------------------
 parser = OptionParser()
@@ -227,8 +227,43 @@ def doHisto(vDict, k, xarray, yarray):
     
     return hist
 ## -----------------------------------------------------------------------------------
+def getPedestral(tDict, vDict, timetupel):
 
-def plotVarGroup(tDict, vDict, doLogy, timetupel, pname):
+    (dtStart, dtEnd, labText) = timetupel
+
+    tsStart = stringDateToTimeStamp(dtStart)
+    tsEnd   = stringDateToTimeStamp(dtEnd)
+
+    pList = []
+
+    print "Starting time", dtStart
+    print "Ending time", dtEnd
+    vars = vDict.keys()
+
+    for det in vDict.keys():
+
+        xarray, yarray = [], []
+        print "timber var ", det
+        detData = tDict[det]        
+
+        for ts, dt, val in detData:
+            if ts > tsEnd or ts <= tsStart: 
+                continue
+            yarray += [val]
+
+
+
+        meanPedestral = mean(yarray)
+        stddevPed = stddev(yarray)
+
+        pList +=  [(det, [meanPedestral, stddevPed])]
+
+    pDict = dict(pList)
+    print pDict
+    return pDict
+
+## -----------------------------------------------------------------------------------
+def plotVarGroup(tDict, vDict, timetupel, pname):
     hists = []
     graphs = []
 
@@ -265,7 +300,7 @@ def plotVarGroup(tDict, vDict, doLogy, timetupel, pname):
         graphs+= [doGraph(vDict, det, xarray, yarray)]
 
 
-    a,b = 1,1
+    a,b,doLogy = 1,1,1
     cv = TCanvas( 'cv', 'cv' , 10, 10, a*1200, b*500 )
     cv.Divide(a,b)
     cv.SetLogy(doLogy)
@@ -317,14 +352,23 @@ def plotLossesForTimeRange():
 
     tDict = dictionizeData(fname)
 
+    timeNoise  = [
+        ('2015-08-28 05:50:00','2015-08-28 05:52:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
+    ]
+
+    for timetupel in timeNoise:
+        pDictTCTs = getPedestral(tDict, vDictTCTs, timetupel )
+        pDictTCPs = getPedestral(tDict, vDictTCPs, timetupel )
+
+
     timeRanges = [
-        ('2015-08-28 05:50:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
-        ('2015-08-28 06:06:01','2015-08-28 06:13:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma"),
+        # ('2015-08-28 05:50:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
+        # ('2015-08-28 06:06:01','2015-08-28 06:13:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma"),
     ]
 
     for timetupel in timeRanges:
-        plotVarGroup(tDict, vDictTCTs, 1,timetupel, "BLM_TCTs")
-        plotVarGroup(tDict, vDictTCPs, 1,timetupel, "BLM_TCPs")
+        plotVarGroup(tDict, vDictTCTs, timetupel, "BLM_TCTs")
+        plotVarGroup(tDict, vDictTCPs, timetupel, "BLM_TCPs")
 
 ## -----------------------------------------------------------------------------------    
 
