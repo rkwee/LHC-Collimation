@@ -18,7 +18,7 @@ parser.add_option("-f", "--file", dest="filename", type="string",
 
 (options, args) = parser.parse_args()
 ## -----------------------------------------------------------------------------------
-debug  = 0
+debug  = 1
 
 # dictionary of timber variables
 vDictTCTs = {  
@@ -33,74 +33,23 @@ vDictTCTs = {
     "BLMTI.04R5.B2I10_TCTPV.4R5.B2:LOSS_RS09" : [kPink+1, 28, ],
 }
 
+# not only primaries....
 vDictTCPs = {  
-    "BLMTI.06L3.B1I10_TCP.6L3.B1:LOSS_RS09"   : [kYellow-2, 33,],
-    "BLMTI.06L7.B1E10_TCP.B6L7.B1:LOSS_RS09" : [kYellow-8,  34,],
-    "BLMTI.06L7.B1E10_TCP.C6L7.B1:LOSS_RS09" : [kYellow+7,  22,],
-    "BLMTI.06L7.B1E10_TCP.D6L7.B1:LOSS_RS09" : [kYellow+3,  23,],
 
-    "BLMTI.06R3.B2E10_TCP.6R3.B2:LOSS_RS09" : [kOrange+1,  27,],
-    "BLMTI.06R7.B2I10_TCP.B6R7.B2:LOSS_RS09" : [kOrange+2, 28,],
-    "BLMTI.06R7.B2I10_TCP.C6R7.B2:LOSS_RS09" : [kOrange+3, 26,],
-    "BLMTI.06R7.B2I10_TCP.D6R7.B2:LOSS_RS09" : [kOrange+4, 28,],
+    "BLMEI.06L7.B1E10_TCHSV.6L7.B1:LOSS_RS09" : [kYellow+2, 20], 
+    "BLMEI.06L7.B1E10_TCP.A6L7.B1:LOSS_RS09" : [kOrange+6, 24,], 
+    "BLMEI.06L7.B1E10_TCSM.A6L7.B1:LOSS_RS09" : [kOrange+4, 28,], 
+    "BLMEI.06R7.B2I10_TCHSV.6R7.B2:LOSS_RS09" : [kOrange+3, 26,], 
+    "BLMEI.06R7.B2I10_TCP.A6R7.B2:LOSS_RS09" : [kOrange+2, 28,],
+    "BLMEI.06R7.B2I10_TCSM.A6R7.B2:LOSS_RS09" : [kOrange+1, 27,],
+    "BLMTI.06L7.B2I10_TCLA.A6L7.B2:LOSS_RS09" : [kYellow-2, 33,],
+    "BLMTI.06L7.B2I10_TCLA.B6L7.B2:LOSS_RS09" : [kYellow-8,  34,], 
+    "BLMTI.06R7.B1E10_TCLA.A6R7.B1:LOSS_RS09" : [kYellow+7,  22,], 
+    "BLMTI.06R7.B1E10_TCLA.B6R7.B1:LOSS_RS09" : [kYellow+3,  23,],
 
-}
-
-otherDict = {
-# "TCLA.6L3.B2:MEAS_MOTOR_LD" : [],
-# "TCLA.6L3.B2:MEAS_MOTOR_RD" : [],
-# "TCLA.6R3.B1:MEAS_MOTOR_LD" : [],
-# "TCLA.6R3.B1:MEAS_MOTOR_RD" : [],
-# "TCLA.7L3.B2:MEAS_MOTOR_LD" : [],
-# "TCLA.7L3.B2:MEAS_MOTOR_RD" : [],
-# "TCLA.7R3.B1:MEAS_MOTOR_LD" : [],
-# "TCLA.7R3.B1:MEAS_MOTOR_RD" : [],
-# "TCLA.A5L3.B2:MEAS_MOTOR_LD" : [],
-# "TCLA.A5L3.B2:MEAS_MOTOR_RD" : [],
-# "TCLA.A5R3.B1:MEAS_MOTOR_LD" : [],
-# "TCLA.A5R3.B1:MEAS_MOTOR_RD" : [],
-# "TCLA.A6L7.B2:MEAS_MOTOR_LD" : [],
-# "TCLA.A6L7.B2:MEAS_MOTOR_RD" : [],
-# "TCLA.A6R7.B1:MEAS_MOTOR_LD" : [],
-# "TCLA.A6R7.B1:MEAS_MOTOR_RD" : [],
-# "TCLA.A7L7.B2:MEAS_MOTOR_LD" : [],
-# "TCLA.A7L7.B2:MEAS_MOTOR_RD" : [],
-# "TCLA.A7R7.B1:MEAS_MOTOR_LD" : [],
-# "TCLA.A7R7.B1:MEAS_MOTOR_RD" : [],
-# "TCLA.B5L3.B2:MEAS_MOTOR_LD" : [],
-# "TCLA.B5L3.B2:MEAS_MOTOR_RD" : [],
-# "TCLA.B5R3.B1:MEAS_MOTOR_LD" : [],
-# "TCLA.B5R3.B1:MEAS_MOTOR_RD" : [],
-# "TCLA.B6L7.B2:MEAS_MOTOR_LD" : [],
-# "TCLA.B6L7.B2:MEAS_MOTOR_RD" : [],
-# "TCLA.B6R7.B1:MEAS_MOTOR_LD" : [],
-# "TCLA.B6R7.B1:MEAS_MOTOR_RD" : [],
-# "TCLA.C6L7.B2:MEAS_MOTOR_LD" : [],
-# "TCLA.C6L7.B2:MEAS_MOTOR_RD" : [],
-# "TCLA.C6R7.B1:MEAS_MOTOR_LD" : [],
-# "TCLA.C6R7.B1:MEAS_MOTOR_RD" : [],
-# "TCLA.D6L7.B2:MEAS_MOTOR_LD" : [],
-# "TCLA.D6L7.B2:MEAS_MOTOR_RD" : [],
-# "TCLA.D6R7.B1:MEAS_MOTOR_LD" : [],
-# "TCLA.D6R7.B1:MEAS_MOTOR_RD" : [],
-# "TCTPH.4L1.B1:MEAS_MOTOR_LD" : [],
-# "TCTPH.4L1.B1:MEAS_MOTOR_RD" : [],
-# "TCTPH.4L5.B1:MEAS_MOTOR_LD" : [],
-# "TCTPH.4L5.B1:MEAS_MOTOR_RD" : [],
-# "TCTPH.4R1.B2:MEAS_MOTOR_LD" : [],
-# "TCTPH.4R1.B2:MEAS_MOTOR_RD" : [],
-# "TCTPH.4R5.B2:MEAS_MOTOR_LD" : [],
-# "TCTPH.4R5.B2:MEAS_MOTOR_RD" : [],
-# "TCTPV.4L1.B1:MEAS_MOTOR_LD" : [],
-# "TCTPV.4L1.B1:MEAS_MOTOR_RD" : [],
-# "TCTPV.4L5.B1:MEAS_MOTOR_LD" : [],
-# "TCTPV.4L5.B1:MEAS_MOTOR_RD" : [],
-# "TCTPV.4R1.B2:MEAS_MOTOR_LD" : [],
-# "TCTPV.4R1.B2:MEAS_MOTOR_RD" : [],
-# "TCTPV.4R5.B2:MEAS_MOTOR_LD" : [],
-# "TCTPV.4R5.B2:MEAS_MOTOR_RD" : [],
 
 }
+
 
 ## -----------------------------------------------------------------------------------
 
@@ -185,16 +134,36 @@ def legendName(k):
 
 ## -----------------------------------------------------------------------------------
 
-def doGraph(vDict, k, xarray, yarray):
+def doGraphTimeAxis(vDict, k, xarray, yarray):
   
     kname = getkname(k) 
     gr = TGraph( len(xarray), ar('d',xarray), ar('d',yarray) )
     gr.SetName('gr_' + kname )
 
     gr.GetXaxis().SetTimeDisplay(1)
+    gr.GetXaxis().GetTimeFormatOnly() 
     gr.GetXaxis().SetTimeFormat("%H:%M:%S")
     gr.GetXaxis().SetLabelSize(0.04)
     gr.GetXaxis().SetTitle("local time")
+    if k.count("BLM"): gr.GetYaxis().SetTitle("Gy/s")
+    gr.GetYaxis().SetTitleOffset(0.9)
+    gr.SetMarkerColor(vDict[k][0])
+    gr.SetMarkerStyle(vDict[k][1])
+    gr.SetMarkerSize(1.2)
+  
+    return gr
+## -----------------------------------------------------------------------------------
+
+def doGraphDetAxis(vDict, k, xarray, yarray):
+  
+    kname = getkname(k) 
+    gr = TGraph( len(xarray), ar('d',xarray), ar('d',yarray) )
+    gr.SetName('gr_' + kname )
+    for i,det in enumerate(detLabels):
+        gr.GetXaxis().SetBinLabel(i+1, det)
+
+    gr.GetXaxis().SetLabelSize(0.04)
+
     if k.count("BLM"): gr.GetYaxis().SetTitle("Gy/s")
     gr.GetYaxis().SetTitleOffset(0.8)
     gr.SetMarkerColor(vDict[k][0])
@@ -204,37 +173,49 @@ def doGraph(vDict, k, xarray, yarray):
     return gr
             
 ## -----------------------------------------------------------------------------------
-def doHisto(vDict, k, xarray, yarray):
+#def doHistoPeak(pDict):
 
-    kname = 'hist_' + getkname(k)
-    col  =  vDict[k][0]
+    # pDict has structure key: [ts, dt, peakval]
 
-    print "Creating histogram", kname
-    hist = TH1F(kname, kname, len(xarray), min(xarray), max(xarray) )
+    #kname = 'peakhisto_' + str(ts)
+    #hist = TH1F(kname, kname, len(xarray), min(xarray), max(xarray) )
+    #for det in pDict.keys():
 
-    cnt = 1
-    for y in yarray:
-        hist.SetBinContent(cnt,y)
-        cnt += 1
 
-    hist.GetXaxis().SetTimeDisplay(1)
-    hist.GetXaxis().SetTimeFormat("%H:%M:%S")
-    hist.GetXaxis().SetLabelSize(0.04)
-    hist.GetXaxis().SetTitle("local time")
-    if k.count("BLM"): hist.GetYaxis().SetTitle("Gy/s")
-    hist.GetYaxis().SetTitleOffset(0.8)
-    hist.SetMarkerColor(col)  
+    # 
+    # col  =  vDict[k][0]
+
+    # print "Creating histogram", kname
+
+
+    # cnt = 1
+    # for y in yarray:
+    #     hist.SetBinContent(cnt,y)
+    #     cnt += 1
+
+    # hist.GetXaxis().SetTimeDisplay(1)
+    # hist.GetXaxis().SetTimeFormat("%H:%M:%S")
+    # hist.GetXaxis().SetLabelSize(0.04)
+    # hist.GetXaxis().SetTitle("local time")
+    # if k.count("BLM"): hist.GetYaxis().SetTitle("Gy/s")
+    # hist.GetYaxis().SetTitleOffset(0.8)
+    # hist.SetMarkerColor(col)  
     
-    return hist
+    # return hist
 ## -----------------------------------------------------------------------------------
 def getPedestral(tDict, vDict, timetupel):
+    #
+    # returns dict with timber var as keys and corresponding 
+    # averaged pedestral for time period
+    # 
+    #
 
     (dtStart, dtEnd, labText) = timetupel
 
     tsStart = stringDateToTimeStamp(dtStart)
     tsEnd   = stringDateToTimeStamp(dtEnd)
 
-    pList = []
+    pedList = []
 
     print "Starting time", dtStart
     print "Ending time", dtEnd
@@ -251,21 +232,66 @@ def getPedestral(tDict, vDict, timetupel):
                 continue
             yarray += [val]
 
-
-
         meanPedestral = mean(yarray)
         stddevPed = stddev(yarray)
 
-        pList +=  [(det, [meanPedestral, stddevPed])]
+        pedList  +=  [(det, [meanPedestral, stddevPed])]
 
-    pDict = dict(pList)
-    print pDict
-    return pDict
+    pedDict  = dict(pedList)
+
+    print "pedeDict", pedDict
+    return pedDict
+## -----------------------------------------------------------------------------------
+def getPeaks(tDict, vDict, timetupel):
+    #
+    # return dict with timber var as keys and 
+    # corresponding maximum value and time stamps (ts, dt, max)
+    # within given time interval
+    #
+    #
+    (dtStart, dtEnd, labText) = timetupel
+
+    tsStart = stringDateToTimeStamp(dtStart)
+    tsEnd   = stringDateToTimeStamp(dtEnd)
+
+    peakList, peakListAll = [],[]
+
+    print "Starting time", dtStart
+    print "Ending time", dtEnd
+    vars = vDict.keys()
+
+    for det in vDict.keys():
+
+        xarray, yarray = [], []
+        print "timber var ", det
+        detData = tDict[det]        
+
+        for ts, dt, val in detData:
+            if ts > tsEnd or ts <= tsStart: 
+                continue
+            yarray += [val]
+            peakListAll += [[ts, dt, val]]
+
+        peakList +=  [(det, peakListAll[yarray.index(max(yarray))])]
+
+    peakDict = dict(peakList)
+    print "peakDict", peakDict
+
+    return peakDict
 
 ## -----------------------------------------------------------------------------------
-def plotVarGroup(tDict, vDict, timetupel, pname):
+def getPeak(pDict):
+
+    peak = max( pDict[det][2] for det in pDict.keys() )
+    for det, mytuple in pDict.iteritems():
+        if peak in mytuple:
+            return det, mytuple
+
+## -----------------------------------------------------------------------------------
+def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
+
     hists = []
-    graphs = []
+    graphs, graphsPed = [],[]
 
     ml = mylabel(42)
     ml.SetTextSize(0.06)
@@ -281,7 +307,7 @@ def plotVarGroup(tDict, vDict, timetupel, pname):
     vars = vDict.keys()
 
     for det in vDict.keys():
-        xarray, yarray = [], []
+        xarray, yarray, yarrayPed = [],[],[]
         print "timber var ", det
         detData = tDict[det]        
 
@@ -295,15 +321,22 @@ def plotVarGroup(tDict, vDict, timetupel, pname):
             yarray += [val]
             xarray += [ts]
 
+            # substract pedestral
+            yarrayPed += [val-pDict[det][0]]
+
+
         print "Counted", len(xarray), "time points"
-        hists += [doHisto(vDict, det, xarray, yarray)]
-        graphs+= [doGraph(vDict, det, xarray, yarray)]
+        graphs   += [doGraphTimeAxis(vDict, det, xarray, yarray)]
+        graphsPed+= [doGraphTimeAxis(vDict, det, xarray, yarrayPed)]
 
-
-    a,b,doLogy = 1,1,1
+    a,b,doLogy = 1,2,1
     cv = TCanvas( 'cv', 'cv' , 10, 10, a*1200, b*500 )
+
+    # great root needs some Timeoffset
+    da = TDatime(2003,02,28,02,00,00)
+    gStyle.SetTimeOffset(da.Convert())
+
     cv.Divide(a,b)
-    cv.SetLogy(doLogy)
     cv.SetGridy(1)
 
     thelegend = TLegend(0.91,0.58,0.92,0.95)
@@ -313,7 +346,8 @@ def plotVarGroup(tDict, vDict, timetupel, pname):
     thelegend.SetLineStyle(0)
     thelegend.SetTextSize(0.03)
 
-    mg = TMultiGraph(pname, pname)
+    mg    = TMultiGraph(pname, pname)
+    mgPed = TMultiGraph(pname+"Ped", pname+"Ped")
     for gr in graphs:
 
         kname = gr.GetName()
@@ -321,14 +355,32 @@ def plotVarGroup(tDict, vDict, timetupel, pname):
         thelegend.AddEntry(gr,lText, 'p')
         mg.Add(gr)
 
+    for gr in graphsPed:
+        mgPed.Add(gr)
 
+    cv.cd(1)
+    gPad.SetLogy(doLogy)
     mg.Draw('ap')
     mg.GetXaxis().SetTimeDisplay(1)
     mg.GetXaxis().SetTimeFormat("%H:%M:%S")
     mg.GetXaxis().SetLabelSize(0.04)
     mg.GetXaxis().SetTitle("local time")
+    mg.GetYaxis().SetRangeUser(YurMin, YurMax)
     mg.GetYaxis().SetTitle("Gy/s")
-    mg.GetYaxis().SetTitleOffset(0.8)
+    mg.GetYaxis().SetTitleOffset(0.98)
+
+    thelegend.Draw()
+
+    cv.cd(2)
+    gPad.SetLogy(doLogy)
+    mgPed.Draw('ap')
+    mgPed.GetXaxis().SetTimeDisplay(1)
+    mgPed.GetXaxis().SetTimeFormat("%H:%M:%S")
+    mgPed.GetXaxis().SetLabelSize(0.04)
+    mgPed.GetXaxis().SetTitle("local time")
+    mgPed.GetYaxis().SetRangeUser(YurMin, YurMax)
+    mgPed.GetYaxis().SetTitle("Gy/s")
+    mgPed.GetYaxis().SetTitleOffset(0.98)
 
     thelegend.Draw()
 
@@ -340,17 +392,13 @@ def plotVarGroup(tDict, vDict, timetupel, pname):
     pname += "_TCT" + TCTsett + "_TCLA" + TCLAsett
     print "Saving", pname
     cv.Print(pname + ".png" )
-
-def plotLossesForTimeRange():
-    # ------------------------------------------------------------ 
+## -----------------------------------------------------------------------------------    
+def plotLossesForTimeRange(tDict):
+    # ............................................................ 
     #     
     # 
     #
-    # ------------------------------------------------------------
-
-    fname = "TIMBER_DATA_BLMs_Positions_default.csv"
-
-    tDict = dictionizeData(fname)
+    # ............................................................
 
     timeNoise  = [
         ('2015-08-28 05:50:00','2015-08-28 05:52:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
@@ -362,16 +410,32 @@ def plotLossesForTimeRange():
 
 
     timeRanges = [
-        # ('2015-08-28 05:50:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
-        # ('2015-08-28 06:06:01','2015-08-28 06:13:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma"),
+        ('2015-08-28 05:50:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
+        ('2015-08-28 06:06:01','2015-08-28 06:13:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma"),
     ]
 
     for timetupel in timeRanges:
-        plotVarGroup(tDict, vDictTCTs, timetupel, "BLM_TCTs")
-        plotVarGroup(tDict, vDictTCPs, timetupel, "BLM_TCPs")
+        doLossesVsTime(tDict, vDictTCTs, pDictTCTs, timetupel, "BLM_TCTs", 5e-9,1e-4)
+        doLossesVsTime(tDict, vDictTCPs, pDictTCPs, timetupel, "BLM_TCPs", 5e-9,3e-3)
 
 ## -----------------------------------------------------------------------------------    
+def plotPeaks(tDict):
+    # ............................................................ 
+    #     
+    # plot losses vs BLM for a certain time
+    #
+    # ............................................................
 
+
+    timeRanges = [
+        ('2015-08-28 05:50:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
+        # ('2015-08-28 06:06:01','2015-08-28 06:13:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma"),
+    ]
+    for timetupel in timeRanges:
+
+        det, mytuple = getPeak( getPeaks(tDict, vDictTCPs, timetupel) )
+        print "Found noise substracted peak in ", det, mytuple
+        #doHistoPeak(pDict)
 ## -----------------------------------------------------------------------------------    
 if __name__ == "__main__":
 
@@ -384,4 +448,10 @@ if __name__ == "__main__":
     gROOT.LoadMacro(gitpath + "AnalysisScripts/C/AtlasUtils.C")
     SetAtlasStyle()
 
-    plotLossesForTimeRange()
+
+    fname = "TIMBER_DATA_BLMs_20152808_default.csv"
+
+    tDict = dictionizeData(fname)
+
+    #plotPeaks(tDict)
+    plotLossesForTimeRange(tDict)
