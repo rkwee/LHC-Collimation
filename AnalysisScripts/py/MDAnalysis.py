@@ -18,7 +18,7 @@ parser.add_option("-f", "--file", dest="filename", type="string",
 
 (options, args) = parser.parse_args()
 ## -----------------------------------------------------------------------------------
-debug  = 1
+debug  = 0
 
 # dictionary of timber variables
 vDictTCTs = {  
@@ -46,7 +46,6 @@ vDictTCPs = {
     "BLMTI.06L7.B2I10_TCLA.B6L7.B2:LOSS_RS09" : [kYellow-8,  34,], 
     "BLMTI.06R7.B1E10_TCLA.A6R7.B1:LOSS_RS09" : [kYellow+7,  22,], 
     "BLMTI.06R7.B1E10_TCLA.B6R7.B1:LOSS_RS09" : [kYellow+3,  23,],
-
 
 }
 
@@ -126,10 +125,10 @@ def getkname(k):
     return kname
 
 def legendName(k):
-    legname = ""
+    legname = k.split("_")[1]
 
     #if k.count("BLM"): legname = "BLM_"
-    if k.count("TC"): legname += "TC" + k.split("TC")[-1].split("_LOSS")[0]
+    if k.count("TC"): legname += ".TC" + k.split("TC")[-1].split("_LOSS")[0]
     return legname.replace("_", ".")    
 
 ## -----------------------------------------------------------------------------------
@@ -217,14 +216,15 @@ def getPedestral(tDict, vDict, timetupel):
 
     pedList = []
 
-    print "Starting time", dtStart
-    print "Ending time", dtEnd
+    if debug: 
+        print "Starting time", dtStart
+        print "Ending time", dtEnd
     vars = vDict.keys()
 
     for det in vDict.keys():
 
         xarray, yarray = [], []
-        print "timber var ", det
+        if debug: print "timber var ", det
         detData = tDict[det]        
 
         for ts, dt, val in detData:
@@ -256,36 +256,45 @@ def getPeaks(tDict, vDict, timetupel):
 
     peakList, peakListAll = [],[]
 
-    print "Starting time", dtStart
-    print "Ending time", dtEnd
+    if debug: 
+        print "Starting time", dtStart
+        print "Ending time", dtEnd
     vars = vDict.keys()
 
     for det in vDict.keys():
 
-        xarray, yarray = [], []
-        print "timber var ", det
+        x_ts, x_dt, yarray = [],[],[]
+        if debug: print "in getPeaks:timber var ", det
         detData = tDict[det]        
 
         for ts, dt, val in detData:
             if ts > tsEnd or ts <= tsStart: 
                 continue
             yarray += [val]
-            peakListAll += [[ts, dt, val]]
+            x_ts += [ts]
+            x_dt += [dt]
 
-        peakList +=  [(det, peakListAll[yarray.index(max(yarray))])]
+        maxval = max(yarray)
+        indexmax = yarray.index(maxval)
+        peakList +=  [(  det,[x_ts[indexmax], x_dt[indexmax], maxval]  )]
 
     peakDict = dict(peakList)
-    print "peakDict", peakDict
+    if debug: print "peakDict", peakDict
 
     return peakDict
 
 ## -----------------------------------------------------------------------------------
 def getPeak(pDict):
 
-    peak = max( pDict[det][2] for det in pDict.keys() )
-    for det, mytuple in pDict.iteritems():
-        if peak in mytuple:
-            return det, mytuple
+    peaksList = [(det,pDict[det][2]) for det in pDict.keys()]
+    print peaksList
+
+    peaks = [pDict[det][2] for det in pDict.keys()]
+    peak = max( peaks )
+    for det, ts_dt_peak in pDict.iteritems():
+        print "searching for peak", peak, "in ", det
+        if peak in ts_dt_peak:
+            return det, ts_dt_peak
 
 ## -----------------------------------------------------------------------------------
 def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
@@ -295,20 +304,21 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
 
     ml = mylabel(42)
     ml.SetTextSize(0.06)
-    X1, Y1 = 0.2, 0.88
+    X1, Y1 = 0.12, 0.88
 
     (dtStart, dtEnd, labText) = timetupel
 
     tsStart = stringDateToTimeStamp(dtStart)
     tsEnd   = stringDateToTimeStamp(dtEnd)
 
-    print "Starting time", dtStart
-    print "Ending time", dtEnd
+    if debug: 
+        print "Starting time", dtStart
+        print "Ending time", dtEnd
     vars = vDict.keys()
 
     for det in vDict.keys():
         xarray, yarray, yarrayPed = [],[],[]
-        print "timber var ", det
+        if debug: print "timber var ", det
         detData = tDict[det]        
 
         for ts, dt, val in detData:
@@ -316,7 +326,7 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
             if ts > tsEnd or ts <= tsStart: 
                 continue
 
-            print "at", dt, "have", val
+            if debug: print "at", dt, "have", val
 
             yarray += [val]
             xarray += [ts]
@@ -324,7 +334,7 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
             # substract pedestral
             yarrayPed += [val-pDict[det][0]]
 
-
+        print "Maximum in", det, ": ", max(yarrayPed), "at", time.ctime(xarray[ yarrayPed.index(max(yarrayPed)) ])
         print "Counted", len(xarray), "time points"
         graphs   += [doGraphTimeAxis(vDict, det, xarray, yarray)]
         graphsPed+= [doGraphTimeAxis(vDict, det, xarray, yarrayPed)]
@@ -333,13 +343,10 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
     cv = TCanvas( 'cv', 'cv' , 10, 10, a*1200, b*500 )
 
     # great root needs some Timeoffset
-    da = TDatime(2003,02,28,02,00,00)
-    gStyle.SetTimeOffset(da.Convert())
-
+    da = TDatime(2002,01,01,02,00,00)
     cv.Divide(a,b)
-    cv.SetGridy(1)
 
-    thelegend = TLegend(0.91,0.58,0.92,0.95)
+    thelegend = TLegend(0.865,0.53,0.94,0.95)
     thelegend.SetFillColor(ROOT.kWhite)
     thelegend.SetShadowColor(ROOT.kWhite)
     thelegend.SetLineColor(ROOT.kWhite)
@@ -359,7 +366,12 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
         mgPed.Add(gr)
 
     cv.cd(1)
+    gStyle.SetTimeOffset(da.Convert())
     gPad.SetLogy(doLogy)
+    gPad.SetLeftMargin(-0.09)
+    gPad.SetRightMargin(0.14)
+    gPad.SetGridx(1)
+
     mg.Draw('ap')
     mg.GetXaxis().SetTimeDisplay(1)
     mg.GetXaxis().SetTimeFormat("%H:%M:%S")
@@ -372,7 +384,12 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
     thelegend.Draw()
 
     cv.cd(2)
+    gStyle.SetTimeOffset(da.Convert())
     gPad.SetLogy(doLogy)
+    gPad.SetLeftMargin(-0.09)
+    gPad.SetRightMargin(0.14)
+    gPad.SetGridx(1)
+
     mgPed.Draw('ap')
     mgPed.GetXaxis().SetTimeDisplay(1)
     mgPed.GetXaxis().SetTimeFormat("%H:%M:%S")
@@ -380,7 +397,7 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
     mgPed.GetXaxis().SetTitle("local time")
     mgPed.GetYaxis().SetRangeUser(YurMin, YurMax)
     mgPed.GetYaxis().SetTitle("Gy/s")
-    mgPed.GetYaxis().SetTitleOffset(0.98)
+    mgPed.GetYaxis().SetTitleOffset(0.8)
 
     thelegend.Draw()
 
@@ -410,13 +427,18 @@ def plotLossesForTimeRange(tDict):
 
 
     timeRanges = [
-        ('2015-08-28 05:50:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
-        ('2015-08-28 06:06:01','2015-08-28 06:13:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma"),
+        ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
+       # ('2015-08-28 05:50:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
+        #        ('2015-08-28 06:06:01','2015-08-28 06:13:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma"),
     ]
 
     for timetupel in timeRanges:
         doLossesVsTime(tDict, vDictTCTs, pDictTCTs, timetupel, "BLM_TCTs", 5e-9,1e-4)
         doLossesVsTime(tDict, vDictTCPs, pDictTCPs, timetupel, "BLM_TCPs", 5e-9,3e-3)
+
+        det, ts_dt_peak = getPeak( getPeaks(tDict, vDictTCPs, timetupel) )
+        print "Found noise substracted peak in ", det, ts_dt_peak, timetupel
+        print "-" * 40
 
 ## -----------------------------------------------------------------------------------    
 def plotPeaks(tDict):
@@ -428,13 +450,16 @@ def plotPeaks(tDict):
 
 
     timeRanges = [
-        ('2015-08-28 05:50:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
-        # ('2015-08-28 06:06:01','2015-08-28 06:13:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma"),
+        # ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
+        # ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
+        ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
+        # ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
     ]
     for timetupel in timeRanges:
 
-        det, mytuple = getPeak( getPeaks(tDict, vDictTCPs, timetupel) )
-        print "Found noise substracted peak in ", det, mytuple
+        det, ts_dt_peak = getPeak( getPeaks(tDict, vDictTCPs, timetupel) )
+        print "Found noise substracted peak in ", det, ts_dt_peak, timetupel
+        print "-" * 40
         #doHistoPeak(pDict)
 ## -----------------------------------------------------------------------------------    
 if __name__ == "__main__":
@@ -448,10 +473,10 @@ if __name__ == "__main__":
     gROOT.LoadMacro(gitpath + "AnalysisScripts/C/AtlasUtils.C")
     SetAtlasStyle()
 
-
+    #print "time.ctime(1) = ", time.ctime(1.) 
     fname = "TIMBER_DATA_BLMs_20152808_default.csv"
 
     tDict = dictionizeData(fname)
-
-    #plotPeaks(tDict)
     plotLossesForTimeRange(tDict)
+    #plotPeaks(tDict)
+    
