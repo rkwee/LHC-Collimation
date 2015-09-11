@@ -9,7 +9,7 @@ from optparse import OptionParser
 from array import array as ar
 # # # # # needs H4 folder # # # # # # # 
 from helpers import mylabel, mean,gitpath, stddev
-
+import sys
 ## -----------------------------------------------------------------------------------
 parser = OptionParser()
 parser.add_option("-f", "--file", dest="filename", type="string",
@@ -27,7 +27,7 @@ vDictTCTs = {
     "BLMTI.04L5.B1I10_TCTPH.4L5.B1:LOSS_RS09" : [kRed+1, 22, ],
     "BLMTI.04L5.B1I10_TCTPV.4L5.B1:LOSS_RS09" : [kRed-2, 23, ],
 
-    "BLMTI.04R1.B2I10_TCTPH.4R1.B2:LOSS_RS09" : [kGreen,  27, ],
+    "BLMTI.04R1.B2I10_TCTPH.4R1.B2:LOSS_RS09" : [kCyan+2, 27, ],
     "BLMTI.04R1.B2I10_TCTPV.4R1.B2:LOSS_RS09" : [kGreen-2,28, ],
     "BLMTI.04R5.B2I10_TCTPH.4R5.B2:LOSS_RS09" : [kPink-3, 26, ],
     "BLMTI.04R5.B2I10_TCTPV.4R5.B2:LOSS_RS09" : [kPink+1, 28, ],
@@ -238,8 +238,7 @@ def getPedestral(tDict, vDict, timetupel):
         pedList  +=  [(det, [meanPedestral, stddevPed])]
 
     pedDict  = dict(pedList)
-
-    print "pedeDict", pedDict
+    if debug: print "pedDict", pedDict
     return pedDict
 ## -----------------------------------------------------------------------------------
 def getPeaks(tDict, vDict, timetupel):
@@ -334,8 +333,7 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
             # substract pedestral
             yarrayPed += [val-pDict[det][0]]
 
-        print "Maximum in", det, ": ", max(yarrayPed), "at", time.ctime(xarray[ yarrayPed.index(max(yarrayPed)) ])
-        print "Counted", len(xarray), "time points"
+        if debug: print "Counted", len(xarray), "time points"
         graphs   += [doGraphTimeAxis(vDict, det, xarray, yarray)]
         graphsPed+= [doGraphTimeAxis(vDict, det, xarray, yarrayPed)]
 
@@ -380,7 +378,8 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
     mg.GetYaxis().SetRangeUser(YurMin, YurMax)
     mg.GetYaxis().SetTitle("Gy/s")
     mg.GetYaxis().SetTitleOffset(0.98)
-
+    ml.DrawLatex(X1, Y1, "with pedestral")
+    ml.DrawLatex(X1, Y1+0.075, labText)
     thelegend.Draw()
 
     cv.cd(2)
@@ -401,12 +400,13 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
 
     thelegend.Draw()
 
-    ml.DrawLatex(X1, Y1, labText.split(",")[0])
-    ml.DrawLatex(X1-0.005, Y1-0.08, labText.split(",")[1])
+    ml.DrawLatex(X1, Y1, "noise substracted")
+    ml.DrawLatex(X1, Y1+0.075, labText)
 
-    TCTsett = labText.split(",")[0].split("#")[0].split()[-1]
-    TCLAsett = labText.split(",")[-1].split("#")[0].split()[-1]
-    pname += "_TCT" + TCTsett + "_TCLA" + TCLAsett
+    TCTsett = labText.split()[2].split("#")[0]
+    TCLAsett = labText.split()[5].split("#")[0]
+    rfSett = labText.split()[6].split("-mom")[0]
+    pname += "_TCT" + TCTsett + "_TCLA" + TCLAsett + "_" + rfSett
     print "Saving", pname
     cv.Print(pname + ".png" )
 ## -----------------------------------------------------------------------------------    
@@ -418,27 +418,66 @@ def plotLossesForTimeRange(tDict):
     # ............................................................
 
     timeNoise  = [
-        ('2015-08-28 05:50:00','2015-08-28 05:52:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
+        ('2015-08-28 05:50:00','2015-08-28 05:52:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 1
+        ('2015-08-28 06:06:00','2015-08-28 06:08:20', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum"),       # 2
+        ('2015-08-28 06:13:01','2015-08-28 06:15:59', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 3
+        ('2015-08-28 06:06:00','2015-08-28 06:08:20', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum"),       # 4
+        ('2015-08-28 06:22:01','2015-08-28 06:24:10', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 5
+        ('2015-08-28 06:39:01','2015-08-28 06:40:20', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum"),      # 6
+        ('2015-08-28 07:20:00','2015-08-28 07:30:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum"),       # 7
+        ('2015-08-28 07:38:00','2015-08-28 07:40:20', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 8
+        ('2015-08-28 07:45:31','2015-08-28 07:46:20', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 9
+        ('2015-08-28 07:50:00','2015-08-28 07:51:20', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum"),      # 10
+        ('2015-08-28 08:01:11','2015-08-28 08:05:20', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 11
+        ('2015-08-28 08:14:00','2015-08-28 08:17:30', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 12
+        ('2015-08-28 08:23:00','2015-08-28 08:25:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 13
+        ('2015-08-28 08:31:00','2015-08-28 08:31:20', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 14
+        ('2015-08-28 08:36:00','2015-08-28 08:37:20', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 15
+        ('2015-08-28 08:43:00','2015-08-28 08:44:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 16
+
     ]
+
+    pedDictTCTs = []
+    pedDictTCPs = []
 
     for timetupel in timeNoise:
-        pDictTCTs = getPedestral(tDict, vDictTCTs, timetupel )
-        pDictTCPs = getPedestral(tDict, vDictTCPs, timetupel )
+        pedDictTCTs += [ getPedestral(tDict, vDictTCTs, timetupel ) ]
+        pedDictTCPs += [ getPedestral(tDict, vDictTCPs, timetupel ) ]
 
 
-    timeRanges = [
-        ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
-       # ('2015-08-28 05:50:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma"),
-        #        ('2015-08-28 06:06:01','2015-08-28 06:13:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma"),
+
+    timeSignal = [
+
+        ('2015-08-28 05:50:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 1
+        ('2015-08-28 06:06:01','2015-08-28 06:13:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum"),       # 2
+        ('2015-08-28 06:13:01','2015-08-28 06:23:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 3
+        ('2015-08-28 06:23:01','2015-08-28 06:29:00', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum"),       # 4
+        ('2015-08-28 06:29:01','2015-08-28 06:39:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 5
+        ('2015-08-28 06:39:01','2015-08-28 06:53:00', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum"),      # 6
+        ('2015-08-28 07:20:01','2015-08-28 07:38:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum"),       # 7
+        ('2015-08-28 07:38:01','2015-08-28 07:45:30', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 8
+        ('2015-08-28 07:45:31','2015-08-28 07:50:00', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 9
+        ('2015-08-28 07:50:01','2015-08-28 07:55:00', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum"),      # 10
+        ('2015-08-28 07:58:01','2015-08-28 08:14:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 11
+        ('2015-08-28 08:14:01','2015-08-28 08:22:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 12
+        ('2015-08-28 08:22:01','2015-08-28 08:30:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 13
+        ('2015-08-28 08:30:01','2015-08-28 08:36:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 14
+        ('2015-08-28 08:36:01','2015-08-28 08:43:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 15
+        ('2015-08-28 08:43:01','2015-08-28 08:48:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 16
     ]
 
-    for timetupel in timeRanges:
+
+    if len(timeNoise) != len(timeSignal): 
+        print "Error!!! ", len(timeNoise), len(timeSignal)
+        sys.exit()
+
+    for i,timetupel in enumerate(timeSignal):
+
+        pDictTCTs = pedDictTCTs[i]
+        pDictTCPs = pedDictTCPs[i]
+        
         doLossesVsTime(tDict, vDictTCTs, pDictTCTs, timetupel, "BLM_TCTs", 5e-9,1e-4)
         doLossesVsTime(tDict, vDictTCPs, pDictTCPs, timetupel, "BLM_TCPs", 5e-9,3e-3)
-
-        det, ts_dt_peak = getPeak( getPeaks(tDict, vDictTCPs, timetupel) )
-        print "Found noise substracted peak in ", det, ts_dt_peak, timetupel
-        print "-" * 40
 
 ## -----------------------------------------------------------------------------------    
 def plotPeaks(tDict):
@@ -450,16 +489,22 @@ def plotPeaks(tDict):
 
 
     timeRanges = [
-        # ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
-        # ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
+        ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
+        ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
         ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
-        # ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+        ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+
+        ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
+        ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
+        ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
+        ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+
     ]
     for timetupel in timeRanges:
-
+        print "-" * 80
         det, ts_dt_peak = getPeak( getPeaks(tDict, vDictTCPs, timetupel) )
-        print "Found noise substracted peak in ", det, ts_dt_peak, timetupel
-        print "-" * 40
+        print "Found peak in ", det, ts_dt_peak, timetupel
+
         #doHistoPeak(pDict)
 ## -----------------------------------------------------------------------------------    
 if __name__ == "__main__":
