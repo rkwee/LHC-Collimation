@@ -3,13 +3,12 @@
 #
 # R Kwee, April 2012
 
-import os, math, time, ROOT
+import os, math, time, ROOT, sys
 from ROOT import *
 from optparse import OptionParser
 from array import array as ar
-# # # # # needs H4 folder # # # # # # # 
 from helpers import mylabel, mean,gitpath, stddev
-import sys
+from MDAnalysis_dict import vDictTCTs, vDictTCPs
 ## -----------------------------------------------------------------------------------
 parser = OptionParser()
 parser.add_option("-f", "--file", dest="filename", type="string",
@@ -19,38 +18,6 @@ parser.add_option("-f", "--file", dest="filename", type="string",
 (options, args) = parser.parse_args()
 ## -----------------------------------------------------------------------------------
 debug  = 0
-
-# dictionary of timber variables
-vDictTCTs = {  
-    "BLMTI.04L1.B1I10_TCTPH.4L1.B1:LOSS_RS09" : [kBlue,  33, ],
-    "BLMTI.04L1.B1I10_TCTPV.4L1.B1:LOSS_RS09" : [kBlue-2,34, ],
-    "BLMTI.04L5.B1I10_TCTPH.4L5.B1:LOSS_RS09" : [kRed+1, 22, ],
-    "BLMTI.04L5.B1I10_TCTPV.4L5.B1:LOSS_RS09" : [kRed-2, 23, ],
-
-    "BLMTI.04R1.B2I10_TCTPH.4R1.B2:LOSS_RS09" : [kCyan+2, 27, ],
-    "BLMTI.04R1.B2I10_TCTPV.4R1.B2:LOSS_RS09" : [kGreen-2,28, ],
-    "BLMTI.04R5.B2I10_TCTPH.4R5.B2:LOSS_RS09" : [kPink-3, 26, ],
-    "BLMTI.04R5.B2I10_TCTPV.4R5.B2:LOSS_RS09" : [kPink+1, 28, ],
-}
-
-# not only primaries....
-vDictTCPs = {  
-
-    "BLMEI.06L7.B1E10_TCHSV.6L7.B1:LOSS_RS09" : [kYellow+2, 20], 
-    "BLMEI.06L7.B1E10_TCP.A6L7.B1:LOSS_RS09" : [kOrange+6, 24,], 
-    "BLMEI.06L7.B1E10_TCSM.A6L7.B1:LOSS_RS09" : [kOrange+4, 28,], 
-    "BLMEI.06R7.B2I10_TCHSV.6R7.B2:LOSS_RS09" : [kOrange+3, 26,], 
-    "BLMEI.06R7.B2I10_TCP.A6R7.B2:LOSS_RS09" : [kOrange+2, 28,],
-    "BLMEI.06R7.B2I10_TCSM.A6R7.B2:LOSS_RS09" : [kOrange+1, 27,],
-    "BLMTI.06L7.B2I10_TCLA.A6L7.B2:LOSS_RS09" : [kYellow-2, 33,],
-    "BLMTI.06L7.B2I10_TCLA.B6L7.B2:LOSS_RS09" : [kYellow-8,  34,], 
-    "BLMTI.06R7.B1E10_TCLA.A6R7.B1:LOSS_RS09" : [kYellow+7,  22,], 
-    "BLMTI.06R7.B1E10_TCLA.B6R7.B1:LOSS_RS09" : [kYellow+3,  23,],
-
-}
-
-
-## -----------------------------------------------------------------------------------
 
 def stringDateToTimeStamp(sDateTime):
 
@@ -62,7 +29,6 @@ def stringDateToTimeStamp(sDateTime):
     return ts
 
 ## -----------------------------------------------------------------------------------
-
 def dictionizeData(fname):
 
     #  collect data in list (actually in tDict)
@@ -153,7 +119,7 @@ def doGraphTimeAxis(vDict, k, xarray, yarray):
     return gr
 ## -----------------------------------------------------------------------------------
 
-def doGraphDetAxis(vDict, k, xarray, yarray):
+def doGraph( k, xarray, yarray):
   
     kname = getkname(k) 
     gr = TGraph( len(xarray), ar('d',xarray), ar('d',yarray) )
@@ -172,25 +138,24 @@ def doGraphDetAxis(vDict, k, xarray, yarray):
     return gr
             
 ## -----------------------------------------------------------------------------------
-#def doHistoPeak(pDict):
+def doHisto(colcnt, k, xLabels, yarray):
 
-    # pDict has structure key: [ts, dt, peakval]
+    kname = 'hist_' + getkname(k)
+    hist = TH1F(kname, kname, len(xLabels), -0.5, len(xLabels)+0.5 )
+    col  =  vDictTCTs[k][0] + colcnt
 
-    #kname = 'peakhisto_' + str(ts)
-    #hist = TH1F(kname, kname, len(xarray), min(xarray), max(xarray) )
-    #for det in pDict.keys():
+    print "Creating histogram", kname
+    cnt = 1
+    for y in yarray:
+        hist.SetBinContent(cnt,y)
+        cnt += 1
+
+    cnt = 1
+    for xl in xLabels:
+        hist.GetXaxis().SetBinLabel(cnt,xl)
+        cnt += 1
 
 
-    # 
-    # col  =  vDict[k][0]
-
-    # print "Creating histogram", kname
-
-
-    # cnt = 1
-    # for y in yarray:
-    #     hist.SetBinContent(cnt,y)
-    #     cnt += 1
 
     # hist.GetXaxis().SetTimeDisplay(1)
     # hist.GetXaxis().SetTimeFormat("%H:%M:%S")
@@ -198,9 +163,9 @@ def doGraphDetAxis(vDict, k, xarray, yarray):
     # hist.GetXaxis().SetTitle("local time")
     # if k.count("BLM"): hist.GetYaxis().SetTitle("Gy/s")
     # hist.GetYaxis().SetTitleOffset(0.8)
-    # hist.SetMarkerColor(col)  
+    hist.SetMarkerColor(col)  
     
-    # return hist
+    return hist
 ## -----------------------------------------------------------------------------------
 def getPedestral(tDict, vDict, timetupel):
     #
@@ -286,12 +251,12 @@ def getPeaks(tDict, vDict, timetupel):
 def getPeak(pDict):
 
     peaksList = [(det,pDict[det][2]) for det in pDict.keys()]
-    print peaksList
+    if debug: print peaksList
 
     peaks = [pDict[det][2] for det in pDict.keys()]
     peak = max( peaks )
     for det, ts_dt_peak in pDict.iteritems():
-        print "searching for peak", peak, "in ", det
+        if debug: print "searching for peak", peak, "in ", det
         if peak in ts_dt_peak:
             return det, ts_dt_peak
 
@@ -322,7 +287,8 @@ def subPedestral(tDict, vDict, pDict):
             pedSubData += [ [ts, dt, val-noise+stddev] ]
 
         if debug: print "adding data of ", det
-        tpList += [(det, pedSubData)]
+
+        tpList += [[det, pedSubData]]
 
     return dict(tpList)
 ## -----------------------------------------------------------------------------------    
@@ -472,37 +438,19 @@ def createKey(l):
     TCTsett = l.split()[2].split("#")[0]
     TCLAsett = l.split()[5].split("#")[0]
     rfSett = l.split()[6].split("-mom")[0]
-    beamplane = l.split()[7]
-    k = TCTsett + "_" + TCLAsett + "_" + rfSett + "_" + beamplane
+    try: 
+        beamplane = "_" + l.split()[7]
+    except:
+        beamplane = ""
+
+    k = TCTsett + "_" + TCLAsett + "_" + rfSett + beamplane
     return k
 ## -----------------------------------------------------------------------------------    
 def getPedDicts(tDict, doTCPs):
 
     # return by default pDict for TCTs
 
-    timeNoise  = [
-        ('2015-08-28 05:50:00','2015-08-28 05:54:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 1
-        ('2015-08-28 06:06:00','2015-08-28 06:08:20', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum"),       # 2
-        ('2015-08-28 06:13:01','2015-08-28 06:15:59', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 3
-        ('2015-08-28 06:23:00','2015-08-28 06:24:10', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum"),       # 4
-        ('2015-08-28 06:29:01','2015-08-28 06:30:10', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 5
-        ('2015-08-28 06:39:01','2015-08-28 06:40:20', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum"),      # 6
-
-        ('2015-08-28 07:28:00','2015-08-28 07:31:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum"),       # 7
-        ('2015-08-28 07:38:00','2015-08-28 07:40:00', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 8
-        ('2015-08-28 07:45:30','2015-08-28 07:46:20', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 9
-        ('2015-08-28 07:50:00','2015-08-28 07:51:30', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum"),      # 10
-
-        ('2015-08-28 08:02:00','2015-08-28 08:05:20', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 11
-        ('2015-08-28 08:15:00','2015-08-28 08:17:20', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 12
-        ('2015-08-28 08:23:00','2015-08-28 08:25:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 13
-
-        ('2015-08-28 08:31:00','2015-08-28 08:31:20', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 14
-        ('2015-08-28 08:39:00','2015-08-28 08:40:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 15
-        ('2015-08-28 08:43:00','2015-08-28 08:44:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 16
-
-    ]
-
+    from MDAnalysis_dict import timeNoise 
     pedDictTCTs = []
     pedDictTCPs = []
 
@@ -523,27 +471,9 @@ def plotLossesForTimeRange(tDict):
     #
     # ............................................................
 
-    timeSignal = [
+    from MDAnalysis import timeSignal 
 
-        ('2015-08-28 05:50:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 1
-        ('2015-08-28 06:06:01','2015-08-28 06:13:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum"),       # 2
-        ('2015-08-28 06:13:01','2015-08-28 06:23:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 3
-        ('2015-08-28 06:23:01','2015-08-28 06:29:00', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum"),       # 4
-        ('2015-08-28 06:29:01','2015-08-28 06:39:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 5
-        ('2015-08-28 06:39:01','2015-08-28 06:53:00', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum"),      # 6
-        ('2015-08-28 07:20:01','2015-08-28 07:38:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum"),       # 7
-        ('2015-08-28 07:38:01','2015-08-28 07:45:30', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 8
-        ('2015-08-28 07:45:31','2015-08-28 07:50:00', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 9
-        ('2015-08-28 07:50:01','2015-08-28 07:55:00', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum"),      # 10
-        ('2015-08-28 07:58:01','2015-08-28 08:14:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 11
-        ('2015-08-28 08:14:01','2015-08-28 08:22:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 12
-        ('2015-08-28 08:22:01','2015-08-28 08:30:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 13
-        ('2015-08-28 08:30:01','2015-08-28 08:36:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 14
-        ('2015-08-28 08:36:01','2015-08-28 08:43:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 15
-        ('2015-08-28 08:43:01','2015-08-28 08:48:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 16
-    ]
-
-    pedDictTCPs, pedDictTCPs = getPedDicts(tDict,1)
+    pedDictTCTs, pedDictTCPs = getPedDicts(tDict,1)
     if len(pedDictTCTs) != len(timeSignal): 
         print "Error!!! ", len(pedDictTCTs), len(timeSignal)
         sys.exit()
@@ -560,7 +490,7 @@ def plotLossesForTimeRange(tDict):
 def getTCTlosses(ts_dt_peak, tDict, pDict):
 
     (ts_peak, dt, peak) = ts_dt_peak
-    print "Searchin for ts ", ts_peak, dt
+    print "Searching for ts ", ts_peak, dt
     tpDict = subPedestral(tDict, vDictTCTs, pDict)
 
     delta = 60.
@@ -569,7 +499,7 @@ def getTCTlosses(ts_dt_peak, tDict, pDict):
         
         detData = tpDict[det]
 
-        print "Checking data of ", det
+        if debug: print "Checking data of ", det
 
         for ts, dt, val in detData:
 
@@ -577,21 +507,35 @@ def getTCTlosses(ts_dt_peak, tDict, pDict):
             if peak: normVal /= peak
                 
             if ts == ts_peak:
-                npList += [ normVal ]
-                print "Found exact same timestamp of peak and tct loss", normVal
+                npList += [ [det,normVal] ]
+                if debug: print "Found exact same timestamp of peak and tct loss", normVal
                 break
             elif (ts <= ts_peak+delta) and ts > ts_peak:
-                npList += [ normVal ]
-                print "Look for ts ", delta,"sec. after peak happened. Found", dt, normVal
+                npList += [ [det,normVal] ]
+                if debug: print "Look for ts ", delta,"sec. after peak happened. Found", dt, normVal
                 break
 
-    print "Expected ", len(vDictTCTs.keys()), " entries and have", len(npList)
-
     if len(vDictTCTs.keys()) != len(npList):
-        print "Missing entries. Exiting.. "
+        print "Expected ", len(vDictTCTs.keys()), " entries and have", len(npList)
+        print "Exiting.. not yet."
         #sys.exit()
 
+    print npList
     return npList
+
+## -----------------------------------------------------------------------------------    
+def prepYarray(loss_at_thisTCT, xLabels):
+
+    yarray = [ 1e-11 for i in range(len(xLabels)) ]
+    for i,xl in enumerate(xLabels):
+        try:
+            if loss_at_thisTCT[i][0].count(xl): 
+                yarray[i] = loss_at_thisTCT[i][1]
+        except:
+            pass
+
+    print yarray
+    return yarray
 
 ## -----------------------------------------------------------------------------------    
 def plotPeaks(tDict):
@@ -600,24 +544,24 @@ def plotPeaks(tDict):
     # plot losses vs BLM for a certain time
     #
     # ............................................................
+    from MDAnalysis_dict import timeNoise 
 
     pedDictTCTs = getPedDicts(tDict,0)
     timeRanges = [
         [ ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
-          # ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
-          # ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
-          # ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+          ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
+          ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
+          ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
       ],
-      #   [ ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
-      #     ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
-      #     ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
-      #     ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
-      # ],
+        [ ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
+          ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
+          ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
+          ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+      ],
 
     ]
 
     tctLossList = []
-
 
     for i,sett in enumerate(timeRanges):
 
@@ -633,6 +577,75 @@ def plotPeaks(tDict):
             tctLossList += [ (tR_key, tctLosses)]
 
 
+    tctLossDict = dict(tctLossList)
+    tkeys = tctLossDict.keys()
+    tkeys.sort()
+    print tkeys
+
+    ## ...................................................................................
+    
+    # scan identifier
+    scans = ["14_on", "10_on", "14_neg-off", "14_pos-off"]
+    xLabels = ["7.8", "8.3", "8.8", "9.3", "9.8", "10.3"]
+    for det in vDictTCTs.keys():
+        print "Preparing plot for ", det
+
+        hists = []
+
+        Beam = "B1"
+        if det.count("B2"): Beam = "B2"
+
+        Plane = "H"
+        if det.count("TCTPV"): Plane = "V"
+
+        IP = "IP1"
+        if det.count("L5") or det.count("R5"): IP = "IP5"
+
+        colcnt = 0
+        for scan in scans:
+            print "In scan",  scan
+
+            # get settings per scan
+            keys_per_scan = []
+
+            for tk in tkeys:
+                if tk.count(scan) and tk.count(Beam+Plane): keys_per_scan += [tk]
+
+            if debug: 
+                print "Found these keys identifying the settings per scan", keys_per_scan
+
+            # collect losses on this tct per setting
+
+            loss_at_thisTCT = []
+            for tk in keys_per_scan:
+
+                tctLosses = tctLossDict[tk]
+
+                for tct,loss in tctLosses:
+                    if tct == det: 
+                        loss_at_thisTCT += [ [tk, loss] ]
+                        # dont really need other losses...
+                        break
+
+            print loss_at_thisTCT
+            yarray = prepYarray(loss_at_thisTCT, xLabels)
+            hists += [doHisto(colcnt, det, xLabels, yarray)]
+
+        cv = TCanvas( 'cv', 'cv' , 10, 10, 900, 600 )
+        cv.SetLogy(1)
+        pname = getkname(det)
+
+        for h,hh in enumerate(hists):
+            dOpt = ""
+            if h: 
+                dOpt = "SAME"
+
+            hh.GetYaxis().SetRangeUser(1e-6,1e-2)
+            hh.Draw("P"+dOpt)
+
+        print "Saving", pname 
+        cv.Print(pname + ".png" )
+
 ## -----------------------------------------------------------------------------------    
 if __name__ == "__main__":
 
@@ -647,7 +660,7 @@ if __name__ == "__main__":
 
     #print "time.ctime(1) = ", time.ctime(1.) 
     fname = "TIMBER_DATA_BLMs_20152808_default_MDB.csv"
-    fname = "TIMBER_DATA_BLMs_20152808_default_MDB.csv"
+    fname = "TIMBER_DATA_BLMs_20152808_default.csv"
 
     tDict = dictionizeData(fname)
     #plotLossesForTimeRange(tDict)
