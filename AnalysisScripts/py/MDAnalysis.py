@@ -313,10 +313,15 @@ def subPedestral(tDict, vDict, pDict):
         pedSubData = []
         for ts, dt, val in detData:
 
-            # substract pedestral
-            pedSubData += [ [ts, dt, val-pDict[det][0]] ]
+            noise = pDict[det][0]
+            stddev = pDict[det][1]
+            if noise-stddev > val:
+                if debug: print "No signal in",det, ". Found larger noise", noise-stddev,"than value", val
+                noise = val
+            # substract pedestral, leave maximal stddev of noise.
+            pedSubData += [ [ts, dt, val-noise+stddev] ]
 
-        print "adding data of ", det
+        if debug: print "adding data of ", det
         tpList += [(det, pedSubData)]
 
     return dict(tpList)
@@ -459,12 +464,21 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
     print "Saving", pname
     cv.Print(pname + ".png" )
 ## -----------------------------------------------------------------------------------    
-def plotLossesForTimeRange(tDict):
-    # ............................................................ 
-    #     
-    # 
-    #
-    # ............................................................
+
+def createKey(l):
+
+    #l = "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2V "
+    if debug: print l.split()
+    TCTsett = l.split()[2].split("#")[0]
+    TCLAsett = l.split()[5].split("#")[0]
+    rfSett = l.split()[6].split("-mom")[0]
+    beamplane = l.split()[7]
+    k = TCTsett + "_" + TCLAsett + "_" + rfSett + "_" + beamplane
+    return k
+## -----------------------------------------------------------------------------------    
+def getPedDicts(tDict, doTCPs):
+
+    # return by default pDict for TCTs
 
     timeNoise  = [
         ('2015-08-28 05:50:00','2015-08-28 05:54:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 1
@@ -494,9 +508,20 @@ def plotLossesForTimeRange(tDict):
 
     for timetupel in timeNoise:
         pedDictTCTs += [ getPedestral(tDict, vDictTCTs, timetupel ) ]
-        pedDictTCPs += [ getPedestral(tDict, vDictTCPs, timetupel ) ]
+        if doTCPs: pedDictTCPs += [ getPedestral(tDict, vDictTCPs, timetupel ) ]
 
 
+    if doTCPs:
+        return pedDictTCTs, pedDictTCPs
+    else:
+        return pedDictTCTs
+## -----------------------------------------------------------------------------------    
+def plotLossesForTimeRange(tDict):
+    # ............................................................ 
+    #     
+    # 
+    #
+    # ............................................................
 
     timeSignal = [
 
@@ -518,9 +543,9 @@ def plotLossesForTimeRange(tDict):
         ('2015-08-28 08:43:01','2015-08-28 08:48:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 16
     ]
 
-
-    if len(timeNoise) != len(timeSignal): 
-        print "Error!!! ", len(timeNoise), len(timeSignal)
+    pedDictTCPs, pedDictTCPs = getPedDicts(tDict,1)
+    if len(pedDictTCTs) != len(timeSignal): 
+        print "Error!!! ", len(pedDictTCTs), len(timeSignal)
         sys.exit()
 
     for i,timetupel in enumerate(timeSignal):
@@ -532,6 +557,43 @@ def plotLossesForTimeRange(tDict):
         doLossesVsTime(tDict, vDictTCPs, pDictTCPs, timetupel, "BLM_TCPs", 5e-9,3e-3)
 
 ## -----------------------------------------------------------------------------------    
+def getTCTlosses(ts_dt_peak, tDict, pDict):
+
+    (ts_peak, dt, peak) = ts_dt_peak
+    print "Searchin for ts ", ts_peak, dt
+    tpDict = subPedestral(tDict, vDictTCTs, pDict)
+
+    delta = 60.
+    npList = []
+    for det in vDictTCTs.keys():
+        
+        detData = tpDict[det]
+
+        print "Checking data of ", det
+
+        for ts, dt, val in detData:
+
+            normVal = val
+            if peak: normVal /= peak
+                
+            if ts == ts_peak:
+                npList += [ normVal ]
+                print "Found exact same timestamp of peak and tct loss", normVal
+                break
+            elif (ts <= ts_peak+delta) and ts > ts_peak:
+                npList += [ normVal ]
+                print "Look for ts ", delta,"sec. after peak happened. Found", dt, normVal
+                break
+
+    print "Expected ", len(vDictTCTs.keys()), " entries and have", len(npList)
+
+    if len(vDictTCTs.keys()) != len(npList):
+        print "Missing entries. Exiting.. "
+        #sys.exit()
+
+    return npList
+
+## -----------------------------------------------------------------------------------    
 def plotPeaks(tDict):
     # ............................................................ 
     #     
@@ -539,25 +601,38 @@ def plotPeaks(tDict):
     #
     # ............................................................
 
-
+    pedDictTCTs = getPedDicts(tDict,0)
     timeRanges = [
-        ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
-        ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
-        ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
-        ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
-
-        ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
-        ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
-        ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
-        ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+        [ ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
+          # ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
+          # ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
+          # ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+      ],
+      #   [ ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
+      #     ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
+      #     ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
+      #     ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+      # ],
 
     ]
-    for timetupel in timeRanges:
-        print "-" * 80
-        det, ts_dt_peak = getPeak( getPeaks(tDict, vDictTCPs, timetupel) )
-        print "Found peak in ", det, ts_dt_peak, timetupel
 
-        #doHistoPeak(pDict)
+    tctLossList = []
+
+
+    for i,sett in enumerate(timeRanges):
+
+        for timetupel in sett:
+            print "-" * 80
+            det, ts_dt_peak = getPeak( getPeaks(tDict, vDictTCPs, timetupel) )
+            print "Found peak in ", det, ts_dt_peak, timetupel
+
+            # create key from timeRange
+            tR_key = createKey(timetupel[-1])
+
+            tctLosses = getTCTlosses(ts_dt_peak, tDict, pedDictTCTs[i])
+            tctLossList += [ (tR_key, tctLosses)]
+
+
 ## -----------------------------------------------------------------------------------    
 if __name__ == "__main__":
 
@@ -571,9 +646,10 @@ if __name__ == "__main__":
     SetAtlasStyle()
 
     #print "time.ctime(1) = ", time.ctime(1.) 
-    fname = "TIMBER_DATA_BLMs_20152808_default.csv"
+    fname = "TIMBER_DATA_BLMs_20152808_default_MDB.csv"
+    fname = "TIMBER_DATA_BLMs_20152808_default_MDB.csv"
 
     tDict = dictionizeData(fname)
-    plotLossesForTimeRange(tDict)
-    #plotPeaks(tDict)
+    #plotLossesForTimeRange(tDict)
+    plotPeaks(tDict)
     
