@@ -296,7 +296,34 @@ def getPeak(pDict):
             return det, ts_dt_peak
 
 ## -----------------------------------------------------------------------------------
+def subPedestral(tDict, vDict, pDict):
+
+    # 
+    # return dictionary with same structure as tDict but with pedestral substracted data
+    # det: [ts, dt, val-ped]
+    #
+    # should only be applied to vDictTCTs and vDictTCPs
+    tpList = []
+    for det in vDict.keys():
+        
+        if debug: print "timber var ", det
+        detData = tDict[det]        
+
+        # pedestral substracted data
+        pedSubData = []
+        for ts, dt, val in detData:
+
+            # substract pedestral
+            pedSubData += [ [ts, dt, val-pDict[det][0]] ]
+
+        print "adding data of ", det
+        tpList += [(det, pedSubData)]
+
+    return dict(tpList)
+## -----------------------------------------------------------------------------------    
 def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
+
+    tpDict = subPedestral(tDict, vDict, pDict)
 
     hists = []
     graphs, graphsPed = [],[]
@@ -313,9 +340,13 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
     if debug: 
         print "Starting time", dtStart
         print "Ending time", dtEnd
+
+    # ............................................................ 
+    # first graph : no noise substraction
+
     vars = vDict.keys()
 
-    for det in vDict.keys():
+    for det in vars:
         xarray, yarray, yarrayPed = [],[],[]
         if debug: print "timber var ", det
         detData = tDict[det]        
@@ -329,13 +360,31 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
 
             yarray += [val]
             xarray += [ts]
-
-            # substract pedestral
-            yarrayPed += [val-pDict[det][0]]
-
+        
         if debug: print "Counted", len(xarray), "time points"
         graphs   += [doGraphTimeAxis(vDict, det, xarray, yarray)]
+
+    # ............................................................ 
+    # second graph : with noise substraction
+
+    for det in vars:
+        xarray, yarrayPed = [],[]
+
+        # use noise substracted data
+        detData = tpDict[det]        
+        
+        for ts, dt, val in detData:
+
+            if ts > tsEnd or ts <= tsStart: 
+                continue
+
+            yarrayPed += [val]
+            xarray += [ts]
+        
+        if debug: print "Counted", len(xarray), "time points"
         graphsPed+= [doGraphTimeAxis(vDict, det, xarray, yarrayPed)]
+    # ............................................................ 
+    # actual plots
 
     a,b,doLogy = 1,2,1
     cv = TCanvas( 'cv', 'cv' , 10, 10, a*1200, b*500 )
@@ -418,21 +467,24 @@ def plotLossesForTimeRange(tDict):
     # ............................................................
 
     timeNoise  = [
-        ('2015-08-28 05:50:00','2015-08-28 05:52:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 1
+        ('2015-08-28 05:50:00','2015-08-28 05:54:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 1
         ('2015-08-28 06:06:00','2015-08-28 06:08:20', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum"),       # 2
         ('2015-08-28 06:13:01','2015-08-28 06:15:59', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 3
-        ('2015-08-28 06:06:00','2015-08-28 06:08:20', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum"),       # 4
-        ('2015-08-28 06:22:01','2015-08-28 06:24:10', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 5
+        ('2015-08-28 06:23:00','2015-08-28 06:24:10', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum"),       # 4
+        ('2015-08-28 06:29:01','2015-08-28 06:30:10', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum"),       # 5
         ('2015-08-28 06:39:01','2015-08-28 06:40:20', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum"),      # 6
-        ('2015-08-28 07:20:00','2015-08-28 07:30:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum"),       # 7
-        ('2015-08-28 07:38:00','2015-08-28 07:40:20', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 8
-        ('2015-08-28 07:45:31','2015-08-28 07:46:20', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 9
-        ('2015-08-28 07:50:00','2015-08-28 07:51:20', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum"),      # 10
-        ('2015-08-28 08:01:11','2015-08-28 08:05:20', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 11
-        ('2015-08-28 08:14:00','2015-08-28 08:17:30', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 12
+
+        ('2015-08-28 07:28:00','2015-08-28 07:31:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum"),       # 7
+        ('2015-08-28 07:38:00','2015-08-28 07:40:00', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 8
+        ('2015-08-28 07:45:30','2015-08-28 07:46:20', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 9
+        ('2015-08-28 07:50:00','2015-08-28 07:51:30', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum"),      # 10
+
+        ('2015-08-28 08:02:00','2015-08-28 08:05:20', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 11
+        ('2015-08-28 08:15:00','2015-08-28 08:17:20', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 12
         ('2015-08-28 08:23:00','2015-08-28 08:25:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 13
+
         ('2015-08-28 08:31:00','2015-08-28 08:31:20', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 14
-        ('2015-08-28 08:36:00','2015-08-28 08:37:20', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 15
+        ('2015-08-28 08:39:00','2015-08-28 08:40:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 15
         ('2015-08-28 08:43:00','2015-08-28 08:44:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum"), # 16
 
     ]
