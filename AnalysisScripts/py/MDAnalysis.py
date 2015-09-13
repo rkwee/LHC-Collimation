@@ -536,90 +536,8 @@ def plotPeaks(tDict):
     from MDAnalysis_dict import timeNoise 
 
     pedDictTCTs = getPedDicts(tDict,0)
-    timeRanges = [
-        [ ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
-          ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
-          ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
-          ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
-      ],
-        [ ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
-          ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
-          ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
-          ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
-      ],
-        [ ('2015-08-28 06:16:00','2015-08-28 06:17:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
-          ('2015-08-28 06:17:01','2015-08-28 06:18:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
-          ('2015-08-28 06:20:01','2015-08-28 06:21:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
-          ('2015-08-28 06:21:01','2015-08-28 06:22:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
-      ],
-        [ ('2015-08-28 06:24:01','2015-08-28 06:25:00', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
-          ('2015-08-28 06:25:31','2015-08-28 06:26:30', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
-          ('2015-08-28 06:26:51','2015-08-28 06:28:00', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
-          ('2015-08-28 06:28:01','2015-08-28 06:29:00', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
-      ],
-        [ ('2015-08-28 06:30:31','2015-08-28 06:31:30', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
-          ('2015-08-28 06:32:01','2015-08-28 06:33:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
-          ('2015-08-28 06:36:01','2015-08-28 06:37:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
-          ('2015-08-28 06:37:31','2015-08-28 06:38:20', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
-      ],
-        [ ('2015-08-28 06:40:11','2015-08-28 06:41:10', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
-          ('2015-08-28 06:47:21','2015-08-28 06:48:20', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
-          ('2015-08-28 06:52:01','2015-08-28 06:53:00', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
-          ('2015-08-28 06:50:01','2015-08-28 06:51:00', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
-      ],
-        [ ('2015-08-28 07:32:00','2015-08-28 07:33:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum, B1H "),
-          ('2015-08-28 07:34:00','2015-08-28 07:35:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum, B1V "),
-          ('2015-08-28 07:35:00','2015-08-28 07:36:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum, B2H "),
-          ('2015-08-28 07:36:00','2015-08-28 07:37:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum, B2V "),
-      ],
-        [ ('2015-08-28 07:40:00','2015-08-28 07:41:00', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum, B1H "),
-          ('2015-08-28 07:41:50','2015-08-28 07:42:50', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum, B1V "),
-          ('2015-08-28 07:43:00','2015-08-28 07:44:00', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum, B2H "),
-          ('2015-08-28 07:44:01','2015-08-28 07:45:00', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum, B2V "),
-      ],
-        [ ('2015-08-28 07:46:00','2015-08-28 07:47:00', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum, B1H "),
-          ('2015-08-28 07:47:01','2015-08-28 07:48:00', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum, B1V "),
-          ('2015-08-28 07:48:01','2015-08-28 07:49:00', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum, B2H "),
-          ('2015-08-28 07:49:01','2015-08-28 07:50:00', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum, B2V "),
-      ],
-        [ ('2015-08-28 07:51:00','2015-08-28 07:52:00', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum, B1H "),
-          ('2015-08-28 07:52:01','2015-08-28 07:53:00', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum, B1V "),
-          ('2015-08-28 07:53:01','2015-08-28 07:54:00', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum, B2H "),
-          ('2015-08-28 07:54:01','2015-08-28 07:55:00', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum, B2V "),
-      ],
-        [ ('2015-08-28 08:08:00','2015-08-28 08:09:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1H "),
-          ('2015-08-28 08:10:00','2015-08-28 08:11:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1V "),
-          ('2015-08-28 08:11:51','2015-08-28 08:12:50', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2H "),
-          ('2015-08-28 08:13:00','2015-08-28 08:14:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2V "),
-      ],
-        [ ('2015-08-28 08:18:00','2015-08-28 08:19:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1H "),
-          ('2015-08-28 08:19:01','2015-08-28 08:19:50', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1V "),
-          ('2015-08-28 08:20:51','2015-08-28 08:21:50', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2H "),
-          ('2015-08-28 08:21:00','2015-08-28 08:22:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2V "),
-      ],
-        [ ('2015-08-28 08:25:20','2015-08-28 08:26:10', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1H "),
-          ('2015-08-28 08:26:11','2015-08-28 08:27:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1V "),
-          ('2015-08-28 08:27:51','2015-08-28 08:28:50', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2H "),
-          ('2015-08-28 08:29:00','2015-08-28 08:30:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2V "),
-      ],
-        [ ('2015-08-28 08:31:20','2015-08-28 08:32:20', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1H "),
-          ('2015-08-28 08:32:41','2015-08-28 08:33:30', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1V "),
-          ('2015-08-28 08:33:40','2015-08-28 08:34:40', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2H "),
-          ('2015-08-28 08:35:00','2015-08-28 08:36:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2V "),
-      ],
-        [ ('2015-08-28 08:36:50','2015-08-28 08:37:50', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1H "),
-          ('2015-08-28 08:38:00','2015-08-28 08:39:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1V "),
-          ('2015-08-28 08:40:00','2015-08-28 08:41:10', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2H "),
-          ('2015-08-28 08:41:30','2015-08-28 08:42:50', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2V "),
-      ],
-        [ ('2015-08-28 08:44:00','2015-08-28 08:45:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1H "),
-          ('2015-08-28 08:45:01','2015-08-28 08:46:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1V "),
-          ('2015-08-28 08:46:01','2015-08-28 08:47:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2H "),
-          ('2015-08-28 08:47:01','2015-08-28 08:48:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2V "),
-      ],
 
-    ]
-
+    from MDAnalysis_dict import timeRanges
     tctLossList = []
 
     for i,sett in enumerate(timeRanges):
@@ -645,7 +563,8 @@ def plotPeaks(tDict):
     
     # scan identifier
     scans = ["14_on", "10_on", "14_neg-off", "14_pos-off"]
-    smark = [20 , 34 , 24, 23]
+    rlabs = ["TCLAs@14#sigma dp/p=0", "TCLAs@10#sigma dp/p=0", "TCLAs@14#sigma dp/p=-1.2 Hz", "TCLAs@14#sigma dp/p=+1.2 Hz"]
+    smark = [20 , 34 , 23, 22]
 
     xLabels = ["7.8", "8.3", "8.8", "9.3", "9.8", "10.3"]
     for det in vDictTCTs.keys():
@@ -698,9 +617,9 @@ def plotPeaks(tDict):
         cv = TCanvas( 'cv', 'cv' , 10, 10, 900, 600 )
         cv.SetLogy(1)
         pname = getkname(det)
-        YurMin, YurMax = 1e-6, 1e-1
+        YurMin, YurMax = 3e-5, 8e-2
 
-        thelegend = TLegend(0.72,0.72,0.88,0.88)
+        thelegend = TLegend(0.56,0.74,0.88,0.9)
         thelegend.SetFillColor(ROOT.kWhite)
         thelegend.SetShadowColor(ROOT.kWhite)
         thelegend.SetLineColor(ROOT.kWhite)
@@ -712,10 +631,10 @@ def plotPeaks(tDict):
             hist.Draw("PSAME")
             hist.GetYaxis().SetRangeUser(YurMin, YurMax)
             hist.GetXaxis().SetTitle("[#sigma]")
-            hist.GetYaxis().SetTitle("normalised loss")
+            hist.GetYaxis().SetTitle("noise substracted normalised loss")
             hist.SetMarkerColor(vDictTCTs[det][0]+h)  
             hist.SetMarkerStyle(smark[h])        
-            lText = scans[h]
+            lText = rlabs[h]
             thelegend.AddEntry(hist,lText, 'p')
 
         thelegend.Draw()
