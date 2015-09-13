@@ -17,7 +17,7 @@ parser.add_option("-f", "--file", dest="filename", type="string",
 
 (options, args) = parser.parse_args()
 ## -----------------------------------------------------------------------------------
-debug  = 0
+debug  = 1
 
 def stringDateToTimeStamp(sDateTime):
 
@@ -119,32 +119,28 @@ def doGraphTimeAxis(vDict, k, xarray, yarray):
     return gr
 ## -----------------------------------------------------------------------------------
 
-def doGraph( k, xarray, yarray):
+def doGraph( col, k, xarray, yarray):
   
     kname = getkname(k) 
     gr = TGraph( len(xarray), ar('d',xarray), ar('d',yarray) )
     gr.SetName('gr_' + kname )
-    for i,det in enumerate(detLabels):
-        gr.GetXaxis().SetBinLabel(i+1, det)
-
     gr.GetXaxis().SetLabelSize(0.04)
-
-    if k.count("BLM"): gr.GetYaxis().SetTitle("Gy/s")
     gr.GetYaxis().SetTitleOffset(0.8)
-    gr.SetMarkerColor(vDict[k][0])
-    gr.SetMarkerStyle(vDict[k][1])
+    gr.SetMarkerColor(1)
+    gr.SetMarkerStyle(23)
     gr.SetMarkerSize(1.2)
   
     return gr
             
 ## -----------------------------------------------------------------------------------
-def doHisto(colcnt, k, xLabels, yarray):
+def doHistoLabels(scnt, k, xLabels, yarray):
+    print "Filling histogram with yarray", yarray
 
-    kname = 'hist_' + getkname(k)
-    hist = TH1F(kname, kname, len(xLabels), -0.5, len(xLabels)+0.5 )
-    col  =  vDictTCTs[k][0] + colcnt
+    kname = 'hist_' + getkname(k) + "_" + str(scnt)
+    xmin, xmax = -0.5, 5.5
+    hist = TH1F(kname, kname, len(xLabels), xmin, xmax)
 
-    print "Creating histogram", kname
+    if debug: print "Creating histogram", kname
     cnt = 1
     for y in yarray:
         hist.SetBinContent(cnt,y)
@@ -154,17 +150,8 @@ def doHisto(colcnt, k, xLabels, yarray):
     for xl in xLabels:
         hist.GetXaxis().SetBinLabel(cnt,xl)
         cnt += 1
-
-
-
-    # hist.GetXaxis().SetTimeDisplay(1)
-    # hist.GetXaxis().SetTimeFormat("%H:%M:%S")
-    # hist.GetXaxis().SetLabelSize(0.04)
-    # hist.GetXaxis().SetTitle("local time")
-    # if k.count("BLM"): hist.GetYaxis().SetTitle("Gy/s")
-    # hist.GetYaxis().SetTitleOffset(0.8)
-    hist.SetMarkerColor(col)  
-    
+        
+    hist.GetXaxis().SetLabelSize(0.07)
     return hist
 ## -----------------------------------------------------------------------------------
 def getPedestral(tDict, vDict, timetupel):
@@ -471,7 +458,7 @@ def plotLossesForTimeRange(tDict):
     #
     # ............................................................
 
-    from MDAnalysis import timeSignal 
+    from MDAnalysis_dict import timeSignal 
 
     pedDictTCTs, pedDictTCPs = getPedDicts(tDict,1)
     if len(pedDictTCTs) != len(timeSignal): 
@@ -520,21 +507,23 @@ def getTCTlosses(ts_dt_peak, tDict, pDict):
         print "Exiting.. not yet."
         #sys.exit()
 
-    print npList
+    if debug: print npList
     return npList
 
 ## -----------------------------------------------------------------------------------    
 def prepYarray(loss_at_thisTCT, xLabels):
 
-    yarray = [ 1e-11 for i in range(len(xLabels)) ]
-    for i,xl in enumerate(xLabels):
-        try:
-            if loss_at_thisTCT[i][0].count(xl): 
-                yarray[i] = loss_at_thisTCT[i][1]
-        except:
-            pass
+    yarray = [ 1e-16 for i in range(len(xLabels)) ]
+    for settID, loss in loss_at_thisTCT:
+        
+        for xl in xLabels:
+            tctSett = settID.split("_")[0]
+            if settID.count(xl): 
+                t = xLabels.index(tctSett)
+                break
 
-    print yarray
+        yarray[t] = loss
+            
     return yarray
 
 ## -----------------------------------------------------------------------------------    
@@ -557,6 +546,76 @@ def plotPeaks(tDict):
           ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
           ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
           ('2015-08-28 06:05:00','2015-08-28 06:06:00', "TCTs at 8.3#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+      ],
+        [ ('2015-08-28 06:16:00','2015-08-28 06:17:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
+          ('2015-08-28 06:17:01','2015-08-28 06:18:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
+          ('2015-08-28 06:20:01','2015-08-28 06:21:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
+          ('2015-08-28 06:21:01','2015-08-28 06:22:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+      ],
+        [ ('2015-08-28 06:24:01','2015-08-28 06:25:00', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
+          ('2015-08-28 06:25:31','2015-08-28 06:26:30', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
+          ('2015-08-28 06:26:51','2015-08-28 06:28:00', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
+          ('2015-08-28 06:28:01','2015-08-28 06:29:00', "TCTs at 9.3#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+      ],
+        [ ('2015-08-28 06:30:31','2015-08-28 06:31:30', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
+          ('2015-08-28 06:32:01','2015-08-28 06:33:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
+          ('2015-08-28 06:36:01','2015-08-28 06:37:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
+          ('2015-08-28 06:37:31','2015-08-28 06:38:20', "TCTs at 9.8#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+      ],
+        [ ('2015-08-28 06:40:11','2015-08-28 06:41:10', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
+          ('2015-08-28 06:47:21','2015-08-28 06:48:20', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
+          ('2015-08-28 06:52:01','2015-08-28 06:53:00', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
+          ('2015-08-28 06:50:01','2015-08-28 06:51:00', "TCTs at 10.3#sigma, TCLAs at 14#sigma, on-momentum, B2V "),
+      ],
+        [ ('2015-08-28 07:32:00','2015-08-28 07:33:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum, B1H "),
+          ('2015-08-28 07:34:00','2015-08-28 07:35:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum, B1V "),
+          ('2015-08-28 07:35:00','2015-08-28 07:36:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum, B2H "),
+          ('2015-08-28 07:36:00','2015-08-28 07:37:00', "TCTs at 8.3#sigma, TCLAs at 10#sigma, on-momentum, B2V "),
+      ],
+        [ ('2015-08-28 07:40:00','2015-08-28 07:41:00', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum, B1H "),
+          ('2015-08-28 07:41:50','2015-08-28 07:42:50', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum, B1V "),
+          ('2015-08-28 07:43:00','2015-08-28 07:44:00', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum, B2H "),
+          ('2015-08-28 07:44:01','2015-08-28 07:45:00', "TCTs at 8.8#sigma, TCLAs at 10#sigma, on-momentum, B2V "),
+      ],
+        [ ('2015-08-28 07:46:00','2015-08-28 07:47:00', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum, B1H "),
+          ('2015-08-28 07:47:01','2015-08-28 07:48:00', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum, B1V "),
+          ('2015-08-28 07:48:01','2015-08-28 07:49:00', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum, B2H "),
+          ('2015-08-28 07:49:01','2015-08-28 07:50:00', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum, B2V "),
+      ],
+        [ ('2015-08-28 07:51:00','2015-08-28 07:52:00', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum, B1H "),
+          ('2015-08-28 07:52:01','2015-08-28 07:53:00', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum, B1V "),
+          ('2015-08-28 07:53:01','2015-08-28 07:54:00', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum, B2H "),
+          ('2015-08-28 07:54:01','2015-08-28 07:55:00', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum, B2V "),
+      ],
+        [ ('2015-08-28 08:08:00','2015-08-28 08:09:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1H "),
+          ('2015-08-28 08:10:00','2015-08-28 08:11:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1V "),
+          ('2015-08-28 08:11:51','2015-08-28 08:12:50', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2H "),
+          ('2015-08-28 08:13:00','2015-08-28 08:14:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2V "),
+      ],
+        [ ('2015-08-28 08:18:00','2015-08-28 08:19:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1H "),
+          ('2015-08-28 08:19:01','2015-08-28 08:19:50', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1V "),
+          ('2015-08-28 08:20:51','2015-08-28 08:21:50', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2H "),
+          ('2015-08-28 08:21:00','2015-08-28 08:22:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2V "),
+      ],
+        [ ('2015-08-28 08:25:20','2015-08-28 08:26:10', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1H "),
+          ('2015-08-28 08:26:11','2015-08-28 08:27:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1V "),
+          ('2015-08-28 08:27:51','2015-08-28 08:28:50', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2H "),
+          ('2015-08-28 08:29:00','2015-08-28 08:30:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2V "),
+      ],
+        [ ('2015-08-28 08:31:20','2015-08-28 08:32:20', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1H "),
+          ('2015-08-28 08:32:41','2015-08-28 08:33:30', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1V "),
+          ('2015-08-28 08:33:40','2015-08-28 08:34:40', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2H "),
+          ('2015-08-28 08:35:00','2015-08-28 08:36:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2V "),
+      ],
+        [ ('2015-08-28 08:36:50','2015-08-28 08:37:50', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1H "),
+          ('2015-08-28 08:38:00','2015-08-28 08:39:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1V "),
+          ('2015-08-28 08:40:00','2015-08-28 08:41:10', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2H "),
+          ('2015-08-28 08:41:30','2015-08-28 08:42:50', "TCTs at 8.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2V "),
+      ],
+        [ ('2015-08-28 08:44:00','2015-08-28 08:45:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1H "),
+          ('2015-08-28 08:45:01','2015-08-28 08:46:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1V "),
+          ('2015-08-28 08:46:01','2015-08-28 08:47:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2H "),
+          ('2015-08-28 08:47:01','2015-08-28 08:48:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2V "),
       ],
 
     ]
@@ -586,11 +645,15 @@ def plotPeaks(tDict):
     
     # scan identifier
     scans = ["14_on", "10_on", "14_neg-off", "14_pos-off"]
+    smark = [20 , 34 , 24, 23]
+
     xLabels = ["7.8", "8.3", "8.8", "9.3", "9.8", "10.3"]
     for det in vDictTCTs.keys():
         print "Preparing plot for ", det
 
         hists = []
+        graphs = []
+        mg = TMultiGraph()
 
         Beam = "B1"
         if det.count("B2"): Beam = "B2"
@@ -602,7 +665,7 @@ def plotPeaks(tDict):
         if det.count("L5") or det.count("R5"): IP = "IP5"
 
         colcnt = 0
-        for scan in scans:
+        for s,scan in enumerate(scans):
             print "In scan",  scan
 
             # get settings per scan
@@ -611,7 +674,7 @@ def plotPeaks(tDict):
             for tk in tkeys:
                 if tk.count(scan) and tk.count(Beam+Plane): keys_per_scan += [tk]
 
-            if debug: 
+            if 1: 
                 print "Found these keys identifying the settings per scan", keys_per_scan
 
             # collect losses on this tct per setting
@@ -627,21 +690,39 @@ def plotPeaks(tDict):
                         # dont really need other losses...
                         break
 
-            print loss_at_thisTCT
+            if debug: print "loss_at_thisTCT", loss_at_thisTCT
             yarray = prepYarray(loss_at_thisTCT, xLabels)
-            hists += [doHisto(colcnt, det, xLabels, yarray)]
+            if debug: print "yarray", yarray
+            hists += [doHistoLabels(s, det, xLabels, yarray)]
 
         cv = TCanvas( 'cv', 'cv' , 10, 10, 900, 600 )
         cv.SetLogy(1)
         pname = getkname(det)
+        YurMin, YurMax = 1e-6, 1e-1
 
-        for h,hh in enumerate(hists):
-            dOpt = ""
-            if h: 
-                dOpt = "SAME"
+        thelegend = TLegend(0.72,0.72,0.88,0.88)
+        thelegend.SetFillColor(ROOT.kWhite)
+        thelegend.SetShadowColor(ROOT.kWhite)
+        thelegend.SetLineColor(ROOT.kWhite)
+        thelegend.SetLineStyle(0)
+        thelegend.SetTextSize(0.03)
 
-            hh.GetYaxis().SetRangeUser(1e-6,1e-2)
-            hh.Draw("P"+dOpt)
+        for h,hist in enumerate(hists):            
+            if not h: hist.Draw("P")
+            hist.Draw("PSAME")
+            hist.GetYaxis().SetRangeUser(YurMin, YurMax)
+            hist.GetXaxis().SetTitle("[#sigma]")
+            hist.GetYaxis().SetTitle("normalised loss")
+            hist.SetMarkerColor(vDictTCTs[det][0]+h)  
+            hist.SetMarkerStyle(smark[h])        
+            lText = scans[h]
+            thelegend.AddEntry(hist,lText, 'p')
+
+        thelegend.Draw()
+        ml = mylabel(42)
+        ml.SetTextSize(0.04)
+        X1, Y1 = 0.23, 0.96
+        ml.DrawLatex(X1, Y1, det)
 
         print "Saving", pname 
         cv.Print(pname + ".png" )
@@ -660,7 +741,7 @@ if __name__ == "__main__":
 
     #print "time.ctime(1) = ", time.ctime(1.) 
     fname = "TIMBER_DATA_BLMs_20152808_default_MDB.csv"
-    fname = "TIMBER_DATA_BLMs_20152808_default.csv"
+    fname = "TIMBER_DATA_BLMs_20152808_default_MDB.csv"
 
     tDict = dictionizeData(fname)
     #plotLossesForTimeRange(tDict)
