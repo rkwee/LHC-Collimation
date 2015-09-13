@@ -80,7 +80,7 @@ timeSignal = [
 ]
 # ------------------------------------------------------------------------------------------------
 
-    timeRanges = [
+timeRanges = [
         [ ('2015-08-28 05:54:00','2015-08-28 05:55:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1H "),
           ('2015-08-28 06:01:00','2015-08-28 06:02:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B1V "),
           ('2015-08-28 06:03:00','2015-08-28 06:04:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, on-momentum, B2H "),
@@ -147,7 +147,7 @@ timeSignal = [
           ('2015-08-28 08:29:00','2015-08-28 08:30:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2V "),
       ],
         [ ('2015-08-28 08:31:20','2015-08-28 08:32:20', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1H "),
-          ('2015-08-28 08:32:41','2015-08-28 08:33:30', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1V "),
+          ('2015-08-28 08:32:31','2015-08-28 08:33:30', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B1V "),
           ('2015-08-28 08:33:40','2015-08-28 08:34:40', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2H "),
           ('2015-08-28 08:35:00','2015-08-28 08:36:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, pos-off-momentum, B2V "),
       ],
