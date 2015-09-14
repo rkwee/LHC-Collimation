@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 #
-# R Kwee, April 2012
+# rkwee, Sept 2015
 
 import os, math, time, ROOT, sys
 from ROOT import *
@@ -17,7 +17,7 @@ parser.add_option("-f", "--file", dest="filename", type="string",
 
 (options, args) = parser.parse_args()
 ## -----------------------------------------------------------------------------------
-debug  = 1
+debug  = 0
 
 def stringDateToTimeStamp(sDateTime):
 
@@ -67,11 +67,7 @@ def dictionizeData(fname):
                 # save into list
                 tDict[key] += [[ts, dt, val]]
 
-
-    # check if timestamps are about the same
-
-    keys = tDict.keys()
- 
+    keys = tDict.keys() 
     if debug: print 'have data from ',len(keys),' detectors'
     return tDict
 ## -----------------------------------------------------------------------------------
@@ -119,16 +115,13 @@ def doGraphTimeAxis(vDict, k, xarray, yarray):
     return gr
 ## -----------------------------------------------------------------------------------
 
-def doGraph( col, k, xarray, yarray):
+def doGraphErrors( scnt, k, xarray, yarray,xErrarray, yErrarray):
   
-    kname = getkname(k) 
-    gr = TGraph( len(xarray), ar('d',xarray), ar('d',yarray) )
+    kname = getkname(k) + str(scnt)
+    gr = TGraphErrors( len(xarray), ar('d',xarray), ar('d',yarray), ar('d',xErrarray), ar('d',yErrarray) )
     gr.SetName('gr_' + kname )
-    gr.GetXaxis().SetLabelSize(0.04)
+    #gr.GetXaxis().SetLabelSize(0.04)
     gr.GetYaxis().SetTitleOffset(0.8)
-    gr.SetMarkerColor(1)
-    gr.SetMarkerStyle(23)
-    gr.SetMarkerSize(1.2)
   
     return gr
             
@@ -143,8 +136,18 @@ def doHistoLabels(scnt, k, xLabels, yarray):
     if debug: print "Creating histogram", kname
     cnt = 1
     for y in yarray:
+
+        # if y < 1e-12:
+        #     cnt += 1
+        #     if debug: print "want to skip", y
+        #     continue
         hist.SetBinContent(cnt,y)
         cnt += 1
+
+    # cnt = 1
+    # for y in yarray:
+    #     print "bin content is then", hist.GetBinContent(cnt)
+    #     cnt += 1
 
     cnt = 1
     for xl in xLabels:
@@ -152,6 +155,7 @@ def doHistoLabels(scnt, k, xLabels, yarray):
         cnt += 1
         
     hist.GetXaxis().SetLabelSize(0.07)
+    hist.SetMarkerSize(1.4)
     return hist
 ## -----------------------------------------------------------------------------------
 def getPedestral(tDict, vDict, timetupel):
@@ -190,7 +194,7 @@ def getPedestral(tDict, vDict, timetupel):
         pedList  +=  [(det, [meanPedestral, stddevPed])]
 
     pedDict  = dict(pedList)
-    if debug: print "pedDict", pedDict
+    print "pedDict", pedDict
     return pedDict
 ## -----------------------------------------------------------------------------------
 def getPeaks(tDict, vDict, timetupel):
@@ -491,8 +495,9 @@ def getTCTlosses(ts_dt_peak, tDict, pDict):
         for ts, dt, val in detData:
 
             normVal = val
+            print det,"loss =", val
             if peak: normVal /= peak
-                
+            print det,"loss normed =", normVal
             if ts == ts_peak:
                 npList += [ [det,normVal] ]
                 if debug: print "Found exact same timestamp of peak and tct loss", normVal
@@ -563,8 +568,9 @@ def plotPeaks(tDict):
     
     # scan identifier
     scans = ["14_on", "10_on", "14_neg-off", "14_pos-off"]
-    rlabs = ["TCLAs@14#sigma dp/p=0", "TCLAs@10#sigma dp/p=0", "TCLAs@14#sigma dp/p=-1.2 Hz", "TCLAs@14#sigma dp/p=+1.2 Hz"]
+    rlabs = ["TCLAs@14#sigma dp/p=0", "TCLAs@10#sigma dp/p=0", "TCLAs@14#sigma #deltaf=-1.2 Hz", "TCLAs@14#sigma #deltaf=+1.2 Hz"]
     smark = [20 , 34 , 23, 22]
+    scols = [kCyan+2, kBlue, kPink-6, kRed ]
 
     xLabels = ["7.8", "8.3", "8.8", "9.3", "9.8", "10.3"]
     for det in vDictTCTs.keys():
@@ -614,28 +620,47 @@ def plotPeaks(tDict):
             if debug: print "yarray", yarray
             hists += [doHistoLabels(s, det, xLabels, yarray)]
 
+            tplu = [(float(sett.split("_")[0]),loss) for sett,loss in loss_at_thisTCT]
+            xarray = [sett for sett,loss in sorted(tplu)]
+            yarray = [loss for sett,loss in sorted(tplu)]
+            graphs += [doGraphErrors(s, det, xarray, yarray)]
+
         cv = TCanvas( 'cv', 'cv' , 10, 10, 900, 600 )
         cv.SetLogy(1)
         pname = getkname(det)
-        YurMin, YurMax = 3e-5, 8e-2
+        YurMin, YurMax = 8e-6, 8e-2
 
-        thelegend = TLegend(0.56,0.74,0.88,0.9)
+        thelegend = TLegend(0.56,0.755,0.88,0.91)
         thelegend.SetFillColor(ROOT.kWhite)
         thelegend.SetShadowColor(ROOT.kWhite)
         thelegend.SetLineColor(ROOT.kWhite)
         thelegend.SetLineStyle(0)
-        thelegend.SetTextSize(0.03)
 
-        for h,hist in enumerate(hists):            
-            if not h: hist.Draw("P")
-            hist.Draw("PSAME")
-            hist.GetYaxis().SetRangeUser(YurMin, YurMax)
-            hist.GetXaxis().SetTitle("[#sigma]")
-            hist.GetYaxis().SetTitle("noise substracted normalised loss")
-            hist.SetMarkerColor(vDictTCTs[det][0]+h)  
-            hist.SetMarkerStyle(smark[h])        
+        # for h,hist in enumerate(hists):            
+        #     if not h: hist.Draw("P")
+        #     hist.Draw("PSAME")
+        #     hist.GetYaxis().SetRangeUser(YurMin, YurMax)
+        #     hist.GetXaxis().SetTitle("[#sigma]")
+        #     hist.GetYaxis().SetTitle("noise substracted normalised loss")
+        #     hist.SetMarkerColor(vDictTCTs[det][0]+h)  
+        #     hist.SetMarkerStyle(smark[h])
+        #     lText = rlabs[h]
+        #     thelegend.AddEntry(hist,lText, 'p')
+
+        for h, gr in enumerate(graphs):
+            gr.SetLineColor(scols[h])
+            gr.SetLineStyle(1+h)
+            gr.SetMarkerColor(scols[h])
+            gr.SetMarkerStyle(smark[h])
+            gr.SetMarkerSize(1.5)
             lText = rlabs[h]
-            thelegend.AddEntry(hist,lText, 'p')
+            thelegend.AddEntry(gr,lText, 'pl')
+            mg.Add(gr)
+
+        mg.Draw("apl")
+        #mg.GetYaxis().SetRangeUser(YurMin, YurMax)
+        mg.GetXaxis().SetTitle("[#sigma]")
+        mg.GetYaxis().SetTitle("noise substracted normalised loss")
 
         thelegend.Draw()
         ml = mylabel(42)
