@@ -49,7 +49,7 @@ timeNoise  = [
         ('2015-08-28 07:45:30','2015-08-28 07:46:20', "TCTs at 9.8#sigma, TCLAs at 10#sigma, on-momentum"),       # 9
         ('2015-08-28 07:50:00','2015-08-28 07:51:30', "TCTs at 7.8#sigma, TCLAs at 10#sigma, on-momentum"),      # 10
 
-        ('2015-08-28 08:02:00','2015-08-28 08:05:20', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 11
+        ('2015-08-28 08:02:00','2015-08-28 08:04:00', "TCTs at 7.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 11
         ('2015-08-28 08:15:00','2015-08-28 08:17:20', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 12
         ('2015-08-28 08:23:00','2015-08-28 08:25:00', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum"), # 13
 
@@ -138,7 +138,7 @@ timeRanges = [
       ],
         [ ('2015-08-28 08:18:00','2015-08-28 08:19:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1H "),
           ('2015-08-28 08:19:01','2015-08-28 08:19:50', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1V "),
-          ('2015-08-28 08:20:51','2015-08-28 08:21:50', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2H "),
+          ('2015-08-28 08:20:51','2015-08-28 08:21:29', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2H "),
           ('2015-08-28 08:21:00','2015-08-28 08:22:00', "TCTs at 8.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B2V "),
       ],
         [ ('2015-08-28 08:25:20','2015-08-28 08:26:10', "TCTs at 9.8#sigma, TCLAs at 14#sigma, neg-off-momentum, B1H "),
