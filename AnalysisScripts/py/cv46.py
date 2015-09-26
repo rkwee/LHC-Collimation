@@ -27,7 +27,7 @@ def cv46():
     cv.SetTopMargin(0.15)
 
     emittance_norm = 3.5e-6
-    gamma_rel = 4e3/0.938
+    gamma_rel = 6.5e3/0.938
 
     emittance_geo = emittance_norm/gamma_rel
     gauss1 = TF1('gauss1', 'exp(-0.5*(x**2))', -5.,5.)
@@ -71,7 +71,8 @@ def cv46():
         sigy = math.sqrt(emittance_geo * bety)
 
         foutname = name + '_N' + str(N) + '.txt'
-        foutname = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/INICON.dat'
+        #foutname = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/INIC6p5.dat'
+        foutname = '/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/checkTrajectory6500GeV/orbitDump/INIC6p5.dat'
         fot = open(foutname, 'w')
 
         for i in range(N):
@@ -112,15 +113,15 @@ def cv46():
             hy[-1].Fill(small_y,small_yp)
 
             # consider also crossing angle 
-            cy = small_yp + 145e-6
+            cy = small_yp + 142.5e-6
 
             hxIP.Fill(100.*small_x, 100.*small_y)
 
             # write out format for INICON.dat that is input for source_no_interactions_no_random_part.f
             # convert to fluka units, ie m in cm
-            line = str(i+1) + ' ' + str(100*small_x) + ' ' + str(100.*small_y) + ' ' + ' 0.0 ' + str(cx) + ' ' + str(cy) + ' 0.0   0.0 \n'
-            line = str(i+1) + ' ' + str(100*small_x) + ' ' + str(100.*small_y) + ' ' + ' 0.0 ' + str(cx) + ' ' + str(cy) + ' 0.0   0.0 \n'
-            fot.write(line)
+            lineINICON = str(100*small_x) + ' ' + str(100.*small_y) + ' ' + ' 0.0 ' + str(cx) + ' ' + str(cy) + ' 0.0   0.0 \n'
+            line = str(i+1) + ' ' + lineINICON
+            fot.write(lineINICON)
 
             phi = 2*random.random()*math.pi
             big_y  = math.cos(phi)
@@ -199,7 +200,7 @@ def cv46():
 
     rel = '_gauss' 
     pname  = wwwpath
-    subfolder = 'TCT/4TeV/beamgas/'
+    subfolder = 'TCT/6.5TeV/beamgas/'
     pname += subfolder + 'IP1'+rel+'.png'
 
     print('Saving file as ' + pname ) 

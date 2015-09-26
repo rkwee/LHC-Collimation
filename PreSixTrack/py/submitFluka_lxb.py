@@ -52,12 +52,13 @@ mailOpt = '-u Regina.Kwee@gmail.com'
 # -----------------------------------------------------------
 gitpath    = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/FlukaRoutines/'
 sourcepath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/sourcedirs/'
+projectpath= "/afs/cern.ch/project/lhc_mib/"
 commonsource = sourcepath + 'common/'
 
 # assume all exectutables are in sourcepath + 'common/'
 
 cList  = [['fluka_4TeV_haloB2',   [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', '']]]
-cList += [['fluka_4TeV_haloB1',   [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', '']]]
+cList += [['fluka_4TeV_haloB1_20MeV',   [sourcepath + 'TCT_4TeV_60cm/fluka/','newExe/my.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', '']]]
 cList += [['fluka_HL_TCT_haloB2', [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts_myexe_new/mynew.exe', '*fort.*','RANDOMIZ         1.0  9875214.','']]]
 
 cList += [['fl_HL_TCT5LOUT_rdB1', [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/'  ,'withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tct5otrd']]]
@@ -67,7 +68,11 @@ cList += [['fl_HL_TCT5LOUT_rdB2',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','
 cList += [['fluka_6.5TeV_haloB1_20MeV', [gitpath + '6.5TeV/','hybridHL.exe', '*fort.30', 'RANDOMIZ       1.0  9875214.', 'HALOB1']]]
 cList += [['fluka_6.5TeV_haloB2_20MeV', [gitpath + '6.5TeV/','hybridHL.exe', '*fort.30 *fort.*6*', 'RANDOMIZ       1.0  9875214.', 'HALOB2']]]
 cList += [['fluka_6.5TeV_beamgas_20MeV', [gitpath + '6.5TeV/','beamgas/exec/run2bg.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', 'bgpos']]]
-cList += [['fl_HL_crabfailB1',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.*3*','RANDOMIZ         1.0  1822551.','crabcfb1']]]
+cList += [['fl_HL_crabfailB1',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','crabcfb1']]]
+cList += [['fl_4TeV_BGcreateTrj_20MeV',  [gitpath + '4TeV/','sourceINICON/ini1.exe', '*fort.89','RANDOMIZ         1.0  9875214.','ICON*']]]
+cList += [['fl_6.5TeV_BGcreateTrj_20MeV',[projectpath + 'beamgas/6500GeV_beamsize/checkTrajectory6500GeV/inicon1/','ini.exe', '*fort.89','RANDOMIZ       1.0  9875214.','']]]
+cList += [['fl_4TeV_BG_20MeV',    [gitpath + '4TeV/','beamgas/sourceBeamGasCorr/bg_4TeV.exe', '*fort.67 *fort.91','RANDOMIZ         1.0  9875214.','BGASA']]] # correction was in the writing out
+
 
 cDict = dict(cList)
 try:
@@ -77,13 +82,23 @@ except KeyError:
     sys.exit()
 
 afsRunMain  = "/afs/cern.ch/work/r/rkwee/HL-LHC/runs/"
-afsRunMain  = "/afs/cern.ch/project/lhc_mib/bbgen/"
+afsRunMain  = "/afs/cern.ch/project/lhc_mib/"
 
+crabfolder  = ''
 if ckey.count('crab'): 
     afsRunMain  = "/afs/cern.ch/project/lhc_mib/crabcf/"
+    crabfolder  = '/crabcf/'
+
+if ckey.count('4TeV') and ckey.count('createTr'): 
+    afsRunMain  = "/afs/cern.ch/project/lhc_mib/beamgas/4TeV_beamsize/createTrajectories/"
+elif ckey.count('4TeV') and ckey.count('BG_'): 
+    afsRunMain  = "/afs/cern.ch/project/lhc_mib/beamgas/4TeV_beamsize/"
+elif ckey.count('6.5TeV') and ckey.count('createTr'): 
+    afsRunMain  = "/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/checkTrajectory6500GeV/inicon1/"
 
 run_dir     = run_dir + "/"
 afs_run_dir = afsRunMain + run_dir
+
 # -----------------------------------------------------------
 beam        = 'b1'
 if ckey.count('B2') or ckey.count('b2'):
@@ -120,25 +135,45 @@ if  ckey.count("4TeV"):
     magfile4    = source_dir + 'MQXA.dat'
     magfile5    = source_dir + 'MQXB.dat'
     magfile6    = source_dir + 'MQYana.dat'
-    inpFile     = source_dir + beam + '/ir1_4TeV_settings_from_TWISS_'+beam+'.inp'
-    inputFiles  = [haloData, magfile1,magfile2,magfile3,magfile4,magfile5,magfile6, inpFile]
+    inpFile     = source_dir + beam + '/ir1_4TeV_settings_from_TWISS_'+enCut + '_' + beam+'.inp'
+    if ckey.count('createTr'):
+        inpFile     = source_dir + 'beamgas/ir1_4TeV_settings_from_TWISS_'+enCut + '_' + beam+'_orbitDumpICON.inp'
+        inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,flukaExe, inpFile]
+        haloData    = source_dir +'ICON*dat'
+        for i in range(1,1001):
+            inputFiles += [source_dir +'inicon1/ICON'+str(i)+'.dat']
+
+    elif ckey.count('BG_'):
+        haloData    = source_dir + 'beamgas/' + tctlosses+'.dat'
+        inpFile     = gitpath + '4TeV/beamgas/ir1_4TeV_settings_from_TWISS_'+enCut + '_' + beam+'.inp'
+        inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,flukaExe, inpFile,haloData]
+    else:
+        inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,flukaExe, inpFile,haloData]
 
 elif ckey.count("6.5TeV"):
-    if ckey.count("halo"):
-        haloData   = source_dir + beam +'/'+ tctlosses+'.dat'
-        inpFile    = source_dir + beam + '/ir1_6500GeV_'+beam+'_'+enCut+'.inp'
-    elif ckey.count("beamgas"): 
-        haloData = source_dir + 'beamgas/'+ tctlosses+'.dat'
-        inpFile     = source_dir + 'beamgas/flat/ir1_6500GeV_'+beam+'_'+enCut+'.inp'
-    else:
-        haloData = ''
     magfile1    = source_dir + 'MB.dat'
     magfile2    = source_dir + 'MBXW.dat'
     magfile3    = source_dir + 'MQTL.dat'
     magfile4    = source_dir + 'MQXA.dat'
     magfile5    = source_dir + 'MQXB.dat'
     magfile6    = source_dir + 'MQYana.dat'
-    inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,inpFile,flukaExe]
+    inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,flukaExe]
+
+    if ckey.count("halo"):
+        haloData = source_dir + beam +'/'+ tctlosses+'.dat'
+        inpFile  = source_dir + beam + '/ir1_6500GeV_'+beam+'_'+enCut+'.inp'
+    elif ckey.count("beamgas"): 
+        haloData = source_dir + 'beamgas/'+ tctlosses+'.dat'
+        inpFile  = source_dir + 'beamgas/flat/ir1_6500GeV_'+beam+'_'+enCut+'.inp'
+    elif ckey.count('createTr'):
+        inpFile  = source_dir + 'ir1_6500GeV_'+beam+'_'+enCut+'_orbitDumpINICON.inp'
+        haloData = ''
+        for i in range(1,1001):
+            inputFiles += [source_dir +'ICON'+str(i)+'.dat']
+    else:
+        haloData = ''
+
+    inputFiles += [inpFile]
     if haloData: inputFiles+= [haloData]
 
 elif ckey.count("HL"):
@@ -156,7 +191,7 @@ elif ckey.count("HL"):
     magfile1    = source_dir + 'MBXF.dat'
     magfile2    = source_dir + 'MQXFv3.dat'
     magfile3    = source_dir + 'MQYana.dat'
-    inpFile     = source_dir + beam + '/hilumi_ir1_hybrid_'+beam+'_exp_20MeV.inp'
+    inpFile     = source_dir + beam + crabfolder + '/hilumi_ir1_hybrid_'+beam+'_exp_20MeV.inp'
     inputFiles  = [haloData,magfile1,magfile2,magfile3, inpFile, flukaExe]
 
 cnt = 0
@@ -220,9 +255,13 @@ for job in newrange:
 
     run_job = open(run_job_fname,'w')
     run_job.write('#!/bin/bash\n\n')
-
+    
     run_job.write('export FLUKA=/afs/cern.ch/work/r/rkwee/Fluka/fluka20112clinuxAA/ \n')
     run_job.write('export FLUPRO=/afs/cern.ch/work/r/rkwee/Fluka/fluka20112clinuxAA/ \n')
+    
+    # run_job.write('export FLUKA=/afs/cern.ch/project/fluka/flukadev/ \n')
+    # run_job.write('export FLUPRO=/afs/cern.ch/project/fluka/flukadev/ \n')
+
     run_job.write('export PATH=${FLUPRO}:${FLUPRO}/flutil:${PATH} \n')
 
     run_job.write('mkdir ' + run_dir +'\n')
@@ -243,7 +282,9 @@ for job in newrange:
 
     # change name of tct losses file
     sourceline = "linksour"
-    newsourceline = tctlosses
+    newsourceline = tctlosses 
+    if ckey.count('createTr'): 
+        newsourceline = 'ICON'+ str(job)
 
     cmd = "sed 's\\" + sourceline + "\\" + newsourceline + "\\' " + flukaInp +  " > "+ flukaInpA + "\n" 
     run_job.write(cmd)
@@ -289,6 +330,7 @@ for job in newrange:
         cmd_copy = "cp * " + subdir
     else:
         cmd_copy = 'cp '+fortfiles+' *inp.gz *out* ' + subdir
+        if ckey.count('Traj') : cmd_copy = 'cp '+fortfiles+' *out* ' + subdir
 
     run_job.write(cmd_copy)
 
