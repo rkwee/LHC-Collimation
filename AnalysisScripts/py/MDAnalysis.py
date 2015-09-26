@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 #
-# R Kwee, April 2012
+# rkwee, Sept 2015
 
 import os, math, time, ROOT, sys
 from ROOT import *
@@ -17,7 +17,7 @@ parser.add_option("-f", "--file", dest="filename", type="string",
 
 (options, args) = parser.parse_args()
 ## -----------------------------------------------------------------------------------
-debug  = 1
+debug  = 0
 
 def stringDateToTimeStamp(sDateTime):
 
@@ -67,11 +67,7 @@ def dictionizeData(fname):
                 # save into list
                 tDict[key] += [[ts, dt, val]]
 
-
-    # check if timestamps are about the same
-
-    keys = tDict.keys()
- 
+    keys = tDict.keys() 
     if debug: print 'have data from ',len(keys),' detectors'
     return tDict
 ## -----------------------------------------------------------------------------------
@@ -119,16 +115,13 @@ def doGraphTimeAxis(vDict, k, xarray, yarray):
     return gr
 ## -----------------------------------------------------------------------------------
 
-def doGraph( col, k, xarray, yarray):
+def doGraphErrors( scnt, k, xarray, yarray,xErrarray, yErrarray):
   
-    kname = getkname(k) 
-    gr = TGraph( len(xarray), ar('d',xarray), ar('d',yarray) )
+    kname = getkname(k) + str(scnt)
+    gr = TGraphErrors( len(xarray), ar('d',xarray), ar('d',yarray), ar('d',xErrarray), ar('d',yErrarray) )
     gr.SetName('gr_' + kname )
-    gr.GetXaxis().SetLabelSize(0.04)
+    #gr.GetXaxis().SetLabelSize(0.04)
     gr.GetYaxis().SetTitleOffset(0.8)
-    gr.SetMarkerColor(1)
-    gr.SetMarkerStyle(23)
-    gr.SetMarkerSize(1.2)
   
     return gr
             
@@ -143,8 +136,18 @@ def doHistoLabels(scnt, k, xLabels, yarray):
     if debug: print "Creating histogram", kname
     cnt = 1
     for y in yarray:
+
+        # if y < 1e-12:
+        #     cnt += 1
+        #     if debug: print "want to skip", y
+        #     continue
         hist.SetBinContent(cnt,y)
         cnt += 1
+
+    # cnt = 1
+    # for y in yarray:
+    #     print "bin content is then", hist.GetBinContent(cnt)
+    #     cnt += 1
 
     cnt = 1
     for xl in xLabels:
@@ -152,6 +155,7 @@ def doHistoLabels(scnt, k, xLabels, yarray):
         cnt += 1
         
     hist.GetXaxis().SetLabelSize(0.07)
+    hist.SetMarkerSize(1.4)
     return hist
 ## -----------------------------------------------------------------------------------
 def getPedestral(tDict, vDict, timetupel):
@@ -225,6 +229,7 @@ def getPeaks(tDict, vDict, timetupel):
             x_ts += [ts]
             x_dt += [dt]
 
+        if not yarray: print "No data within", dtStart," and ", dtEnd, "in ", det
         maxval = max(yarray)
         indexmax = yarray.index(maxval)
         peakList +=  [(  det,[x_ts[indexmax], x_dt[indexmax], maxval]  )]
@@ -475,6 +480,8 @@ def plotLossesForTimeRange(tDict):
 
 ## -----------------------------------------------------------------------------------    
 def getTCTlosses(ts_dt_peak, tDict, pDict):
+    # returns a list of this type: npList
+    # npList += [ [det,normVal] ]
 
     (ts_peak, dt, peak) = ts_dt_peak
     print "Searching for ts ", ts_peak, dt
@@ -482,8 +489,12 @@ def getTCTlosses(ts_dt_peak, tDict, pDict):
 
     delta = 60.
     npList = []
+    debug = 0
     for det in vDictTCTs.keys():
         
+        if det == "BLMTI.04R5.B2I10_TCTPH.4R5.B2:LOSS_RS09":
+            debug = 0
+
         detData = tpDict[det]
 
         if debug: print "Checking data of ", det
@@ -491,8 +502,9 @@ def getTCTlosses(ts_dt_peak, tDict, pDict):
         for ts, dt, val in detData:
 
             normVal = val
+            if debug: print det,"loss =", val, dt
             if peak: normVal /= peak
-                
+            if debug: print det,"loss normed =", normVal, dt
             if ts == ts_peak:
                 npList += [ [det,normVal] ]
                 if debug: print "Found exact same timestamp of peak and tct loss", normVal
@@ -501,6 +513,8 @@ def getTCTlosses(ts_dt_peak, tDict, pDict):
                 npList += [ [det,normVal] ]
                 if debug: print "Look for ts ", delta,"sec. after peak happened. Found", dt, normVal
                 break
+
+        debug = 0
 
     if len(vDictTCTs.keys()) != len(npList):
         print "Expected ", len(vDictTCTs.keys()), " entries and have", len(npList)
@@ -527,6 +541,23 @@ def prepYarray(loss_at_thisTCT, xLabels):
     return yarray
 
 ## -----------------------------------------------------------------------------------    
+def getNoisePerSett(peddetDict, det, keys_per_scan):
+
+    noise = []
+
+    for sett_blm_key in peddetDict.keys():
+        if not sett_blm_key.count(det): continue
+
+        for tk in keys_per_scan:
+            sett  = sett_blm_key.split(det)[0]
+
+            tkShort =  "_".join(tk.split("_")[:3])
+            if sett == tkShort:
+                # sett, [meanNoise, stddev]
+                noise += [[ sett, peddetDict[sett_blm_key] ]]
+
+    return noise
+## -----------------------------------------------------------------------------------    
 def plotPeaks(tDict):
     # ............................................................ 
     #     
@@ -535,36 +566,59 @@ def plotPeaks(tDict):
     # ............................................................
     from MDAnalysis_dict import timeNoise 
 
-    pedDictTCTs = getPedDicts(tDict,0)
+    pedDictTCTs, pedDictTCPs = getPedDicts(tDict,1)
+    pedTCTsKeys = [ createKey(tN[-1]) for tN in timeNoise ]
+  
+    # create flat dict
+    ppListTCTs, ppListTCPs = [],[]
+    for i,sett in enumerate(pedTCTsKeys):
 
+        pDictTCTs = pedDictTCTs[i]
+        pDictTCPs = pedDictTCPs[i]
+        for det in pDictTCTs:
+            pedSBLM = sett + det
+            ppListTCTs += [[ pedSBLM, pDictTCTs[det] ]]
+
+        for det in pDictTCPs:
+            pedSBLM = sett + det
+            ppListTCPs += [[ pedSBLM, pDictTCPs[det] ]]
+
+
+    peddetDictTCTs = dict(ppListTCTs)
+    peddetDictTCPs = dict(ppListTCPs)
+    
     from MDAnalysis_dict import timeRanges
     tctLossList = []
-
+    peaksTCPsList = []
     for i,sett in enumerate(timeRanges):
 
         for timetupel in sett:
             print "-" * 80
-            det, ts_dt_peak = getPeak( getPeaks(tDict, vDictTCPs, timetupel) )
-            print "Found peak in ", det, ts_dt_peak, timetupel
+            detPeak, ts_dt_peak = getPeak( getPeaks(tDict, vDictTCPs, timetupel) )
+            print "Found peak in ", detPeak, ts_dt_peak, timetupel
+            peaksTCPsList += [ [detPeak, ts_dt_peak] ]
+            (ts, dt, peak) = ts_dt_peak
 
             # create key from timeRange
             tR_key = createKey(timetupel[-1])
 
+            # getTCTlosses returns a list with elements [det_tct, normedTCTLoss]
             tctLosses = getTCTlosses(ts_dt_peak, tDict, pedDictTCTs[i])
-            tctLossList += [ (tR_key, tctLosses)]
+            tctLossList += [ (tR_key, [tctLosses, peak, detPeak] ) ]
 
 
     tctLossDict = dict(tctLossList)
     tkeys = tctLossDict.keys()
     tkeys.sort()
-    print tkeys
+    if debug: print "Keys in tctLossDict", tkeys
 
     ## ...................................................................................
     
     # scan identifier
     scans = ["14_on", "10_on", "14_neg-off", "14_pos-off"]
-    rlabs = ["TCLAs@14#sigma dp/p=0", "TCLAs@10#sigma dp/p=0", "TCLAs@14#sigma dp/p=-1.2 Hz", "TCLAs@14#sigma dp/p=+1.2 Hz"]
+    rlabs = ["TCLAs@14#sigma dp/p=0", "TCLAs@10#sigma dp/p=0", "TCLAs@14#sigma #deltaf=-1.2 Hz", "TCLAs@14#sigma #deltaf=+1.2 Hz"]
     smark = [20 , 34 , 23, 22]
+    scols = [kCyan+2, kBlue, kPink-6, kRed ]
 
     xLabels = ["7.8", "8.3", "8.8", "9.3", "9.8", "10.3"]
     for det in vDictTCTs.keys():
@@ -572,7 +626,12 @@ def plotPeaks(tDict):
 
         hists = []
         graphs = []
+        graphsNoise = []
+        graphsPeaks = []
+
         mg = TMultiGraph()
+        mgN = TMultiGraph()
+        mgP = TMultiGraph()
 
         Beam = "B1"
         if det.count("B2"): Beam = "B2"
@@ -593,49 +652,116 @@ def plotPeaks(tDict):
             for tk in tkeys:
                 if tk.count(scan) and tk.count(Beam+Plane): keys_per_scan += [tk]
 
-            if 1: 
+            if 1:
                 print "Found these keys identifying the settings per scan", keys_per_scan
 
             # collect losses on this tct per setting
-
             loss_at_thisTCT = []
+            norm_at_thisTCT = []
             for tk in keys_per_scan:
 
-                tctLosses = tctLossDict[tk]
+                tctLosses = tctLossDict[tk][0]
+                peak = tctLossDict[tk][1]
+                detPeak = tctLossDict[tk][2]
 
                 for tct,loss in tctLosses:
                     if tct == det: 
                         loss_at_thisTCT += [ [tk, loss] ]
+                        norm_at_thisTCT += [ [tk, peak, detPeak] ]
+
                         # dont really need other losses...
                         break
 
             if debug: print "loss_at_thisTCT", loss_at_thisTCT
-            yarray = prepYarray(loss_at_thisTCT, xLabels)
-            if debug: print "yarray", yarray
-            hists += [doHistoLabels(s, det, xLabels, yarray)]
+
+            lossTCTtupl = [(float(sett.split("_")[0]),loss) for sett,loss in loss_at_thisTCT]
+            lossTCPtupl = [(float(sett.split("_")[0]),norm) for sett,norm,detPeak in norm_at_thisTCT]
+            xErrarray   = [0. for i in lossTCTtupl]
+            lossTCPs    = [loss for sett,loss in sorted(lossTCPtupl)]
+            xarray      = [sett for sett,loss in sorted(lossTCTtupl)]
+            lossTCTs    = [loss for sett,loss in sorted(lossTCTtupl)]    
+
+            peddetDict = peddetDictTCTs
+            noise = []
+            for sett_blm_key in peddetDict.keys():
+                if not sett_blm_key.count(det): continue
+
+                for tk in keys_per_scan:
+                    sett  = sett_blm_key.split(det)[0]
+
+                    tkShort =  "_".join(tk.split("_")[:3])
+                    if sett == tkShort:
+                        # sett, [meanNoise, stddev]
+                        noise += [[ sett, peddetDict[sett_blm_key] ]]
+            noiseTCT = noise
+
+            peddetDict = peddetDictTCPs
+            noise = []
+            for sett_blm_key in peddetDict.keys():
+
+                if not sett_blm_key.count(det): continue
+
+                print "det name included", det
+                for tk in keys_per_scan:
+                    sett  = sett_blm_key.split(det)[0]
+
+                    tkShort =  "_".join(tk.split("_")[:3])
+                    if sett == tkShort:
+                        # sett, [meanNoise, stddev]
+                        noise += [[ sett, peddetDict[sett_blm_key] ]]
+            noiseTCP = noise
+            print "noiseTCP", noiseTCP
+
+            if not noiseTCP:
+                return
+
+
+            yNoiseTCTtupl    = sorted( [(float(sett.split("_")[0]),tctnoise,noiseErr) for sett,(tctnoise,noiseErr) in noiseTCT] )
+            yNoiseTCT        = [tctnoise for sett,tctnoise,noiseErr in yNoiseTCTtupl]
+            yNoiseErrTCT     = [noiseErr for sett,tctnoise,noiseErr in yNoiseTCTtupl]
+            yNoiseTCPtupl    = sorted( [(float(sett.split("_")[0]),tcpnoise,noiseErr) for sett,(tctnoise,noiseErr) in noiseTCP] )
+            yNoiseTCP        = [tcpnoise for sett,tcpnoise,noiseErr in yNoiseTCPtupl]
+            yNoiseErrTCP     = [noiseErr for sett,tcpnoise,noiseErr in yNoiseTCPtupl]
+
+
+            yNoiseTCTnormed  = []
+            for i in range(len(yNoiseTCT)):
+                tctnoise   = yNoiseTCT[i]
+                # scale error up by normalisation factor
+                yNoiseTCTnormed += [tctnoise/lossTCPs[i]]
+
+            graphs      += [doGraphErrors(s, det, xarray, lossTCTs, xErrarray, yNoiseTCTnormed)]
+            graphsNoise += [doGraphErrors(s, det, xarray, yNoiseTCTnormed, xErrarray, yNoiseErrTCT)]
+            graphsPeaks += [doGraphErrors(s, det, xarray, lossTCPs, xErrarray, yNoiseTCP)]
+
+        # .......................................................................
+        # result
 
         cv = TCanvas( 'cv', 'cv' , 10, 10, 900, 600 )
         cv.SetLogy(1)
         pname = getkname(det)
-        YurMin, YurMax = 3e-5, 8e-2
+        YurMin, YurMax = 8e-6, 8e-2
 
-        thelegend = TLegend(0.56,0.74,0.88,0.9)
+        thelegend = TLegend(0.56,0.755,0.88,0.91)
         thelegend.SetFillColor(ROOT.kWhite)
         thelegend.SetShadowColor(ROOT.kWhite)
         thelegend.SetLineColor(ROOT.kWhite)
         thelegend.SetLineStyle(0)
-        thelegend.SetTextSize(0.03)
 
-        for h,hist in enumerate(hists):            
-            if not h: hist.Draw("P")
-            hist.Draw("PSAME")
-            hist.GetYaxis().SetRangeUser(YurMin, YurMax)
-            hist.GetXaxis().SetTitle("[#sigma]")
-            hist.GetYaxis().SetTitle("noise substracted normalised loss")
-            hist.SetMarkerColor(vDictTCTs[det][0]+h)  
-            hist.SetMarkerStyle(smark[h])        
+        for h, gr in enumerate(graphs):
+            gr.SetLineColor(scols[h])
+            gr.SetLineStyle(1+h)
+            gr.SetMarkerColor(scols[h])
+            gr.SetMarkerStyle(smark[h])
+            gr.SetMarkerSize(1.5)
             lText = rlabs[h]
-            thelegend.AddEntry(hist,lText, 'p')
+            thelegend.AddEntry(gr,lText, 'pl')
+            mg.Add(gr)
+
+        mg.Draw("aple")
+        #mg.GetYaxis().SetRangeUser(YurMin, YurMax)
+        mg.GetXaxis().SetTitle("[#sigma]")
+        mg.GetYaxis().SetTitle("noise substracted normalised loss")
 
         thelegend.Draw()
         ml = mylabel(42)
@@ -645,6 +771,60 @@ def plotPeaks(tDict):
 
         print "Saving", pname 
         cv.Print(pname + ".png" )
+        # .......................................................................
+        # noise on TCTs
+
+        cv = TCanvas( 'cv', 'cv' , 10, 10, 900, 600 )
+        cv.SetLogy(0)
+        pname = getkname(det)
+        YurMin, YurMax = 8e-6, 8e-2
+
+        for h, gr in enumerate(graphsNoise):
+            gr.SetLineColor(scols[h])
+            gr.SetLineStyle(1+h)
+            gr.SetMarkerColor(scols[h])
+            gr.SetMarkerStyle(smark[h])
+            gr.SetMarkerSize(1.5)
+            mgN.Add(gr)
+
+        mgN.Draw("aple")
+        YurMin, YurMax = 5e-5, 1e-3
+        mgN.GetYaxis().SetRangeUser(YurMin, YurMax)
+        mgN.GetXaxis().SetTitle("[#sigma]")
+        mgN.GetYaxis().SetTitle("noise Gy/s")
+
+        thelegend.Draw()
+        ml.DrawLatex(X1, Y1, det)
+
+        print "Saving", pname 
+        cv.Print("Noise"+pname + ".png" )
+        # .......................................................................
+        # peaks
+
+        cv = TCanvas( 'cv', 'cv' , 10, 10, 900, 600 )
+        cv.SetLogy(0)
+        pname = getkname(det)
+        YurMin, YurMax = 8e-6, 8e-2
+
+        for h, gr in enumerate(graphsPeaks):
+            gr.SetLineColor(scols[h])
+            gr.SetLineStyle(1+h)
+            gr.SetMarkerColor(scols[h])
+            gr.SetMarkerStyle(smark[h])
+            gr.SetMarkerSize(1.5)
+            mgP.Add(gr)
+
+        mgP.Draw("apl")
+        YurMin, YurMax = 5e-5, 1e-3
+        #mgP.GetYaxis().SetRangeUser(YurMin, YurMax)
+        mgP.GetXaxis().SetTitle("[#sigma]")
+        mgP.GetYaxis().SetTitle("peak signal Gy/s")
+
+        thelegend.Draw()
+        ml.DrawLatex(X1, Y1, det)
+
+        print "Saving", pname 
+        cv.Print("Peaks"+pname + ".png" )
 
 ## -----------------------------------------------------------------------------------    
 if __name__ == "__main__":
