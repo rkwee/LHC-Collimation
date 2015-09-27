@@ -46,7 +46,7 @@ ckey = options.ckey
 #queuename='8nh'
 #ncycles='50'
 doTest=0
-doRun=1
+doRun=0
 showInfo=1
 mailOpt = '-u Regina.Kwee@gmail.com'
 # -----------------------------------------------------------
@@ -67,11 +67,11 @@ cList += [['fl_HL_TCT5IN_rdB2',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','wi
 cList += [['fl_HL_TCT5LOUT_rdB2',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tcotrdb2']]]
 cList += [['fluka_6.5TeV_haloB1_20MeV', [gitpath + '6.5TeV/','hybridHL.exe', '*fort.30', 'RANDOMIZ       1.0  9875214.', 'HALOB1']]]
 cList += [['fluka_6.5TeV_haloB2_20MeV', [gitpath + '6.5TeV/','hybridHL.exe', '*fort.30 *fort.*6*', 'RANDOMIZ       1.0  9875214.', 'HALOB2']]]
-cList += [['fluka_6.5TeV_beamgas_20MeV', [gitpath + '6.5TeV/','beamgas/exec/run2bg.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', 'bgpos']]]
 cList += [['fl_HL_crabfailB1',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','crabcfb1']]]
 cList += [['fl_4TeV_BGcreateTrj_20MeV',  [gitpath + '4TeV/','sourceINICON/ini1.exe', '*fort.89','RANDOMIZ         1.0  9875214.','ICON*']]]
 cList += [['fl_6.5TeV_BGcreateTrj_20MeV',[projectpath + 'beamgas/6500GeV_beamsize/checkTrajectory6500GeV/inicon1/','ini.exe', '*fort.89','RANDOMIZ       1.0  9875214.','']]]
 cList += [['fl_4TeV_BG_20MeV',    [gitpath + '4TeV/','beamgas/sourceBeamGasCorr/bg_4TeV.exe', '*fort.67 *fort.91','RANDOMIZ         1.0  9875214.','BGASA']]] # correction was in the writing out
+cList += [['fl_6.5TeV_BG_20MeV', [gitpath + '6.5TeV/','beamgas/sourceBG/BG.exe', '*fort.67 *fort.91','RANDOMIZ         1.0  9875214.','BGASB']]] 
 
 
 cDict = dict(cList)
@@ -95,6 +95,8 @@ elif ckey.count('4TeV') and ckey.count('BG_'):
     afsRunMain  = "/afs/cern.ch/project/lhc_mib/beamgas/4TeV_beamsize/"
 elif ckey.count('6.5TeV') and ckey.count('createTr'): 
     afsRunMain  = "/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/checkTrajectory6500GeV/inicon1/"
+elif ckey.count('6.5TeV') and ckey.count('BG_'): 
+    afsRunMain  = "/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/"
 
 run_dir     = run_dir + "/"
 afs_run_dir = afsRunMain + run_dir
@@ -162,7 +164,7 @@ elif ckey.count("6.5TeV"):
     if ckey.count("halo"):
         haloData = source_dir + beam +'/'+ tctlosses+'.dat'
         inpFile  = source_dir + beam + '/ir1_6500GeV_'+beam+'_'+enCut+'.inp'
-    elif ckey.count("beamgas"): 
+    elif ckey.count("BG"): 
         haloData = source_dir + 'beamgas/'+ tctlosses+'.dat'
         inpFile  = source_dir + 'beamgas/flat/ir1_6500GeV_'+beam+'_'+enCut+'.inp'
     elif ckey.count('createTr'):
@@ -270,12 +272,9 @@ for job in newrange:
 
     # copy the inputfiles
     for inpfile in inputFiles:
-        
         # copy to the local, randomly attributed path on the lxbatch
         cmd =  'cp ' + inpfile + ' . \n'
-        #cmd =  'ln -s ' + inpfile + ' . \n'
         run_job.write(cmd)
-
 
     flukaInp  = inpFile.split('/')[-1]
     flukaInpA = flukaInp + '.l'
