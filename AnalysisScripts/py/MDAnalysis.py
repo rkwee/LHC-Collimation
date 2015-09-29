@@ -115,14 +115,19 @@ def doGraphTimeAxis(vDict, k, xarray, yarray):
     return gr
 ## -----------------------------------------------------------------------------------
 
-def doGraphErrors( scnt, k, xarray, yarray,xErrarray, yErrarray):
+def doGraphErrors( scnt, k, xarray, yarray,xErrarray, yErrarray, doShowInfo):
   
     kname = getkname(k) + str(scnt)
     gr = TGraphErrors( len(xarray), ar('d',xarray), ar('d',yarray), ar('d',xErrarray), ar('d',yErrarray) )
     gr.SetName('gr_' + kname )
     #gr.GetXaxis().SetLabelSize(0.04)
     gr.GetYaxis().SetTitleOffset(0.8)
-  
+
+    if doShowInfo: 
+        print k,"."*30, scnt, "."*30
+        for i,x in enumerate(xarray):
+
+            print "collsetting:", x, ", TCT signal: (", yarray[i], "+-", yErrarray[i], "), fraction:", yErrarray[i]/yarray[i]
     return gr
             
 ## -----------------------------------------------------------------------------------
@@ -190,7 +195,6 @@ def getPedestral(tDict, vDict, timetupel):
 
         meanPedestral = mean(yarray)
         stddevPed = stddev(yarray)
-
         pedList  +=  [(det, [meanPedestral, stddevPed])]
 
     pedDict  = dict(pedList)
@@ -272,11 +276,12 @@ def subPedestral(tDict, vDict, pDict):
 
             noise = pDict[det][0]
             stddev = pDict[det][1]
-            if noise-stddev > val:
-                if debug: print "No signal in",det, ". Found larger noise", noise-stddev,"than value", val
+            noisestddev = noise-stddev
+            if noisestddev > val:
+                if debug: print "No signal in",det, ". Found larger noise", noise-stddev,"than value", val, "at", dt
                 noise = val
             # substract pedestral, leave maximal stddev of noise.
-            pedSubData += [ [ts, dt, val-noise+stddev] ]
+            pedSubData += [ [ts, dt, val-(noisestddev)] ]
 
         if debug: print "adding data of ", det
 
@@ -583,7 +588,6 @@ def plotPeaks(tDict):
             pedSBLM = sett + det
             ppListTCPs += [[ pedSBLM, pDictTCPs[det] ]]
 
-
     peddetDictTCTs = dict(ppListTCTs)
     peddetDictTCPs = dict(ppListTCPs)
     
@@ -644,7 +648,7 @@ def plotPeaks(tDict):
 
         colcnt = 0
         for s,scan in enumerate(scans):
-            print "In scan",  scan
+            print "-"*10,">> In scan",  scan
 
             # get settings per scan
             keys_per_scan = []
@@ -694,35 +698,14 @@ def plotPeaks(tDict):
                         # sett, [meanNoise, stddev]
                         noise += [[ sett, peddetDict[sett_blm_key] ]]
             noiseTCT = noise
-
-            peddetDict = peddetDictTCPs
-            noise = []
-            for sett_blm_key in peddetDict.keys():
-
-                if not sett_blm_key.count(det): continue
-
-                print "det name included", det
-                for tk in keys_per_scan:
-                    sett  = sett_blm_key.split(det)[0]
-
-                    tkShort =  "_".join(tk.split("_")[:3])
-                    if sett == tkShort:
-                        # sett, [meanNoise, stddev]
-                        noise += [[ sett, peddetDict[sett_blm_key] ]]
             noiseTCP = noise
-            print "noiseTCP", noiseTCP
-
-            if not noiseTCP:
-                return
-
 
             yNoiseTCTtupl    = sorted( [(float(sett.split("_")[0]),tctnoise,noiseErr) for sett,(tctnoise,noiseErr) in noiseTCT] )
             yNoiseTCT        = [tctnoise for sett,tctnoise,noiseErr in yNoiseTCTtupl]
             yNoiseErrTCT     = [noiseErr for sett,tctnoise,noiseErr in yNoiseTCTtupl]
-            yNoiseTCPtupl    = sorted( [(float(sett.split("_")[0]),tcpnoise,noiseErr) for sett,(tctnoise,noiseErr) in noiseTCP] )
+            yNoiseTCPtupl    = sorted( [(float(sett.split("_")[0]),0.,0.) for sett,(tcpnoise,noiseErr) in noiseTCP] )
             yNoiseTCP        = [tcpnoise for sett,tcpnoise,noiseErr in yNoiseTCPtupl]
             yNoiseErrTCP     = [noiseErr for sett,tcpnoise,noiseErr in yNoiseTCPtupl]
-
 
             yNoiseTCTnormed  = []
             for i in range(len(yNoiseTCT)):
@@ -730,12 +713,12 @@ def plotPeaks(tDict):
                 # scale error up by normalisation factor
                 yNoiseTCTnormed += [tctnoise/lossTCPs[i]]
 
-            graphs      += [doGraphErrors(s, det, xarray, lossTCTs, xErrarray, yNoiseTCTnormed)]
-            graphsNoise += [doGraphErrors(s, det, xarray, yNoiseTCTnormed, xErrarray, yNoiseErrTCT)]
-            graphsPeaks += [doGraphErrors(s, det, xarray, lossTCPs, xErrarray, yNoiseTCP)]
+            graphs      += [doGraphErrors(s, det, xarray, lossTCTs, xErrarray, yNoiseTCTnormed, 1)]
+            graphsNoise += [doGraphErrors(s, det, xarray, yNoiseTCTnormed, xErrarray, yNoiseErrTCT, 0)]
+            graphsPeaks += [doGraphErrors(s, det, xarray, lossTCPs, xErrarray, yNoiseTCP, 0)]
 
         # .......................................................................
-        # result
+        # result: signal
 
         cv = TCanvas( 'cv', 'cv' , 10, 10, 900, 600 )
         cv.SetLogy(1)
