@@ -122,13 +122,15 @@ def doGraphErrors( scnt, k, xarray, yarray,xErrarray, yErrarray, doShowInfo):
     gr.SetName('gr_' + kname )
     #gr.GetXaxis().SetLabelSize(0.04)
     gr.GetYaxis().SetTitleOffset(0.8)
+    datalines = []
 
     if doShowInfo: 
-        print k,"."*30, scnt, "."*30
         for i,x in enumerate(xarray):
 
             print "collsetting:", x, ", TCT signal: (", yarray[i], "+-", yErrarray[i], "), fraction:", yErrarray[i]/yarray[i]
-    return gr
+            datalines += [ str(x) + " " + str(yarray[i]) + " " + str(yErrarray[i]) + "\n" ]
+
+    return gr, datalines
             
 ## -----------------------------------------------------------------------------------
 def doHistoLabels(scnt, k, xLabels, yarray):
@@ -623,10 +625,18 @@ def plotPeaks(tDict):
     rlabs = ["TCLAs@14#sigma dp/p=0", "TCLAs@10#sigma dp/p=0", "TCLAs@14#sigma #deltaf=-1.2 Hz", "TCLAs@14#sigma #deltaf=+1.2 Hz"]
     smark = [20 , 34 , 23, 22]
     scols = [kCyan+2, kBlue, kPink-6, kRed ]
+    fDataName = "MDtighterTCTs_measurementData.txt"
+    dataOutFile = open(fDataName, 'w')
 
+    dataline = 'TCT setting, noise substracted normalised TCT signal, uncertainty normalised \n'
+    dataOutFile.write(dataline)
+
+    print "writing ........ ", fDataName
     xLabels = ["7.8", "8.3", "8.8", "9.3", "9.8", "10.3"]
     for det in vDictTCTs.keys():
         print "Preparing plot for ", det
+        dataline = det  + '\n'
+        dataOutFile.write(dataline)
 
         hists = []
         graphs = []
@@ -656,7 +666,7 @@ def plotPeaks(tDict):
             for tk in tkeys:
                 if tk.count(scan) and tk.count(Beam+Plane): keys_per_scan += [tk]
 
-            if 1:
+            if debug:
                 print "Found these keys identifying the settings per scan", keys_per_scan
 
             # collect losses on this tct per setting
@@ -703,19 +713,30 @@ def plotPeaks(tDict):
             yNoiseTCTtupl    = sorted( [(float(sett.split("_")[0]),tctnoise,noiseErr) for sett,(tctnoise,noiseErr) in noiseTCT] )
             yNoiseTCT        = [tctnoise for sett,tctnoise,noiseErr in yNoiseTCTtupl]
             yNoiseErrTCT     = [noiseErr for sett,tctnoise,noiseErr in yNoiseTCTtupl]
+
             yNoiseTCPtupl    = sorted( [(float(sett.split("_")[0]),0.,0.) for sett,(tcpnoise,noiseErr) in noiseTCP] )
             yNoiseTCP        = [tcpnoise for sett,tcpnoise,noiseErr in yNoiseTCPtupl]
             yNoiseErrTCP     = [noiseErr for sett,tcpnoise,noiseErr in yNoiseTCPtupl]
 
             yNoiseTCTnormed  = []
+            yNoiseErrTCTnormed  = []
             for i in range(len(yNoiseTCT)):
                 tctnoise   = yNoiseTCT[i]
                 # scale error up by normalisation factor
                 yNoiseTCTnormed += [tctnoise/lossTCPs[i]]
+                yNoiseErrTCTnormed += [yNoiseErrTCT[i]/lossTCPs[i]]
 
-            graphs      += [doGraphErrors(s, det, xarray, lossTCTs, xErrarray, yNoiseTCTnormed, 1)]
-            graphsNoise += [doGraphErrors(s, det, xarray, yNoiseTCTnormed, xErrarray, yNoiseErrTCT, 0)]
-            graphsPeaks += [doGraphErrors(s, det, xarray, lossTCPs, xErrarray, yNoiseTCP, 0)]
+            grs, datalines   = doGraphErrors(s, det, xarray, lossTCTs, xErrarray, yNoiseErrTCTnormed, 1)
+            grsN, datalinesN = doGraphErrors(s, det, xarray, yNoiseTCTnormed, xErrarray, yNoiseErrTCTnormed, 1)
+            grsP, datalinesP = doGraphErrors(s, det, xarray, lossTCPs, xErrarray, yNoiseTCP, 0)
+            graphs      += [grs]
+            graphsNoise += [grsN]
+            graphsPeaks += [grsP]
+
+            dataline = "--->> In scan : " + scan + "\n"
+            dataOutFile.write(dataline)
+            for dataline in datalines:
+                dataOutFile.write(dataline)
 
         # .......................................................................
         # result: signal
@@ -808,7 +829,7 @@ def plotPeaks(tDict):
 
         print "Saving", pname 
         cv.Print("Peaks"+pname + ".png" )
-
+    dataOutFile.close()
 ## -----------------------------------------------------------------------------------    
 if __name__ == "__main__":
 
@@ -823,7 +844,7 @@ if __name__ == "__main__":
 
     #print "time.ctime(1) = ", time.ctime(1.) 
     fname = "TIMBER_DATA_BLMs_20152808_default_MDB.csv"
-    fname = "TIMBER_DATA_BLMs_20152808_default_MDB.csv"
+    fname = "/Users/rkwee/Documents/RHUL/work/MDs/MD_TCT_analysis/TIMBER_DATA_BLMs_20152808_default_MDB.csv"
 
     tDict = dictionizeData(fname)
     #plotLossesForTimeRange(tDict)
