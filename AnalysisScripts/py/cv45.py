@@ -14,7 +14,7 @@ def cv45():
 
     # current path
     cpath = workpath + 'runs/checkTrajectory6500GeV/4TeV/'
-    cpath = '/afs/cern.ch/project/lhc_mib/beamgas/4TeV_beamsize/createTrajectories/'
+    cpath = '/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/'
     trakfiles = [
         # filen name, Xindex, Yindex, markerstyle, 
         # ['/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/madSY_b2.dat', 0,1, kGreen+1, 21, ],
@@ -30,12 +30,16 @@ def cv45():
         # [cpath + 'ir1_4TeV_settings_from_TWISS_20MeV_b1_orbitDump001_fort.89', 5,4, kBlack, 6, 'test size'], # 0cx 1cy 2cz 3x 4y 5z 6J 7A 
         # [cpath + 'ir1_4TeV_settings_from_TWISS_20MeV_b1_orbitDump001_fort.89', 5,3, kBlack, 6, 'test size'], # 0cx 1cy 2cz 3x 4y 5z 6J 7A 
         # [cpath + 'BEAMGAS.dat', 2,1, kBlack, 6, 'input final BEAMGAS', '_yBEAMGAS', 'y cm'], # 0x 1y 2z 3u 4v 
-        [cpath + 'BEAMGAS.dat', 2,0, kBlack, 6, 'input final BEAMGAS', '_xBEAMGAS', 'x cm'], # 0x 1y 2z 3u 4v 
+        # [cpath + 'BEAMGAS.dat', 2,0, kBlack, 6, 'input final BEAMGAS', '_xBEAMGAS', 'x cm'], # 0x 1y 2z 3u 4v 
         # [cpath + 'startBG.dat', 2,1, kBlack, 6, 'input fluka startBG'], # 0x 1y 2z 3u 4v 
         # [cpath + 'startBG.dat', 2,0, kBlack, 6, 'input fluka startBG'], # 0x 1y 2z 3u 4v 
         # [cpath + 'THISISIT.dat', 5,4, kBlack, 6, 'input THISISIT', '_yTHISISIT', 'y cm'], # 0x 1y 2z 3u 4v 
-        #[cpath + 'THISISIT.dat', 2,0, kBlack, 6, 'input THISISIT', '_xTHISISIT', 'x cm'], # 0x 1y 2z 3u 4v 
-
+        # [cpath + 'THISISIT.dat', 2,0, kBlack, 6, 'input THISISIT', '_xTHISISIT', 'x cm'], # 0x 1y 2z 3u 4v 
+        # [cpath + 'BGAS10.dat', 2,1, kBlack, 6, 'input final BEAMGAS', '_yBGAS10', 'y cm'], # 0x 1y 2z 3u 4v 
+        # [cpath + 'BGAS10.dat', 2,0, kBlack, 6, 'input final BEAMGAS', '_xBGAS10', 'x cm'], # 0x 1y 2z 3u 4v 
+        # [cpath + 'BGAS.dat', 2,1, kBlack, 6, 'input final BEAMGAS', '_yBGAS', 'y cm'], # 0x 1y 2z 3u 4v repls
+        [cpath + 'awked_downselected_fort.89.10.cv53', 2,1, kBlack, 6, 'input final BEAMGAS 6.5 TeV', '_yBGAS', 'y cm'], # 0x 1y 2z 3u 4v repls
+        # [cpath + 'awked_downselected_fort.89.10.cv53', 2,0, kBlack, 6, 'input final BEAMGAS 6.5 TeV', '_xBGAS', 'x cm'], # 0x 1y 2z 3u 4v repls
 
        ]
 
@@ -86,7 +90,7 @@ def cv45():
 
     mlegend.Draw()
 
-    pname = cpath + 'compTRAKFILE'+rel+'.root'
+    pname = cpath + 'inputFluka6500GeV'+rel+'.root'
 
     print('Saving file as ' + pname ) 
     cv.Print(pname)

@@ -72,7 +72,7 @@ def cv46():
 
         foutname = name + '_N' + str(N) + '.txt'
         #foutname = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/INIC6p5.dat'
-        foutname = '/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/checkTrajectory6500GeV/orbitDump/INIC6p5.dat'
+        foutname = '/afs/cern.ch/project/lhc_mib/beamsize/6500GeV_beamsize/checkTrajectory6500GeV/orbitDump/INIC6p5.dat'
         fot = open(foutname, 'w')
 
         for i in range(N):
@@ -113,7 +113,7 @@ def cv46():
             hy[-1].Fill(small_y,small_yp)
 
             # consider also crossing angle 
-            cy = small_yp + 142.5e-6
+            cy = small_yp + 145.e-6
 
             hxIP.Fill(100.*small_x, 100.*small_y)
 

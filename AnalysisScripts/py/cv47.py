@@ -11,13 +11,14 @@ from helpers import wwwpath, length_LHC, mylabel
 def cv47():
 
     # twiss file
-    tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/twiss_b2.data')
+    # tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/compTrajectories/twiss_b2.data')
+    tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/background_2015_80cm/twiss_b2_80cm.tfs')
 
     # number of randomly produced values per s location
     N = 1
 
     emittance_norm = 3.5e-6
-    gamma_rel = 4e3/0.938
+    gamma_rel = 6.5e3/0.938
     emittance_geo = emittance_norm/gamma_rel
 
     pointsname = ['TCTH.4R1.B2', 'MQXA.1R1', 'MQXA.3R1',
