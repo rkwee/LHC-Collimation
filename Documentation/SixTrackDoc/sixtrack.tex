@@ -64,7 +64,7 @@ The file \texttt{fc.2} must be renamed for SixTrack to \texttt{fort.2}.
 
 The source code of SixTrack can be downloaded from\\ {\href{https://svn.cern.ch/reps/SixTrack/trunk/SixTrack}{\texttt{https://svn.cern.ch/reps/SixTrack/trunk/SixTrack}}. \newline
 
-To compile, run:\\
+To compile, run (for the standard collimation cleaning case):\\
 \texttt{./make\_six gfortran collimat}\newline
 
 During the compilation, the actual fortran files are extracted from the \texttt{sixtrack.s} file into a subdirectory SixTrack\_XXXX depending on the compilation flags. The easiest way to access the code is to look at the extracted file \texttt{track.f} in the subdirectory. 
@@ -93,7 +93,7 @@ This will produce the following output files:
 \item \texttt{betafunctions.dat} Contains $\beta_x$ and $\beta_y$ along $s$ at each beamline element (possibly centre). The header looks like \texttt{\# 1=ielem 2=name 3=s 4=TBETAX 5=TBETAY}.
 
 \item \texttt{betatron.dat}
-\item \texttt{collgaps.dat} Associates collimator geometry information with main optics parameters. First colum has the collimator ID (according to the appearance in the collimator DB file). It associates to $\beta_x$, $\beta_y$, halfgap, material, length, beam size $\sigma_x$ and $\sigma_y$ (?), tilts and nsig (?). The $\beta$-values are a subset of \texttt{betafunctions.dat}.
+\item \texttt{collgaps.dat} Associates collimator geometry information with main optics parameters. First colum has the collimator ID (according to the appearance in the collimator DB file). It associates to $\beta_x$, $\beta_y$, halfgap, material, length, beam size $\sigma_x$ and $\sigma_y$, tilts and nsig. The $\beta$-values are a subset of \texttt{betafunctions.dat}.
 
 \item \texttt{collimator-temp.db}
 \item \texttt{collsettings.dat}
@@ -101,6 +101,7 @@ This will produce the following output files:
 
 \item \texttt{coll\_summary.dat} This file contains the following information: \texttt{1=icoll} is the ID of the collimator (attributed according to the appearance in the \texttt{CollDB} file, \texttt{2=collname}, collimator name, \texttt{3=nimp}, number of impacting particles, \texttt{4=nabs}, number of absorbed particles, \texttt{5=imp\_av} average impact parameter, \texttt{6=imp\_sig} average impact parameter in $\sigma$, \texttt{7=length}, length of collimator.
 
+\texttt{Coll\_Scatter.dat} Available since Sept.~2014, see also Sec.~\ref{CleanCollScatter}.
 \item \texttt{dist0.dat} Contains phase-space information of the initial halo distribution. The colums correspond to \texttt{X[m]   Xp[rad]   Y [m]   Yp[rad]   s in bucket [m]  E[MeV]}.
 
 \item \texttt{distn.dat}
@@ -142,7 +143,7 @@ This will produce the following output files:
 In \texttt{fort.3} one can configure a pencil beam distribution (instead of simulating a halo one uses only the particles that would be directly lost on the collimator on the first turn.) See also Roderiks {\href{https://indico.cern.ch/event/276974/}{talk}. The parameters to be adjusted are 
 
 \begin{itemize}
-\item the line which is usually used for horizontal halo definition: use opening of the specific collimator in units of $\sigma$ instead halo radius parameter, and impact parameter (10~$\mu$m) b and beam size in collimation plane $\sigma_{x,y}$ in b/$\sigma_{x,y}$ instead halo smear parameter. This parameter is used to multiply the random number sampled for the single-particle emittance.
+\item the line which is usually used for horizontal halo definition: use opening of the specific collimator in units of $\sigma$ instead halo radius parameter, and put the ratio  b/$\sigma_{x,y}$ (with $b$ the impact parameter, typically ~10 $\mu$m and $\sigma_{x,y}$ beam size in collimation plane) instead halo smear parameter. This ratio is used to multiply the random number sampled for the single-particle emittance.
 
 \item the line before the the CollDB file is read: first number is \texttt{collid} and last is $3$ to activate new pencil beam distribution. 
 
@@ -152,7 +153,7 @@ To check if the pencil beam was used all hits should be lost on the first turn o
 
 \subsection{Binary format in SixTrack -- using HDF5\label{hdf5}}
 
-In order to avoid job failures due to pool space availability on lxbatch, one can use binary (HDF5) instead of ascii format for the massive file \texttt{tracks2.dat}. A file, \texttt{tracks2.h5} will be written out that can be used by a modified BeamLossPattern. Other post-processing steps remain unchanged. A detailed {\href{https://twiki.cern.ch/twiki/bin/viewauth/LHCAtHome/SixTrackBuildHDF5}{twiki}} has been setup with the necessary build instructions. 
+In order to avoid job failures due to pool space availability on lxbatch, one can use binary (HDF5) instead of ascii format for the massive file \texttt{tracks2.dat}. A file, \texttt{tracks2.h5} will be written out that can be used by a modified BeamLossPattern (Yngves original code is available under {\href{https://github.com/rkwee/LHC-Collimation/tree/master/PostSixTrack/BeamLossPattern_hdf5}{BeamLossPattern\_hdf5}}). Other post-processing steps remain unchanged. A detailed {\href{https://twiki.cern.ch/twiki/bin/viewauth/LHCAtHome/SixTrackBuildHDF5}{twiki}} has been setup with the necessary build instructions. 
 
 \section{Post-processing}
 
@@ -173,7 +174,7 @@ Three files are \textbf{input} to the program \texttt{BeamLossPattern}. The sour
 
 as a function of $s$. 
 
-\item \texttt{SurveyWithCrossing\_XP\_lowb.dat} This file is not explicitly handed over as an argument, but needed nevertheless. It contains the offset between aperture centre and circulating beam as function of the longitudinal coordinate along the accelerator. Most of the time this is zero - exceptions are in the experimental IRs if there's a crossing angle active and in the separation/recombination dipoles.
+\item \texttt{SurveyWithCrossing\_XP\_lowb.dat} This file is not explicitly handed over as an argument, but needed nevertheless. It contains the offset between aperture centre and circulating beam as function of the longitudinal coordinate along the accelerator. Most of the time this is zero - exceptions are in the experimental IRs if there's a crossing angle active and in the separation/recombination dipoles. It describes the difference of beam pipe center and reference orbit.
 \end{enumerate}
 
 With two more arguments, \textit{lowb} for collimator settings in collision mode, and \textit{BLP\_out} to create the output, the command could look like \\
@@ -189,13 +190,15 @@ and \texttt{BeamLossPattern} creates two files:
 The difference is merely in the resolution, the second one has a resolution of 0.1~m. Each line corresponds to one absorbed particle. The third colum indicates the position of the lost particle in meters. 
 
 \subsubsection{Current Bug}
-The current executable needs to be fixed and recompiled in order to avoid the output of binary character (due to incompatibility of the BeamLossPattern code and SL5 and the default installation on lxplus with SL6. A work-around would be the following command which should already included in the job scripts:\\
-\texttt{perl -pi -e $'$s/\textbackslash0/ /g$'$ LPI\_BLP\_out.s}
+The current executable needs to be fixed and recompiled in order to avoid the output of binary character (due to incompatibility of the BeamLossPattern code compiled at SL5 and the default installation on lxplus with SL6). A work-around would be the following command which should already included in the job scripts:\\
+\texttt{perl -pi -e $'$s/\textbackslash0/ /g$'$ LPI\_BLP\_out.s}\newline
 
+A fixed version can also be compiled on lxplus, the source code for that has been copied to 
+{\href{https://github.com/rkwee/LHC-Collimation/tree/master/PostSixTrack/BeamLossPattern_ascii}{\texttt{BeamLossPattern\_ascii}}}.
 
 \subsection{Clean Inelastics}
 
-As aperture information was only available when the \texttt{BeamLossPattern} program was executed, several files need to be cleaned from particles that were actually absorbed in the collimators or lost elsewhere. This information is in the \texttt{LP*\_BLP\_out.s} files and is used as input to the next program, \texttt{CleanInelastic}.
+As aperture information was only available when the \texttt{BeamLossPattern} program was executed, several files need to be cleaned from particles that were actually absorbed in the collimators or lost elsewhere. This information is in the \texttt{LP*\_BLP\_out.s} files and is used as input to the next program, {\href{https://github.com/rkwee/LHC-Collimation/tree/master/PostSixTrack/CleanInelastic}{\texttt{CleanInelastic}}.
 
 The following are the \texttt{input} files:
 
@@ -203,7 +206,7 @@ The following are the \texttt{input} files:
 \item \texttt{coll\_summary.dat} 
 
 \item \texttt{LPI\_BLP\_out.s} Lost particle from BeamLossPattern.
-\item \texttt{CollPositions.b1.dat} Initial input to be provided (?) with the collimator index, its name and position in meters.
+\item \texttt{CollPositions.b1.dat} Initial input to be provided with the collimator index, its name and position in meters.
 \item \texttt{FLUKA\_impacts.dat} This file contains still particles which would actually be lost on collimators. The first file is used to produce a file with real impacts only.
 \end{enumerate}
 
@@ -215,10 +218,20 @@ The \textbf{output} files are:
 \item \texttt{impacts\_fake.dat} Header as above.
 \end{enumerate}
 
+
+\subsection{Cleaning fake scattering events\label{CleanCollScatter}}
+
+From Roderiks email: He hacked a tool to clean the fake scattering events from the new (Sept.~2014) SixTrack output file \texttt{Coll\_Scatter.dat}. 
+As you might remember, this file records ALL scattering events on collimators, and can thus be used to study the full history of different particles 
+and to identify ``sources'' of specific loss clusters. In case you find it useful, his code was copied {\href{https://github.com/rkwee/LHC-Collimation/tree/master/PostSixTrack/CleanCollScatter}{here}}.\\
+
+Just as \texttt{CleanInelastic}, it creates two files \texttt{Coll\_Scatter\_real.dat} and\\ \texttt{Coll\_Scatter\_fake.dat}. It's called with the similar syntax as \texttt{CleanInelastic}, e.g. (in one line)\newline
+\texttt{./CleanCollScatter\_2014.09.10 Coll\_Scatter.dat}\\ \texttt{LPI\_BLP\_out.s CollPositions.b1.dat coll\_summary.dat}\\
+which can be inserted into the bash script to have it run as post-processing.
+
 \subsection{Correction of the collimation summary}
 
-In the last step, \texttt{impacts\_fake.dat} is used to update the output \texttt{coll\_summary.dat} from lost particles. A dedicated script, \texttt{correct\_coll\_summary.sh} does it for you.
-
+In the last step, \texttt{impacts\_fake.dat} is used to update the output \texttt{coll\_summary.dat} from lost particles. A dedicated script, {\href{https://github.com/rkwee/LHC-Collimation/blob/master/PostSixTrack/correct_coll_summary.sh}{\texttt{correct\_coll\_summary.sh}} does it for you.
 
 \section{git repository}
 A public git repository has been created with the aim to collect all configuration files, analysis scripts, modified post-processing code and SixTrack documentation at one place:
