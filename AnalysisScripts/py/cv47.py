@@ -30,15 +30,15 @@ def cv47():
 
         row = tf.GetRowDict(name)
         betx = row['BETX']
-        alfx = row['ALFX']
+        xp   = row['PX']
         bety = row['BETY']
-        alfy = row['ALFY']
+        yp   = row['PY']
         s    = row['S'] 
 
         sigx = math.sqrt(emittance_geo * betx)
         sigy = math.sqrt(emittance_geo * bety)
 
-        line = 'For ' + name + ' at s = ' + str(s) + ' m: sigma_x =' + str(sigx*100) + ' cm, sigma_y =' + str(sigy*100) + ' cm'
+        line = 'For ' + name + ' at s = ' + str(s) + ' m: sigma_x =' + str(sigx*100) + ' cm, sigma_y =' + str(sigy*100) + ' cm, xp = '+ str(xp) + ' rad, yp = ' + str(yp) + ' rad'
         print line
 
 # ----------------------------------------------------------------------------
