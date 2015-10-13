@@ -25,7 +25,7 @@ def cv42():
     foutname = 'bgpos.dat'
     fout = open(foutname, 'w')
 
-    emittance_norm = 3.75e-6
+    emittance_norm = 3.5e-6
     gamma_rel = 6.5e3/0.938
     emittance_geo = emittance_norm/gamma_rel
     gauss1 = TF1('gauss1', 'exp(-0.5*(x**2))', -5.,5.)

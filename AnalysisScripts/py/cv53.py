@@ -9,7 +9,7 @@ from helpers import workpath
 # -----------------------------------------------------------------------------------
 debug = 1
 pathtofiles = '/afs/cern.ch/project/lhc_mib/beamgas/4TeV_beamsize/createTrajectories/'
-pathtofiles = '/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/checkTrajectory6500GeV/inicon1/createTrajectories/'
+pathtofiles = '/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/inicon1/createTrajectories/'
 def createSelectionList(nSPos,nTraj,von,bis):
 
     # select between von to bis

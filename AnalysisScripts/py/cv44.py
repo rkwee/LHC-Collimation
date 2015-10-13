@@ -12,15 +12,18 @@ from array import array
 # -----------------------------------------------------------------------------------
 treeName     = "step"
 fortformat84 = "X/F:Y/F:Z/F:TXX/F:TYY/F:TZZ/F:CTRACK/F:CMTRACK/F:ATRACK/F"
-madxformat   = "Y/F:Z/F"
+madxformat   = "Z/F:Y/F:X/F"
 files = [
-    '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/ir1b2_exp001_TRAKFILE.1425',
-    '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/ir1b2_exp001_TRAKFILE.bdx.1425',
-    '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/ir1b2_exp001_TRAKFILE.p2.1425',
-    '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/ir1b2_exp001_TRAKFILE.145',
-    '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/madYS.dat',
-    '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/ir1b2_exp001_TRAKFILE.luigi',
+    # '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/ir1b2_exp001_TRAKFILE.1425',
+    # '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/ir1b2_exp001_TRAKFILE.bdx.1425',
+    # '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/ir1b2_exp001_TRAKFILE.p2.1425',
+    # '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/ir1b2_exp001_TRAKFILE.145',
+    # '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/firstTry/madYS.dat', # this file has the correct shape but it's from the wrong side.
+    '/afs/cern.ch/project/lhc_mib/beamsize/6500GeV_beamsize/checkBeamSize/madx_SYX.dat'
+    # '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/ir1b2_exp001_TRAKFILE.luigi',
+    #'/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/checkTrajectory6500GeV/orbitDump/ir1_6500GeV_b1_20MeV_orbitDump001_TRAKFILE',
     ]
+
 debug = 1
 col = [
     kBlue,
@@ -41,6 +44,7 @@ def cv44a():
     #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B2/twiss_lhcb2_med_new_thin_800.tfs')
     #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/twiss_lhcb2_med_new_thin_800_1cm_b2.tfs')
     #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/1cm/twiss_lhcb2_med_new_thin_800_10cm.tfs')
+    tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/background_2015_80cm/twiss_b2_80cm.tfs')
     #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/twiss_b2.data.thin')
     # tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/twiss_b2.data')
 
@@ -51,16 +55,13 @@ def cv44a():
     colX = tf.GetColumn('X')        
     
 
-    fileOutName = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/madSYX_b2_thin.dat'
+    fileOutName = '/afs/cern.ch/project/lhc_mib/beamsize/6500GeV_beamsize/checkBeamSize/madx_SYX.dat'
     print 'writing..', fileOutName
     mf = open(fileOutName, 'w')
 
     for i in range(len(colS)):
 
-        sposition = (colS[i] - length_LHC) * (100)
-        sposition = colS[i] * 100
-
-        line = str(sposition) + '  ' + str(colY[i]*100) + ' ' +str(colX[i]*100.) + '\n'
+        line = str(colS[i]*100.) + '  ' + str(colY[i]*100) + ' ' +str(colX[i]*100.) + '\n'
         mf.write(line)
 
     mf.close()
@@ -104,6 +105,14 @@ def cv44c():
     cv.SetRightMargin(0.3)
     cv.SetLeftMargin(0.2)
     cv.SetTopMargin(0.15)
+    x1, y1, x2, y2 = 0.8, 0.65, 0.9, 0.9
+    mlegend = TLegend( x1, y1, x2, y2)
+    mlegend.SetFillColor(0)
+    mlegend.SetFillStyle(0)
+    mlegend.SetLineColor(0)
+    mlegend.SetShadowColor(0)
+    mlegend.SetBorderSize(0)
+
 
     hists = []
     for i,fname in enumerate(files):
@@ -129,9 +138,14 @@ def cv44c():
         ttrk.Project(hname, var, cut)
         if debug: print 'INFO: Have ', hists[-1].GetEntries(), ' entries in', hname
 
-        hists[-1].Draw(var + ",SAME")
+        if len(hists) == 1: drawOpt = ""
+        else: drawOpt = ", SAME"
+        hists[-1].Draw(var + drawOpt)
+        mlegend.AddEntry(hists[-1], hname.split("trajectory_")[-1].split("_")[0] , "pl")    
 
-    cv.SaveAs('traj.pdf')
+
+    #mlegend.Draw()
+    cv.SaveAs('~/public/www/HL-LHC/TCT/6.5TeV/beamgas/traj.root')
 
 # ----------------------------------------------------------------------------
 
@@ -139,9 +153,7 @@ def cv44c():
 def cv44():
 
     cv44a()
-    # colList = [0,2]
-    # fname = workpath + 'runs/checkTrajectory6500GeV/test'
-    # print 'opening', fname
-    # getListFromColumn(colList, fname)
+    cv44b()
+    cv44c()
 
 
