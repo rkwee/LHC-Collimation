@@ -36,6 +36,7 @@ def cv58():
                      ]
 
     fname = "ir1_6500GeV_b1_20MeV_orbitDumpINICON001_fort.89"
+    fname = "inicon1/createTrajectories/run_00001/ir1_6500GeV_b1_20MeV_orbitDumpINICON001_fort.89"
     #fname = "ir1_6500GeV_b1_20MeV_orbitDump001_TRAKFILE"
 
     format, xvar, yvar = formatfort89, "ZTRACK", "YTRACK"

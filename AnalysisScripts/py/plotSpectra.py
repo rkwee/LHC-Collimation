@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 #
 # R Kwee-Hinzmann, 2013
@@ -68,6 +69,12 @@ def plotSpectra(bbgFile, tag, doComp):
         if debug: print "Using 4 TeV format", '.'*10
         yrel = '/inel.BG int.'
 
+    elif rfname.count('BG_bs_6500GeV'):
+        hDict = hDict_BG_4TeV
+        subfolder= 'TCT/6.5TeV/beamgas/fluka/bs/' + EnCutOff + '/'
+        if debug: print "Using 6.5 TeV BG format", '.'*10
+        yrel = '/inel.BG int.'
+
     elif rfname.count('BG_3p5TeV'): 
         hDict = hDict_BG_3p5TeV
         subfolder= 'TCT/3p5TeV/'
@@ -79,7 +86,7 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/3p5TeV/' + beam + '/'
         if debug: print "Using 4 TeV format", '.'*10
 
-    elif rfname.count('hybrid') and not rfname.count('Comp') and not rfname.count('worstCCrab'): 
+    elif rfname.count('hybrid') and not rfname.count('Comp') and not rfname.count('hilumi_ir1b1_exp_20MeV_nominalCollSet'): 
         hDict = hDict_BH_HL_hybrid
         if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5otrd/'
         elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/'
@@ -95,9 +102,11 @@ def plotSpectra(bbgFile, tag, doComp):
         hDict = hDict_BH_6p5TeV
         subfolder = 'TCT/6.5TeV/haloShower/'+beam+'/'
 
-    elif rfname.count('worstCCrab'): 
+    elif rfname.count('hilumi_ir1b1_exp_20MeV_nominalCollSett'): 
+        subfolder= 'TCT/HL/crabcf/v3/tct5inrd/'
+        if rfname.count('modTAN'): 
+            subfolder= 'TCT/HL/crabcf/v3/tct5inrd/modTAN/'
         hDict = hDict_BH_HL_hybrid
-        subfolder= 'TCT/HL/crabcfb1/'
         if debug: print "Using  format", '.'*10
 
     else:

@@ -15,8 +15,8 @@ def cv56():
     myfile = '/afs/cern.ch/project/lhc_mib/beamgas/4TeV_beamsize/BGAS10.dat'
     outfilename = '/afs/cern.ch/project/lhc_mib/beamgas/4TeV_beamsize/BGAS.dat'
 
-    myfile = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/FlukaRoutines/6.5TeV/beamgas/BGASB.dat'
-    outfilename = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/FlukaRoutines/6.5TeV/beamgas/BB.dat'
+    myfile = '/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/awked_downselected_fort.89.10.cv53'
+    outfilename = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/FlukaRoutines/6.5TeV/beamgas/BGASB.dat'
 
     outfile = open(outfilename, 'w')
     print "Writing ..... ", outfilename

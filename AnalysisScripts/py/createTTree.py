@@ -10,7 +10,9 @@ from helpers import *
 treeName     = "particle"
 fortformat66 = "event/I:generation/I:particle/I:energy_ke/F:weight/F:x/F:y/F:xp/F:yp/F:age/F:energy_tot/F:x_interact/F:y_interact/F:z_interact/F:t_interact/F"
 fortformat67 = "event/I:generation/I:particle/I:energy_ke/F:weight/F:x/F:y/F:xp/F:yp/F:age/F:energy_tot/F:x_interact/F:y_interact/F:z_interact/F:t_interact/F:x_track/F:y_track/F:z_track/F:x_origmu/F:y_origmu/F:z_origmu/F"
+fortformat67 = "event/I:generation/I:particle/I:energy_ke/F:weight/F:x/F:y/F:xp/F:yp/F:age/F:energy_tot/F:x_interact/F:y_interact/F:z_interact/F:t_interact/F:x_origmu/F:y_origmu/F:z_origmu/F"
 fortformat30 = "event/I:particle/I:generation/I:weight/F:x/F:y/F:xp/F:yp/F:energy_tot/F:energy_ke/F:age/F:x_interact/F:y_interact/F:z_interact/F"
+fortformat89 = "CXTRCK/F:CYTRCK/F:CZTRCK/F:XTRACK/F:YTRACK/F:ZTRACK/F:JTRACK/F:NCASE/I:ATRACK/F"
 impactsformat= "icoll/I:c_rotation/F:s/F:x/F:xp/F:y/F:yp/F:nabs/I:np/I:ntu/I"
 tracks2format= "name/I:turn/I:s/F:x/F:xp/F:y/F:yp/F:dEoverE/F:type"
 antInpformat = "ipart/I:icoll/I:x/F:y/F:s/F:xp/F:yp/F:zp"
@@ -30,6 +32,9 @@ def ctree(fname):
 
     elif fname.endswith("67"): 
         fortformat = fortformat67
+
+    elif fname.count("fort.89") or fname.endswith("89"):
+        fortformat = fortformat89
 
     elif fname.endswith("91"): 
         fortformat = fortformat91

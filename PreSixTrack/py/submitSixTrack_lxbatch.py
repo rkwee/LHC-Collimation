@@ -59,6 +59,8 @@ sourcepath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/sourcedirs/'
 gitpath    = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/'
 commonsource = sourcepath + 'common/'
 
+
+
 # assume all exectutables are in sourcepath + 'common/'
 cList  = [[ '3.5TeVExample',    [sourcepath + '3.5TeVExample/'   ,'SixTrack_4411_coll_gfortran_O4', '3500000' ]]]
 cList += [[ '3.5TeVOldExe',     [sourcepath + '3.5TeVOldExe/'    ,'SixTrackwColl'                 , '3500000' ]]]
@@ -75,6 +77,9 @@ cList += [[ 'HL_TCT_hHaloB1_h5',[sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518
 cList += [[ 'HL_TCT_vHaloB1_h5',[sourcepath + 'HL_TCT_7TeV/b1/'  ,'SixTrack_4518_cernlib_coll_h5_gfortran_O4', '7000000' ]]]
 cList += [[ 'HL_TCT_hHaloB2_h5',[gitpath + '7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/' ,'SixTrack_4518_cernlib_coll_h5_gfortran_O4', '7000000' ]]]
 cList += [[ 'HL_TCT_vHaloB2_h5',[gitpath + '7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/' ,'SixTrack_4518_cernlib_coll_h5_gfortran_O4', '7000000' ]]]
+
+cList += [[ 'HL_TCT_hHaloB1_h5_nomSett',[gitpath + '7TeV/hilumiLHC/TCThaloStudies_nominalCollSettings/b1/' ,'SixTrack_4518_cernlib_coll_h5_gfortran_O4', '7000000' ]]]
+cList += [[ 'HL_TCT_ccf_h5_nomSett',[gitpath + '7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b1/' ,'SixTrack_4518_cernlib_coll_h5_gfortran_O4', '7000000' ]]]
 
 cList += [[ '4TeV_vHaloB1_h5',  [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
 cList += [[ '4TeV_hHaloB1_h5',  [sourcepath + 'TCT_4TeV_60cm/b1/','SixTrack_4518_cernlib_coll_h5_gfortran_O4', '4000000' ]]]
@@ -97,6 +102,8 @@ except KeyError:
     sys.exit()
 
 afsRunMain  = "/afs/cern.ch/work/r/rkwee/HL-LHC/runs/"
+afsRunMain  = "/afs/cern.ch/project/lhc_mib/tct_simulations/SixTrackCheck/"
+
 afs_run_dir = afsRunMain + run_dir + '/'
 loc_run_dir = run_dir.split('/')[-1] + '/'
 energy      = cDict[ckey][2]
@@ -144,7 +151,7 @@ cleanIneExe = commonsource +'CleanInelastic_2013-08-19b'
 cleanColExe = commonsource +'CleanCollScatter_2014.09.10'
 cleancoll   = commonsource +'correct_coll_summary.sh'
 
-if ckey.count('HL'): 
+if ckey.count('HL') and not ckey.count('nomSett'): 
     collDB = source_dir +'CollDB.ats.11t.'+beam + tag
 
 inputFiles  = [sixtrackExe,beamlossExe,cleanIneExe,cleanColExe,fort2,collPos,apertfile,cleancoll]

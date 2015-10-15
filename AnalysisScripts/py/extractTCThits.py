@@ -31,17 +31,20 @@ def extractHits(f):
          'TCTVA.4R1.B2',
          ]
 
-    collsB2 = [
+    colls = [
          'TCTH.5R5.B2',
          'TCTVA.5R5.B2',
          'TCTH.4R5.B2', 
          'TCTVA.4R5.B2',
         ]
 
-         # 'TCTH.5L5.B1',
-         # 'TCTVA.5L5.B1', 
-         # 'TCTH.4L5.B1',  
-         # 'TCTVA.4L5.B1', 
+    collsB1 = [
+         'TCTH.5L5.B1',
+         'TCTVA.5L5.B1', 
+         'TCTH.4L5.B1',  
+         'TCTVA.4L5.B1', 
+         ]
+
 
     # -- pencil beam run
 

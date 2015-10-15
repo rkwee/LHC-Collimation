@@ -90,17 +90,17 @@ def cv43():
             ],
 
         # crabs tct5 out
-        [ projectpath + 'tct_simulations/no_tct5_jobs/Kyrre/coll_summary.dat',\
-              projectpath + 'tct_simulations/no_tct5_jobs/Kyrre/impacts_real_TCT.dat.root',\
-              projectpath + 'tct_simulations/no_tct5_jobs/Kyrre/collgaps.dat',\
-              'TCT/HL/crabcf/v3/tct5otrd/', 'HL crabs failure - TCT4 only', 1.,
-            ],
+        # [ projectpath + 'tct_simulations/no_tct5_jobs/Kyrre/coll_summary.dat',\
+        #       projectpath + 'tct_simulations/no_tct5_jobs/Kyrre/impacts_real_TCT.dat.root',\
+        #       projectpath + 'tct_simulations/no_tct5_jobs/Kyrre/collgaps.dat',\
+        #       'TCT/HL/crabcf/v3/tct5otrd/', 'HL crabs failure - TCT4 only', 1.,
+        #     ],
 
         ]
 
     # activate only last entry
     sets = [sets[-1]]
-        
+
     nbins, xmin, xmax = 100,0., 5.
     hx = []
 
@@ -141,7 +141,8 @@ def cv43():
         cv.SetRightMargin(0.3)
         cv.SetLeftMargin(0.2)
         cv.SetTopMargin(0.15)
-
+        # only entries!
+        gStyle.SetOptStat(10)
 
         x1, y1, x2, y2 = 0.2, 0.98, 0.84, 0.9
         lab = mylabel(60)
@@ -199,7 +200,7 @@ def cv43():
         lab.DrawLatex(0.45, y2+0.03, rel)
         lab.DrawLatex(0.2, y2-0.05, energy)
         pname  = wwwpath
-        pname += subfolder + 'inelposition_'+rel+'.pdf'
+        pname += subfolder + 'inelposition_'+rel+'.png'
 
         print('Saving file as ' + pname ) 
         cv.SaveAs(pname)
