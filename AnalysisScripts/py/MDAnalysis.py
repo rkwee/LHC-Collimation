@@ -497,11 +497,9 @@ def getTCTlosses(ts_dt_peak, tDict, pDict):
     delta = 60.
     npList = []
     debug = 0
+    YurMin, YurMax = -1, -1
     for det in vDictTCTs.keys():
         
-        if det == "BLMTI.04R5.B2I10_TCTPH.4R5.B2:LOSS_RS09":
-            debug = 0
-
         detData = tpDict[det]
 
         if debug: print "Checking data of ", det
@@ -744,7 +742,8 @@ def plotPeaks(tDict):
         cv = TCanvas( 'cv', 'cv' , 10, 10, 900, 600 )
         cv.SetLogy(1)
         pname = getkname(det)
-        YurMin, YurMax = 8e-6, 8e-2
+        # YurMin, YurMax = 8e-6, 8e-2
+        YurMin, YurMax = -1, -1
 
         thelegend = TLegend(0.56,0.755,0.88,0.91)
         thelegend.SetFillColor(ROOT.kWhite)
@@ -763,7 +762,10 @@ def plotPeaks(tDict):
             mg.Add(gr)
 
         mg.Draw("aple")
-        #mg.GetYaxis().SetRangeUser(YurMin, YurMax)
+        if det.count("BLMTI.04R5.B2I10_TCTPV.4R5.B2:LOSS_RS09"):
+            YurMin, YurMax = 2e-5,3e-3
+
+        if YurMin > 0.: mg.GetYaxis().SetRangeUser(YurMin, YurMax)
         mg.GetXaxis().SetTitle("[#sigma]")
         mg.GetYaxis().SetTitle("noise substracted normalised loss")
 
@@ -774,7 +776,7 @@ def plotPeaks(tDict):
         ml.DrawLatex(X1, Y1, det)
 
         print "Saving", pname 
-        cv.Print(pname + ".png" )
+        cv.Print(pname + ".pdf" )
         # .......................................................................
         # noise on TCTs
 
