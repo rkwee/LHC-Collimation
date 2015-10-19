@@ -38,7 +38,12 @@ def cv47():
         sigx = math.sqrt(emittance_geo * betx)
         sigy = math.sqrt(emittance_geo * bety)
 
-        line = 'For ' + name + ' at s = ' + str(s) + ' m: sigma_x =' + str(sigx*100) + ' cm, sigma_y =' + str(sigy*100) + ' cm, xp = '+ str(xp) + ' rad, yp = ' + str(yp) + ' rad'
+        sigmaxp = math.sqrt(emittance_geo/betx)
+        sigmayp = math.sqrt(emittance_geo/bety)
+        line = 'For ' + name + ' at s = ' +str(s)+ ' m: sigma_x =' + str(sigx*100) + ' cm, sigma_y =' + str(sigy*100) + \
+            ' cm, xp = '+ str(xp) + ' rad, yp = ' + str(yp) + ' rad' + \
+            ' sigma_xp = '+ str(sigmaxp) + ' rad, sigma_yp = ' + str(sigmayp) + ' rad' 
+
         print line
 
 # ----------------------------------------------------------------------------

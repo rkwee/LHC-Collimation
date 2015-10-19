@@ -11,10 +11,10 @@ workpath = '/afs/cern.ch/work/r/rkwee/HL-LHC/'
 wwwpath  = '/afs/cern.ch/user/r/rkwee/public/www/HL-LHC/'
 source_dir  = workpath + 'runs/sourcedirs/'
 gitpath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/'
-
-workpath = '/Users/rkwee/Documents/RHUL/work/runs/TCT/'
-wwwpath  = '/Users/rkwee/Documents/RHUL/work/results/www/'
-gitpath  = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/'
+projectpath = '/afs/cern.ch/project/lhc_mib/'
+#workpath = '/Users/rkwee/Documents/RHUL/work/runs/TCT/'
+#wwwpath  = '/Users/rkwee/Documents/RHUL/work/results/www/'
+#gitpath  = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/'
 # ------------------------------------------------------------------------------------------------
 # tags for bbG analysis *only for giving name!*
 tag_BH_3p5TeV = "_BH_3p5TeV_B1_20MeV"
@@ -25,10 +25,11 @@ tag_BG_4TeV = '_BG_4TeV_20MeV_bs'
 tag_BH_7TeV = '_BH_HL_tct5inrdB2_20MeV'
 tag_BH_7TeV = '_BH_HL_tct5otrdB2_20MeV'
 tag_BH_6p5TeV = '_BH_6500GeV_haloB1_20MeV'
-tag_BH_6p5TeV = '_BH_6500GeV_haloB2_20MeV'
+#tag_BH_6p5TeV = '_BH_6500GeV_haloB2_20MeV'
+tag_BG_6p5TeV = '_BG_6500GeV_flat_20MeV_bs'
 # ................................................................................................
 EnCut = '2.e-2'
-if tag_BH_4TeV.count('20GeV'): EnCut = '20.'
+if tag_BH_4TeV.count('20GeV') or tag_BG_6p5TeV.count("20GeV"): EnCut = '20.'
 # ------------------------------------------------------------------------------------------------
 length_LHC = 26658.8832
 IPs = [
