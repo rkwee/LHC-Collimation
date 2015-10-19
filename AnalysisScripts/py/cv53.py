@@ -9,6 +9,7 @@ from helpers import workpath
 # -----------------------------------------------------------------------------------
 debug = 1
 pathtofiles = '/afs/cern.ch/project/lhc_mib/beamgas/4TeV_beamsize/createTrajectories/'
+pathtofiles = '/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/inicon1/createTrajectories/'
 def createSelectionList(nSPos,nTraj,von,bis):
 
     # select between von to bis
@@ -32,7 +33,7 @@ def createSelectionList(nSPos,nTraj,von,bis):
 def cv53():
     tbegin = time.time()
     # -- out file name as input for fluka
-    foutname = 'downselected_fort.89.cv53'
+    foutname = 'downselected_fort.89.10.cv53'
 
     print 'writing ... ', foutname
     fout = open(foutname, 'w')
@@ -42,8 +43,9 @@ def cv53():
 
     #files = [pathtofiles + '100evts/run_0000' + str(i) + '/ir1_4TeV_settings_from_TWISS_20MeV_b1_orbitDump001_fort.89.gz' for i in range(1)]
     # Nsel can be at max the total available number of trajectories
-    nsteps, Nsel, ntrajMax = 547589,10,1000
-    #nsteps, Nsel, ntrajMax = 10,2,8
+    nsteps, Nsel, ntrajMax = 54758,10,1000
+    #nsteps, Nsel, ntrajMax = 54757,2,8
+    print 'Expect a file with ', nsteps*Nsel, 'lines.'
 
     files = []
     for job in range(1,ntrajMax+1):
@@ -52,7 +54,8 @@ def cv53():
         if len(index) < 5:
             index = '0'*(5-len(str(job)))+str(job)
 
-        files += [ pathtofiles + 'inicon1evt/run_'+index+'/ir1_4TeV_settings_from_TWISS_20MeV_b1_orbitDumpICON001_fort.89' ]
+        ####files += [ pathtofiles + 'inicon1evt/run_'+index+'/ir1_4TeV_settings_from_TWISS_20MeV_b1_orbitDumpICON001_fort.89.10' ]
+        files += [ pathtofiles + 'run_'+index+'/ir1_6500GeV_b1_20MeV_orbitDumpINICON001_fort.89.10' ]
 
     #files = [ pathtofiles + '13evts/test.txt.gz' ]
     

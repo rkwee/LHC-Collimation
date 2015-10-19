@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 #
 # R Kwee-Hinzmann, 2013
@@ -22,15 +23,8 @@ def plotSpectra(bbgFile, tag, doComp):
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
     tBBG = TFile.Open(bbgFile).Get(treeName)
     yrel = '/TCT hit'
- 
-    if doComp:
-        # for comparisons plots, also edit rel
-        sDict = sDict_HL_hybridComp
-        rel = 'hybridComp_'
-    else:
-        sDict = generate_sDict(tag, norm, tBBG, yrel)
-        rel = ''
-        print "using standard dictionary"
+    rel  = ''
+    if doComp: rel = 'hybridComp_'
 
     rfname = fillTTree.resultFile(bbgFile,rel)
     print "Want to open ", rfname
@@ -45,7 +39,7 @@ def plotSpectra(bbgFile, tag, doComp):
 
     debug = 1
 
-    if rfname.count("BH") and not rfname.count('4TeV') and not rfname.count('3p5TeV'): 
+    if rfname.count("BH") and not rfname.count('4TeV') and not rfname.count('3p5TeV') and not rfname.count('6500GeV'): 
         hDict = hDict_HL_BH
         subfolder= 'TCT/HL/nominalSettings/beamhalo/'
 
@@ -55,6 +49,7 @@ def plotSpectra(bbgFile, tag, doComp):
         hDict = hDict_HL_BGac
         subfolder= 'TCT/HL/nominalSettings/beamgas/'
         if debug: print "Using HL BH format", '.'*10
+        yrel = '/inel. BG int.'
 
     elif rfname.count("comp"): 
         hDict = hDict_HL_comp
@@ -69,24 +64,29 @@ def plotSpectra(bbgFile, tag, doComp):
     elif rfname.count('BG_4TeV') or rfname.count('beam-gas_4TeV'): 
         hDict = hDict_BG_4TeV
         subfolder= 'TCT/4TeV/beamgas/fluka/'
+        if not rfname.count('beam-gas_4TeV'): 
+            subfolder= 'TCT/4TeV/beamgas/fluka/bs/'
         if debug: print "Using 4 TeV format", '.'*10
+        yrel = '/inel.BG int.'
+
+    elif rfname.count('BG_bs_6500GeV'):
+        hDict = hDict_BG_4TeV
+        subfolder= 'TCT/6.5TeV/beamgas/fluka/bs/' + EnCutOff + '/'
+        if debug: print "Using 6.5 TeV BG format", '.'*10
+        yrel = '/inel.BG int.'
 
     elif rfname.count('BG_3p5TeV'): 
         hDict = hDict_BG_3p5TeV
         subfolder= 'TCT/3p5TeV/'
         if debug: print "Using 4 TeV format", '.'*10
+        yrel = '/inel. BG int.'
 
-    elif rfname.count('beam-halo_3.5TeV-R1_D1'): 
+    elif rfname.count('beam-halo_3.5TeV'): 
         hDict = hDict_BH_3p5TeV
-        subfolder= 'TCT/3p5TeV/'
+        subfolder= 'TCT/3p5TeV/' + beam + '/'
         if debug: print "Using 4 TeV format", '.'*10
 
-    elif rfname.count('beam-halo_3.5TeV-R1_D1'): 
-        hDict = hDict_BH_3p5TeV
-        subfolder= 'TCT/3p5TeV/'
-        if debug: print "Using 4 TeV format", '.'*10
-
-    elif rfname.count('hybrid') and not rfname.count('Comp') and not rfname.count('worstCCrab'): 
+    elif rfname.count('hybrid') and not rfname.count('Comp') and not rfname.count('hilumi_ir1b1_exp_20MeV_nominalCollSet'): 
         hDict = hDict_BH_HL_hybrid
         if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5otrd/'
         elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/'
@@ -98,13 +98,15 @@ def plotSpectra(bbgFile, tag, doComp):
         hDict = hDict_HLhybrid_comp
         subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/comp/'
 
-    elif rfname.count('6500GeV') and rfname.count('Halo'): 
+    elif rfname.count('BH_6500GeV'): 
         hDict = hDict_BH_6p5TeV
         subfolder = 'TCT/6.5TeV/haloShower/'+beam+'/'
 
-    elif rfname.count('worstCCrab'): 
+    elif rfname.count('hilumi_ir1b1_exp_20MeV_nominalCollSett'): 
+        subfolder= 'TCT/HL/crabcf/v3/tct5inrd/'
+        if rfname.count('modTAN'): 
+            subfolder= 'TCT/HL/crabcf/v3/tct5inrd/modTAN/'
         hDict = hDict_BH_HL_hybrid
-        subfolder= 'TCT/HL/crabcfb1/'
         if debug: print "Using  format", '.'*10
 
     else:
@@ -116,7 +118,16 @@ def plotSpectra(bbgFile, tag, doComp):
         os.mkdir(wwwpath + subfolder)
     else: "Writing plot to ", wwwpath + subfolder
 
-    # ---------------------------------------------------------------------------------
+ 
+   # ---------------------------------------------------------------------------------
+    if doComp:
+        # for comparisons plots, also edit rel
+        sDict = sDict_HL_hybridComp
+    else:
+        sDict = generate_sDict(tag, norm, tBBG, yrel)
+        print "using standard dictionary"
+
+   # ---------------------------------------------------------------------------------
     print 'Opening ','.'*20, rfname
     rfile = TFile.Open(rfname)
     if rfname.count('comp') or rfname.count('Comp'):

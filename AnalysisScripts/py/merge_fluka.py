@@ -25,7 +25,7 @@ rundir = options.rundir
 if not rundir.endswith('/'): rundir += '/'
 scoringType = options.scoringType
 unit = options.unit
-if unit == '66': 
+if unit == '66' or unit == '67': 
     skipN = 9
     print 'skipping first', skipN, 'characters of each file'
 else: skipN = -9999
@@ -85,7 +85,7 @@ def joinTextFiles(fn):
 
     fdummy   = rundir + inpfile + '_' + fn + '.dummy'
     foutname = rundir + inpfile + '_' + fn 
-    foutname = '/tmp/rkwee/' + inpfile + '_' + fn 
+    #foutname = '/tmp/rkwee/' + inpfile + '_' + fn 
     fout     = open(foutname, 'w')
 
     foutdummy= open(fdummy, 'w')
@@ -98,8 +98,8 @@ def joinTextFiles(fn):
         cnt += 1
 
         runnumber   = afile.split('run_')[-1].split('/')[0]
-        cyclenumber = afile.split('/')[-1].split(beam)[-1].split('_fort.' + fn)[0]
-        # print("for file", afile, "found runnumber ", runnumber, ' and cyclenumber', cyclenumber)
+        cyclenumber = afile.split('/')[-1].split(beam)[-1].split('_fort.' + fn)[0][-1]
+        #print("for file", afile, "found runnumber ", runnumber, ' and cyclenumber', cyclenumber)
 
         with open(afile) as af:
 
@@ -107,7 +107,8 @@ def joinTextFiles(fn):
                 #line = line.rstrip()
 
                 if line.count("#"): continue
-                if skipN > 0: outline  = runnumber + cyclenumber + '  ' + line[skipN:]
+                if skipN > 0: 
+                    outline  = runnumber + cyclenumber + '  ' + line[skipN:]
                 else: outline = line
 
                 fout.write(outline)

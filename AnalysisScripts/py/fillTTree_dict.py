@@ -117,10 +117,12 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'RadEnNeu'+tag:[ ['7','24','8'], norm, 240, 0, 1200, tBBG, 'n,K^{0},#gamma', kBlue, '-9999','r [cm]', 'particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
 
  'PhiNAll'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all',kBlack, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNAllE100'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all E > 100 GeV',kBlack, 'E > 100','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNMuons'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} ',kAzure, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNMuE100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm}  E > 100 GeV',kAzure+1, 'E > 100','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNNeutrons'+tag:[ ['8'], norm, 100, -math.pi, math.pi, tBBG, 'neutrons', kRed, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ], 
  'PhiNProtons'+tag:[ ['1'], norm, 100, -math.pi, math.pi, tBBG, 'protons',kCyan, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNPrE100'+tag:[ ['1'], norm, 100, -math.pi, math.pi, tBBG, 'protons E > 100 GeV',kCyan, 'E > 100','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNPhotons'+tag:[ ['7'], norm, 100, -math.pi, math.pi, tBBG, '#gamma', kOrange+1, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNElecPosi'+tag:[ ['3', '4'],norm, 100, -math.pi, math.pi, tBBG, 'e^{#pm}',kOrange-2, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNPionsChar'+tag:[ ['13','14',], norm, 100, -math.pi, math.pi, tBBG, '#pi^{#pm}', kViolet, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
@@ -207,7 +209,8 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'XYNKaonPlusE'+tag:[ ['15'], norm, 240, -120, 120, tBBG, 'K^{+} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
  'XYNKaonMinusE'+tag:[ ['16'], norm, 240, -120, 120, tBBG, 'K^{-} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]', 240, -120, 120, ],
  'XYNMuonsE10'+tag:[ ['10', '11'], norm, 240, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 10 GeV', kWhite, '10.','x [cm]','y [cm]', 240, -120, 120, ], 
- 'XYNMuonsE500'+tag:[ ['10', '11'], norm, 240, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 500 GeV', kWhite, '100.','x [cm]','y [cm]', 240, -120, 120, ], 
+ 'XYNMuonsE100'+tag:[ ['10', '11'], norm, 240, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 100 GeV', kWhite, '100.','x [cm]','y [cm]', 240, -120, 120, ], 
+ 'XYNMuonsE500'+tag:[ ['10', '11'], norm, 240, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 500 GeV', kWhite, '500.','x [cm]','y [cm]', 240, -120, 120, ], 
  
  'OrigXYMuon'+tag:[ ['10', '11'],  norm, 240, -120, 120, tBBG, '#mu^{#pm} ', kWhite, '-9999','x [cm]','y [cm]', 240, -120, 120, ],
  'OrigXZMuon'+tag:[ ['10', '11'],  norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} ', kWhite, '-9999','z [cm]','x [cm]', 240, -120, 120, ],

@@ -1,0 +1,43 @@
+# QUAD Magnetic field
+#   Vasilis.Vlachoudis@cenr.ch  (Jul 2004)
+
+# Magnetic field type
+# TYPE #
+#     QUAD          Analytic quadrupole field
+#     QUADINT       Analytic+Interpolated quadrupole field
+#     INTER2D       2D Interpolated field
+TYPE        QUAD
+
+# If the field has any symmetry
+# SYMMETRY #
+#     NONE          No symmetry
+#     X             Symmetrical on plane X (-x -> x)
+#     Y             Symmetrical on plane Y (-y -> y)
+#     Z             Symmetrical on plane Z (-z -> z)
+#     XY            On both planes XY
+#     XYZ           On all planes XY
+SYMMETRY    X
+
+# Origin of the magnetic field map xy z origin
+# QORIGIN x y z
+QORIGIN     9.7 0. 0.
+
+# Limiting radius up to where to consider an analytic field
+#    only for quadrupole fields
+# QRADIUS #
+QRADIUS 5.0
+
+# Grid information
+#   WARNING the values of the magnetic field are considered to
+#   be on the vertices of the grid. So step = (max-min)/(bins-1)
+# XGRID xmin xmax bins
+# YGRID ymin ymax bins
+#XGRID       0.0   30.0    60
+#YGRID       0.0   30.0    60
+
+# Data array following of the values on the vertices of the grid
+# 2D or 3D depending on the Field type
+# DATA array
+#  comments are not allowed after the DATA keyword
+#     BX            BY
+#DATA

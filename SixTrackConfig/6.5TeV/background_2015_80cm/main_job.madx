@@ -1,0 +1,60 @@
+system,"ln -fns /afs/cern.ch/eng/lhc/optics/runII/opt_med/ db5";
+
+ set,    format="18.12f";
+option, -echo, -warn, info, verify;
+
+
+! optics version 6.503
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   call,file="db5/V6.5.seq";
+   call,file="db5/toolkit/macro.madx";
+
+! load squeeze files
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   call,file="db5/opt_800_10000_800_3000.madx";
+
+! beam parameters
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ beam,   sequence=lhcb1, particle=proton, pc=6500;
+ beam,   sequence=lhcb2, particle=proton, pc=6500, bv=-1;
+
+! crossing angle, separation, spectrometers
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        on_x1:=-1; on_sep1:=0; on_o1:=0;
+        on_x2:= 1; on_sep2:=0; on_o2:=0; on_a2:=0;
+        on_x5:= 1; on_sep5:=0; on_o5:=0;
+        on_x8=-1;on_sep8=0;on_o8=0;on_a8=0;
+	on_alice:=7000/6500*1;
+        on_lhcb:=-7000/6500*1;
+
+/*
+! twiss and n1 calculations B1 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ seqedit, sequence=lhcb1;
+   flatten;
+!   cycle, start=IP3;
+ endedit;
+*/
+
+! call,file="/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/1cm/install_marker_10cm.madx";
+
+ use,    period=lhcb1;
+ select, flag=twiss, clear;
+ select, flag=twiss, column=name,s,keyword,l,betx,bety,x,px,y,py,mux,muy,dx,dpx,dy,dpy,alfx,alfy,k0l,k0sl,k1l,k1sl,k2l,k2sl,k3l,k3sl,hkick,vkick;
+ twiss,  sequence=lhcb1, file=twiss_b1_80cm.tfs, centre=true, save;
+
+! twiss and n1 calculations B2
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ seqedit, sequence=lhcb2;
+   flatten;
+!   cycle, start=IP3;
+ endedit;
+
+ use,    period=lhcb2;
+ select, flag=twiss, clear;
+ select, flag=twiss, column=name,s,keyword,l,betx,bety,x,px,y,py,mux,muy,dx,dpx,dy,dpy,alfx,alfy,k0l,k0sl,k1l,k1sl,k2l,k2sl,k3l,k3sl,hkick,vkick;
+ twiss,  sequence=lhcb2, file=twiss_b2_80cm.tfs, save;
+
+system "rm db5";
+
+stop;
