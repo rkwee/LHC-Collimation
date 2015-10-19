@@ -62,7 +62,7 @@ def extractFromFilelistDat(colls,cDict,cfile):
 
         icoll = cDict[coll][0]
         
-        filename =  cfile.split("/coll")[0] + '/impacts_real_' + icoll + '_' + coll + '.txt'
+        filename =  cfile.split("/coll")[0] + '/impacts_real_' + icoll + '_' + coll + '.txt.new'
         print('writing', filename)
 
         hfile = open(filename, 'w')
@@ -77,6 +77,15 @@ def extractFromFilelistDat(colls,cDict,cfile):
 
 
         cmd = 'wc -l ' + filename
+        print cmd
+        os.system(cmd)
+
+
+        cmd = """awk '{$1=""; print}' """ + filename + """ > """ + filename.split(".new")[0]
+        print cmd
+        os.system(cmd)
+
+        cmd = "rm " + filename 
         print cmd
         os.system(cmd)
 
@@ -110,7 +119,7 @@ def extractHits(files):
          ]
 
 
-    # -- pencil beam run
+    # -- pencil/off-mom beam run
 
     colls = [
 
@@ -138,7 +147,6 @@ def extractHits(files):
     else:
         print "cannot define cfile", cfile
         sys.exit()
-
 
     extractFromFilelistDat(colls,cDict,cfile)
 # ----------------------------------------------------------------------------
@@ -183,15 +191,14 @@ def normaliseTCThits():
 # ----------------------------------------------------------------------------
 if __name__ == "__main__":
 
-    cmd = 'ls -1 ' + dirs + '/imp*dat'
+    cmd = 'ls -1 ' + dirs + '/imp*dat.gz'
     process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     myStdOut = process.stdout.read()
     files = myStdOut.split()
 
-    print "Taking ",len(files)," files: "#, files
-    sfiles = [i for i in files[:3]]
-    
-    files = sfiles
+    #print "Taking ",len(files)," files: "#, files
+
+
     # for f in files: 
     #     print '.'*30, f, '.'*30
     #     extractHits(f)
