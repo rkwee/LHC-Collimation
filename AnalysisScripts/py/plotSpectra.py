@@ -61,11 +61,11 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/4TeV/haloShower/'+Beam+'/' + EnCutOff + '/'
         if debug: print "Using 4 TeV format", '.'*10
 
-    elif rfname.count('BG_4TeV') or rfname.count('beam-gas_4TeV'): 
+    elif rfname.count('BG_bs_4TeV') or rfname.count('beam-gas_4TeV'): 
         hDict = hDict_BG_4TeV
         subfolder= 'TCT/4TeV/beamgas/fluka/'
         if not rfname.count('beam-gas_4TeV'): 
-            subfolder= 'TCT/4TeV/beamgas/fluka/bs/'
+            subfolder= 'TCT/4TeV/beamgas/fluka/bs/'+ EnCutOff + '/'
         if debug: print "Using 4 TeV format", '.'*10
         yrel = '/inel.BG int.'
 
@@ -89,7 +89,7 @@ def plotSpectra(bbgFile, tag, doComp):
     elif rfname.count('hybrid') and not rfname.count('Comp') and not rfname.count('hilumi_ir1b1_exp_20MeV_nominalCollSet'): 
         hDict = hDict_BH_HL_hybrid
         if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5otrd/'
-        elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/'
+        elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/fullstats/'
         else: 
             print "define where to put the plots?"
             sys.exit()

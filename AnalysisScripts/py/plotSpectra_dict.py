@@ -197,9 +197,9 @@ lText = 'beamgas 4 TeV'
 tag = tag_BG_4TeV
 if tag.count('bs'): lText = '4 TeV BG with beamsize'
 
-lText = 'beamgas 6.5 TeV'
-tag = tag_BG_6p5TeV
-if tag.count('bs'): lText = '6.5 TeV BG with beamsize'
+#lText = 'beamgas 6.5 TeV'
+#tag = tag_BG_6p5TeV
+#if tag.count('bs'): lText = '6.5 TeV BG with beamsize'
 
 hDict_BG_4TeV = { 
 
@@ -322,10 +322,8 @@ tag = tag_BH_7TeV
 Beam, beam, beamn = getBeam(tag)
 if tag.count('tct5ot'): lText = 'HL TCT5 out, TCT4 in, round B' + beamn
 else: lText = 'HL TCT5 and TCT4 in, round B'+beamn
-tag = '_crabcfb1'
-lText = 'crabs phase failure'
-tag = '_crabcfb1_modTAN'
-lText = 'crabs phase failure mod TAXN'
+#lText = 'crabs phase flip mod TAXN'
+#lText = 'crabs phase flip'
 
 ccf = 1
 hDict_BH_HL_hybrid = { 
