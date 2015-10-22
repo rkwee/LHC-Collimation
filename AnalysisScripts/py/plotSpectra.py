@@ -102,7 +102,7 @@ def plotSpectra(bbgFile, tag, doComp):
         hDict = hDict_BH_6p5TeV
         subfolder = 'TCT/6.5TeV/haloShower/'+beam+'/'
 
-    elif rfname.count('hilumi_ir1b1_exp_20MeV_nominalCollSett'): 
+    elif rfname.count('crab'): 
         subfolder= 'TCT/HL/crabcf/v3/tct5inrd/'
         if rfname.count('modTAN'): 
             subfolder= 'TCT/HL/crabcf/v3/tct5inrd/modTAN/'

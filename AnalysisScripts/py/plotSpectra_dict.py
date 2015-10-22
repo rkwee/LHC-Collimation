@@ -1,5 +1,5 @@
 import math
-from helpers import tag_BH_4TeV, tag_BH_7TeV, tag_BH_6p5TeV, tag_BG_4TeV, tag_BH_3p5TeV, tag_BG_6p5TeV
+from helpers import tag_BH_4TeV, tag_BH_7TeV, tag_BH_6p5TeV, tag_BG_4TeV, tag_BH_3p5TeV, tag_BG_6p5TeV, tag_crab_HL
 tag_HL   = 'HL_BH'
 
 
@@ -320,10 +320,17 @@ hDict_BH_3p5TeV = {
 
 tag = tag_BH_7TeV
 Beam, beam, beamn = getBeam(tag)
+
+tag = tag_crab_HL
+collsett = 'retracted sett,'
+if tag.count("nom"): collsett = 'nom sett,'
 if tag.count('tct5ot'): lText = 'HL TCT5 out, TCT4 in, round B' + beamn
-else: lText = 'HL TCT5 and TCT4 in, round B'+beamn
+else: lText = 'HL Halo TCT4+5 in,'+collsett+' rd B'+beamn
+
+
 #lText = 'crabs phase flip mod TAXN'
-#lText = 'crabs phase flip'
+
+lText = 'crabs phase flip B1'
 
 ccf = 1
 hDict_BH_HL_hybrid = { 
@@ -340,32 +347,43 @@ hDict_BH_HL_hybrid = {
 
     'RadNMuons' + tag: [ ['RadNMuonsEAll', 'RadNMuonsE20', 'RadNMuonsE100','RadNMuonsE500', 'RadNMuonsE1000'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,600.,-1,-1, 1, lText, 0.2,0.955, -1,-1, ],
     'RadEnChar' + tag: [ ['RadEnPhotons','RadEnNeg', 'RadEnPos', 'RadEnNeu','RadEnNeutrons'],0.6, 0.7, 0.9, 0.9, 0,1, 0.,600.,-1,-1, 0, lText, 0.2,0.955, -1,-1, ],
-    'RadEnDist' + tag:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.65, 0.65, 0.98, 0.9, 0,1, 0,200,1e-5,1*ccf, 0, lText, 0.2,0.955, -1,-1, ],
+    'RadEnCharZoom' + tag: [ ['RadEnPhotons','RadEnNeg', 'RadEnPos', 'RadEnNeu','RadEnNeutrons'],0.6, 0.7, 0.9, 0.9, 0,1, 0.,15.,1e-7,1., 0, lText, 0.2,0.955, -1,-1, ],
+    'RadEnDist' + tag:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.65, 0.65, 0.98, 0.9, 0,1, 0,200,1e-7,1*ccf, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiNDist' + tag: [ ['PhiNAll', 'PhiNMuons','PhiNNeutrons','PhiNProtons','PhiNPhotons', 'PhiNElecPosi', 'PhiNPionsChar', 'PhiNKaonsChar'],0.65, 0.74, 0.98, 0.92, 0,1, -1,-1,1e-5*ccf,1*ccf, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiEnChar' + tag: [ ['PhiEnNeg', 'PhiEnPos', 'PhiEnNeu','PhiEnNeutrons','PhiEnPhotons'],0.52, 0.75, 0.98, 0.9, 0,1, -1,-1.,1e-3*ccf,1e2*ccf, 0, lText, 0.2,0.955, -1,-1, ],
+    'RadEnDistZoom' + tag:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.65, 0.65, 0.98, 0.9, 0,1, 0,15,1e-5,1*ccf, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiNMu' + tag: [ ['PhiNMuons','PhiNMuR10','PhiNMuR50','PhiNMuR100','PhiNMuR200','PhiNMuR300','PhiNMuR400','PhiNMuR500','PhiNMuR1000'],0.4, 0.64, 0.7, 0.92, 0,1, -1,-1,1e-5,1, 1, lText, 0.2,0.955, -1,-1, ], 
     'PhiEnMu' + tag: [ ['PhiEnMuons','PhiEnMuR10','PhiEnMuR50','PhiEnMuR100','PhiEnMuR200','PhiEnMuR300','PhiEnMuR400','PhiEnMuR500','PhiEnMuR1000'],0.6, 0.6, 0.9,0.9, 0,1, -1,-1,1e-5,1e3, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiEnDist' + tag:[ [ 'PhiEnAll', 'PhiEnMuons', 'PhiEnNeutrons', 'PhiEnProtons', 'PhiEnPhotons', 'PhiEnElecPosi', 'PhiEnPions','PhiEnKaons'],0.65, 0.7, 0.98, 0.9, 0,1, -1,-1,1e-3*ccf,1e2*ccf*ccf, 0, lText, 0.2,0.955, -1,-1, ],
 
     'ZcoorOrigMu' + tag: [ ['ZcoorOrigMu'],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1e-2, 0, lText, 0.2,0.95, -1,-1, ],
 
-    'XYNAll' + tag           : [ ['XYNAll'],0.5, 0.92, 0.7, 1., 1,0, -30,30,-30,30, 0, lText, 0.2,0.96, -1,-1, ],
-    'XYNMuons' + tag         : [ ['XYNMuons'], 0.5, 0.92, 0.7, 1., 1, 0, -1, -1, -1, -1, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
-    'XYNMuonsE100' + tag     : [ ['XYNMuonsE100'], 0.5, 0.92, 0.7, 1., 1, 0, -1, -1, -1, -1, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
-    'XYNPhotons' + tag       : [ ['XYNPhotons'], 0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, -1,-1, ],
-    'XYNElecPosi' + tag      : [ ['XYNElecPosi'],0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, -1,-1, ],
-    'XYNChar' + tag          : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, -1,-1, ],
-    'XYNCharZoom' + tag      : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -5,5,-5.,5., 0, lText, 0.2,0.96, -1,-1, ],
+    'XYNAll' + tag           : [ ['XYNAll'],0.75, 0.88, 0.83, 0.92, 1,0, -30,30,-30,30, 0, lText, 0.2,0.96, -1,-1, ],
+    'XYNMuons' + tag         : [ ['XYNMuons'], 0.75, 0.88, 0.83, 0.92, 1, 0, -1, -1, -1, -1, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
+    'XYNMuonsE100' + tag     : [ ['XYNMuonsE100'], 0.5, 0.88, 0.83, 0.92, 1, 0, -1, -1, -1, -1, 0, lText, 0.2,0.96, 6e-9,1e-6, ],
 
-    'OrigXYMuons' + tag       : [ ['OrigXYMuon'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
-    'OrigXZMuons' + tag       : [ ['OrigXZMuon'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
-    'OrigYZMuons' + tag       : [ ['OrigYZMuon'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
-    'OrigXYMuonsE100' + tag       : [ ['OrigXYMuonsE100'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
-    'OrigXZMuonsE100' + tag       : [ ['OrigXZMuonsE100'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
-    'OrigYZMuonsE100' + tag       : [ ['OrigYZMuonsE100'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
+    'XYNProtons' + tag       : [ ['XYNProtons'], 0.5, 0.88, 0.83, 0.92, 1, 0, -1, -1, -1, -1, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
+    'XYNProtonsE100' + tag   : [ ['XYNProtonsE100'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 1e-7,1e-5, ],
+    'XYNProtonsE500' + tag   : [ ['XYNProtonsE500'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 1e-7,1e-4, ],
 
-    'ProfOrigXZMuons' + tag       : [ ['ProfOrigXZMuon'],0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
-    'ProfOrigYZMuons' + tag       : [ ['ProfOrigYZMuon'],0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
+    'XYNPhotons' + tag       : [ ['XYNPhotons'], 0.75, 0.88, 0.83, 0.92, 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, -1,-1, ],
+    'XYNPhotonsE10' + tag     : [ ['XYNPhotonsE10'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
+    'XYNPhotonsE100' + tag    : [ ['XYNPhotonsE100'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
+
+    'XYNElecPosi' + tag      : [ ['XYNElecPosi'],0.5, 0.88, 0.83, 0.92, 1,0, -10, 10, -10, 10, 0, lText, 0.2,0.96, -1,-1, ],
+    'XYNChar' + tag          : [ ['XYNChar'],0.5, 0.88, 0.83, 0.92, 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, -1,-1, ],
+    'XYNCharZoom2' + tag     : [ ['XYNChar'],0.5, 0.88, 0.83, 0.92, 1,0, -5,5,-5.,5., 0, lText, 0.2,0.96, -1,-1, ],
+    'XYNCharZoom' + tag      : [ ['XYNChar'],0.5, 0.88, 0.83, 0.92, 1,0, -15,15,-15.,15., 0, lText, 0.2,0.96, 1e-7,1e-4, ],
+
+    'OrigXYMuons' + tag       : [ ['OrigXYMuon'],0.75, 0.88, 0.83, 0.92, 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
+    'OrigXZMuons' + tag       : [ ['OrigXZMuon'],0.75, 0.88, 0.83, 0.92, 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
+    'OrigYZMuons' + tag       : [ ['OrigYZMuon'],0.75, 0.88, 0.83, 0.92, 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
+    'OrigXYMuonsE100' + tag       : [ ['OrigXYMuonsE100'],0.5, 0.88, 0.83, 0.92, 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
+    'OrigXZMuonsE100' + tag       : [ ['OrigXZMuonsE100'],0.5, 0.88, 0.83, 0.92, 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
+    'OrigYZMuonsE100' + tag       : [ ['OrigYZMuonsE100'],0.5, 0.88, 0.83, 0.92, 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
+
+    'ProfOrigXZMuons' + tag       : [ ['ProfOrigXZMuon'],0.75, 0.88, 0.83, 0.92, 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
+    'ProfOrigYZMuons' + tag       : [ ['ProfOrigYZMuon'],0.75, 0.88, 0.83, 0.92, 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
     }
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
