@@ -209,13 +209,18 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'XYNKaonPlusE'+tag:[ ['15'], norm, 1200, -120, 120, tBBG, 'K^{+} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]', 1200, -120, 120, ],
  'XYNKaonMinusE'+tag:[ ['16'], norm, 1200, -120, 120, tBBG, 'K^{-} 10 GeV < E_{kin} < 150 GeV', kWhite, '10.:150.','x [cm]','y [cm]', 1200, -120, 120, ],
 
+ 'XYNNeutronsE1'+tag:[ ['8'], norm, 1200, -120, 120, tBBG, 'neutrons E_{kin} > 1 GeV', kWhite, '1.','x [cm]','y [cm]', 1200, -120, 120, ], 
+ 'XYNNeutronsE10'+tag:[ ['8'], norm, 1200, -120, 120, tBBG, 'neutrons E_{kin} > 10 GeV', kWhite, '10.','x [cm]','y [cm]', 1200, -120, 120, ], 
+ 'XYNNeutronsE100'+tag:[ ['8'], norm, 1200, -120, 120, tBBG, 'neutrons E_{kin} > 100 GeV', kWhite, '100.','x [cm]','y [cm]', 1200, -120, 120, ], 
+
  'XYNPhotonsE1'+tag:[ ['7'], norm, 1200, -120, 120, tBBG, '#gamma E_{kin} > 1 GeV', kWhite, '1.','x [cm]','y [cm]', 1200, -120, 120, ], 
  'XYNPhotonsE10'+tag:[ ['7'], norm, 1200, -120, 120, tBBG, '#gamma E_{kin} > 10 GeV', kWhite, '10.','x [cm]','y [cm]', 1200, -120, 120, ], 
  'XYNPhotonsE100'+tag:[ ['7'], norm, 1200, -120, 120, tBBG, '#gamma E_{kin} > 100 GeV', kWhite, '100.','x [cm]','y [cm]', 1200, -120, 120, ], 
 
- 'XYNProtonsE10'+tag:[ ['8'], norm, 1200, -120, 120, tBBG, 'protons E_{kin} > 10 GeV', kWhite, '10.','x [cm]','y [cm]', 1200, -120, 120, ], 
- 'XYNProtonsE100'+tag:[ ['8'], norm, 1200, -120, 120, tBBG, 'protons E_{kin} > 100 GeV', kWhite, '100.','x [cm]','y [cm]', 1200, -120, 120, ], 
- 'XYNProtonsE500'+tag:[ ['8'], norm, 1200, -120, 120, tBBG, 'protons E_{kin} > 500 GeV', kWhite, '500.','x [cm]','y [cm]', 1200, -120, 120, ], 
+ 'XYNProtons'+tag:[ ['1'], norm, 1200, -120, 120, tBBG, 'protons', kWhite, '-9999','x [cm]','y [cm]', 1200, -120, 120, ], 
+ 'XYNProtonsE10'+tag:[ ['1'], norm, 1200, -120, 120, tBBG, 'protons E_{kin} > 10 GeV', kWhite, '10.','x [cm]','y [cm]', 1200, -120, 120, ], 
+ 'XYNProtonsE100'+tag:[ ['1'], norm, 1200, -120, 120, tBBG, 'protons E_{kin} > 100 GeV', kWhite, '100.','x [cm]','y [cm]', 1200, -120, 120, ], 
+ 'XYNProtonsE500'+tag:[ ['1'], norm, 1200, -120, 120, tBBG, 'protons E_{kin} > 500 GeV', kWhite, '500.','x [cm]','y [cm]', 1200, -120, 120, ], 
 
  'XYNMuonsE10'+tag:[ ['10', '11'], norm, 1200, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 10 GeV', kWhite, '10.','x [cm]','y [cm]', 1200, -120, 120, ], 
  'XYNMuonsE100'+tag:[ ['10', '11'], norm, 1200, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 100 GeV', kWhite, '100.','x [cm]','y [cm]', 1200, -120, 120, ], 
