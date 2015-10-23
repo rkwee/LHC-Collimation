@@ -318,22 +318,9 @@ hDict_BH_3p5TeV = {
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
 
-tag = tag_BH_7TeV
-Beam, beam, beamn = getBeam(tag)
+def generateHybridDicts(tag,ccf,lText):
 
-tag = tag_crab_HL
-collsett = 'retracted sett,'
-if tag.count("nom"): collsett = 'nom sett,'
-if tag.count('tct5ot'): lText = 'HL TCT5 out, TCT4 in, round B' + beamn
-else: lText = 'HL Halo TCT4+5 in,'+collsett+' rd B'+beamn
-
-
-#lText = 'crabs phase flip mod TAXN'
-
-lText = 'crabs phase flip B1'
-
-ccf = 1
-hDict_BH_HL_hybrid = { 
+    hDict_hybrid = { 
 
     # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y2 #5 doLogx #6 doLogy #7 XurMin #8 XurMax #9 YurMin #10 YurMax #11 doFill #12 lText #13 lx (label) #14 ly (label) #15 ZurMin #16 ZurMax
     # ---------------------------------------------------------------------------------
@@ -347,7 +334,7 @@ hDict_BH_HL_hybrid = {
 
     'RadNMuons' + tag: [ ['RadNMuonsEAll', 'RadNMuonsE20', 'RadNMuonsE100','RadNMuonsE500', 'RadNMuonsE1000'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,600.,-1,-1, 1, lText, 0.2,0.955, -1,-1, ],
     'RadEnChar' + tag: [ ['RadEnPhotons','RadEnNeg', 'RadEnPos', 'RadEnNeu','RadEnNeutrons'],0.6, 0.7, 0.9, 0.9, 0,1, 0.,600.,-1,-1, 0, lText, 0.2,0.955, -1,-1, ],
-    'RadEnCharZoom' + tag: [ ['RadEnPhotons','RadEnNeg', 'RadEnPos', 'RadEnNeu','RadEnNeutrons'],0.6, 0.7, 0.9, 0.9, 0,1, 0.,15.,1e-7,1., 0, lText, 0.2,0.955, -1,-1, ],
+    'RadEnCharZoom' + tag: [ ['RadEnPhotons','RadEnNeg', 'RadEnPos', 'RadEnNeu','RadEnNeutrons'],0.6, 0.7, 0.9, 0.9, 0,1, 0.,15.,1e-7,1.*ccf, 0, lText, 0.2,0.955, -1,-1, ],
     'RadEnDist' + tag:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.65, 0.65, 0.98, 0.9, 0,1, 0,200,1e-7,1*ccf, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiNDist' + tag: [ ['PhiNAll', 'PhiNMuons','PhiNNeutrons','PhiNProtons','PhiNPhotons', 'PhiNElecPosi', 'PhiNPionsChar', 'PhiNKaonsChar'],0.65, 0.74, 0.98, 0.92, 0,1, -1,-1,1e-5*ccf,1*ccf, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiEnChar' + tag: [ ['PhiEnNeg', 'PhiEnPos', 'PhiEnNeu','PhiEnNeutrons','PhiEnPhotons'],0.52, 0.75, 0.98, 0.9, 0,1, -1,-1.,1e-3*ccf,1e2*ccf, 0, lText, 0.2,0.955, -1,-1, ],
@@ -362,7 +349,8 @@ hDict_BH_HL_hybrid = {
     'XYNMuons' + tag         : [ ['XYNMuons'], 0.75, 0.88, 0.83, 0.92, 1, 0, -1, -1, -1, -1, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
     'XYNMuonsE100' + tag     : [ ['XYNMuonsE100'], 0.5, 0.88, 0.83, 0.92, 1, 0, -1, -1, -1, -1, 0, lText, 0.2,0.96, 6e-9,1e-6, ],
 
-    'XYNProtons' + tag       : [ ['XYNProtons'], 0.5, 0.88, 0.83, 0.92, 1, 0, -1, -1, -1, -1, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
+    'XYNProtons' + tag       : [ ['XYNProtons'], 0.5, 0.88, 0.83, 0.92, 1, 0, -30, 30, -30, 30, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
+    'XYNProtonsE10' + tag   : [ ['XYNProtonsE10'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 1e-7,1e-5, ],
     'XYNProtonsE100' + tag   : [ ['XYNProtonsE100'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 1e-7,1e-5, ],
     'XYNProtonsE500' + tag   : [ ['XYNProtonsE500'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 1e-7,1e-4, ],
 
@@ -370,9 +358,14 @@ hDict_BH_HL_hybrid = {
     'XYNPhotonsE10' + tag     : [ ['XYNPhotonsE10'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
     'XYNPhotonsE100' + tag    : [ ['XYNPhotonsE100'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
 
+    'XYNNeutrons' + tag       : [ ['XYNNeutrons'], 0.75, 0.88, 0.83, 0.92, 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, -1,-1, ],
+    'XYNNeutronsE10' + tag     : [ ['XYNNeutronsE10'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
+    'XYNNeutronsE100' + tag    : [ ['XYNNeutronsE100'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
+
     'XYNElecPosi' + tag      : [ ['XYNElecPosi'],0.5, 0.88, 0.83, 0.92, 1,0, -10, 10, -10, 10, 0, lText, 0.2,0.96, -1,-1, ],
+
     'XYNChar' + tag          : [ ['XYNChar'],0.5, 0.88, 0.83, 0.92, 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, -1,-1, ],
-    'XYNCharZoom2' + tag     : [ ['XYNChar'],0.5, 0.88, 0.83, 0.92, 1,0, -5,5,-5.,5., 0, lText, 0.2,0.96, -1,-1, ],
+    'XYNCharZoom2' + tag     : [ ['XYNChar'],0.5, 0.88, 0.83, 0.92, 1,0, -5,5,-5.,5., 0, lText, 0.2,0.96, 2e-5, 1e-2, ],
     'XYNCharZoom' + tag      : [ ['XYNChar'],0.5, 0.88, 0.83, 0.92, 1,0, -15,15,-15.,15., 0, lText, 0.2,0.96, 1e-7,1e-4, ],
 
     'OrigXYMuons' + tag       : [ ['OrigXYMuon'],0.75, 0.88, 0.83, 0.92, 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
@@ -385,6 +378,28 @@ hDict_BH_HL_hybrid = {
     'ProfOrigXZMuons' + tag       : [ ['ProfOrigXZMuon'],0.75, 0.88, 0.83, 0.92, 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
     'ProfOrigYZMuons' + tag       : [ ['ProfOrigYZMuon'],0.75, 0.88, 0.83, 0.92, 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
     }
+
+    return hDict_hybrid
+# .................................................................................
+
+tag = tag_BH_7TeV
+
+collsett = 'retracted sett,'
+
+Beam, beam, beamn = getBeam(tag)
+if tag.count("nom"): collsett = 'nom sett,'
+if tag.count('tct5ot'): lText = 'HL TCT5 out, TCT4 in, round B' + beamn
+else: lText = 'HL Halo TCT4+5 in,'+collsett+' rd B'+beamn
+ccf = 1.
+hDict_HL_BH_hybrid = generateHybridDicts(tag,ccf,lText)
+
+tag = tag_crab_HL
+#lText = 'crabs phase flip mod TAXN'
+if tag.count("crab"): 
+    ccf = 20
+    lText = 'HL crabs phase flip, nom sett, B1'
+
+hDict_HL_crabs_hybrid =  generateHybridDicts(tag,ccf,lText)
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
 hDict_HLhybrid_comp = {

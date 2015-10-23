@@ -10,7 +10,8 @@ from array import array
 import fillTTree
 from fillTTree_dict import generate_sDict, sDict_HL_hybridComp
 from createTTree import treeName
-from plotSpectra_dict import hDict_BH_4TeV,hDict_HL_BGac, hDict_HL_BH, hDict_HL_comp,hDict_BG_4TeV,hDict_BH_3p5TeV, hDict_BH_HL_hybrid, hDict_HLhybrid_comp, hDict_BH_6p5TeV
+from plotSpectra_dict import hDict_BH_4TeV,hDict_HL_BGac, hDict_HL_BH, hDict_HL_comp,hDict_BG_4TeV,hDict_BH_3p5TeV, hDict_HL_BH_hybrid, hDict_HLhybrid_comp,\
+    hDict_BH_6p5TeV, hDict_HL_crabs_hybrid
 # ---------------------------------------------------------------------------------
 zmin, zmax = 2260., 14960. # HL v1.0
 zmin, zmax = 2260., 21460. # HL v1.hybrid
@@ -41,9 +42,9 @@ def plotSpectra(bbgFile, tag, doComp):
 
     if rfname.count("BH") and not rfname.count('4TeV') and not rfname.count('3p5TeV') and not rfname.count('6500GeV'): 
         hDict = hDict_HL_BH
-        subfolder= 'TCT/HL/nominalSettings/beamhalo/'
+        subfolder= 'TCT/HL/nominalSettings/2015/beamhalo/'
 
-        if debug: print "Using HL BG format", '.'*10
+        if debug: print "Using HL BH format", '.'*10
 
     elif rfname.count("BGac"): 
         hDict = hDict_HL_BGac
@@ -86,13 +87,16 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/3p5TeV/' + beam + '/'
         if debug: print "Using 4 TeV format", '.'*10
 
-    elif rfname.count('hybrid') and not rfname.count('Comp') and not rfname.count('hilumi_ir1b1_exp_20MeV_nominalCollSet'): 
-        hDict = hDict_BH_HL_hybrid
-        if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5otrd/'
-        elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/fullstats/'
-        else: 
-            print "define where to put the plots?"
-            sys.exit()
+    elif rfname.count('HL') and not rfname.count('Comp') and not rfname.count('crab'):
+        hDict = hDict_HL_BH_hybrid
+        if tag.count('nom'): 
+            subfolder= 'TCT/HL/nominalColl/halo/'
+        else:
+            if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5otrd/'
+            elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/fullstats/'
+            else: 
+                print "define where to put the plots?"
+                sys.exit()
 
     elif rfname.count('hybrid') and rfname.count('Comp'): 
         hDict = hDict_HLhybrid_comp
@@ -103,10 +107,10 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder = 'TCT/6.5TeV/haloShower/'+beam+'/'
 
     elif rfname.count('crab'): 
-        subfolder= 'TCT/HL/crabcf/v3/tct5inrd/'
+        subfolder= 'TCT/HL/nominalColl/2015/crabcf/v3/tct5inrd/nomTAN/'
         if rfname.count('modTAN'): 
-            subfolder= 'TCT/HL/crabcf/v3/tct5inrd/modTAN/'
-        hDict = hDict_BH_HL_hybrid
+            subfolder= 'TCT/HL/nominalColl/2015/crabcf/v3/tct5inrd/modTAN/'
+        hDict = hDict_HL_crabs_hybrid
         if debug: print "Using  format", '.'*10
 
     else:
@@ -118,7 +122,6 @@ def plotSpectra(bbgFile, tag, doComp):
         os.mkdir(wwwpath + subfolder)
     else: "Writing plot to ", wwwpath + subfolder
 
- 
    # ---------------------------------------------------------------------------------
     if doComp:
         # for comparisons plots, also edit rel
@@ -130,6 +133,7 @@ def plotSpectra(bbgFile, tag, doComp):
    # ---------------------------------------------------------------------------------
     print 'Opening ','.'*20, rfname
     rfile = TFile.Open(rfname)
+
     if rfname.count('comp') or rfname.count('Comp'):
         tag = ''
 
