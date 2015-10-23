@@ -104,7 +104,7 @@ def cv43():
 
         # crabs tct5 in
         [ projectpath + 'tct_simulations/jobs/coll_summary.dat',\
-              projectpath + 'tct_simulations/jobs/impacts_real_TCT.dat.root',\
+              projectpath + 'tct_simulations/jobs/impacts_real_tct5inb1_crabs.dat.root', \
               projectpath + 'tct_simulations/jobs/collgaps.dat',\
               'TCT/HL/crabcf/v3/', 'HL crabs failure - TCT5 in', 1., \
               100,0., 5.,
@@ -112,7 +112,7 @@ def cv43():
 
         # crabs tct5 out
         [ projectpath + 'tct_simulations/no_tct5_jobs/Kyrre/coll_summary.dat',\
-              projectpath + 'tct_simulations/no_tct5_jobs/Kyrre/impacts_real_TCT.dat.root',\
+              projectpath + 'tct_simulations/no_tct5_jobs/Kyrre/impacts_real_tct5otb1_crabs.dat.root', \
               projectpath + 'tct_simulations/no_tct5_jobs/Kyrre/collgaps.dat',\
               'TCT/HL/crabcf/v3/tct5otrd/', 'HL crabs failure - TCT4 only', 1.,
               100,0., 5.,
