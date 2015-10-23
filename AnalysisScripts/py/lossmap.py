@@ -14,7 +14,7 @@ from array import array
 ## -------------------------------------------------------------------------------
 def lossmap(beam,path,tag,f3, shiftVal):
 
-    print ' losses on collimator '
+    print ' losses on collimator ', beam,path,tag,f3,shiftVal
 
     debug = 1
 
@@ -51,6 +51,7 @@ def lossmap(beam,path,tag,f3, shiftVal):
             nabs   += [ float(line.split()[3]) ]
             length += [ float(line.split()[6]) ]
 
+    #print "DEBUG: nabs", nabs
     names_pos, coll_pos = [],[]
     
     with open(f3) as myfile:
@@ -109,14 +110,10 @@ def lossmap(beam,path,tag,f3, shiftVal):
     n_warm = len(warm)
     k_warm = [2*k for k in range(n_warm/2)]
 
-    f1_nlines = len(losses)
-    f2_nlines = len(names_sum)
-    f3_nlines = len(names_pos)
-
     # -- cold and warm losses for 10th of 1 meter
     for j in range(10):           
         cnt = 0                                                                                                   
-        for i in range(f1_nlines):
+        for i in range(len(losses)):
 
             for k in k_warm:
 
@@ -133,10 +130,12 @@ def lossmap(beam,path,tag,f3, shiftVal):
 
     # -- losses on collimator
     # loop over coll_summary file
-    for i in range(f2_nlines):
+    #print "DEBUG: names_sum", names_sum
+    #print "DEBUG: names_pos", names_pos
+    for i in range(len(names_sum)):
 
         # loop over CollPositions
-        for j in range(f3_nlines):
+        for j in range(len(names_pos)):
 
             # if we're at the same collimator
             if names_sum[i] == names_pos[j]:
@@ -213,28 +212,3 @@ def check_npart(thispath,appendix):
     ll = count_npart(fname,index)
     print("npart of " + fname + " is " + str(ll))
 
-# ------------------------------------------------------------------------------------
-if __name__ == "__main__":
-    gROOT.SetBatch()
-    gROOT.Reset()
-    gROOT.SetStyle("Plain")
-    gROOT.LoadMacro("/afs/cern.ch/user/r/rkwee/scratch0/miScripts/py/AtlasStyle.C")
-    gROOT.LoadMacro("/afs/cern.ch/user/r/rkwee/scratch0/miScripts/py/AtlasUtils.C")
-    SetAtlasStyle()
-
-    #gStyle.SetOptStat(1000100110)
-    gStyle.SetPalette(1)
-    gStyle.SetStatX(0.95)
-    gStyle.SetStatY(0.95)
-    gStyle.SetTitleX(0.1)
-    gStyle.SetTitleY(.955)
-
-    gStyle.SetOptStat(0)
-    #gStyle.SetCanvasColor(10)
-    # gStyle.SetPalette(100,prepPalette())
-    tag = '_TCSG.B5L7.B2'
-    thispath = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/7TeVPostLS1' + tag + '/run_0011/'
-    beam,path,tag = 'b2', thispath, '',0
-    lossmap(beam,path,tag)
-  
-    print '--- fin ---'

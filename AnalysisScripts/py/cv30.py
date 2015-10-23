@@ -11,7 +11,7 @@
 import ROOT, sys, glob, os, time, math
 from ROOT import *
 import lossmap, helpers, array
-from helpers import wwwpath, file_len, length_LHC, mylabel, addCol, gitpath, workpath
+from helpers import wwwpath, file_len, length_LHC, mylabel, addCol, gitpath, workpath, projectpath
 from array import array
 ## -------------------------------------------------------------------------------
 
@@ -21,17 +21,17 @@ def cv30():
     doWriteRFile = 1
     plotLossMaps = 1
 
-    doIR1 = 1
+    doIR1 = 0
     
-    subfolder = 'TCT/HL/relaxedColl/newScatt/'
+    subfolder = 'TCT/HL/nominalColl/2015/lossmaps/'
     subfolder = 'TCT/6.5TeV/'
 #    subfolder = 'TCT/4TeV/'
 
     colls = [
 
-        # ('6.5TeV_hHaloB1_h5'),
-        # ('6.5TeV_vHaloB1_h5'),
-        # ('6.5TeV_hHaloB2_h5'),
+        ('6.5TeV_hHaloB1_h5'),
+        ('6.5TeV_vHaloB1_h5'),
+        ('6.5TeV_hHaloB2_h5'),
         ('6.5TeV_vHaloB2_h5'),
         #('H5_HL_TCT5LOUT_relaxColl_hHaloB2_roundthin'),
         #('H5_HL_TCT5LOUT_relaxColl_vHaloB2_roundthin'),
@@ -49,6 +49,10 @@ def cv30():
         # ('H5_HL_TCT5IN_relaxColl_hHaloB1_sroundthin'),
         # ('H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin'),
         # ('H5_HL_TCT5IN_relaxColl_hHaloB1_sflatthin'),
+
+        # ('H5_HL_nomSett_hHalo_b1'),
+        # ('H5_HL_nomSett_vHalo_b1'),
+
         ]
 
 
@@ -63,21 +67,27 @@ def cv30():
         beam   = 'b2'            
         beamn  = '2'        
         beamColor = kRed
-        if coll.count('B1'):
+        if coll.count('B1') or coll.count('b1'):
             beam  = 'b1'
             beamn = '1'
             beamColor = kBlue
 
         # my results 
         thispath  = workpath + 'runs/' + tag +'/'
-        #thispath = tag + '/'
+        #thispath  = projectpath + 'HL1.0/' + tag + '/'
         if doIR1: rfname = thispath + 'lossmap'+ coll +'_IR1.root'
         else:  rfname = thispath + 'lossmap'+ coll +'.root'
 
         trname = 'normtree' + coll
         colNumber = 4
             
-        f3 = gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/'+beam+'/CollPositions.'+beam+'.dat'
+        if coll.count("_HL"):
+            f3 = gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/'+beam+'/CollPositions.'+beam+'.dat'
+        elif coll.count("6.5TeV"):
+            f3 = gitpath + 'SixTrackConfig/6.5TeV/MED800/B'+beamn+'/CollPositions.'+beam+'.dat'
+        else:
+            print "No CollPosition file defined. Exitiing.... "
+            sys.exit()
 
         # use for normalisation the sum of nabs (col 4)
         f4 = thispath + 'coll_summary' + coll + '.dat'
@@ -107,9 +117,13 @@ def cv30():
             print(str(t1-t0)+' for returning lossmap histograms of ' + coll )
 
             if debug:
+                if h_tot_loss.GetEntries() < 1.:
+                    print 'Empty collimator histogram!'
+                    sys.exit()
+
+            if debug:
                 if h_cold.GetEntries() < 1.:
                     print 'Empty histogram! Binary characters in LPI file?'
-                    sys.exit()
 
             h_tot_loss.Write()
             h_cold.Write()
