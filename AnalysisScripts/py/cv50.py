@@ -22,12 +22,31 @@ def cv50():
     # dont end the first element with a "/"
     dirs = [
 
-        (projectpath + 'HL1.0/H5_HL_nomSett_hHalo_b1', 'rd B1H nom. sett'),
-        (projectpath + 'HL1.0/H5_HL_nomSett_vHalo_b1', 'rd B1V nom. sett'),
-        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin', 'rd B1H 2#sigma-retract. sett'),
-        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin', 'rd B1V 2#sigma-retract. sett'),
-        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin',  'fl B1H 2#sigma-retract. sett'),
-        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin',  'fl B1V 2#sigma-retract. sett'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin', 'round B1H'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin', 'round B1V'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin', 'round B1H'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin', 'round B1V'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin', 'flat B1H'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin', 'flat B1V'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_hHaloB1_flatthin', 'flat B1H'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_vHaloB1_flatthin', 'flat B1V'),
+
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB2_roundthin', 'round B2H'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB2_roundthin', 'round B2V'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_hHaloB2_roundthin', 'round B2H'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_vHaloB2_roundthin', 'round B2V'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB2_flatthin', 'fl B2H'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB2_flatthin', 'fl B2V'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_hHaloB2_flatthin', 'fl B2H'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_vHaloB2_flatthin', 'fl B2V'),
+
+
+        #(projectpath + 'HL1.0/H5_HL_nomSett_hHalo_b1', 'rd B1H nom. sett'),
+        #(projectpath + 'HL1.0/H5_HL_nomSett_vHalo_b1', 'rd B1V nom. sett'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin', 'rd B1H 2#sigma-retract. sett'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin', 'rd B1V 2#sigma-retract. sett'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin',  'fl B1H 2#sigma-retract. sett'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin',  'fl B1V 2#sigma-retract. sett'),
 
         ]
 
@@ -36,8 +55,8 @@ def cv50():
                     #('cold_loss', 20380., 20430., "Q10"),
                     ('cold_loss', 2029., 20430., "both"),
                     ]
-    lossPointsB2 = [('cold_loss', 6950., 7010., "Q7"),
-                    ('cold_loss', 7050., 7110., "Q9"),
+    lossPointsB2 = [#('cold_loss', 6950., 7010., "Q7"),
+                    #('cold_loss', 7050., 7110., "Q9"),
                     ('cold_loss', 6950., 7110., "both"),
                     ]
 
@@ -93,11 +112,13 @@ def cv50():
     hs = TH1F(hname,hname,nbins, xmin, xmax) 
     hn = TH1F(hname,hname,nbins, xmin, xmax) 
 
-    hx.SetMarkerStyle(24)
+    hx.SetMarkerStyle(34)
+    hx.SetMarkerSize(2)
     hx.SetMarkerColor(kBlue-2)
 
-    hm.SetMarkerStyle(22)
-    hm.SetMarkerColor(kBlue+1)
+    hm.SetMarkerSize(2)
+    hm.SetMarkerStyle(33)
+    hm.SetMarkerColor(kGreen+1)
 
     hs.SetMarkerStyle(23)
     hs.SetMarkerColor(kPink-2)
@@ -134,10 +155,10 @@ def cv50():
     hm.Draw("psame")
     mlegend.Draw()
     x1, y1, x2, y2 = 0.35, 1.1, 0.9, 1.3
-    lab = mylabel(60)
-    lab.DrawLatex(x1, y2-0.05, 'HL cleaning inefficiency')
+    lab = mylabel(42)
+    lab.DrawLatex(x1, y2-0.05, 'HL 2#sigma-retracted setting')
     pname  = wwwpath
-    pname += subfolder + 'comparison_avloss_HL.png'
+    pname += subfolder + 'comparison_avloss_retracted_HL.png'
 
     print('Saving file as ' + pname ) 
     cv.SaveAs(pname)
