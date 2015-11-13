@@ -425,9 +425,9 @@ def doLossesVsTime(tDict, vDict, pDict, timetupel, pname, YurMin, YurMax):
     TCTsett = labText.split()[2].split("#")[0]
     TCLAsett = labText.split()[5].split("#")[0]
     rfSett = labText.split()[6].split("-mom")[0]
-    pname += "_TCT" + TCTsett + "_TCLA" + TCLAsett + "_" + rfSett
+    pname += "_TCT" + TCTsett.replace(".","") + "_TCLA" + TCLAsett + "_" + rfSett
     print "Saving", pname
-    cv.Print(pname + ".png" )
+    cv.Print(pname + ".pdf" )
 ## -----------------------------------------------------------------------------------    
 
 def createKey(l):
@@ -620,13 +620,13 @@ def plotPeaks(tDict):
     
     # scan identifier
     scans = ["14_on", "10_on", "14_neg-off", "14_pos-off"]
-    rlabs = ["TCLAs@14#sigma dp/p=0", "TCLAs@10#sigma dp/p=0", "TCLAs@14#sigma #deltaf=-1.2 Hz", "TCLAs@14#sigma #deltaf=+1.2 Hz"]
+    rlabs = ["TCLAs@14#sigma dp/p=0", "TCLAs@10#sigma dp/p=0", "TCLAs@14#sigma #deltap/p=-1.2e-4 ", "TCLAs@14#sigma #deltap/p=+1.2e-4"]
     smark = [20 , 34 , 23, 22]
     scols = [kCyan+2, kBlue, kPink-6, kRed ]
     fDataName = "MDtighterTCTs_measurementData.txt"
     dataOutFile = open(fDataName, 'w')
 
-    dataline = 'TCT setting, noise substracted normalised TCT signal, uncertainty normalised \n'
+    dataline = 'TCT setting, noise substracted normalised TCT signal, uncertainty of TCT signal normalised, noise substracted tct signal, noise substracted highest loss \n'
     dataOutFile.write(dataline)
 
     print "writing ........ ", fDataName
@@ -653,7 +653,7 @@ def plotPeaks(tDict):
 
         IP = "IP1"
         if det.count("L5") or det.count("R5"): IP = "IP5"
-
+        scan_14_on, scan_10_on = [], []
         colcnt = 0
         for s,scan in enumerate(scans):
             print "-"*10,">> In scan",  scan
@@ -726,15 +726,42 @@ def plotPeaks(tDict):
 
             grs, datalines   = doGraphErrors(s, det, xarray, lossTCTs, xErrarray, yNoiseErrTCTnormed, 1)
             grsN, datalinesN = doGraphErrors(s, det, xarray, yNoiseTCTnormed, xErrarray, yNoiseErrTCTnormed, 1)
-            grsP, datalinesP = doGraphErrors(s, det, xarray, lossTCPs, xErrarray, yNoiseTCP, 0)
+            grsP, datalinesP = doGraphErrors(s, det, xarray, lossTCPs, xErrarray, yNoiseTCP, 1)
             graphs      += [grs]
             graphsNoise += [grsN]
             graphsPeaks += [grsP]
 
             dataline = "--->> In scan : " + scan + "\n"
             dataOutFile.write(dataline)
-            for dataline in datalines:
+
+            maxval, minval   = -1, 1 
+            for i in range(len(datalines)):
+                tct = float(datalines[i].split()[1])
+                tctsignal = tct * float(datalinesP[i].split()[1])
+                dataline = datalines[i].rstrip() + " " + str(tctsignal) + " " + datalinesP[i].split()[1] + " \n"
                 dataOutFile.write(dataline)
+                # ..............
+                noise = float(datalinesN[i].split()[1])
+                tctnoise = tct+noise
+                collsett = datalines[i].split()[0]
+                print "scan", scan, "collsetting",collsett,"tct normed", tct, ", noise", noise                    
+
+                if tct > maxval: maxval = tct
+                if tct < minval: minval = tct
+                # ..............
+
+
+                if scan.count("14_on"): scan_14_on += [(collsett,tct)]
+                if scan.count("10_on"): scan_10_on += [(collsett,tct)]
+
+            print det, scan, "increase max/min", maxval/minval
+            for collsett_14, tct_14 in scan_14_on:
+
+                for collsett_10, tct_10 in scan_10_on:
+
+                    if collsett_14 == collsett_10:
+
+                        print "collsett", collsett_10, "tct_10/14", 1-tct_10/tct_14
 
         # .......................................................................
         # result: signal
@@ -803,7 +830,7 @@ def plotPeaks(tDict):
         ml.DrawLatex(X1, Y1, det)
 
         print "Saving", pname 
-        cv.Print("Noise"+pname + ".png" )
+        cv.Print("Noise"+pname + ".pdf" )
         # .......................................................................
         # peaks
 
@@ -830,7 +857,7 @@ def plotPeaks(tDict):
         ml.DrawLatex(X1, Y1, det)
 
         print "Saving", pname 
-        cv.Print("Peaks"+pname + ".png" )
+        cv.Print("Peaks"+pname + ".pdf" )
     dataOutFile.close()
 ## -----------------------------------------------------------------------------------    
 if __name__ == "__main__":
