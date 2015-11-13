@@ -525,7 +525,6 @@ def getHistogram(sDict, skey, mt):
     ymin          = sDict[skey][12]
     ymax          = sDict[skey][13]
 
-
     if hname.startswith("Ekin"):
         xaxis = getXLogAxis(nbins, xmin, xmax)
         hist  = do1dLogHisto(sDict, mt, hname, xaxis, particleTypes)
@@ -598,9 +597,8 @@ def getHistogram(sDict, skey, mt):
 
     return hist
 # ---------------------------------------------------------------------------------
-def resultFile(bbgFile,rel):
-    k=bbgFile
-    n='/'.join(k.split('/')[:-1]) + '/results_' + rel + k.split('/')[-1]
+def resultFile(k,rel):
+    n = os.path.join(os.path.dirname(k),"results_"+rel+k.split('/')[-1])
     return  n
 # ---------------------------------------------------------------------------------
 # main local function

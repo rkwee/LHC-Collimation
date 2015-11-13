@@ -24,7 +24,7 @@ dirs = options.dirs
 # -----------------------------------------------------------------------------------
 
 
-def extractFromOneFileGz(f,colls, cDict):
+def extractFromOneFileGz(f,colls,cDict,cfile):
 
     if not f.endswith("gz"): 
         print('Please gzip file first')
@@ -34,7 +34,7 @@ def extractFromOneFileGz(f,colls, cDict):
 
     for coll in colls:
         if coll not in allcolls:
-            print "Did not find ", coll, "in ", collsummary
+            print "Did not find ", coll, "in ", cfile
             continue
         mf = gzip.open(f)
         icoll = cDict[coll][0]
@@ -121,7 +121,7 @@ def extractHits(files):
 
     # -- pencil/off-mom beam run
 
-    colls = [
+    collsOFF = [
 
         'TCP.6L3.B1', 
         'TCTH.4L1.B1', 
@@ -148,7 +148,9 @@ def extractHits(files):
         print "cannot define cfile", cfile
         sys.exit()
 
-    extractFromFilelistDat(colls,cDict,cfile)
+    #extractFromFilelistDat(colls,cDict,cfile)
+
+    extractFromOneFileGz(f,colls,cDict,cfile)
 # ----------------------------------------------------------------------------
 def normaliseTCThits():
 
@@ -199,9 +201,9 @@ if __name__ == "__main__":
     #print "Taking ",len(files)," files: "#, files
 
 
-    # for f in files: 
-    #     print '.'*30, f, '.'*30
-    #     extractHits(f)
+    for f in files: 
+        print '.'*30, f, '.'*30
+        extractHits(f)
 
-    extractHits(files)
+    #extractHits(files)
     #normaliseTCThits()

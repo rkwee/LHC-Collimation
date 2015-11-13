@@ -111,10 +111,10 @@ def doOffset(vect, doPrint):
         print("Writing rotated data to " + fout1)
 
     # TCTV.B2
-    xOffset, yOffset, zOffset = -8.338366732, 0.20755, 1.4584E+04 + 50.
+    xOffset, yOffset, zOffset = -8.338366732, 0.207511, 1.4584E+04 + 50.
 
     # TCTH.B2
-    if doTCTH: xOffset, yOffset, zOffset = -8.5280469902, 0.20755, 1.4752E+04 + 50. 
+    if doTCTH: xOffset, yOffset, zOffset = -8.5280469902, 0.00000000000, 1.4752E+04 + 50. 
 
     (nRows, nCols) = vect.shape
 

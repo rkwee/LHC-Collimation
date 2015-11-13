@@ -1,115 +1,166 @@
 #!/usr/bin/python
 #
-# June 2015, rkwee
+# get average losses
+# re-use cv22: compare cleaning efficiency of HL scenarios 
+# oct 2015, rkwee
 ## -------------------------------------------------------------------------------
-# selects randomly 10 out of 1000 values per s-location : use to preprare input for beamgas with size
+import ROOT, sys, glob, os, time, math
+from ROOT import *
+import avLosses
+from avLosses import avLosses
+from helpers import wwwpath, projectpath, length_LHC, mylabel, addCol, gitpath, workpath, getBeam
 ## -------------------------------------------------------------------------------
-import random, helpers, gzip, math, time
-from helpers import workpath
-# -----------------------------------------------------------------------------------
-debug = 0
-pathtofiles = '/afs/cern.ch/project/lhc_mib/beamgas/4TeV_beamsize/createTrajectories/'
-def createSelectionList(nSPos,nTraj,von,bis):
-
-    # select between von to bis
-    selList = []
-    for s in range(nSPos):
-
-        tList = []
-        while len(tList) != nTraj:
-            rndm = random.randint(von,bis)
-            if rndm not in tList:
-                tList += [rndm]
-
-        # sorting to avoid retrieving data from a lower block and then going back to retrieve data from an upper block 
-        tList.sort()
-
-        selList += [ tList ]
-        if debug: print "added ", selList[-1], 'to list'
-
-    return selList
 
 def cv50():
-    tbegin = time.time()
-    # -- out file name as input for fluka
-    foutname = 'downselected_fort.89.cv50'
 
-    print 'writing ... ', foutname
-    fout = open(foutname, 'w')
+    debug = 1
 
-                  
-    # format: #0 CXTRCK, #1 CYTRCK, #2 CZTRCK, #3 XTRACK(0), #4 YTRACK(0), #5 ZTRACK(0), #6JTRACK, #7 NCASE, #8 ATRACK
-
-    #files = [pathtofiles + '100evts/run_0000' + str(i) + '/ir1_4TeV_settings_from_TWISS_20MeV_b1_orbitDump001_fort.89.gz' for i in range(1)]
-
-    files = [pathtofiles + '13evts/ir1_4TeV_settings_from_TWISS_20MeV_b1_orbitDump001_fort.89.copy' for i in range(1)]
-
-    #files = [ pathtofiles + '13evts/test.txt.gz' ]
-
-    # Nsel can be at max the total available number of trajectories
-    nsteps, Nsel, ntrajMax = 547589,2,13
-    #nsteps, Nsel, ntrajMax = 10,2,8
+    # subfolder in wwwpath for result plots
+    subfolder = 'TCT/HL/' 
     
-    stepsize = 0.0998809
-    selList = createSelectionList(nsteps,Nsel,1,ntrajMax)
 
-    if debug: print "using this selection list of length", len(selList), selList 
+    # dont end the first element with a "/"
+    dirs = [
 
-    i = 0
-    t0 = time.time()
-    t1,t2,t3,t4,t5 = 0,0,0,0,0
-    for mfile in files:
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin', 'round B1H'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin', 'round B1V'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin', 'round B1H'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin', 'round B1V'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin', 'flat B1H'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin', 'flat B1V'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_hHaloB1_flatthin', 'flat B1H'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_vHaloB1_flatthin', 'flat B1V'),
 
-        print 'opening....', mfile
-        mf = gzip.open(mfile)
-        t1 = time.time()
-     
-        # improve performance
-        #for line in mf.read().splitlines(True):
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB2_roundthin', 'round B2H'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB2_roundthin', 'round B2V'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_hHaloB2_roundthin', 'round B2H'),
+        (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_vHaloB2_roundthin', 'round B2V'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB2_flatthin', 'fl B2H'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB2_flatthin', 'fl B2V'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_hHaloB2_flatthin', 'fl B2H'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5LOUT_relaxColl_vHaloB2_flatthin', 'fl B2V'),
 
-        with open(mfile) as mf:
+
+        #(projectpath + 'HL1.0/H5_HL_nomSett_hHalo_b1', 'rd B1H nom. sett'),
+        #(projectpath + 'HL1.0/H5_HL_nomSett_vHalo_b1', 'rd B1V nom. sett'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin', 'rd B1H 2#sigma-retract. sett'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin', 'rd B1V 2#sigma-retract. sett'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin',  'fl B1H 2#sigma-retract. sett'),
+        # (workpath  + 'runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin',  'fl B1V 2#sigma-retract. sett'),
+
+        ]
+
+
+    lossPointsB1 = [#('cold_loss', 20290., 20340., "Q8"),
+                    #('cold_loss', 20380., 20430., "Q10"),
+                    ('cold_loss', 2029., 20430., "both"),
+                    ]
+    lossPointsB2 = [#('cold_loss', 6950., 7010., "Q7"),
+                    #('cold_loss', 7050., 7110., "Q9"),
+                    ('cold_loss', 6950., 7110., "both"),
+                    ]
+
+    losses = []
+    for case, lab in dirs:
+
+        print '.'*50
+
+        tag  = '_'+ case.split('/')[-1]
+
+        print "extracted tag", tag
+        Beam, beam, beamn = getBeam(tag)
+
+
+        rfname = case + '/lossmap'+ tag +'.root'
+        trname = 'normtree' + tag
             
-            for line in mf:
-                i += 1
+        if not os.path.exists(rfname): 
+            print rfname,' does not exist?!'
+            continue
 
-                t2 = time.time()
-                # loop over entire list
-                for s,sList in enumerate(selList):
-                    continue
-                    for traj in sList:
+        lossPoints = lossPointsB2
+        if beamn == "1": lossPoints = lossPointsB1
 
-                        # line of interest
-                        lineOfInt = (traj-1) * nsteps + s+1
-                        if debug: print "line of interest is", lineOfInt, "which corresponds to traj", traj, "in block", s+1
+        # ................................................
+        for h,loss_start,loss_end,pointName in lossPoints:
+            
+            # structure: summed loss, loss in bin range, statistical error, maximal loss in bin range, its statistical error
+            losses += [avLosses(rfname, tag, 1., h+tag, loss_start, loss_end, pointName)]
+    
 
-                        if i < lineOfInt: 
+    # ------------------------------------------------
+    # plot 
 
-                            if debug: print "want line", lineOfInt, '. Am at line', i
-                            break
+    print "plotting ",len(losses), "loss points. Expect to have same amount of dirs", len(dirs)
+    #    print losses
+    cv = TCanvas( 'cv', 'cv', 1000, 600)
+    cv.SetGridx(1)
+    cv.SetGridy(1)
+    x1, y1, x2, y2 = 0.56, 0.8, 0.9, 0.9
+    mlegend = TLegend( x1, y1, x2, y2)
+    mlegend.SetFillColor(0)
+    mlegend.SetFillStyle(0)
+    mlegend.SetLineColor(0)
+    mlegend.SetTextSize(0.035)
+    mlegend.SetShadowColor(0)
+    mlegend.SetBorderSize(0)
 
-                        elif i > lineOfInt: continue
+    hname, nbins, xmin, xmax = "summary", len(losses), -0.5, len(losses)-0.5
+    hx = TH1F(hname,hname,nbins, xmin, xmax) 
+    hm = TH1F(hname,hname,nbins, xmin, xmax) 
 
-                        line = line.rstrip()
-                        fout.write(line + ' ' + ' \n')
+    hs = TH1F(hname,hname,nbins, xmin, xmax) 
+    hn = TH1F(hname,hname,nbins, xmin, xmax) 
 
-                        if debug:
-                            ncase  = int(line.split()[7])
-                            ztrack = float(line.split()[5])
-                            strack = s*stepsize
-                            print "selected traj", ncase, 'at position', ztrack, "(original), ", strack, '(calculated). diff ', math.fabs(ztrack-strack)
+    hx.SetMarkerStyle(34)
+    hx.SetMarkerSize(2)
+    hx.SetMarkerColor(kBlue-2)
 
-                t3 = time.time()
-        t4 = time.time()
+    hm.SetMarkerSize(2)
+    hm.SetMarkerStyle(33)
+    hm.SetMarkerColor(kGreen+1)
 
-    fout.close()
-    t5 = time.time()
+    hs.SetMarkerStyle(23)
+    hs.SetMarkerColor(kPink-2)
 
-    print(str(tbegin)+' time when scripts begins')
-    print(str(t0-tbegin)+' time until just before first loop.')
-    print(str(t1-tbegin)+' time until 1 gzip open call.')
-    print(str(t2-tbegin)+' time until looping over lines.')
-    print(str(t3-tbegin)+' time after jumping over empty list loop.')
-    print(str(t4-tbegin)+' time until out of line loop.')
-    print(str(t5-tbegin)+' time until out files loop (1 file only).')
+    hn.SetMarkerStyle(34)
+    hn.SetMarkerColor(kBlue)
+
+    ytitle = "local cleaning inefficiency #eta [1/m]"
+
+    hx.GetXaxis().SetLabelSize(0.05)
+    hx.GetYaxis().SetLabelSize(0.05)
+    hx.GetYaxis().SetTitleOffset(0.8)
+    hx.GetYaxis().SetTitle(ytitle)
+
+    YurMin, YurMax = 3e-6,1.2e-5
+    #YurMin, YurMax = 3e-6,1.3e-3
+    hx.GetYaxis().SetRangeUser(YurMin, YurMax)
+    hs.GetYaxis().SetRangeUser(YurMin, YurMax)
+
+    for bin, losslist in enumerate(losses):
+        sumLoss, avLoss, avLossErr, maxColdLoss, maxColdLossErr = losslist
+        hx.SetBinContent(bin+1,avLoss)
+        hx.GetXaxis().SetBinLabel(bin+1,dirs[bin][1])
+        hs.SetBinContent(bin+1, sumLoss)
+        hm.SetBinContent(bin+1, maxColdLoss*0.1)
+        hn.SetBinContent(bin+1, maxColdLoss)
+
+    mlegend.AddEntry(hx, 'average #eta in Q8+Q10', 'p')
+    mlegend.AddEntry(hm, '10% of max #eta in Q8+Q10', 'p')
+    #mlegend.AddEntry(hs, 'integrated #eta in Q8+Q10', 'p')
+    #mlegend.AddEntry(hn, 'max #eta in Q8+Q10', 'p')
+
+    hx.Draw("p")
+    hm.Draw("psame")
+    mlegend.Draw()
+    x1, y1, x2, y2 = 0.35, 1.1, 0.9, 1.3
+    lab = mylabel(42)
+    lab.DrawLatex(x1, y2-0.05, 'HL 2#sigma-retracted setting')
+    pname  = wwwpath
+    pname += subfolder + 'comparison_avloss_retracted_HL.png'
+
+    print('Saving file as ' + pname ) 
+    cv.SaveAs(pname)
 
 
