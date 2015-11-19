@@ -14,7 +14,7 @@
 # 2013, September
 #
 # -----------------------------------------------------------
-import os, stat, sys, random
+import os, stat, sys, random, subprocess
 from optparse import OptionParser
 
 parser = OptionParser()
@@ -46,7 +46,7 @@ ckey = options.ckey
 #queuename='8nh'
 #ncycles='50'
 doTest=0
-doRun=0
+doRun=1
 showInfo=1
 mailOpt = '-u Regina.Kwee@gmail.com'
 # -----------------------------------------------------------
@@ -58,11 +58,10 @@ commonsource = sourcepath + 'common/'
 # assume all exectutables are in sourcepath + 'common/'
 
 cList  = [['fluka_4TeV_haloB2',   [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', '']]]
-cList += [['fluka_4TeV_haloB1_20MeV',   [sourcepath + 'TCT_4TeV_60cm/fluka/','newExe/my.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', '']]]
-cList += [['fluka_HL_TCT_haloB2', [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts_myexe_new/mynew.exe', '*fort.*','RANDOMIZ         1.0  9875214.','']]]
+cList += [['fluka_4TeV_haloB1_20MeV',  [sourcepath + 'TCT_4TeV_60cm/fluka/','newExe/my.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', '']]]
 cList += [['fl_4TeV_offmomB2_20MeV',   [gitpath + '4TeV/','tctimpacts/bbgen67.exe', '*fort.67', 'RANDOMIZ       1.0  9875214.', 'PLUSb2']]]
 
-
+cList += [['fluka_HL_TCT_haloB2', [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts_myexe_new/mynew.exe', '*fort.*','RANDOMIZ         1.0  9875214.','']]]
 cList += [['fl_HL_TCT5LOUT_rdB1', [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/'  ,'withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tct5otrd']]]
 cList += [['fl_HL_TCT5IN_rdB1',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tct5inrd']]]
 cList += [['fl_HL_TCT5IN_rdB2',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tcinrdb2']]]
@@ -78,9 +77,19 @@ cList += [['fl_4TeV_BG_20GeV',    [gitpath + '4TeV/','beamgas/sourceBeamGasCorr/
 cList += [['fl_6.5TeV_BG_20MeV', [gitpath + '6.5TeV/','beamgas/sourceBG/BG.exe', '*fort.67 *fort.91','RANDOMIZ         1.0  9875214.','BGASB']]] 
 cList += [['fl_6.5TeV_BG_20GeV', [gitpath + '6.5TeV/','beamgas/sourceBG/BG.exe', '*fort.67 *fort.91','RANDOMIZ         1.0  9875214.','BGASB']]] 
 
-cList += [['fl_glob_4TeV_el_O', [gitpath + '4TeV/','beamgas/exec_el/el_dev.exe', '*fort.92','RANDOMIZ         1.0  9875214.','O']]] 
-cList += [['fl_glob_4TeV_el_C', [gitpath + '4TeV/','beamgas/exec_el/el_dev.exe', '*fort.92','RANDOMIZ         1.0  9875214.','C']]] 
-cList += [['fl_glob_4TeV_el_H', [gitpath + '4TeV/','beamgas/exec_el/el_dev.exe', '*fort.92','RANDOMIZ         1.0  9875214.','H']]] 
+cList += [['fl_glob_4TeV_el_O', [gitpath + '4TeV/','beamgas/exec_el/el_std.exe', '*fort.92','RANDOMIZ         1.0  9875214.','O']]] 
+cList += [['fl_glob_4TeV_el_C', [gitpath + '4TeV/','beamgas/exec_el/el_std.exe', '*fort.92','RANDOMIZ         1.0  9875214.','C']]] 
+cList += [['fl_glob_4TeV_el_H', [gitpath + '4TeV/','beamgas/exec_el/el_std.exe', '*fort.92','RANDOMIZ         1.0  9875214.','H']]] 
+cList += [['fl_glob_3.5TeV_el_O', [gitpath + '4TeV/','beamgas/exec_el/el_std.exe', '*fort.92','RANDOMIZ         1.0  9875214.','O']]] 
+cList += [['fl_glob_3.5TeV_el_C', [gitpath + '4TeV/','beamgas/exec_el/el_std.exe', '*fort.92','RANDOMIZ         1.0  9875214.','C']]] 
+cList += [['fl_glob_3.5TeV_el_H', [gitpath + '4TeV/','beamgas/exec_el/el_std.exe', '*fort.92','RANDOMIZ         1.0  9875214.','H']]] 
+
+cList += [['fl_glob_4TeV_inel_O', [gitpath + '4TeV/','beamgas/exec_inel/inel_std.exe', '*fort.92','RANDOMIZ         1.0  9875214.','O']]] 
+cList += [['fl_glob_4TeV_inel_C', [gitpath + '4TeV/','beamgas/exec_inel/inel_std.exe', '*fort.92','RANDOMIZ         1.0  9875214.','C']]] 
+cList += [['fl_glob_4TeV_inel_H', [gitpath + '4TeV/','beamgas/exec_inel/inel_std.exe', '*fort.92','RANDOMIZ         1.0  9875214.','H']]] 
+cList += [['fl_glob_3.5TeV_inel_O', [gitpath + '4TeV/','beamgas/exec_inel/inel_std.exe', '*fort.92','RANDOMIZ         1.0  9875214.','O']]] 
+cList += [['fl_glob_3.5TeV_inel_C', [gitpath + '4TeV/','beamgas/exec_inel/inel_std.exe', '*fort.92','RANDOMIZ         1.0  9875214.','C']]] 
+cList += [['fl_glob_3.5TeV_inel_H', [gitpath + '4TeV/','beamgas/exec_inel/inel_std.exe', '*fort.92','RANDOMIZ         1.0  9875214.','H']]] 
 
 
 cDict = dict(cList)
@@ -92,6 +101,12 @@ except KeyError:
 
 afsRunMain  = "/afs/cern.ch/work/r/rkwee/HL-LHC/runs/"
 if ckey.count("offmom"): afsRunMain  = "/afs/cern.ch/project/lhc_mib/offmom/FlukaRuns/"
+
+cmd = 'pwd'
+process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+myStdOut = process.stdout.read()
+afsRunMain = myStdOut.split()[0] + '/'
+
 
 crabfolder  = ''
 if ckey.count('crab'): 
@@ -139,36 +154,40 @@ iniRand    = cDict[ckey][3]
 # name of datafile to be replaced in inp file (ONLY done if string to be replace is present!)
 tctlosses  = cDict[ckey][4]
 
-if  ckey.count("4TeV"):
+if ckey.count("4TeV") and not ckey.count("glob"):
+    
+    haloData    = source_dir + beam +'/HALO.dat'
+    if tctlosses: 
+        haloData = source_dir + beam + '/'+tctlosses+'.dat'
+    magfile1    = source_dir + 'MB.dat'
+    magfile2    = source_dir + 'MBXW.dat'
+    magfile3    = source_dir + 'MQTL.dat'
+    magfile4    = source_dir + 'MQXA.dat'
+    magfile5    = source_dir + 'MQXB.dat'
+    magfile6    = source_dir + 'MQYana.dat'
+    inpFile     = source_dir + beam + '/ir1_4TeV_settings_from_TWISS_'+enCut + '_' + beam+'.inp'
+    if ckey.count('createTr'):
+        inpFile     = source_dir + 'beamgas/ir1_4TeV_settings_from_TWISS_'+enCut + '_' + beam+'_orbitDumpICON.inp'
+        inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,flukaExe, inpFile]
+        haloData    = source_dir +'ICON*dat'
+        for i in range(1,1001):
+            inputFiles += [source_dir +'inicon1/ICON'+str(i)+'.dat']
 
-    if not ckey.count("glob"):
-        haloData    = source_dir + beam +'/HALO.dat'
-        if tctlosses: 
-            haloData = source_dir + beam + '/'+tctlosses+'.dat'
-        magfile1    = source_dir + 'MB.dat'
-        magfile2    = source_dir + 'MBXW.dat'
-        magfile3    = source_dir + 'MQTL.dat'
-        magfile4    = source_dir + 'MQXA.dat'
-        magfile5    = source_dir + 'MQXB.dat'
-        magfile6    = source_dir + 'MQYana.dat'
-        inpFile     = source_dir + beam + '/ir1_4TeV_settings_from_TWISS_'+enCut + '_' + beam+'.inp'
-        if ckey.count('createTr'):
-            inpFile     = source_dir + 'beamgas/ir1_4TeV_settings_from_TWISS_'+enCut + '_' + beam+'_orbitDumpICON.inp'
-            inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,flukaExe, inpFile]
-            haloData    = source_dir +'ICON*dat'
-            for i in range(1,1001):
-                inputFiles += [source_dir +'inicon1/ICON'+str(i)+'.dat']
+    elif ckey.count('BG_'):
+        haloData    = source_dir + 'beamgas/' + tctlosses+'.dat'
+        inpFile     = gitpath + '4TeV/beamgas/ir1_4TeV_settings_from_TWISS_'+enCut + '_' + beam+'.inp'
+        inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,flukaExe, inpFile,haloData]
+    else:
+        inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,flukaExe, inpFile,haloData]
 
-        elif ckey.count('BG_'):
-            haloData    = source_dir + 'beamgas/' + tctlosses+'.dat'
-            inpFile     = gitpath + '4TeV/beamgas/ir1_4TeV_settings_from_TWISS_'+enCut + '_' + beam+'.inp'
-            inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,flukaExe, inpFile,haloData]
-        else:
-            inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,flukaExe, inpFile,haloData]
 
-    elif ckey.count("glob"):
+elif ckey.count("glob"):
+    if ckey.count("4TeV"):
         inpFile =  gitpath + '4TeV/beamgas/elint_4TeVp_on_'+tctlosses+'.inp' 
-        inputFiles = [inpFile, flukaExe]
+    elif ckey.count("3.5TeV"):
+        inpFile =  gitpath + '3.5TeV/beamgas/elint_3500GeVp_on_'+tctlosses+'.inp' 
+
+    inputFiles = [inpFile, flukaExe]
 
 
 elif ckey.count("6.5TeV"):
@@ -277,11 +296,11 @@ for job in newrange:
     run_job = open(run_job_fname,'w')
     run_job.write('#!/bin/bash\n\n')
     
-    # run_job.write('export FLUKA=/afs/cern.ch/work/r/rkwee/Fluka/fluka20112clinuxAA/ \n')
-    # run_job.write('export FLUPRO=/afs/cern.ch/work/r/rkwee/Fluka/fluka20112clinuxAA/ \n')
+    run_job.write('export FLUKA=/afs/cern.ch/work/r/rkwee/Fluka/fluka20112clinuxAA/ \n')
+    run_job.write('export FLUPRO=/afs/cern.ch/work/r/rkwee/Fluka/fluka20112clinuxAA/ \n')
     
-    run_job.write('export FLUKA=/afs/cern.ch/project/fluka/flukadev/ \n')
-    run_job.write('export FLUPRO=/afs/cern.ch/project/fluka/flukadev/ \n')
+    # run_job.write('export FLUKA=/afs/cern.ch/project/fluka/flukadev/ \n')
+    # run_job.write('export FLUPRO=/afs/cern.ch/project/fluka/flukadev/ \n')
 
     run_job.write('export PATH=${FLUPRO}:${FLUPRO}/flutil:${PATH} \n')
 
@@ -305,10 +324,10 @@ for job in newrange:
         newsourceline = 'ICON'+ str(job)
 
     cmd = "sed 's\\" + sourceline + "\\" + newsourceline + "\\' " + flukaInp +  " > "+ flukaInpA + "\n" 
-    run_job.write(cmd)
-
-    cmd = "mv " + flukaInpA + " " + flukaInp + " \n"
-    run_job.write(cmd)
+    if not ckey.count("glob"): 
+        run_job.write(cmd)
+        cmd = "mv " + flukaInpA + " " + flukaInp + " \n"
+        run_job.write(cmd)
 
     # random seed
     nDigits = 7
