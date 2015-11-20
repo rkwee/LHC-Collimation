@@ -11,7 +11,7 @@ from helpers import wwwpath, file_len, length_LHC, mylabel, addCol, gitpath, wor
 
 def avLosses(rfname, coll, scaleFactor, hname, loss_start, loss_end, pointName):
 
-	debug = 0
+	debug = 1
 
         trname = 'normtree' + coll
 
@@ -26,7 +26,7 @@ def avLosses(rfname, coll, scaleFactor, hname, loss_start, loss_end, pointName):
 		if debug: print 'norm', norm
 
 	hist = rf.Get(hname)
-	if int(norm): hist.Scale(1./norm)
+	if int(norm):  hist.Scale(1./norm)
 	else: "rootfile OK? Got zero norm."
 
         max_losses, losses = [],[]
@@ -34,10 +34,29 @@ def avLosses(rfname, coll, scaleFactor, hname, loss_start, loss_end, pointName):
         # norm = 1.
         bin_start = hist.FindBin(loss_start)
         bin_end   = hist.FindBin(loss_end)
-        hist_loss = hist.Integral(bin_start,bin_end)
+        avloss    = hist.Integral(bin_start,bin_end)
         nbins     = bin_end - bin_start
 
+	nonZeroBins = 0
+	sum_cont = 0
+	contents, ibins = [],[]
+	for i in range(1,nbins+1):
+            ibin = bin_start + i
+	    cont = hist.GetBinContent(ibin)
 
+	    contents += [cont]
+	    ibins    += [ibin]
+	    if cont :
+		    print "bincontent", cont, 'ibin', ibin
+		    sum_cont += cont
+		    nonZeroBins += 1
+
+	print "Intgral losses", avloss
+	print "summed losses", sum_cont
+
+	maxloss = max(contents)
+	idx = contents.index(maxloss)
+	print "maxloss", maxloss, 'in bin', ibins[idx]
         # statistical uncertainty
         stat = 0.
 
@@ -47,10 +66,13 @@ def avLosses(rfname, coll, scaleFactor, hname, loss_start, loss_end, pointName):
         max_loss = hist.GetMaximum()/scaleFactor
 
 	# structure: simulation case, loss in bin range, statistical error, maximal loss in bin range, its statistical error
-        losses  += [(coll, hist_loss/nbins, math.sqrt(hist_loss/norm)/nbins, max_loss, math.sqrt(max_loss/norm))]
+        losses  += [ sum_cont, avloss/nonZeroBins, math.sqrt(avloss)/nonZeroBins, max_loss, math.sqrt(max_loss) ]
         
-	# maximum loss not necessary in the selected bin range
-        print "Maximum loss in bin", hist.GetMaximumBin(), \
-            " from ", hist.GetBinLowEdge(hist.GetMaximumBin()), " to ", hist.GetBinLowEdge(hist.GetMaximumBin() + 1)
+	if debug: 
+		print "simulation case, loss in bin range, statistical error, maximal loss in bin range, its statistical error ", losses
+
+		# maximum loss not necessary in the selected bin range
+		print "Maximum loss",hist.GetMaximum()," in bin", hist.GetMaximumBin(), \
+			    " from ", hist.GetBinLowEdge(hist.GetMaximumBin()), " to ", hist.GetBinLowEdge(hist.GetMaximumBin() + 1)
 
 	return losses

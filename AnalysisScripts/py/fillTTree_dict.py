@@ -128,9 +128,14 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'PhiNPionsChar'+tag:[ ['13','14',], norm, 100, -math.pi, math.pi, tBBG, '#pi^{#pm}', kViolet, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNKaonsChar'+tag:[ ['15','16'], norm, 100, -math.pi, math.pi, tBBG, 'K^{#pm}',kSpring-1, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
 
- 'PhiNNeg'+tag:[ ['11','3','14','16'], norm, 100, -math.pi, math.pi, tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}',kMagenta+1,'-9999','r [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
- 'PhiNPos'+tag:[ ['1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','r [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
- 'PhiNNeu'+tag:[ ['7','24','8'], norm, 100, -math.pi, math.pi, tBBG, 'n,K^{0},#gamma',kBlue,'-9999','r [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+ 'PhiNChar'+tag:[ ['11','3','14','16','1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'K^{#pm}, e^{#pm},#mu^{#pm},#pi^{#pm}',kMagenta+1,'-9999','#phi [rad]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+ 'PhiNCharRlt10'+tag:[ ['11','3','14','16','1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'K^{#pm}, e^{#pm},#mu^{#pm},#pi^{#pm} r < 10 cm',kRed-2, 'r < 10.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNCharRlt100'+tag:[ ['11','3','14','16','1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'K^{#pm}, e^{#pm},#mu^{#pm},#pi^{#pm} r < 1 m',kOrange-2, 'r < 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNCharRlt200'+tag:[ ['11','3','14','16','1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'K^{#pm}, e^{#pm},#mu^{#pm},#pi^{#pm} r < 2 m',kMagenta-2, 'r < 200.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+
+ 'PhiNNeg'+tag:[ ['11','3','14','16'], norm, 100, -math.pi, math.pi, tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}',kMagenta+1,'-9999','#phi [rad]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+ 'PhiNPos'+tag:[ ['1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','#phi [rad]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+ 'PhiNNeu'+tag:[ ['7','24','8'], norm, 100, -math.pi, math.pi, tBBG, 'n,K^{0},#gamma',kBlue,'-9999','#phi [rad]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
 
  'PhiNMuPlus'+tag:[ ['10'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{+} ',kCyan-8, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNMuMinus'+tag:[ ['11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{-} ',kAzure+8, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
@@ -180,6 +185,11 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'PhiEnMuRlt400'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 400 cm ',kCyan-4,'r < 400','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnMuRlt500'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 500 cm ',kAzure+3,'r < 500','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnMuRlt1000'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1000 cm ',kCyan-8,'r < 1000','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+
+ 'PhiEnChar'+tag:[ ['11','3','14','16','1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'p,K^{#pm},e^{#pm},#mu^{#pm},#pi^{#pm}',kRed+4,'-9999','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnCharRlt10'+tag:[ ['11','3','14','16','1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'p,K^{#pm},e^{#pm},#mu^{#pm},#pi^{#pm} r < 10 cm ',kRed+3,'r < 10','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnCharRlt100'+tag:[ ['11','3','14','16','1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'p,K^{#pm},e^{#pm},#mu^{#pm},#pi^{#pm} r < 1 m ',kRed+2,'r < 100','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnCharRlt200'+tag:[ ['11','3','14','16','1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'p,K^{#pm},e^{#pm},#mu^{#pm},#pi^{#pm} r < 2 m ',kRed+1,'r < 200','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
 
  'PhiEnNeg'+tag:[ ['11','3','14','16'], norm, 100, -math.pi, math.pi, tBBG, 'K^{-}, e^{-},#mu^{-},#pi^{-}',kMagenta+1,'-9999','#phi [rad]','GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnPosP'+tag:[ ['1','10','4','15','13'], norm, 100, -math.pi, math.pi, tBBG, 'p,K^{+},e^{+},#mu^{+},#pi^{+}',kGreen+1,'-9999','#phi [rad]','GeV/rad'+yrel, -9999, -9999, -9999, ],

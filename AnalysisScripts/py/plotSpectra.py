@@ -57,9 +57,9 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/HL/nominalSettings/comp/'
         if debug: print "Using HL comp format", '.'*10
 
-    elif rfname.count('BH_4TeV'): 
+    elif rfname.count('4TeV_settings_from_TWISS'): 
         hDict = hDict_BH_4TeV
-        subfolder= 'TCT/4TeV/haloShower/'+Beam+'/' + EnCutOff + '/'
+        subfolder= 'TCT/4TeV/haloShower/oldScatt/'+Beam+'/' + EnCutOff + '/'
         if debug: print "Using 4 TeV format", '.'*10
 
     elif rfname.count('BG_bs_4TeV') or rfname.count('beam-gas_4TeV'): 
@@ -90,7 +90,7 @@ def plotSpectra(bbgFile, tag, doComp):
     elif rfname.count('HL') and not rfname.count('Comp') and not rfname.count('crab'):
         hDict = hDict_HL_BH_hybrid
         if tag.count('nom'): 
-            subfolder= 'TCT/HL/nominalColl/halo/'
+            subfolder= 'TCT/HL/nominalColl/2015/halo/'
         else:
             if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5otrd/'
             elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/fullstats/'

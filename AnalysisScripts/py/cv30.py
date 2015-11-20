@@ -8,7 +8,7 @@
 #
 # Mar 2015, rkwee
 ## -------------------------------------------------------------------------------
-import ROOT, sys, glob, os, time, math
+import ROOT, sys, glob, os, time, math, subprocess
 from ROOT import *
 import lossmap, helpers, array
 from helpers import wwwpath, file_len, length_LHC, mylabel, addCol, gitpath, workpath, projectpath
@@ -18,23 +18,35 @@ from array import array
 def cv30():
 
     debug        = 1
-    doWriteRFile = 1
+    doWriteRFile = 0
     plotLossMaps = 1
 
     doIR1 = 0
-    
+
+
+    # subfolder to which figures are written
+    pname  = wwwpath
+    pname = ''
     subfolder = 'TCT/HL/nominalColl/2015/lossmaps/'
-    subfolder = 'TCT/6.5TeV/'
+#    subfolder = 'TCT/HL/relaxedColl/newScatt/lossmaps/'
+    subfolder = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/'
+#    subfolder = 'TCT/6.5TeV/'
 #    subfolder = 'TCT/4TeV/'
 
     colls = [
 
-        ('6.5TeV_hHaloB1_h5'),
-        ('6.5TeV_vHaloB1_h5'),
-        ('6.5TeV_hHaloB2_h5'),
-        ('6.5TeV_vHaloB2_h5'),
-        #('H5_HL_TCT5LOUT_relaxColl_hHaloB2_roundthin'),
-        #('H5_HL_TCT5LOUT_relaxColl_vHaloB2_roundthin'),
+
+        # ('NewScatt_4TeV_hHaloB1'),
+        # ('NewScatt_4TeV_vHaloB1'),
+        # ('NewScatt_4TeV_hHaloB2'),
+        # ('NewScatt_4TeV_vHaloB2'),
+
+        # ('6.5TeV_hHaloB1_h5'),
+        # ('6.5TeV_vHaloB1_h5'),
+        # ('6.5TeV_hHaloB2_h5'),
+        # ('6.5TeV_vHaloB2_h5'),
+        # ('H5_HL_TCT5LOUT_relaxColl_hHaloB2_roundthin'),
+        # ('H5_HL_TCT5LOUT_relaxColl_vHaloB2_roundthin'),
         # ('H5_HL_TCT5IN_relaxColl_hHaloB2_roundthin'),
         # ('H5_HL_TCT5IN_relaxColl_vHaloB2_roundthin'),
         # ('H5_HL_TCT5LOUT_relaxColl_hHaloB1_flatthin'),
@@ -50,8 +62,8 @@ def cv30():
         # ('H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin'),
         # ('H5_HL_TCT5IN_relaxColl_hHaloB1_sflatthin'),
 
-        # ('H5_HL_nomSett_hHalo_b1'),
-        # ('H5_HL_nomSett_vHalo_b1'),
+        ('H5_HL_nomSett_hHalo_b1'),
+        ('H5_HL_nomSett_vHalo_b1'),
 
         ]
 
@@ -73,8 +85,15 @@ def cv30():
             beamColor = kBlue
 
         # my results 
-        thispath  = workpath + 'runs/' + tag +'/'
+        thispath  = workpath + 'runs/HL_TCT5INOUT_relSett/' + tag +'/'
         #thispath  = projectpath + 'HL1.0/' + tag + '/'
+        cmd = 'pwd'
+        process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+        myStdOut = process.stdout.read()
+        #thispath = myStdOut.split()[0] + '/'
+
+        #thispath += tag +'/'
+
         if doIR1: rfname = thispath + 'lossmap'+ coll +'_IR1.root'
         else:  rfname = thispath + 'lossmap'+ coll +'.root'
 
@@ -85,6 +104,8 @@ def cv30():
             f3 = gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/'+beam+'/CollPositions.'+beam+'.dat'
         elif coll.count("6.5TeV"):
             f3 = gitpath + 'SixTrackConfig/6.5TeV/MED800/B'+beamn+'/CollPositions.'+beam+'.dat'
+        elif coll.count("4TeV"):
+            f3 = gitpath + 'SixTrackConfig/4TeV/TCThaloStudies/b'+beamn+'/CollPositions.'+beam+'.dat'
         else:
             print "No CollPosition file defined. Exitiing.... "
             sys.exit()
@@ -290,7 +311,9 @@ def cv30():
                 thelegend.Draw()
 
                 case = coll.split('_60')[0].replace('_',' ')
-                lab = mylabel(60)
+                case = case.replace("relaxColl", "2#sigma-retract.")
+                case = case.replace("H5", "")
+                lab = mylabel(42)
                 lab.SetTextSize(0.035)
                 lab.DrawLatex(0.28, y2+0.055, case)
 
@@ -334,8 +357,7 @@ def cv30():
                 gPad.SetGrid(0,1)
                 gPad.SetLogy(1)
 
-                pname  = wwwpath
-                pname += subfolder + hname + '_' + doZoom + '.png'
+                pname += subfolder + hname + '_' + doZoom + '.pdf'
 
                 print('Saving file as' + pname ) 
                 cv.Print(pname)

@@ -90,7 +90,7 @@ def extractFromFilelistDat(colls,cDict,cfile):
         os.system(cmd)
 
 # ----------------------------------------------------------------------------
-def extractHits(files):
+def extractHits(files,cfile):
 
     # -- HL runs
     colls = [
@@ -111,7 +111,7 @@ def extractHits(files):
          'TCTVA.4R5.B2',
         ]
 
-    collsB1 = [
+    collsIR5 = [
          'TCTH.5L5.B1',
          'TCTVA.5L5.B1', 
          'TCTH.4L5.B1',  
@@ -135,10 +135,13 @@ def extractHits(files):
         'TCTH.4R1.B2',    
         'TCTVA.4R1.B2',   
         ]
-    # tag = f.split('/')[0]
-    # tagOnly = tag.split('/')[-1]
-    # collsummary = tag + '/coll_summary_' + tagOnly + '.dat'
-    #print 'using this collsummary file', collsummary
+
+    print cfile 
+    if not cfile: 
+        tag = f.split('/')[0]
+        tagOnly = tag.split('/')[-1]
+        cfile = tag + '/coll_summary_' + tagOnly + '.dat'
+    print 'using this collsummary file', cfile
 
     if cfile.count("collgap"): 
         cDict = collgapsDict(cfile)
@@ -148,6 +151,7 @@ def extractHits(files):
         print "cannot define cfile", cfile
         sys.exit()
 
+    
     #extractFromFilelistDat(colls,cDict,cfile)
 
     extractFromOneFileGz(f,colls,cDict,cfile)
@@ -187,8 +191,7 @@ def normaliseTCThits():
             except:
                 print res
 
-    
-    
+        
 
 # ----------------------------------------------------------------------------
 if __name__ == "__main__":
@@ -203,7 +206,7 @@ if __name__ == "__main__":
 
     for f in files: 
         print '.'*30, f, '.'*30
-        extractHits(f)
+        extractHits(f,cfile)
 
     #extractHits(files)
     #normaliseTCThits()

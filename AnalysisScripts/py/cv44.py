@@ -7,7 +7,7 @@ import pymadx
 import ROOT, sys, os, time, math
 from ROOT import *
 import helpers, array, random
-from helpers import wwwpath, length_LHC, mylabel, gitpath, length_LHC, getListFromColumn, workpath
+from helpers import wwwpath, length_LHC, gitpath, length_LHC, getListFromColumn, workpath
 from array import array
 # -----------------------------------------------------------------------------------
 treeName     = "step"

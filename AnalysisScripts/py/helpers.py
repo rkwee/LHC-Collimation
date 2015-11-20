@@ -18,22 +18,27 @@ projectpath = '/afs/cern.ch/project/lhc_mib/'
 # ------------------------------------------------------------------------------------------------
 # tags for bbG analysis *only for giving name!*
 tag_BH_3p5TeV = "_BH_3p5TeV_B1_20MeV"
-tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
+
+#tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
 tag_BH_4TeV = '_BH_4TeV_B2_20MeV'
 tag_BH_4TeV = '_BH_4TeV_B1_20MeV'
+
 tag_BG_4TeV = '_BG_4TeV_20GeV_bs'
+
 tag_BH_7TeV = '_BH_HL_tct5inrdB1_nomCollSett_20MeV'
-tag_BH_7TeV = '_BH_HL_tct5inrdB1_20MeV'
+#tag_BH_7TeV = '_BH_HL_tct5inrdB1_20MeV'
 #tag_BH_7TeV = '_BH_HL_tct5otrdB2_20MeV'
+
 tag_crab_HL = '_crabcf_tct5inrdb1_20MeV'
 #tag_crab_HL = '_crabcf_tct5inrdb1_modTAN_20MeV'
+
 tag_BH_6p5TeV = '_BH_6500GeV_haloB1_20MeV'
 #tag_BH_6p5TeV = '_BH_6500GeV_haloB2_20MeV'
-tag_BG_6p5TeV = '_BG_6500GeV_flat_20MeV_bs'
+tag_BG_6p5TeV = '_BG_6500GeV_flat_20GeV_bs'
 # ................................................................................................
 # -- ALSO SET ENERGY CUT
-EnCut = '2.e-2'
-#EnCut = '20.'
+#EnCut = '2.e-2'
+EnCut = '20.'
 # ------------------------------------------------------------------------------------------------
 length_LHC = 26658.8832
 IPs = [
@@ -149,7 +154,14 @@ def count_npart(fname,index):
                 pass
 
     return len(npart)
+# ----------------------------------------------------------------------------
+def getBeam(tag):
+    
+    Beam, beam, beamn = 'B2','b2', '2'
+    if tag.count('B1') or tag.count('b1'):
+        Beam, beam, beamn = 'B1','b1', '1' 
 
+    return Beam, beam, beamn
 # ----------------------------------------------------------------------------
 def rename(fullpattern, suppresspattern):
 

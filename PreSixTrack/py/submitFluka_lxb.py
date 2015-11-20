@@ -24,29 +24,32 @@ parser.add_option("-n", dest="njobs", type="int",
                   help="number of jobs")
 parser.add_option("-q", dest="queuename", type="string",
                   help="put queuename")
-parser.add_option("-c", dest="ncycles", type="string",
-                  help="put number of cycles")
+# parser.add_option("-c", dest="ncycles", type="string",
+#                   help="put number of cycles")
 parser.add_option("-e", dest="nevents", type="string",
                   help="put number of events")
 parser.add_option("-k", dest="ckey", type="string",
                   help="put key dictionary (similar as or same run_dir)")
+parser.add_option("-g", dest="doRun", type="int",
+                  help="should go or not. Put 1 or 0.")
+
 
 (options, args) = parser.parse_args()
 
 njobs = options.njobs
 queuename = options.queuename
-ncycles = options.ncycles
+#ncycles = options.ncycles
 nevents = options.nevents
 if not nevents.count('.'): nevents += "."
 run_dir = options.run_dir
 ckey = options.ckey
+doRun=options.doRun
 
 # use the agruments
 #njobs=10
 #queuename='8nh'
-#ncycles='50'
-doTest=0
-doRun=1
+ncycles='1'
+#doRun=0
 showInfo=1
 mailOpt = '-u Regina.Kwee@gmail.com'
 # -----------------------------------------------------------
@@ -58,8 +61,9 @@ commonsource = sourcepath + 'common/'
 # assume all exectutables are in sourcepath + 'common/'
 
 cList  = [['fluka_4TeV_haloB2',   [sourcepath + 'TCT_4TeV_60cm/fluka/','slc6Exe/ir1_4TeV_shscript.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', '']]]
-cList += [['fluka_4TeV_haloB1_20MeV',  [sourcepath + 'TCT_4TeV_60cm/fluka/','newExe/my.exe', '*fort.6*', 'RANDOMIZ       1.0  9875214.', '']]]
-cList += [['fl_4TeV_offmomB2_20MeV',   [gitpath + '4TeV/','tctimpacts/bbgen67.exe', '*fort.67', 'RANDOMIZ       1.0  9875214.', 'PLUSb2']]]
+cList += [['fluka_4TeV_haloB1_20MeV',  [gitpath + '4TeV/','tctimpacts/autoRotExe_dump84/hybridHL.exe', '*fort.30 *fort.84', 'RANDOMIZ       1.0  9875214.', 'haloB1']]]
+cList += [['fluka_4TeV_haloB2_20MeV',  [gitpath + '4TeV/','tctimpacts/autoRotExe_dump84/hybridHL.exe', '*fort.30', 'RANDOMIZ       1.0  9875214.', 'haloB2']]]
+cList += [['fl_4TeV_offmomB2_20MeV',   [gitpath + '4TeV/','tctimpacts/autoRotExe_dump84/hybridHL.exe', '*fort.30', 'RANDOMIZ       1.0  9875214.', 'plusB2']]]
 
 cList += [['fluka_HL_TCT_haloB2', [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts_myexe_new/mynew.exe', '*fort.*','RANDOMIZ         1.0  9875214.','']]]
 cList += [['fl_HL_TCT5LOUT_rdB1', [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/'  ,'withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tct5otrd']]]
@@ -96,6 +100,7 @@ cDict = dict(cList)
 try:
     source_dir  = cDict[ckey][0]
 except KeyError:
+    cDict.keys().sort()
     print('KeyError, possible keys are:', cDict.keys())
     sys.exit()
 
@@ -123,6 +128,8 @@ elif ckey.count('6.5TeV'):
     elif  ckey.count('BG_'): 
         afsRunMain  = "/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/"
 
+
+print "will run from ", afsRunMain
 run_dir     = run_dir + "/"
 afs_run_dir = afsRunMain + run_dir
 
@@ -158,14 +165,14 @@ if ckey.count("4TeV") and not ckey.count("glob"):
     
     haloData    = source_dir + beam +'/HALO.dat'
     if tctlosses: 
-        haloData = source_dir + beam + '/'+tctlosses+'.dat'
+        haloData = source_dir + 'tctimpacts/'+tctlosses+'.dat'
     magfile1    = source_dir + 'MB.dat'
     magfile2    = source_dir + 'MBXW.dat'
     magfile3    = source_dir + 'MQTL.dat'
     magfile4    = source_dir + 'MQXA.dat'
     magfile5    = source_dir + 'MQXB.dat'
     magfile6    = source_dir + 'MQYana.dat'
-    inpFile     = source_dir + beam + '/ir1_4TeV_settings_from_TWISS_'+enCut + '_' + beam+'.inp'
+    inpFile     = source_dir + 'tctimpacts/withHitsRot/ir1_4TeV_settings_from_TWISS_'+enCut + '_' + beam+'.inp'
     if ckey.count('createTr'):
         inpFile     = source_dir + 'beamgas/ir1_4TeV_settings_from_TWISS_'+enCut + '_' + beam+'_orbitDumpICON.inp'
         inputFiles  = [magfile1,magfile2,magfile3,magfile4,magfile5,magfile6,flukaExe, inpFile]
@@ -367,7 +374,7 @@ for job in newrange:
     if doRun: run_job.write(cmd)
     
     # copy back
-    if doTest:
+    if not doRun:
         cmd_copy = "cp * " + subdir
     else:
         cmd_copy = 'cp '+fortfiles+' *inp* *out* ' + subdir
