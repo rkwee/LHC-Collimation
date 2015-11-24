@@ -37,36 +37,45 @@ def avLosses(rfname, coll, scaleFactor, hname, loss_start, loss_end, pointName):
         avloss    = hist.Integral(bin_start,bin_end)
         nbins     = bin_end - bin_start
 
-	nonZeroBins = 0
 	sum_cont = 0
-	contents, ibins = [],[]
-	for i in range(1,nbins+1):
+	cluster1, cluster2, ibins = [],[],[]
+	for i in range(nbins+1):
             ibin = bin_start + i
 	    cont = hist.GetBinContent(ibin)
 
-	    contents += [cont]
+	    if pointName.count("cluster 1"): cluster1 += [cont]
+	    elif pointName.count("cluster 2"): cluster2 += [cont]
+
 	    ibins    += [ibin]
 	    if cont :
-		    print "bincontent", cont, 'ibin', ibin
+		    #print "bincontent", cont, 'ibin', ibin
 		    sum_cont += cont
-		    nonZeroBins += 1
 
 	print "Intgral losses", avloss
 	print "summed losses", sum_cont
 
-	maxloss = max(contents)
-	idx = contents.index(maxloss)
-	print "maxloss", maxloss, 'in bin', ibins[idx]
+	if pointName.count("cluster 1"): 
+		maxlossCl1 = max(cluster1)
+		idxCl1 = cluster1.index(maxlossCl1)
+
+	if pointName.count("cluster 2"): 
+		maxlossCl2 = max(cluster2)
+		idxCl2 = cluster2.index(maxlossCl2)
+
+	if pointName.count("cluster 1"): print "maxloss", maxlossCl1, 'in bin', ibins[idxCl1], ' of ', pointName
+	if pointName.count("cluster 2"): print "maxloss", maxlossCl2, 'in bin', ibins[idxCl2], ' of ', pointName
+
         # statistical uncertainty
         stat = 0.
 
         if debug:
-            print('averaging from bin ' + str(bin_start) + ' to bin ' + str(bin_end))
+            print('averaging over ',nbins,' bins, from bin ' + str(bin_start) + ' to bin ' + str(bin_end))
 
         max_loss = hist.GetMaximum()/scaleFactor
 
+	print "max_loss in cold histogram", max_loss
 	# structure: simulation case, loss in bin range, statistical error, maximal loss in bin range, its statistical error
-        losses  += [ sum_cont, avloss/nonZeroBins, math.sqrt(avloss)/nonZeroBins, max_loss, math.sqrt(max_loss) ]
+        losses  += [ sum_cont, avloss/nbins, math.sqrt(avloss)/nbins, max_loss, math.sqrt(max_loss) ]
         
 	if debug: 
 		print "simulation case, loss in bin range, statistical error, maximal loss in bin range, its statistical error ", losses
