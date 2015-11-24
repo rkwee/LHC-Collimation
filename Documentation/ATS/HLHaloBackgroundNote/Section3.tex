@@ -1,0 +1,27 @@
+\section{Simulation Setup}
+
+\subsection{Simulation Codes}
+
+\subsection{Simulation Techniques}
+The simulation is performed in two main parts: First, a tracking code, SixTrack~\cite{SixTrackRef}, is used to track halo proton distributions customised by the user through a magnetic field lattice, see also~\cite{chiarasThesis}. The beam halo is usually simulated in horizontal (h) and vertical (v) distributions. When a collimator is hit, a built-in, recently updated Monte-Carlo model~\cite{claudiasThesis} decides on the physics process. Protons continue in the lattice until they dissociate in an inelastic interaction with the collimator material or (in a post-processing step) are lost on the aperture. As a result, loss locations around the ring can be identified and protons lost on the TCTs serve in second step as an initial distribution in FLUKA~\cite{flukaRef1,flukaRef2}.
+
+Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC, deploying different collimator layouts (in IR1/5 TCT4s only and TCT4s + TCT5s) and alternative collimator settings, so called \twosigmaret~settings to quantify the effect of the TCT5s for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in FLUKA at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in FLUKA a production and transportation cut-off at 20 MeV.
+
+\begin{table}%[hbt]
+   \centering
+   \caption{HL half-gap collimator settings calculated for a normalised emittance of $\epsilon_{\mathrm{n}}$ of 3.5~$\mu$m. Full and updated settings can be found in~\cite{collSettRef}.}
+
+   \begin{tabular}{l|c|c}
+       \hline
+       collimators &        nominal settings & $2\sigma$-retracted settings\\
+                   &         [$\sigma$] &  [$\sigma$]\\
+       \hline
+       TCP3 & 12 (now 15) & 15 \\
+       TCSG3 & 15.6 (now 18)& 18 \\
+       TCP7 & 6 & 5.7 \\
+       TCSG7 & 7 & 7.7 \\
+       TCT IR1/5 & 8.3 & 10.5 \\
+       \hline
+   \end{tabular}
+   \label{collSettings}
+\end{table}

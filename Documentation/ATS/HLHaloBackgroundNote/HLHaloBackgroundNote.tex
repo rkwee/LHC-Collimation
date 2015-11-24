@@ -30,16 +30,16 @@
 % ?)
 \setmarginsrb{22mm}{10mm}{20mm}{10mm}{12pt}{11mm}{0pt}{11mm}
 %
-\title{Background Simulation Studies for Run I, Run II and HL-LHC in IR1}
+\title{Background Simulation Studies for Run I, Run II and HL-LHC}
 %
-\author{R.~Kwee-Hinzmann, R.~Bruce, F.~Cerutti,~L.~S.~Esposito}
+\author{R.~Kwee-Hinzmann, R.~Bruce, F.~Cerutti,~L.~S.~Esposito, S.~M.~Gibson, A.~Lechner, H.~G.~Morales}
 %
 \date{\today}
 \email{\small{Regina.Kwee@rhul.ac.uk}}
 %
 \makeindex
 %
-\documentlabel{CERN-ATS-Note-2015-XXX PERF}\keywords{HL-LHC, collimation, cleaning, halo background, SixTrack, IR1, FLUKA, incoming beam, halo, TCT5}
+\documentlabel{CERN-ATS-Note-2015-XXX PERF}\keywords{halo background, beam-gas, SixTrack, FLUKA, HL-LHC, TCT5, collimation, cleaning efficiency}
 %
 % End of preamble and beginning of text.
 \begin{document}
@@ -56,7 +56,7 @@
 % ----------------------------------------------------------------------------------------------
 \begin{abstract}
 %
-This note summarises the simulation results for beam halo induced background at IR1 in the HL-LHC scenario using the final HL-LHC collimation layout and is essentially an extension of results presented in~\cite{thisyear}. Using the baseline optics of round beams (HLLHCv1.0), and the so-called 2$\sigma$-retracted collimator settings, SixTrack and Fluka simulations were performed to quantify the effect of the installation of additional tertiary collimators in cell 5 upstream the tertiary collimator pair that is already installed to protect the inner triplet magnets in IR1 and 5.
+This note summarises the simulation results for beam halo induced background at IR1 in the HL--LHC scenario using the final HL--LHC collimation layout and is essentially an extension of results presented in~\cite{thisyear}. Using the baseline optics of round beams (HLLHCv1.0), and the so-called 2$\sigma$-retracted collimator settings, SixTrack and Fluka simulations were performed to quantify the effect of the installation of additional tertiary collimators in cell 5 upstream the tertiary collimator pair that is already installed to protect the inner triplet magnets in IR1 and 5.
 In addition other flat beam optics is compared to round optics. For completion, tracking simulation results of other ultimate optics scenarios again with the 2$\sigma$-retracted collimator settings are included.
 \end{abstract}
 %
@@ -68,264 +68,15 @@ In addition other flat beam optics is compared to round optics. For completion, 
 % uncomment to also show section header
 %\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
 %-------------------------------------------------------------------------------------------
-\section{Introduction}
-The High Luminosity (HL) LHC is a major upgrade project to produce in total 3000~\ifb~integrated luminosity for each, ATLAS and CMS, starting installation around 2023~\cite{HLLHCWebRef}. In particular, the upgrade plans affect the experimental insertion regions (IR) IR1 and IR5, housing ATLAS and CMS respectively, to reach higher luminosities. The optics have been re-designed (ATS -- achromatic telescopic squeeze -- optics~\cite{ATSref}) and require e.g. larger-aperture magnets for squeezing the optics to 15~cm in the horizontal and vertical plane at the high-luminosity interaction points (IPs) 1 and 5 in order to achieve the luminosity goal. New possible aperture bottlenecks arise due to HL-LHC layout changes, and the quadrupoles Q5 and Q4 may no longer be sufficiently protected, see also Fig.~\ref{layoutRod}. To address this, the collimation system~\cite{LHCDesignRep,collRef} will be upgraded in the experimental IRs. While these upgrades are in detailed in~\cite{layoutProcRod}, the focus of this note is on upgrade plans for the incoming beam. The new layout forsees to place in cell 5 a vertical and horizontal tertiary collimator (TCT5s for TCTH.5 and TCTV.5). As they are further away from the exisiting horizontal and vertical collimators (TCT4s that are TCTH.4 and TCTV.4), as illustrated in Fig.~\ref{layoutRod}, they could help reducing beam-induced halo background. This note presents a first estimate of the halo induced background reduction based on simulations.
-
-\begin{figure*}[!tbh]
-    \centering
-    \includegraphics[height=3.3cm,width=\textwidth]{figures/TUPTY067f1}
-    \vspace{-0.6cm}
-    \caption{Planned HL-LHC layout~\cite{layoutProcRod} for the incoming beam in the experimental insertion region of ATLAS (IP1) with tertiary collimator pairs (TCT4s and TCT5s) highlighted above the beamline. TCT4s are at around 131~m and TCT5s at 213~m. The layout in IR5 is identical.}
-    \label{layoutRod}
-\end{figure*}
-
-\section{Beam Halo Background}
-Beam particles in the accelerator oscillate around an ideal orbit but diffuse out the beam core due to various beam dynamics effects (e.g.~particle-particle scattering within a bunch, interactions between colliding bunches, scattering with residual gas-molecules) forming the \textit{beam halo} and unavoidable losses. The task of the collimation system is to safely remove these halo particles in two dedicated insertion regions, IR7 for betatron and IR3 for momentum cleaning~\cite{LHCDesignRep,collRef}. Tertiary collimators (TCTs) in IR1 and IR5 complement the IR7/3 collimators and are installed to provide local protection of the inner triplet magnets. Halo protons leaking from IR7/3, should mostly be stopped by the TCTs. While interacting with the collimator material, they produce particle showers that contribute to the machine-induced halo background. This background source is considered in the following.
-
-\section{Simulation Setup}
-The simulation is performed in two main parts: First, a tracking code, SixTrack~\cite{SixTrackRef}, is used to track halo proton distributions customised by the user through a magnetic field lattice, see also~\cite{chiarasThesis}. The beam halo is usually simulated in horizontal (h) and vertical (v) distributions. When a collimator is hit, a built-in, recently updated Monte-Carlo model~\cite{claudiasThesis} decides on the physics process. Protons continue in the lattice until they dissociate in an inelastic interaction with the collimator material or (in a post-processing step) are lost on the aperture. As a result, loss locations around the ring can be identified and protons lost on the TCTs serve in second step as an initial distribution in FLUKA~\cite{flukaRef1,flukaRef2}.
-
-Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC, deploying different collimator layouts (in IR1/5 TCT4s only and TCT4s + TCT5s) and alternative collimator settings, so called \twosigmaret~settings to quantify the effect of the TCT5s for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in FLUKA at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in FLUKA a production and transportation cut-off at 20 MeV.
-
-\begin{table}%[hbt]
-   \centering
-   \caption{HL half-gap collimator settings calculated for a normalised emittance of $\epsilon_{\mathrm{n}}$ of 3.5~$\mu$m. Full and updated settings can be found in~\cite{collSettRef}.}
-
-   \begin{tabular}{l|c|c}
-       \hline
-       collimators &        nominal settings & $2\sigma$-retracted settings\\
-                   &         [$\sigma$] &  [$\sigma$]\\
-       \hline
-       TCP3 & 12 (now 15) & 15 \\
-       TCSG3 & 15.6 (now 18)& 18 \\
-       TCP7 & 6 & 5.7 \\
-       TCSG7 & 7 & 7.7 \\
-       TCT IR1/5 & 8.3 & 10.5 \\
-       \hline
-   \end{tabular}
-   \label{collSettings}
-\end{table}
-
-
-\section{Simulation Results}
-
-
-\begin{table}%[hbt]
-   \centering
-   \caption{Simulation parameters for normalisation.}
-   \begin{tabular}{l|c}
-       \hline
-       beam energy & 7 TeV \\
-       bunch intensity & 2.2$\times 10^{11}$ protons\\
-       bunch spacing & 25~ns \\
-       number of bunches & 2736 \\
-       \hline
-   \end{tabular}
-   \label{hlscenario}
-\end{table}
-
-
-We assume the nominal HL-LHC scenario with parameters as in Tab.~\ref{hlscenario}. For the study of collimator losses and halo background, so-called 2$\sigma$-retracted collimator settings w.r.t.~nominal are used, which were based on the LHC Run I (2010~--~2013) experience and are more realistic, see Table~\ref{collSettings} and~\cite{collSettRef}. Background studies with nominal collimator settings were presented in~\cite{lastyear}. The current baseline of ATS optics for $\beta^{*}$ of 15~cm for round beams (version HLLHCv1.0\footnote{The FLUKA geometry contained layout updates of v1.1, but v1.0 collimator settings were used assuming the uncertainties from the version differences are negligable.}) is used in the simulations.  Unless otherwise indicated, the results are scaled to a beam lifetime of 12 minutes, which is the worst case scenario that the collimators are 
-designed to withstand.\\
-Another ATS optics scenario was also studied with the purpose of validating the new HL collimation layout. To maintain flexibility in low-$\beta^*$ reach, e.g~in the case of crab cavity failures in the experimental IRs, flat beam optics were developed. While in round optics, $\beta^*$ is 15~cm in IP1/5 in the horizontal and vertical plane, it is for flat beams 7.5~cm in the horizontal plane and 30~cm in the vertical plane at IP1 (vice versa for IP5)~\cite{opticsWebRef}. The super optics were developed for ultimate performance goals, sround has a $\beta^*$ of 10~cm in both planes, sflat is reduced to 5~cm and 20~cm in horizontal and vertical plane at IP1 (respectively vice versa in IP5). In Tab.~\ref{simCases}, the single simulation cases are listed.
-
-
-\begin{table}%[hbt]
-   \centering
-   \caption{Simulation cases (HLLHC v1.0).}\vskip2mm
-   \begin{tabular}{|l|l|l|l|}
-       \hline
-       collimator settings & TCT5s & beam halo & optics \\
-       \hline\hline
-       updated nominal  & in & h+v B1 & round \\\hline
-       \twosigmaret & out & h+v B1 & round \\ 
-       \twosigmaret & in  & h+v B1 & round \\ 
-       \twosigmaret & out & h+v B2 & round \\
-       \twosigmaret & in  & h+v B2 & round \\ \hline
-       \twosigmaret & out  & h+v B1 & flat \\
-       \twosigmaret & in  & h+v B1 & flat \\ 
-       \twosigmaret & in  & h+v B1 & sround \\ 
-       \twosigmaret & in  & h+v B1 & sflat \\ 
-
-       \hline
-
-   \end{tabular}
-   \label{hlscenario}
-\end{table}
-
-\subsection{Cleaning performance in HL-LHC}
-
-% lossmaps
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/compTCT5LINOUT_roundthin_B1_IR1IR5}
-\includegraphics[width=0.495\textwidth]{figures/compTCT5LINOUT_flatthin_B1_IR1IR5}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Summary of hits load of the single TCTs for the cases TCT5 are out and in for round (a) and flat (b) beam optics.
-  \label{compTCT5INOUT}}
-\end{figure}
-
-
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/compTCT5LINOUT_roundthin_B1_IR1IR5}
-\includegraphics[width=0.495\textwidth]{figures/compTCT5LINOUT_flatthin_B1_IR1IR5}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Summary of hits load of the single TCTs for the cases TCT5 are out and in for round (a) and flat (b) beam optics.
-  \label{compTCT5INOUT}}
-\end{figure}
-
-\begin{figure}[tbh]
-    \centering
-    \includegraphics[width=0.5\textwidth]{figures/TUPTY067f3}
-    \vspace{-0.5cm}
-    \caption{Comparison of losses on TCTs for round ($\beta^*_{\textrm{x,y}}$ is 15~cm) and flat ($\beta^*_{\textrm{x/y}}$ = 7.5~cm, $\beta^*_{\textrm{y/x}}$ = 30~cm) beam optics.}
-    \label{compOptics}
-\end{figure}
-
-\subsection{Effect of TCT5s on halo background in IR1}
-We focus on the different loads of TCT4s and TCT5s in IR1 and IR5 and are interested in how the TCT hits are shared amongst them. Both cases, having TCT5s in and out, are compared for B1 round beam optics in IR1 and IR5 in Fig.~\ref{compTCT5sLINOUT_roundthin_B1_IR1IR5}. One can observe as expected that the TCT5s take over a large fraction of halo protons when they are included. In return, nearly a factor 5 less load on the TCT4s in IR1 can be expected as it was computed from the values in Table~\ref{compLossesTable}. However, considering the losses of TCTH.4 from Fig.~\ref{compTCT5sLINOUT_roundthin_B1_IR1IR5}, there are a factor 4 less hits in IR1 and slightly more than a factor 6 in IR5. This gain will be decreased by contributions from TCT5s. Even more significant is the difference in IR5 with about 25 times less losses at the TCT4s. We also find that B1 losses are smaller in IR5 than in IR1. This can be expected for B1 since the halo protons that leak through the cleaning system of IR7 have a much shorter distance to travel to IR1 than to IR5. We also note that a slight increase of about 8~\% of intercepted losses is found when both TCT4s and TCT5s are deployed. Since more particles are intercepted, more shower particles can be created which also affects the background level. %Detailed shower simulations with FLUKA provide a first estimate of that background reduction.
-
-\subsection{Comparison of round and flat beam optics}
-
-We studied also how the TCT load changes when the optics change from round to flat for the case that the TCT5s are included. The result is shown in Fig.~\ref{compOptics} for the separate TCTs in IR1/5. In the figure, one can see per IR, that the number of hits are very similar for round and flat beam except for TCTV.4 in IR1 where a flat B1 would create about a factor 4 more hits. When summing the hits of TCT4s and TCT5s, as presented in Table~\ref{compOpticsT}, the number of TCT hits are very similar and so possibly is also the background level in IR1 and potentially even slightly better in IR5.
-
-% ------------------------------------------------------------------------------------------
-% 
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/OrigYZMuons_BH_HL_tct5otrdB1_20MeV}
-\includegraphics[width=0.495\textwidth]{figures/OrigYZMuonsE100_BH_HL_tct5otrdB1_20MeV}
-\includegraphics[width=0.495\textwidth]{figures/OrigYZMuons_BH_HL_tct5inrdB1_20MeV}
-\includegraphics[width=0.495\textwidth]{figures/OrigYZMuonsE100_BH_HL_tct5inrdB1_20MeV}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,7.35){(a)}
-    \put ( 12.4,7.35){(b)}
-    \put ( 4.,1.){(c)}
-    \put ( 12.4,1.){(d)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Origin of muons for all energies (a,c) and for an energy above 100~GeV (b,d) in the y-z plane with TCT5 out (a,b) and TCT5 in (c,d).
-  \label{OrigMuonE}}
-\end{figure}
-
-% ------------------------------------------------------------------------------------------
-% comparisons
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/ratioEkinAll}
-\includegraphics[width=0.495\textwidth]{figures/ratioEkinMuons}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Energy distribution for all particles (a) and muons (b) at the interface plane.
-  \label{Ekin}}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/ratioEkinAllRInBP}
-\includegraphics[width=0.495\textwidth]{figures/ratioEkinAllROutBP}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Energy distribution of all particles inside (a) and outside (b) the beampipe.
-  \label{compEkinBP}}
-\end{figure}
-
-
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/ratioPhiNAll}
-\includegraphics[width=0.495\textwidth]{figures/ratioPhiNMuons}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Azimuthal distribution of all particles (a) and muons (b) at the interface plane.
-  \label{compPhiN}}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/ratioPhiEnAll}
-\includegraphics[width=0.495\textwidth]{figures/ratioPhiEnMuons}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Azimuthal energy distribution of all particles (a) and muons (b) at the interface plane.
-  \label{compPhiEn}}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/ratioRadNAll}
-\includegraphics[width=0.495\textwidth]{figures/ratioRadNMuons}
-\includegraphics[width=0.495\textwidth]{figures/ratioRadEnAll}
-\includegraphics[width=0.495\textwidth]{figures/ratioRadEnMuons}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.05,8.95){(a)}
-    \put ( 12.45,8.95){(b)}
-    \put ( 4.05,1.){(c)}
-    \put ( 12.45,1.){(d)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Tranverse radial distribution of all particles (a) and muons (b) at the interface plane.
-  \label{compRadN}}
-\end{figure}
+\include{Section1}
+\include{Section2}
+\include{Section3}
+\include{Section4}
+\include{Section5}
+\include{Section6}
 
 \section{Conclusion and outlook}
+
 
 %-------------------------------------------------------------------------------------------
 \section*{Acknowledgments}

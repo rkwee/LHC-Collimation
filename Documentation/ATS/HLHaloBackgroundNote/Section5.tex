@@ -1,0 +1,221 @@
+\section{Simulation Results for HL--LHC}
+
+\subsection{Beam-Gas}
+\subsection{Beam-Halo }
+\begin{table}%[hbt]
+   \centering
+   \caption{Simulation parameters for normalisation.}
+   \begin{tabular}{l|c}
+       \hline
+       beam energy & 7 TeV \\
+       bunch intensity & 2.2$\times 10^{11}$ protons\\
+       bunch spacing & 25~ns \\
+       number of bunches & 2736 \\
+       \hline
+   \end{tabular}
+   \label{hlscenario}
+\end{table}
+
+
+We assume the nominal HL--LHC scenario with parameters as in Tab.~\ref{hlscenario}. For the study of collimator losses and halo background, so-called 2$\sigma$-retracted collimator settings w.r.t.~nominal are used, which were based on the LHC Run I (2010~--~2013) experience and are more realistic, see Table~\ref{collSettings} and~\cite{collSettRef}. Background studies with nominal collimator settings were presented in~\cite{lastyear}. The current baseline of ATS optics for $\beta^{*}$ of 15~cm for round beams (version HLLHCv1.0\footnote{The FLUKA geometry contained layout updates of v1.1, but v1.0 collimator settings were used assuming the uncertainties from the version differences are negligable.}) is used in the simulations.  Unless otherwise indicated, the results are scaled to a beam lifetime of 12 minutes, which is the worst case scenario that the collimators are 
+designed to withstand.\\
+Another ATS optics scenario was also studied with the purpose of validating the new HL collimation layout. To maintain flexibility in low-$\beta^*$ reach, e.g~in the case of crab cavity failures in the experimental IRs, flat beam optics were developed. While in round optics, $\beta^*$ is 15~cm in IP1/5 in the horizontal and vertical plane, it is for flat beams 7.5~cm in the horizontal plane and 30~cm in the vertical plane at IP1 (vice versa for IP5)~\cite{opticsWebRef}. The super optics were developed for ultimate performance goals, sround has a $\beta^*$ of 10~cm in both planes, sflat is reduced to 5~cm and 20~cm in horizontal and vertical plane at IP1 (respectively vice versa in IP5). In Tab.~\ref{simCases}, the single simulation cases are listed.
+
+
+\begin{table}%[hbt]
+   \centering
+   \caption{Simulation cases (HLLHC v1.0).}\vskip2mm
+   \begin{tabular}{|l|l|l|l|}
+       \hline
+       collimator settings & TCT5s & beam halo & optics \\
+       \hline\hline
+       updated nominal  & in & h+v B1 & round \\\hline
+       \twosigmaret & out & h+v B1 & round \\ 
+       \twosigmaret & in  & h+v B1 & round \\ 
+       \twosigmaret & out & h+v B2 & round \\
+       \twosigmaret & in  & h+v B2 & round \\ \hline
+       \twosigmaret & out  & h+v B1 & flat \\
+       \twosigmaret & in  & h+v B1 & flat \\ 
+       \twosigmaret & in  & h+v B1 & sround \\ 
+       \twosigmaret & in  & h+v B1 & sflat \\ 
+
+       \hline
+
+   \end{tabular}
+   \label{hlscenario}
+\end{table}
+
+\subsubsection{Loss distributions at tertiary collimators in HL--LHC}
+
+% lossmaps
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/compTCT5LINOUT_roundthin_B1_IR1IR5}
+\includegraphics[width=0.495\textwidth]{figures/compTCT5LINOUT_flatthin_B1_IR1IR5}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Summary of hits load of the single TCTs for the cases TCT5 are out and in for round (a) and flat (b) beam optics.
+  \label{compTCT5INOUT}}
+\end{figure}
+
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/compTCT5LINOUT_roundthin_B1_IR1IR5}
+\includegraphics[width=0.495\textwidth]{figures/compTCT5LINOUT_flatthin_B1_IR1IR5}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Summary of hits load of the single TCTs for the cases TCT5 are out and in for round (a) and flat (b) beam optics.
+  \label{compTCT5INOUT}}
+\end{figure}
+
+\begin{figure}[tbh]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/TUPTY067f3}
+    \vspace{-0.5cm}
+    \caption{Comparison of losses on TCTs for round ($\beta^*_{\textrm{x,y}}$ is 15~cm) and flat ($\beta^*_{\textrm{x/y}}$ = 7.5~cm, $\beta^*_{\textrm{y/x}}$ = 30~cm) beam optics.}
+    \label{compOptics}
+\end{figure}
+
+\subsubsection{Effect of TCT5s on halo background in IR1}
+We focus on the different loads of TCT4s and TCT5s in IR1 and IR5 and are interested in how the TCT hits are shared amongst them. Both cases, having TCT5s in and out, are compared for B1 round beam optics in IR1 and IR5 in Fig.~\ref{compTCT5sLINOUT_roundthin_B1_IR1IR5}. One can observe as expected that the TCT5s take over a large fraction of halo protons when they are included. In return, nearly a factor 5 less load on the TCT4s in IR1 can be expected as it was computed from the values in Table~\ref{compLossesTable}. However, considering the losses of TCTH.4 from Fig.~\ref{compTCT5sLINOUT_roundthin_B1_IR1IR5}, there are a factor 4 less hits in IR1 and slightly more than a factor 6 in IR5. This gain will be decreased by contributions from TCT5s. Even more significant is the difference in IR5 with about 25 times less losses at the TCT4s. We also find that B1 losses are smaller in IR5 than in IR1. This can be expected for B1 since the halo protons that leak through the cleaning system of IR7 have a much shorter distance to travel to IR1 than to IR5. We also note that a slight increase of about 8~\% of intercepted losses is found when both TCT4s and TCT5s are deployed. Since more particles are intercepted, more shower particles can be created which also affects the background level. %Detailed shower simulations with FLUKA provide a first estimate of that background reduction.
+
+\subsubsection{Comparison of round and flat beam optics}
+
+We studied also how the TCT load changes when the optics change from round to flat for the case that the TCT5s are included. The result is shown in Fig.~\ref{compOptics} for the separate TCTs in IR1/5. In the figure, one can see per IR, that the number of hits are very similar for round and flat beam except for TCTV.4 in IR1 where a flat B1 would create about a factor 4 more hits. When summing the hits of TCT4s and TCT5s, as presented in Table~\ref{compOpticsT}, the number of TCT hits are very similar and so possibly is also the background level in IR1 and potentially even slightly better in IR5.
+
+% ------------------------------------------------------------------------------------------
+% 
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/OrigYZMuons_BH_HL_tct5otrdB1_20MeV}
+\includegraphics[width=0.495\textwidth]{figures/OrigYZMuonsE100_BH_HL_tct5otrdB1_20MeV}
+\includegraphics[width=0.495\textwidth]{figures/OrigYZMuons_BH_HL_tct5inrdB1_20MeV}
+\includegraphics[width=0.495\textwidth]{figures/OrigYZMuonsE100_BH_HL_tct5inrdB1_20MeV}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,7.35){(a)}
+    \put ( 12.4,7.35){(b)}
+    \put ( 4.,1.){(c)}
+    \put ( 12.4,1.){(d)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Origin of muons for all energies (a,c) and for an energy above 100~GeV (b,d) in the y-z plane with TCT5 out (a,b) and TCT5 in (c,d).
+  \label{OrigMuonE}}
+\end{figure}
+
+% ------------------------------------------------------------------------------------------
+% comparisons
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/ratioEkinAll}
+\includegraphics[width=0.495\textwidth]{figures/ratioEkinMuons}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Energy distribution for all particles (a) and muons (b) at the interface plane.
+  \label{Ekin}}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/ratioEkinAllRInBP}
+\includegraphics[width=0.495\textwidth]{figures/ratioEkinAllROutBP}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Energy distribution of all particles inside (a) and outside (b) the beampipe.
+  \label{compEkinBP}}
+\end{figure}
+
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/ratioPhiNAll}
+\includegraphics[width=0.495\textwidth]{figures/ratioPhiNMuons}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Azimuthal distribution of all particles (a) and muons (b) at the interface plane.
+  \label{compPhiN}}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/ratioPhiEnAll}
+\includegraphics[width=0.495\textwidth]{figures/ratioPhiEnMuons}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Azimuthal energy distribution of all particles (a) and muons (b) at the interface plane.
+  \label{compPhiEn}}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/ratioRadNAll}
+\includegraphics[width=0.495\textwidth]{figures/ratioRadNMuons}
+\includegraphics[width=0.495\textwidth]{figures/ratioRadEnAll}
+\includegraphics[width=0.495\textwidth]{figures/ratioRadEnMuons}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.05,8.95){(a)}
+    \put ( 12.45,8.95){(b)}
+    \put ( 4.05,1.){(c)}
+    \put ( 12.45,1.){(d)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Tranverse radial distribution of all particles (a) and muons (b) at the interface plane.
+  \label{compRadN}}
+\end{figure}
+
+
+
