@@ -2,6 +2,15 @@
 
 \subsection{Simulation Codes}
 
+\subsubsection{Particle Tracking with SixTrack}
+
+SixTrack is a particle tracking code that features multi-turn stability (symplecticity) for the full six dimensional phase-space. It is based on thin-lens optics (where elements have zero lengths and magnetic field strengths are split such that it is equal to the thick lens optics) and has its own Monte Carlo physics model available~\cite{K2Ref}. An extended version of SixTrack includes the LHC collimator model~\cite{SixTrackRef}, which has been used for our purposes.
+
+\subsubsection{Particle Showering with FLUKA}
+
+
+
+
 \subsection{Simulation Techniques}
 The simulation is performed in two main parts: First, a tracking code, SixTrack~\cite{SixTrackRef}, is used to track halo proton distributions customised by the user through a magnetic field lattice, see also~\cite{chiarasThesis}. The beam halo is usually simulated in horizontal (h) and vertical (v) distributions. When a collimator is hit, a built-in, recently updated Monte-Carlo model~\cite{claudiasThesis} decides on the physics process. Protons continue in the lattice until they dissociate in an inelastic interaction with the collimator material or (in a post-processing step) are lost on the aperture. As a result, loss locations around the ring can be identified and protons lost on the TCTs serve in second step as an initial distribution in FLUKA~\cite{flukaRef1,flukaRef2}.
 
