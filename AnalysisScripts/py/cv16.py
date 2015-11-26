@@ -14,11 +14,16 @@ def cv16():
     # DONT USE
     # --- norm4TeVB1  = 1380 *1.4e11/360000 * (265+95.)/(61832091+12732234) # 98 TCTH 65 TCTV, 6.37e6 6.1e6 primaries  
     # --- norm4TeVB2 = 1380 * 1.4e11/360000 * (521.0+454.0)/(69021155+63014399)
-    norm4TeVB1  = 1380 *1.4e11/360000 * (65+98.)/(6.1e6+6.37e6) # 98 TCTH 65 TCTV, 6.37e6 6.1e6 primaries  
+    norm4TeVB1 = 1380 *1.4e11/360000 * (65+98.)/(6.1e6+6.37e6) # 98 TCTH 65 TCTV, 6.37e6 6.1e6 primaries  
     norm4TeVB2 = 1380 * 1.4e11/360000 * (124.0+115)/(6.4e6+6.3e6)
 
-    norm4TeVB1  = 1380 *1.4e11/360000 * (265+95.)/(61832091+12732234) # 98 TCTH 65 TCTV, 6.37e6 6.1e6 primaries  
+    # old scatt
+    norm4TeVB1 = 1380 *1.4e11/360000 * (265+95.)/(61832091+12732234) # 98 TCTH 65 TCTV, 6.37e6 6.1e6 primaries  
     norm4TeVB2 = 1380 * 1.4e11/360000 * (521.0+454.0)/(69021155+63014399)
+
+    # new halo (new scatt)
+    norm4TeVB1 = 1380 *1.4e11/360000 * (622.0 + 930.0)/(60948098 + 64935501)
+    norm4TeVB2 = 1380 * 1.4e11/360000 * (1179.0+967)/(59198135 +56887051)
 
     norm6500GeVB1 = 2748 * 1.2e11/360000 *(739./62515929 +(312+273.)/62692523) # 2.1e-5
     norm6500GeVB2 = 2748 * 1.2e11/360000 * (779./50890652+773./63119778.) # 2.76e-5 take the average of H an V runs!
@@ -39,6 +44,10 @@ def cv16():
     fNum = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
     fDenom   = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
     subfolder = wwwpath + 'TCT/4TeV/compB1B2oldScatt/'
+
+    fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim3934000_30.root'
+    fDenom   = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim3919000_30.root'
+    subfolder = wwwpath + 'TCT/4TeV/haloShower/newScatt/compB1B2/'
     lTextNum = 'B2'
     lTextDenom = 'B1'
     normDenom, normNum = 1./norm4TeVB1, 1./norm4TeVB2
@@ -91,15 +100,15 @@ def cv16():
     # nColor, dColor = kOrange-1, kMagenta-3
     # yrel = '/inel.BG int.'
 
-    # beamgas 6.5 TeV, 20 MeV vs 6.5 TeV, 20 GeV
-    fNum = projectpath + 'bbgen/6.5TeV/runs400_20MeV/results_ir1_BG_bs_6500GeV_b1_20MeV_nprim2716000_67.root'
-    fDenom = projectpath + 'beamgas/6500GeV_beamsize/runs10k_20GeV/results_ir1_BG_bs_6500GeV_b1_20GeV_nprim181730000_67.root'
-    subfolder = wwwpath + 'TCT/compBG_6.5TeV/'
-    lTextNum, lTextDenom = '20 GeV', '20 MeV'
-    normDenom, normNum = 1.,1.
-    tagDenom, tagNum = '_BG_6500GeV_flat_20GeV_bs', '_BG_6500GeV_flat_20MeV_bs'
-    nColor, dColor = kBlue-1, kMagenta-3
-    yrel = '/inel.BG int.'
+    # # beamgas 6.5 TeV, 20 MeV vs 6.5 TeV, 20 GeV
+    # fNum = projectpath + 'bbgen/6.5TeV/runs400_20MeV/results_ir1_BG_bs_6500GeV_b1_20MeV_nprim2716000_67.root'
+    # fDenom = projectpath + 'beamgas/6500GeV_beamsize/runs10k_20GeV/results_ir1_BG_bs_6500GeV_b1_20GeV_nprim181730000_67.root'
+    # subfolder = wwwpath + 'TCT/compBG_6.5TeV/'
+    # lTextNum, lTextDenom = '20 GeV', '20 MeV'
+    # normDenom, normNum = 1.,1.
+    # tagDenom, tagNum = '_BG_6500GeV_flat_20GeV_bs', '_BG_6500GeV_flat_20MeV_bs'
+    # nColor, dColor = kBlue-1, kMagenta-3
+    # yrel = '/inel.BG int.'
 
     # # # beamgas 4 TeV 20 MeV vs 20 GeV
     # fNum = projectpath + 'bbgen/4TeV/beamgas/withBeamSize/results_ir1_BG_4TeV_settings_from_TWISS_20MeV_b1_nprim5925000_67.root'
@@ -238,14 +247,14 @@ def cv16():
     # tagDenom, tagNum =  '_BH_HL_tct5inrdB1_20MeV', '_crabcfb1'
     # dColor, nColor = kMagenta-2, kBlue-1
 
-    fNum = projectpath + 'HL1.0/FL_HL_TCT5IN_nomCollSett_haloB1/results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root'
-    fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/FL_TCT5IN_roundthin/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
-    subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/'
-    lTextNum = 'nominal'
-    lTextDenom = 'retracted'
-    normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
-    tagDenom,tagNum =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
-    dColor, nColor = kMagenta-2, kBlue-2
+    # fNum = projectpath + 'HL1.0/FL_HL_TCT5IN_nomCollSett_haloB1/results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root'
+    # fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/FL_TCT5IN_roundthin/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
+    # subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/'
+    # lTextNum = 'nominal'
+    # lTextDenom = 'retracted'
+    # normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
+    # tagDenom,tagNum =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
+    # dColor, nColor = kMagenta-2, kBlue-2
 
     # fNum =  '/afs/cern.ch/project/lhc_mib/crabcfb1/runs_usrbin/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_nprim4269100_30.root'
     # fDenom = '/afs/cern.ch/project/lhc_mib/tct_simulations/FlukaRuns/runs_modTAN/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_modTAN_nprim1390500_30.root'
