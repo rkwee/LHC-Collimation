@@ -18,12 +18,12 @@ def cv16():
     norm4TeVB2 = 1380 * 1.4e11/360000 * (124.0+115)/(6.4e6+6.3e6)
 
     # old scatt
-    norm4TeVB1 = 1380 *1.4e11/360000 * (265+95.)/(61832091+12732234) # 98 TCTH 65 TCTV, 6.37e6 6.1e6 primaries  
-    norm4TeVB2 = 1380 * 1.4e11/360000 * (521.0+454.0)/(69021155+63014399)
+    norm4TeVB1oldHalo = 1380 *1.4e11/360000 * (265+95.)/(61832091+12732234) # 98 TCTH 65 TCTV, 6.37e6 6.1e6 primaries  
+    norm4TeVB2oldHalo = 1380 * 1.4e11/360000 * (521.0+454.0)/(69021155+63014399)
 
     # new halo (new scatt)
-    norm4TeVB1 = 1380 *1.4e11/360000 * (622.0 + 930.0)/(60948098 + 64935501)
-    norm4TeVB2 = 1380 * 1.4e11/360000 * (1179.0+967)/(59198135 +56887051)
+    norm4TeVB1newHalo = 1380 *1.4e11/360000 * (622.0 + 930.0)/(60948098 + 64935501)
+    norm4TeVB2newHalo = 1380 * 1.4e11/360000 * (1179.0+967)/(59198135 +56887051)
 
     norm6500GeVB1 = 2748 * 1.2e11/360000 *(739./62515929 +(312+273.)/62692523) # 2.1e-5
     norm6500GeVB2 = 2748 * 1.2e11/360000 * (779./50890652+773./63119778.) # 2.76e-5 take the average of H an V runs!
@@ -39,21 +39,40 @@ def cv16():
     tagNum, tagDenom = 'BH_4TeV_B2', 'BH_4TeV_B2_20MeV'
     nColor, dColor = kCyan+1, kTeal
 
-    #fNum   = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
-    #fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
-    fNum = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
-    fDenom   = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
-    subfolder = wwwpath + 'TCT/4TeV/compB1B2oldScatt/'
+    # #fNum   = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    # #fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
+    # fNum = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
+    # fDenom   = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    # subfolder = wwwpath + 'TCT/4TeV/compB1B2oldScatt/'
+    # fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim3934000_30.root'
+    # fDenom   = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim3919000_30.root'
+    # subfolder = wwwpath + 'TCT/4TeV/haloShower/newScatt/compB1B2/'
+    # lTextNum = 'B2'
+    # lTextDenom = 'B1'
+    # normDenom, normNum = 1./norm4TeVB1, 1./norm4TeVB2
+    # tagDenom, tagNum = '_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV'
+    # nColor, dColor = kOrange-3, kPink-7
+    # yrel = '/s'
 
     fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim3934000_30.root'
-    fDenom   = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim3919000_30.root'
-    subfolder = wwwpath + 'TCT/4TeV/haloShower/newScatt/compB1B2/'
-    lTextNum = 'B2'
-    lTextDenom = 'B1'
-    normDenom, normNum = 1./norm4TeVB1, 1./norm4TeVB2
-    tagDenom, tagNum = '_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV'
-    nColor, dColor = kOrange-3, kPink-7
+    fDenom   = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
+    subfolder = wwwpath + 'TCT/4TeV/haloShower/compOldNewScattB2/'
+    lTextNum = 'new'
+    lTextDenom = 'old'
+    normDenom, normNum = 1./norm4TeVB2oldHalo, 1./norm4TeVB2newHalo
+    tagDenom, tagNum = '_BH_4TeV_B2_20MeV', '_BH_4TeV_B2_20MeV'
+    nColor, dColor = kOrange-3, kPink+8
     yrel = '/s'
+
+    # fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim3919000_30.root'
+    # fDenom   = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    # subfolder = wwwpath + 'TCT/4TeV/haloShower/compOldNewScattB1/'
+    # lTextNum = 'new'
+    # lTextDenom = 'old'
+    # normDenom, normNum = 1./norm4TeVB1oldHalo, 1./norm4TeVB1newHalo
+    # tagDenom, tagNum = '_BH_4TeV_B1_20MeV', '_BH_4TeV_B1_20MeV'
+    # nColor, dColor = kOrange-3, kPink-2
+    # yrel = '/s'
 
     # fNum = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
     # fDenom = workpath + 'data/3p5TeV/results_beam-halo_3.5TeV-R1_D1_20MeV_b2_nprim2344800_66.root'
