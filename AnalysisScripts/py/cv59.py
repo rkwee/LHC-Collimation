@@ -38,14 +38,13 @@ def cv59():
 
 
     blmsPos = blmPositionsDict.keys()
-    missingData, missingPos = [], []
 
     # .................................................................................................
     # -- get a specific line
     format = "%Y-%m-%d %H:%M:%S"
     lossmaps_dt = [
         ['B1H_afterSqueeze', '2012-04-02 18:17:38', rawDataFileName2],
-        # ['B1V_afterSqueeze', '2012-04-02 18:16:07', rawDataFileName2],
+        ['B1V_afterSqueeze', '2012-04-02 18:16:07', rawDataFileName2],
         # ['B2H_afterSqueeze', '2012-04-02 18:14:50', rawDataFileName1],
         # ['B2V_afterSqueeze', '2012-04-02 18:13:29', rawDataFileName1],
         ]
@@ -55,21 +54,19 @@ def cv59():
 
     for lossmapType, dt, rawDataFileName in lossmaps_dt: 
         ts = int(stringDateToTimeStamp(dt,format))
-        print "The ", lossmapType, " lossmap took place at", dt, ' = ', ts
+        print "."*33, lossmapType, " lossmap took place at", dt, ' = ', ts
 
         cmd = 'grep ' + str(ts) + ' ' + rawDataFileName
         process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
         myStdOut = process.stdout.read()
         dataline = myStdOut.split()
-
-        print len(dataline), lossmapType
-
         dataline = [float(d) for d in dataline]
 
         blmsData = getBlmNames(rawDataFileName)
         print "have",len(blmsData),"blms in ", rawDataFileName
 
         # check for position of each blm with data
+        missingData, missingPos = [], []
         for blm in blmsPos:
 
             if blm not in blmsData:
@@ -81,8 +78,7 @@ def cv59():
                 missingPos += [blm]
 
         print "Missing data of ", len(missingData), "blms"#, missingData
-        print "Missing position of ", len(missingPos), "blms"#, missingPos
-        print "."*99
+        print "Missing position of ", len(missingPos), "blms",# missingPos
 
         # collect all info in new list->dict
         dataPerLossmap = []
@@ -112,13 +108,13 @@ def cv59():
 
     print "."*99
     for dKey in dataDict.keys():
-
+        print "-"*44, dKey,'-'*44
         #print "length of ", dKey, "is", len(dataDict[dKey][0])
 
         missingPos = dataDict[dKey][2]
         dataPerLossmapDict = dataDict[dKey][0]
-        for blm in missingPos:
-            print "Missing position of this blm", blm, ". Data is", dataPerLossmapDict[blm]
+        for i,blm in enumerate(missingPos):
+            print "Missing position of blm #",i, blm, ". Data is", dataPerLossmapDict[blm]
 
 
 
