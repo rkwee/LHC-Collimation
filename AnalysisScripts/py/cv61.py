@@ -96,12 +96,12 @@ def cv61():
     hDict = {
         ## x,y in [m] #0 var #1 xnbins, xmin, xmax, ynbins, ymin, ymax, #2 xtitle, #3 ytitle , #4 doNormalise
         # 'xxpHist':['xp:x', [300,-20.,20., 300,-0.3,0.3],'x', 'x\'[mrad]',0,],
-        'yypHist':['yp:y', [300,-20.,20., 300,-0.3,0.3],'y', 'y\'[mrad]', 1,],
+        #'yypHist':['yp:y', [300,-20.,20., 300,-0.3,0.3],'y', 'y\'[mrad]', 1,],
         # 'xsHist' :['x:s',  [300,0,1, 300,-15.,15.],'s[m]', 'x[m]',0,],
         # 'ysHist' :['y:s',  [300,0,1,300,-15.,15.],'s[m]', 'y[m]',0,],
         # 'xyHist':['y:x', [300,-15.,15., 300,-15.,15.],'x [mm]', 'y [mm]',0,],
-        'ypHist':['yp', [300,-0.3,0.3], 'y\'[mrad]', 'entries',0,],
-        'yHist':['y', [300,-15.,15], 'y [mrad]', 'entries',0,],
+        #'ypHist':['yp', [300,-0.3,0.3], 'y\'[mrad]', 'entries',0,],
+        'yHist':['y', [3000,-15.,15], 'y [mrad]', 'entries',0,],
         }
 
     # -----------------------------------------------------------------------------------
@@ -207,8 +207,8 @@ def cv61():
 
                 cut = 'icoll == ' + collid
 
-                cut += ' && yp < 0.'
-                rel = '_negYp'
+                cut += ' && y < 0.'
+                rel = '_negY'
 
                 # store sum of squares of weights 
                 hist.Sumw2()
