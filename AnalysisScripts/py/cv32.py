@@ -7,13 +7,13 @@
 import ROOT, sys, os, time, math
 from ROOT import *
 import helpers, array
-from helpers import wwwpath, length_LHC, mylabel, gitpath, workpath
+from helpers import wwwpath, length_LHC, mylabel, gitpath, workpath, makeTH1F
 from array import array
 ## -------------------------------------------------------------------------------
 # 14 colum format
 pData = [ 
 #    ('beam-gas-sixtrack/pressure_profiles_2012/LSS4_IP4_2012_Roderik.csv',  "distance from IP4 [m]"),
-#     ('beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv', "distance from IP1 [m]"),
+    ('beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv', "distance from IP1 [m]"),
 #     ('beam-gas-sixtrack/pressure_profiles_2012/LSS2_B1_Fill2736_Roderik.csv', "distance from IP2 [m]"),
 #     ('beam-gas-sixtrack/pressure_profiles_2012/LSS7_B1_Fill2736_Roderik.csv', "distance from IP7 [m]"),
 #     ('beam-gas-sixtrack/pressure_profiles_2011/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv', "distance from IP1 [m]"),
@@ -22,7 +22,7 @@ pData = [
 
 # 11 colum format
 pData1 = [ 
-    ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv',  "distance from IP4 [m]"),
+#    ('beam-gas-sixtrack/pressure_profiles_2011/IP4_Fill2028_Roderick.csv',  "distance from IP4 [m]"),
     ]
 
 # 7 colum format
@@ -34,8 +34,8 @@ pData2 = [
 
 # comparison : filenames must appear in either pData or pData2 to define the format!
 pData3 = [
-#     ('beam-gas-sixtrack/pressure_profiles_2011/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv', \
-#      'beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv' ,"distance from IP1 [m]", 'H2Eq', 'H_{2} Eq 2011', 'H_{2} Eq 2012'),
+#    ('beam-gas-sixtrack/pressure_profiles_2011/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv', \
+#         'beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv' ,"distance from IP1 [m]", 'H2Eq', 'H_{2} Eq 2011', 'H_{2} Eq 2012'),
 #     ('beam-gas-sixtrack/pressure_profiles_2011/LSS2_B1_Blue_Fill2028_Roderick.csv', \
 #      'beam-gas-sixtrack/pressure_profiles_2012/LSS2_B1_Fill2736_Roderik.csv', "distance from IP2 [m]", 'H2Eq', 'H_{2} Eq 2011', 'H_{2} Eq 2012'),
 #    ('beam-gas-sixtrack/pressure_profiles_2011/LSS7_Fill2028_Roderick.csv', \
@@ -151,7 +151,7 @@ def cv32a(pFile,xTitle,data):
 
     mg = TMultiGraph()
 
-    xKey, yKey, color, mStyle, lg = 's','rho_H2', kGreen, 22, '#rho_{H_2}'
+    xKey, yKey, color, mStyle, lg = 's','rho_H2', kGreen, 22, '#rho_{H_{2}}'
     g0 = makeGraph(data, xKey, yKey, color, mStyle)
     mlegend.AddEntry(g0, lg, "p")    
     mg.Add(g0)
@@ -166,7 +166,7 @@ def cv32a(pFile,xTitle,data):
     mlegend.AddEntry(g2, lg, "p") 
     mg.Add(g2)
 
-    xKey, yKey, color, mStyle, lg = 's','rho_CO2', kMagenta, 21, '#rho_{CO_2}'
+    xKey, yKey, color, mStyle, lg = 's','rho_CO2', kMagenta, 21, '#rho_{CO_{2}}'
     g3 = makeGraph(data, xKey, yKey, color, mStyle)
     mlegend.AddEntry(g3, lg, "p") 
     mg.Add(g3)
@@ -189,7 +189,7 @@ def cv32a(pFile,xTitle,data):
     # subfolder = 'TCT/HL/relaxedColl/newScatt/'
     # pname += subfolder + hname + '_' + doZoom + '.png'
 
-    pname = pFile.split('.csv')[0] + "a_pressure.png"    
+    pname = pFile.split('.csv')[0] + "a_pressure.pdf"    
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 
@@ -256,7 +256,82 @@ def cv32b(pFile,xTitle,data):
     pname = pFile.split('.csv')[0] + "b_pressure.png"    
     print('Saving file as ' + pname ) 
     cv.Print(pname)
+# ----------------------------------------------------------------------------
+def cv32bsum(pFile,xTitle,data):
 
+    # summed N2 equivalents
+
+    lText = '2012'
+    if pFile.count('2011'): lText = '2011'
+
+    cv = TCanvas( 'cv', 'cv', 2100, 900)
+
+    x1, y1, x2, y2 = 0.74, 0.7, 0.9, 0.9
+    mlegend = TLegend( x1, y1, x2, y2)
+    mlegend.SetFillColor(0)
+    mlegend.SetFillStyle(0)
+    mlegend.SetLineColor(0)
+    mlegend.SetTextSize(0.035)
+    mlegend.SetShadowColor(0)
+    mlegend.SetBorderSize(0)
+
+    hists = []
+    nbins, xmin, xmax = 300, -270., 270.
+
+    xKey, yKey, color, mStyle, lg = 's','H2_N2Eq', kGreen, 22, 'H_{2} N_{2} Eq'
+    h0 =  makeTH1F(data[xKey], data[yKey], yKey, nbins, xmin, xmax, color, mStyle)
+
+    hsum = h0.Clone('sum')
+    hsum.SetLineColor(kBlack)
+    hsum.SetMarkerColor(kBlack)
+    mlegend.AddEntry(hsum, 'total N_{2} Eq', "l")    
+
+    mlegend.AddEntry(h0, lg, "l")    
+    xKey, yKey, color, mStyle, lg = 's','CH4_N2Eq', kBlue, 23, 'CH_{4} N_{2} Eq'
+    h1 =  makeTH1F(data[xKey], data[yKey], yKey, nbins, xmin, xmax, color, mStyle)
+    mlegend.AddEntry(h1, lg, "l")    
+
+    xKey, yKey, color, mStyle, lg = 's','CO_N2Eq', kRed, 20, 'CO N_{2} Eq'
+    h2 =  makeTH1F(data[xKey], data[yKey], yKey, nbins, xmin, xmax, color, mStyle)
+    mlegend.AddEntry(h2, lg, "l")    
+
+    xKey, yKey, color, mStyle, lg = 's','CO2_N2Eq', kMagenta, 21, 'CO_{2} N_{2} Eq'
+    h3 =  makeTH1F(data[xKey], data[yKey], yKey, nbins, xmin, xmax, color, mStyle)
+    mlegend.AddEntry(h3, lg, "l")    
+
+    hsum.Add(h1)
+    hsum.Add(h2)
+    hsum.Add(h3)
+
+    hsum.Draw("hist")
+    h0.Draw("samehist")
+    h1.Draw("samehist")
+    h2.Draw("samehist")
+    h3.Draw("samehist")
+
+    gPad.SetLogy(1)
+    gPad.RedrawAxis()
+
+    lab = mylabel(42)
+    lab.DrawLatex(0.48, 0.88, lText)
+
+    hsum.SetTitle("pressure profiles")
+    hsum.GetXaxis().SetTitle(xTitle)
+    hsum.GetYaxis().SetTitle("N_{2} Eq pressure [bar]")
+    hsum.GetYaxis().SetTitleOffset(0.8)
+    hsum.GetYaxis().SetRangeUser(1e-14,8e-5)
+
+    mlegend.Draw()
+
+    # pname  = wwwpath
+    # subfolder = 'TCT/HL/relaxedColl/newScatt/'
+    # pname += subfolder + hname + '_' + doZoom + '.png'
+
+    pname = pFile.split('.csv')[0] + "bsum_pressure.pdf"    
+    pnamelast = pname.split('/')[-1]
+    pname  = wwwpath + 'TCT/beamgas/pressure_profiles_2012/' + pnamelast
+    print('Saving file as ' + pname ) 
+    cv.Print(pname)
 
 # ----------------------------------------------------------------------------
 def cv32c(pFile, xTitle, data, doCorr, var):
@@ -442,13 +517,16 @@ def cv32():
     # single data plots
     if 1:
         for pFile,xTitle in pData:
+            pFile = workpath + pFile
             print '.'*22,pFile,'.'*22
             data = getdata14c(pFile)
-            cv32a(pFile,xTitle,data)
-            cv32b(pFile,xTitle,data)
-            cv32c(pFile,xTitle,data,1,'')
+            #cv32a(pFile,xTitle,data)
+            #cv32b(pFile,xTitle,data)
+            cv32bsum(pFile,xTitle,data)
+            #cv32c(pFile,xTitle,data,1,'')
 
         for pFile,xTitle in pData1:
+            pFile = workpath + pFile
             print '.'*22,pFile,'.'*22
             data = getdata11c(pFile)
             cv32a(pFile,xTitle,data)
@@ -456,6 +534,7 @@ def cv32():
             cv32c(pFile,xTitle,data,0,'avPress')
 
         for pFile,xTitle in pData2:
+            pFile = workpath + pFile
             print '.'*22,pFile,'.'*22
             data = getdata7c(pFile)
             cv32a(pFile,xTitle,data)
