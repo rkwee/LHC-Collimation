@@ -2,18 +2,36 @@
 
 \subsection{Simulation Codes}
 
-\subsubsection{Particle Tracking with SixTrack}
+\paragraph{Particle Tracking with SixTrack}
 
 SixTrack is a particle tracking code that features multi-turn stability (symplecticity) for the full six dimensional phase-space. It is based on thin-lens optics (where elements have zero lengths and magnetic field strengths are split such that it is equal to the thick lens optics) and has its own Monte Carlo physics model available~\cite{K2Ref}. An extended version of SixTrack includes the LHC collimator model~\cite{SixTrackRef}, which has been used for our purposes.
 
-\subsubsection{Particle Showering with FLUKA}
+\paragraph{Particle Showering with FLUKA}
 
+To evaluate the contribution of certain background sources we use FLUKA~\cite{flukaRef1,flukaRef2}, a general purpose Monte Carlo generator that calculates particle interaction and transport within matter for a user-defined geometry. It uses modern physics models and experimental data as available by the Particle Data Group~\cite{pdgRef}.
 
+We use a geometry built up to 550~m of the right side of IR1 for the present LHC machine (the layout is symmetric around the IP1), for HL-LHC scenarios the geometry reaches up the tertiary collimators of around 215~m. 
 
 
 \subsection{Simulation Techniques}
-The simulation is performed in two main parts: First, a tracking code, SixTrack~\cite{SixTrackRef}, is used to track halo proton distributions customised by the user through a magnetic field lattice, see also~\cite{chiarasThesis}. The beam halo is usually simulated in horizontal (h) and vertical (v) distributions. When a collimator is hit, a built-in, recently updated Monte-Carlo model~\cite{claudiasThesis} decides on the physics process. Protons continue in the lattice until they dissociate in an inelastic interaction with the collimator material or (in a post-processing step) are lost on the aperture. As a result, loss locations around the ring can be identified and protons lost on the TCTs serve in second step as an initial distribution in FLUKA~\cite{flukaRef1,flukaRef2}.
 
+\subsubsection{Beam-Halo simulations}
+The simulation is performed in two main parts: First, we use SixTrack~\cite{SixTrackRef} to track halo proton distributions customised by the user through a magnetic field lattice, see also~\cite{chiarasThesis}. The beam halo is usually simulated in horizontal (h) and vertical (v) distributions. When a collimator is hit, a built-in, recently updated Monte-Carlo model~\cite{claudiasThesis} decides on the physics process. Protons continue in the lattice until they dissociate in an inelastic interaction with the collimator material or (in a post-processing step) are lost on the aperture. As a result, loss locations around the ring can be identified and protons lost on the TCTs serve in second step as an initial distribution in FLUKA.
+
+\paragraph{Run I and Run II cases}
+For Run I, we use the physics configuration of the LHC with $\beta^* = 60$ cm optics and collimator settings in which the IR1/IR5 TCTs were set to 9~$\sigma$~\cite{parametersRun1}. For Run II, the optics changed to $\beta^* = 80$~cm which was used in the machine throughout 2015 for proton-proton collisions and IR1/IR5 collimators were set to 13.7~$\sigma$. For both runs, a vertical crossing angle of $290~\mu$m was taken into account.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{figures/NominalLHC_IR1_layout.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Machine layout for the nominal LHC (as in Run I and II) of the left side of IR1 with IP1 at s = 0 for the incoming beam. Highlighted are the tertiary collimators at around -147~m.
+  \label{nominalLHC_layout}}
+\end{figure}
+
+
+\paragraph{HL-LHC cases}
 Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC, deploying different collimator layouts (in IR1/5 TCT4s only and TCT4s + TCT5s) and alternative collimator settings, so called \twosigmaret~settings to quantify the effect of the TCT5s for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in FLUKA at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in FLUKA a production and transportation cut-off at 20 MeV.
 
 \begin{table}%[hbt]
@@ -34,3 +52,47 @@ Several cases were simulated in order to characterise the cleaning efficiency fo
    \end{tabular}
    \label{collSettings}
 \end{table}
+
+\subsubsection{Beam-Gas simulations}
+
+In order to simulate proton beam particles colliding with residual gas molecules, we use a FLUKA model of the IR1. In this note we studied local beam-gas only sampling interactions up to 550~m away from the IP. In contrast to Ref.~\cite{nimPaperRod} where interactions were sampled along the ideal orbit of a particle, we consider in addition the variation of the transverse beam size which in particular is large just before the triplet when the beam is squeezed for collisions. 
+
+Creating a set of initial conditions that are matched phase space coordinates in the transverse plane, their trajectories are used to sample the beam-gas interactions from. This new setup was considered for Run I 4 TeV and Run II 6.5 TeV local beam-gas simulations in IR1. In FLUKA, proton-nitrogen interactions are simulated in order to scale in a second step the contributions to the pressure profile usually expressed in $N_2$-equivalent.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{figures/IP1_gauss.pdf}
+\includegraphics[width=0.9\textwidth]{figures/twiss_gauss.pdf}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,7.35){(a)}
+    \put ( 12.4,7.35){(b)}
+    \put ( 4.,1.){(c)}
+    \put ( 12.4,1.){(d)}}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Matched phase space coordinates at IP1 in x (a) and y (b) and at an example position (here TCTH).
+  \label{ip1_gauss}}
+\end{figure}
+
+
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.44\textwidth]{figures/inputFluka6500GeV_yBGAS.pdf}
+\includegraphics[width=0.44\textwidth]{figures/xBGAS10z1.pdf}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Positions as sampled in FLUKA with variations of the transverse beam size vertically (a) shown for full range until the arc and horizontally (b) shown for the first 85~m from the IP.
+  \label{BGASflukaInp}}
+\end{figure}
+

@@ -1,19 +1,15 @@
 \section{Simulation Results for LHC's Run I and Run II}
 
-The two background sources were investigated for several run scenarios. During Run I, we had two beam energies, 3.5 TeV in 2010--11 and 4~TeV in 2012\footnote{A detailed overview of parameters in Run 1 can be found in~\cite{ParametersRun1}} While the 3.5~TeV background data has been presented in detail in~\cite{nimPaperRod}, we focus on further developments made since that paper and use these improvements for 4 TeV and Run II simulation cases. Beam-halo simulations were improved compared to~\cite{nimPaperRod} by considering a crossing angle in the simulation as it has been present in the machine. Another improvement concerns beam-gas simulations for which the transverse beam size has been taken into account. 
-\subsection{Sensitivity Studies}
-We investigate how the additional improvements, i.e.~the inclusion of the crossing angle and beam size, effect previous simulations.
+The two background sources were investigated for several run scenarios. During Run I, we had two beam energies, 3.5 TeV in 2010--11 and 4~TeV in 2012\footnote{A detailed overview of parameters in Run 1 can be found in~\cite{ParametersRun1}} While the 3.5~TeV background data has been presented in detail in~\cite{nimPaperRod}, we focus on further developments made since that paper and use these improvements for 4 TeV and Run II simulation cases. Beam-halo simulations were improved compared to~\cite{nimPaperRod} by considering a crossing angle in the simulation as it has been present in the machine. Another improvement concerns beam-gas simulations for which the transverse beam size has been taken into account. First general characteristics of both background sources at the interface plane are presented.
 
-\subsubsection{Crossing Angle}
-The motivation to introduce a crossing angle in the machine is to avoid parasitic interactions of the beam while they travel in the same beam pipe in the interaction region. A small crossing angle allows for a quasi head-on collision of two bunches while other bunches are kept separated. The amount of the crossing angle is given by other beam-beam effects which one wants to suppress and is trade-off between maximising luminosity and keeping the beam stable. The plane in which the angle is introduced is chosen such that one can compensate partially another long-range beam-beam effect resulting in either a positive or negative tune shift. While in IR1 the crossing angle is in the vertical plane, it is in the horizontal plane in IR5.
+\subsection{Run I: 4 TeV Beam-Halo}
 
-We can study the crossing angle effect on background in IR1 using the 3.5~TeV halo simulation data of~\cite{nimPaperRod} which did not have any crossing angle included and the 4 TeV halo data with a crossing angle of 290~$\mu$rad. For this comparison, we plot the distributions at the interface plane per TCT hit. 
-
+Beam-halo induced showers on the tertiary collimators depend on the initial distribution of the positions at which the halo-proton interacts inelastically. For tungsten, the collimator material of the TCTs, one may expect that inelastic interactions close to the jaw surface produce more shower particles than those distributions where most of the inelastic processes take place deeper inside the jaw confining thereby also the shower production. This depth distribution for is shown for B1 and B2 in Fig.~\ref{inel4TeV} and one can see the hits are rather close to the jaw surface.
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=0.495\textwidth]{figures/}
-
+\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_impacts_real_HALO.pdf}
+\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_HALO4TeVB2.pdf}
 \end{center}
 \begin{picture} (0.,0.)
 \setlength{\unitlength}{1.0cm}
@@ -23,16 +19,127 @@ We can study the crossing angle effect on background in IR1 using the 3.5~TeV ha
 }
 \end{picture}
 \vspace{-0.6cm}
- \caption{$\phi$ distribution of .
-  \label{compTCT5INOUT}}
+ \caption{Positions of inelastic interactions as given by SixTrack within the collimator jaws.
+  \label{inel4TeV}}
+\end{figure}
+
+
+\begin{table}[!hbt]
+   \centering
+   \caption{Leakage on to the TCTs of the respective IR wrt.~total losses on IR7 primary collimators averged over simulation case.}
+
+   \begin{tabular}{c|c|c}
+       \hline
+       Leakage factors & B1 & B2\\
+       \hline
+       \hline
+       IR1 & 1.23 $\times 10^{-5}$ & 1.85 $\times 10^{-5}$  \\
+       IR5 & 1.27 $\times 10^{-5}$ & 1.72 $\times 10^{-5}$  \\
+       \hline
+   \end{tabular}
+   \label{leakageFactors}
+\end{table}
+
+\begin{table}[!hbt]
+   \centering
+   \caption{Simulation parameters Run I case for $\beta^* = 60$~cm optics.}
+   \begin{tabular}{l|c}
+       \hline
+       beam energy & 4 TeV \\
+       bunch intensity & 1.4$\times 10^{11}$ protons\\
+       bunch spacing & 50~ns \\
+       number of bunches & 1380 \\
+       \hline
+   \end{tabular}
+   \label{lhcScenario}
+\end{table}
+
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/4TeV/Ekin_BH_4TeV_B1_20MeV.pdf}
+\includegraphics[width=0.495\textwidth]{figures/4TeV/PhiEnDist_BH_4TeV_B1_20MeV.pdf}
+\includegraphics[width=0.495\textwidth]{figures/4TeV/RadNDist_BH_4TeV_B1_20MeV.pdf}
+\includegraphics[width=0.495\textwidth]{figures/4TeV/RadEnDist_BH_4TeV_B1_20MeV.pdf}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,7.35){(a)}
+    \put ( 12.4,7.35){(b)}
+    \put ( 4.,1.){(c)}
+    \put ( 12.4,1.){(d)}}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Halo induced background by Beam 1 at the interface plane. (a) shows the energy distribution, (b) is the energy in $\phi$, (c) is the radial transverse distribution $r$ and (d) the energy in $r$.
+  \label{dist4TeVB1}}
+\end{figure}
+
+
+%% \begin{figure}[!htb]
+%% \begin{center}
+%% \includegraphics[width=0.495\textwidth]{figures/4TeV/Ekin_BH_4TeV_B2_20MeV.pdf}
+%% \includegraphics[width=0.495\textwidth]{figures/4TeV/PhiEnDist_BH_4TeV_B2_20MeV.pdf}
+%% \includegraphics[width=0.495\textwidth]{figures/4TeV/RadNDist_BH_4TeV_B2_20MeV.pdf}
+%% \includegraphics[width=0.495\textwidth]{figures/4TeV/RadEnDist_BH_4TeV_B2_20MeV.pdf}
+%% \end{center}
+%% \begin{picture} (0.,0.)
+%% \setlength{\unitlength}{1.0cm}
+%% \small{
+%%     \put ( 4.,7.35){(a)}
+%%     \put ( 12.4,7.35){(b)}
+%%     \put ( 4.,1.){(c)}
+%%     \put ( 12.4,1.){(d)}}
+%% \end{picture}
+%% \vspace{-0.6cm}
+%%  \caption{Halo induced background by Beam 2 at the interface plane. (a) shows the energy distribution, (b) is the energy in $\phi$, (c) is the radial transverse distribution $r$ and (d) the energy in $r$.
+%%   \label{dist4TeVB2}}
+%% \end{figure}
+
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/4TeV/compB1B2/ratioEkinAll.pdf}
+\includegraphics[width=0.495\textwidth]{figures/4TeV/compB1B2/ratioEkinMuons.pdf}
+\includegraphics[width=0.495\textwidth]{figures/4TeV/compB1B2/ratioPhiEnAll.pdf}
+\includegraphics[width=0.495\textwidth]{figures/4TeV/compB1B2/ratioPhiEnMuons.pdf}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,9.05){(a)}
+    \put ( 12.4,9.05){(b)}
+    \put ( 4.,1.){(c)}
+    \put ( 12.4,1.){(d)}}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Comparison of B1 and B2 distributions normalised to the Run I machine configuration and for 100h of beam lifetime.
+  \label{comp4TeVB1B2}}
 \end{figure}
 
 
 
+\subsection{Run I: 4 TeV Beam-Gas}
+
+
+\subsection{Sensitivity Studies}
+We investigate how the additional improvements, i.e.~the inclusion of the crossing angle and beam size, effect previous simulations.
+
+\subsubsection{Crossing Angle}
+The motivation to introduce a crossing angle in the machine is to avoid parasitic interactions of the beam while they travel in the same beam pipe in the interaction region. A small crossing angle allows for a quasi head-on collision of two bunches while other bunches are kept separated. The amount of the crossing angle is given by other beam-beam effects which one wants to suppress and is trade-off between maximising luminosity and keeping the beam stable. The plane in which the angle is introduced is chosen such that one can compensate partially another long-range beam-beam effect resulting in either a positive or negative tune shift. While in IR1 the crossing angle is in the vertical plane, it is in the horizontal plane in IR5.
+
+We can study the crossing angle effect on background in IR1 using the 3.5~TeV halo simulation data of~\cite{nimPaperRod} which did not have any crossing angle included and the 4 TeV halo data with a crossing angle of 290~$\mu$rad. For this comparison, we plot the distributions at the interface plane per TCT hit. 
+
 \subsubsection{Beam Size}
 
-\subsection{Run I: 4 TeV Beam-Halo}
-\subsection{Run I: 4 TeV Beam-Gas}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{figures/LSS1_B1_Fill2736_Finalbsum_pressure.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{
+  \label{pressure2012}}
+\end{figure}
 
 \subsection{Run II: 6.5 TeV Beam-Halo}
 \subsection{Run II: 6.5 TeV Beam-Gas}
