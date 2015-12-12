@@ -167,19 +167,25 @@ def do1dPhiHisto(sDict, mt, hname, xaxis, particleTypes):
     # EXPRESSION MUST BE IN ROOT not pyROOT!!
     var = 'TMath::ATan2(y,x)'
 
-    # cut on radius r or energy E
-    rEcut  = sDict[hname][8]
-    print "rEcut", rEcut
-    if rEcut != '-9999':
-        cutdir = rEcut.split()[1] 
-        cutval = rEcut.split()[-1]
-        if rEcut.startswith("r"): 
-            cuton = 'TMath::Sqrt(x*x + y*y) '
-        elif rEcut.startswith("E") : 
-            cuton = "energy_ke "
-        cuts += [ cuton + cutdir + ' ' + cutval]
+    # cut on radius r or energy E or z_interact
+    rEcuts  = sDict[hname][8]
+    print "rEcuts", rEcuts
 
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
+
+    if rEcuts != '-9999':
+        for rEcut in rEcuts.split(":"):
+            print 'rEcut', rEcut
+            cutdir = rEcut.split()[1] 
+            cutval = rEcut.split()[-1]
+            if rEcut.split()[0].count("r"): 
+                cuton = 'TMath::Sqrt(x*x + y*y) '
+            elif rEcut.split()[0].count("E") : 
+                cuton = "energy_ke "
+            elif rEcut.split()[0].count("z") : 
+                cuton = "z_interact "
+            cuts += [ cuton + cutdir + ' ' + cutval]
+
     cuts += [encut]
 
     if not particleTypes[0].count('ll'):
@@ -217,17 +223,22 @@ def do1dPhiEnHisto(sDict, mt, hname, xaxis, particleTypes):
     if zOn < zmax: cuts += ['z_interact > ' + str(zmin) + ' && z_interact < ' + str(zmax)]
     cuts += [encut]
 
-    # cut on radius r or energy E
-    rEcut  = sDict[hname][8]
-    print "rEcut", rEcut
-    if rEcut != '-9999':
-        cutdir = rEcut.split()[1] 
-        cutval = rEcut.split()[-1]
-        if rEcut.startswith("r"): 
-            cuton = 'TMath::Sqrt(x*x + y*y) '
-        elif rEcut.startswith("E") : 
-            cuton = "energy_ke "
-        cuts += [ cuton + cutdir + ' ' + cutval]
+    # cut on radius r or energy E or z_interact
+    rEcuts  = sDict[hname][8]
+    print "rEcuts", rEcuts
+
+    if rEcuts != '-9999':
+        for rEcut in rEcuts.split(":"):
+            print 'rEcut', rEcut
+            cutdir = rEcut.split()[1] 
+            cutval = rEcut.split()[-1]
+            if rEcut.split()[0].count("r"): 
+                cuton = 'TMath::Sqrt(x*x + y*y) '
+            elif rEcut.split()[0].count("E") : 
+                cuton = "energy_ke "
+            elif rEcut.split()[0].count("z") : 
+                cuton = "z_interact "
+            cuts += [ cuton + cutdir + ' ' + cutval]
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]
@@ -294,12 +305,24 @@ def do1dZcoorHisto(sDict, mt, hname, xaxis, particleTypes):
     # store sum of squares of weights 
     hist.Sumw2()
 
-    # cut - not used
-    rcut = sDict[hname][8]
-
     cuts += [encut]
 
     var = 'z_interact'
+
+    # cut on radius r or energy E 
+    rEcuts  = sDict[hname][8]
+    print "rEcuts", rEcuts
+
+    if rEcuts != '-9999':
+        for rEcut in rEcuts.split(":"):
+            print 'rEcut', rEcut
+            cutdir = rEcut.split()[1] 
+            cutval = rEcut.split()[-1]
+            if rEcut.split()[0].count("r"): 
+                cuton = 'TMath::Sqrt(x*x + y*y) '
+            elif rEcut.split()[0].count("E") : 
+                cuton = "energy_ke "
+            cuts += [ cuton + cutdir + ' ' + cutval]
 
     if not particleTypes[0].count('ll'):
       pcuts = [ 'particle ==' + p for p in particleTypes  ]

@@ -57,10 +57,17 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/HL/nominalSettings/comp/'
         if debug: print "Using HL comp format", '.'*10
 
-    elif rfname.count('4TeV_settings_from_TWISS'): 
+    elif rfname.count('BH_4TeV_settings_from_TWISS'): 
         hDict = hDict_BH_4TeV
-        subfolder= 'TCT/4TeV/haloShower/oldScatt/'+Beam+'/' + EnCutOff + '/'
-        if debug: print "Using 4 TeV format", '.'*10
+        subfolder= 'TCT/4TeV/tctimpacts/oldScatt/'+Beam+'/' + EnCutOff + '/'
+        subfolder= 'TCT/4TeV/tctimpacts/newScatt/'+Beam+'/' + EnCutOff + '/'
+        # subfolder= 'TCT/4TeV/tctimpacts/newScatt/offmin500Hz/'+Beam+'/' + EnCutOff + '/'
+        if debug: print "Using 4 TeV dict", '.'*10
+
+    elif rfname.count('off') and rfname.count('6500'):
+        hDict = hDict_BH_4TeV
+        subfolder= 'TCT/6.5TeV/tctimpacts/offplus500Hz/'+ Beam + '/'+EnCutOff + '/'
+        if debug: print "Using 4 TeV BH dict", '.'*10
 
     elif rfname.count('BG_bs_4TeV') or rfname.count('beam-gas_4TeV'): 
         hDict = hDict_BG_4TeV
@@ -158,7 +165,7 @@ def plotSpectra(bbgFile, tag, doComp):
       lText  = hDict[hkey][12] 
       lx, ly = hDict[hkey][13],hDict[hkey][14]
 
-      mlegend = TLegend( x1, y1, x2, y2)
+      mlegend = TLegend(x1-0.07, y1, x2, y2)
       mlegend.SetFillColor(0)
       mlegend.SetFillStyle(0)
       mlegend.SetLineColor(0)
@@ -182,7 +189,7 @@ def plotSpectra(bbgFile, tag, doComp):
            # if doFill:  hists[-1].SetFillColor(hcolor)
            
            norm   = sDict[hname][1]
-           if norm != 1.: print 'normalising by ', norm
+           if norm != 1.: print 'had been normalised by ', norm
            #hists[-1].Scale(1./norm)
            leg = "l"
            if not i: 
