@@ -1,0 +1,77 @@
+      INCLUDE '(DBLPRC)'
+      INCLUDE '(DIMPAR)'
+      INCLUDE '(IOUNIT)'
+      INCLUDE '(BLNKCM)'
+
+* Field Types
+      PARAMETER (NFTCONST   = 1)   ! Constant direction fixed field
+      PARAMETER (NFTQUAD    = 2)   ! Analytic quadrupole field
+      PARAMETER (NFTQUADINT = 3)   ! Analytic+Interpolated quadrupole field
+      PARAMETER (NFTINT2D   = 4)   ! Interpolated field
+* Added 22 08 07
+      PARAMETER (NFTSPECIAL = 5)   ! MB - Special field
+      PARAMETER (NFTKICKINT = 6)   ! Analytic+Interpolated dipole field
+      PARAMETER (NFTKICKSIN = 7)   ! Sinusoidal dipole field (for Crab cavity)
+* Symmetries for interpolated fields
+      PARAMETER (NFS0  = 0)   ! No symmetry
+      PARAMETER (NFSX  = 1)   ! Plane X symmetry
+      PARAMETER (NFSY  = 2)   ! Plane Y symmetry
+      PARAMETER (NFSZ  = 4)   ! Plane Z symmetry
+
+      PARAMETER (MXFLDS  = 100)
+
+      COMMON /BFIELD/ FMINX,  FMAXX,  FSTEX,
+     +                FMINY,  FMAXY,  FSTEY,
+     +                FOFSX,  FOFSY,  FOFSZ,
+     +                FCXX,   FCXY,   FCXZ,
+     +                FCYX,   FCYY,   FCYZ,
+     +                FCZX,   FCZY,   FCZZ,
+     +                FB,     FBX,    FBY,    FBZ,
+     +                FQORIX, FQORIY, FQORIZ, FQRAD,
+     +                FFILE,
+     +                NBINX,  NBINY,
+     +                IPTRBX, IPTRBY,
+     +                IFTYP,  IFSYM,  NFREG,
+     +                NFIELD
+
+* Field / region
+      INTEGER   NFREG (MXXRGN)  ! Region Field
+      DIMENSION FB    (MXXRGN)  ! Field Strength / Gradient
+                                ! If negative the swap direction
+      DIMENSION FBX   (MXXRGN)  ! Field Direction X
+      DIMENSION FBY   (MXXRGN)  ! Field Direction Y
+      DIMENSION FBZ   (MXXRGN)  ! Field Direction Z
+
+      DIMENSION FOFSX (MXXRGN)  ! X-Offset for Transformation
+      DIMENSION FOFSY (MXXRGN)  ! Y-Offset for Transformation
+      DIMENSION FOFSZ (MXXRGN)  ! Z-Offset for Transformation
+      DIMENSION FCXX  (MXXRGN)  ! Rotation matrix transformation components
+      DIMENSION FCXY  (MXXRGN)  !   -//-
+      DIMENSION FCXZ  (MXXRGN)  !   -//-
+      DIMENSION FCYX  (MXXRGN)  !   -//-
+      DIMENSION FCYY  (MXXRGN)  !   -//-
+      DIMENSION FCYZ  (MXXRGN)  !   -//-
+      DIMENSION FCZX  (MXXRGN)  !   -//-
+      DIMENSION FCZY  (MXXRGN)  !   -//-
+      DIMENSION FCZZ  (MXXRGN)  !   -//-
+
+* Type of field
+      CHARACTER*16 FFILE(MXFLDS)! Field file name
+      INTEGER   IFTYP (MXFLDS)  ! Field Types
+      INTEGER   IFSYM (MXFLDS)  ! Field Symmetry
+      DIMENSION FQORIX(MXFLDS)  ! Field Origin X (0,0,0 position)
+      DIMENSION FQORIY(MXFLDS)  ! Field Origin Y
+      DIMENSION FQORIZ(MXFLDS)  ! Field Origin Z
+      DIMENSION FQRAD (MXFLDS)  ! Field Radius (For quadrupoles)
+
+      DIMENSION FMINX (MXFLDS)  ! Field Minimum X
+      DIMENSION FMAXX (MXFLDS)  ! Field Maximum X
+      DIMENSION FSTEX (MXFLDS)  ! Field Step    X
+      DIMENSION NBINX (MXFLDS)  ! Field # bins  X
+      DIMENSION IPTRBX(MXFLDS)  ! Pointer(-1) in SIGGTT common array with BX data
+
+      DIMENSION FMINY (MXFLDS)  ! Field Minimum Y
+      DIMENSION FMAXY (MXFLDS)  ! Field Maximum Y
+      DIMENSION FSTEY (MXFLDS)  ! Field Step    Y
+      DIMENSION NBINY (MXFLDS)  ! Field # bins  Y
+      DIMENSION IPTRBY(MXFLDS)  ! Pointer(-1) in SIGGTT common array with BY data
