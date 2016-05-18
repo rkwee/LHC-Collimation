@@ -55,12 +55,12 @@ def cv42():
             # convert x and y from m to cm
             big_x  = gauss1.GetRandom()
             big_xp = gauss2.GetRandom()
-            small_xp = math.sqrt(emittance_geo/betx) * (big_xp - alfx*big_x)
+            small_xp = math.sqrt(emittance_geo/betx) * big_xp - alfx*big_x/math.sqrt(betx * emittance_geo)
             small_x  = big_x*sigx * 100
 
             big_y  = gauss3.GetRandom()
             big_yp = gauss4.GetRandom()
-            small_yp = math.sqrt(emittance_geo/bety) * (big_yp - alfy*big_y)
+            small_yp = math.sqrt(emittance_geo/bety) * big_yp - alfy*big_y/math.sqrt(emittance_geo*bety)
             small_y  = math.sqrt(bety*emittance_geo) * big_y * 100
 
             line ='{0:15}  {1:15}  {2:10}  {3:15}  {4:15}  {5:5}'.format(small_x, small_y, s, small_xp, small_yp, ts)

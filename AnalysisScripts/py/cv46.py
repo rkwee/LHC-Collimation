@@ -111,7 +111,7 @@ def cv46():
 
             big_y  = gauss3.GetRandom()
             big_yp = gauss4.GetRandom()
-            small_yp = math.sqrt(emittance_geo/bety) * (big_yp - alfy*big_y)
+            small_yp = math.sqrt(emittance_geo/bety) * big_yp - alfy*big_y/math.sqrt(emittance_geo*bety)
             small_y  = math.sqrt(bety*emittance_geo) * big_y
             hy[-1].Fill(small_y,small_yp)
 
@@ -129,19 +129,19 @@ def cv46():
             phi = 2*random.random()*math.pi
             big_y  = math.cos(phi)
             big_yp = math.sin(phi)
-            small_yp = math.sqrt(emittance_geo/bety) * (big_yp - alfy*big_y)
+            small_yp = math.sqrt(emittance_geo/bety) * big_yp - alfy*big_y/math.sqrt(emittance_geo*bety)
             small_y  = big_y*sigy 
             c_y1[-1].SetPoint(i+1,small_y,small_yp)
 
             big_y  = 2*math.cos(phi)
             big_yp = 2*math.sin(phi)
-            small_yp = math.sqrt(emittance_geo/bety) * (big_yp - alfy*big_y)
+            small_yp = math.sqrt(emittance_geo/bety) * big_yp - alfy*big_y/math.sqrt(emittance_geo*bety)
             small_y  = big_y*sigy
             c_y2[-1].SetPoint(i+1,small_y,small_yp)
 
             big_y  = 3*math.cos(phi)
             big_yp = 3*math.sin(phi)
-            small_yp = math.sqrt(emittance_geo/bety) * (big_yp - alfy*big_y)
+            small_yp = math.sqrt(emittance_geo/bety) * big_yp - alfy*big_y/math.sqrt(emittance_geo*bety)
             small_y  = big_y*sigy 
             c_y3[-1].SetPoint(i+1,small_y,small_yp)
 
