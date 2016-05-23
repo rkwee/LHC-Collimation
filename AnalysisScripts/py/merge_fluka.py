@@ -19,14 +19,25 @@ parser.add_option("-s", dest="scoringType", type="string",
 parser.add_option("-u", dest="unit", type="string",
                       help="put corresponding fluka unit. if several seperate by ,")
 
+parser.add_option("-o", dest="outpath", type="string",
+                      help="put output path and full filename. If empty use inp file name in main run dir.")
+
 (options, args) = parser.parse_args()
 
 rundir = options.rundir
 if not rundir.endswith('/'): rundir += '/'
 scoringType = options.scoringType
+
+outpath = options.outpath
+if outpath == "": outpath = rundir
+else:
+    if not outpath.endswith('/'): outpath += '/'
+
 unit = options.unit
-if unit == '66' or unit == '67': 
+if unit == '66' or unit == '67':
     skipN = 9
+elif  unit == '30': 
+    skipN = 8
     print 'skipping first', skipN, 'characters of each file'
 else: skipN = -9999
 beam = 'B2'
@@ -86,6 +97,7 @@ def joinTextFiles(fn):
     fdummy   = rundir + inpfile + '_' + fn + '.dummy'
     foutname = rundir + inpfile + '_' + fn 
     #foutname = '/tmp/rkwee/' + inpfile + '_' + fn 
+    foutname = outpath + inpfile + '_' + fn 
     fout     = open(foutname, 'w')
 
     foutdummy= open(fdummy, 'w')
@@ -99,7 +111,7 @@ def joinTextFiles(fn):
 
         runnumber   = afile.split('run_')[-1].split('/')[0]
         cyclenumber = afile.split('/')[-1].split(beam)[-1].split('_fort.' + fn)[0][-1]
-        #print("for file", afile, "found runnumber ", runnumber, ' and cyclenumber', cyclenumber)
+        print("for file", afile, "found runnumber ", runnumber, ' and cyclenumber', cyclenumber)
 
         with open(afile) as af:
 
@@ -107,8 +119,11 @@ def joinTextFiles(fn):
                 #line = line.rstrip()
 
                 if line.count("#"): continue
+
                 if skipN > 0: 
+                    skippedPart = line.split()[0]
                     outline  = runnumber + cyclenumber + '  ' + line[skipN:]
+                    #print "skippedPart", skippedPart, line 
                 else: outline = line
 
                 fout.write(outline)
