@@ -1,10 +1,10 @@
 \section{Simulation Results for LHC's Run I and Run II}
 
-The two background sources were investigated for several run scenarios. During Run I, we had two beam energies, 3.5 TeV in 2010--11 and 4~TeV in 2012\footnote{A detailed overview of parameters in Run 1 can be found in~\cite{ParametersRun1}} While the 3.5~TeV background data has been presented in detail in~\cite{nimPaperRod}, we focus on further developments made since that paper and use these improvements for 4 TeV and Run II simulation cases. Beam-halo simulations were improved compared to~\cite{nimPaperRod} by considering a crossing angle in the simulation as it has been present in the machine. Another improvement concerns beam-gas simulations for which the transverse beam size has been taken into account. First general characteristics of both background sources at the interface plane are presented.
+The two background sources were investigated for several run scenarios. During Run I, we had two beam energies, 3.5 TeV in 2010--11 and 4~TeV in 2012\footnote{A detailed overview of parameters in Run 1 can be found in~\cite{ParametersRun1}} While the 3.5~TeV background data has been presented in~\cite{nimPaperRod}, we focus on new developments made since that paper and use these improvements for 4 TeV and Run II simulation cases. Beam-halo simulations consider now a crossing angle in the simulation as it has been present in the machine. Another improvement concerns beam-gas simulations for which the transverse beam size is taken into account to have the simulations closer to reality. First general characteristics of both background sources at an virtual plane are presented.
 
 \subsection{Run I: 4 TeV Beam-Halo}
 
-Beam-halo induced showers on the tertiary collimators depend on the initial distribution of the positions at which the halo-proton interacts inelastically. For tungsten, the collimator material of the TCTs, one may expect that inelastic interactions close to the jaw surface produce more shower particles than those distributions where most of the inelastic processes take place deeper inside the jaw confining thereby also the shower production. This depth distribution for is shown for B1 and B2 in Fig.~\ref{inel4TeV} and one can see the hits are rather close to the jaw surface.
+Beam-halo induced showers on the tertiary collimators depend on the initial distribution of the positions at which the halo-proton interacts inelastically. For tungsten, the collimator material of the TCTs, one can expect that inelastic interactions close to the jaw surface produce more shower particles than those deeper inside when most of the inelastic processes is confined within the jaw thereby also the shower production. This depth distribution for is shown for B1 and B2 in Fig.~\ref{inel4TeV} and one can see the hits are rather close to the jaw surface with most of the hits in the first few bins (note the logarithmic scale).
 
 \begin{figure}[!htb]
 \begin{center}
@@ -19,7 +19,7 @@ Beam-halo induced showers on the tertiary collimators depend on the initial dist
 }
 \end{picture}
 \vspace{-0.6cm}
- \caption{Positions of inelastic interactions as given by SixTrack within the collimator jaws.
+ \caption{Positions of inelastic interactions of the two collimator jaws normalised to total hits in the simulation.
   \label{inel4TeV}}
 \end{figure}
 
@@ -42,16 +42,16 @@ Beam-halo induced showers on the tertiary collimators depend on the initial dist
 
 \begin{table}[!hbt]
    \centering
-   \caption{Simulation parameters Run I case for $\beta^* = 60$~cm optics.}
+   \caption{Simulation parameters Run I case for $\beta^* = 60$~cm optics (2012).}
    \begin{tabular}{l|c}
        \hline
        beam energy & 4 TeV \\
        bunch intensity & 1.4$\times 10^{11}$ protons\\
-       bunch spacing & 50~ns \\
        number of bunches & 1380 \\
+       bunch spacing & 50~ns \\
        \hline
    \end{tabular}
-   \label{lhcScenario}
+   \label{paramsRun1}
 \end{table}
 
 \begin{figure}[!htb]
@@ -112,7 +112,7 @@ Beam-halo induced showers on the tertiary collimators depend on the initial dist
     \put ( 12.4,1.){(d)}}
 \end{picture}
 \vspace{-0.6cm}
- \caption{Comparison of B1 and B2 distributions normalised to the Run I machine configuration and for 100h of beam lifetime.
+ \caption{Comparison of B1 and B2 halo shower distributions at the interface plane normalised to the Run I machine configuration and for 100h of beam lifetime.
   \label{comp4TeVB1B2}}
 \end{figure}
 
@@ -121,15 +121,50 @@ Beam-halo induced showers on the tertiary collimators depend on the initial dist
 \subsection{Run I: 4 TeV Beam-Gas}
 
 
-\subsection{Sensitivity Studies}
-We investigate how the additional improvements, i.e.~the inclusion of the crossing angle and beam size, effect previous simulations.
+\subsection{New simulation technique}
+Previous studies as in Ref.~\cite{nimPaperRod} used methods relaying on approximations of either of the beam or on its trajectory. One approximation is that the transverse beam size was neglected. In particular, just before the triplet the beamsize is very large and addtional interactions in that location could contribute to shower particles at the interface plane. We investigate how the additional improvements, i.e.~the inclusion of the crossing angle and beam size, effect previous simulations. 
+
+\subsubsection{Beam Size}
+Two cases were simulated in \fluka, with exactly the same setup for the 2012 Run I scenario, see Table~\ref{paramsRun1}, but using a different input file for positions at which beam-gas interactions are sampled.
+
+The new input file contains variations of the ideal orbit respecting the optics and dynamic aperture. They represent the space the beam-particles can occupy defining the transverse extension of the beam. Initial seeds to create the trajectory are generated at the IP where the optical functions are $\alpha = 0$, $\beta = \beta^* = 60$~cm. Using a normalised coordinate system the phase space coordinates were calculated as in Eq.\ref{eq1} and used as initial seeds in \fluka~to serve as an initial point to dump the trajectory.
+
+
+
+\begin{equation} \label{eq1}
+  \begin{split}
+x = & \, \sqrt{\beta \epsilon} \cdot X \\
+x' = & \sqrt{\frac{\epsilon}{\beta}} \cdot X' - \frac{\alpha X}{\sqrt{\beta \epsilon}}
+  \end{split}
+\end{equation}
+
+with $\epsilon$ being the emittance, $\alpha, \beta$ and $\gamma$ the usual twiss parameters from the definition of the emittance as conservative in $\epsilon = \gamma x^2 + \beta x'^2 + 2 \alpha x x'$, and $X$ and $X'$ satisfying the circle equation, $X^2 + X'^2 = 1$.
+
+\begin{figure}[!htb]
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{figures/IR1_rightofIP1.pdf}
+  \includegraphics[width=0.85\textwidth]{figures/twiss_b1_sigma_IR1Right_4TeV.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Top: around 150 m of IR1 layout, bottom: beam sizes up to 600~m upstream in horizontal and vertical plane. The red lines indicate the position as in the top drawing.
+  \label{twissfileBS}}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+  \includegraphics[width=0.5\textwidth]{figures/beamsizeRatio/ratioPhiEnAll.pdf}
+
+\end{center}
+\vspace{-0.6cm}
+ \caption{
+  \label{bsRatioPhiEn}}
+\end{figure}
 
 \subsubsection{Crossing Angle}
 The motivation to introduce a crossing angle in the machine is to avoid parasitic interactions of the beam while they travel in the same beam pipe in the interaction region. A small crossing angle allows for a quasi head-on collision of two bunches while other bunches are kept separated. The amount of the crossing angle is given by other beam-beam effects which one wants to suppress and is trade-off between maximising luminosity and keeping the beam stable. The plane in which the angle is introduced is chosen such that one can compensate partially another long-range beam-beam effect resulting in either a positive or negative tune shift. While in IR1 the crossing angle is in the vertical plane, it is in the horizontal plane in IR5.
 
 We can study the crossing angle effect on background in IR1 using the 3.5~TeV halo simulation data of~\cite{nimPaperRod} which did not have any crossing angle included and the 4 TeV halo data with a crossing angle of 290~$\mu$rad. For this comparison, we plot the distributions at the interface plane per TCT hit. 
 
-\subsubsection{Beam Size}
 
 \begin{figure}[!htb]
 \begin{center}
