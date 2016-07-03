@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# to check beam size at different locations/beam elements
+# to check beam size along s
 # June 2015, rkwee
 ## -------------------------------------------------------------------------------
 import pymadx
@@ -9,11 +9,11 @@ import sys, os, time, math
 import helpers
 from helpers import wwwpath, length_LHC, mylabel
 # -----------------------------------------------------------------------------------
-def cv47():
+def cv64():
 
     # twiss file
     # tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/compTrajectories/twiss_b2.data') ## erased
-    tf = pymadx.Tfs("/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/4TeV/beamgas/twiss_4tev_b1.data")
+
     #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/background_2015_80cm/twiss_b2_80cm.tfs')
 
     # number of randomly produced values per s location
@@ -24,14 +24,9 @@ def cv47():
     #gamma_rel = 6.5e3/0.938
     emittance_geo = emittance_norm/gamma_rel
 
-    pointsname = ['TCTH.4R1.B2', 'MQXA.1R1', 'MQXA.3R1',
-                  'MCBXV.2R1', 'MQXB.B2R1',
 
-                  ]
-
-    for name in pointsname:
-
-        try:
+    s = tf.GetColumnDict["S"]
+    try:
             row = tf.GetRowDict(name)
         except KeyError:
             print "Couldnt find", name

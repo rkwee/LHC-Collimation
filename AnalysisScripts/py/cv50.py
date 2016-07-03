@@ -102,8 +102,8 @@ def cv50():
     print "len(lossesAllPoints[0])", len(lossesAllPoints[0]), "Expect to have same amount of dirs", len(dirs)
 
     cv = TCanvas( 'cv', 'cv', 1000, 600)
-    cv.SetGridx(1)
-    cv.SetGridy(1)
+    cv.SetGridx(0)
+    cv.SetGridy(0)
     x1, y1, x2, y2 = 0.56, 0.8, 0.9, 0.93
     mlegend = TLegend( x1, y1, x2, y2)
     mlegend.SetFillColor(0)

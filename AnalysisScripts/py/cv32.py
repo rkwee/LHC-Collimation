@@ -151,7 +151,7 @@ def cv32a(pFile,xTitle,data):
 
     mg = TMultiGraph()
 
-    xKey, yKey, color, mStyle, lg = 's','rho_H2', kGreen, 22, '#rho_{H_{2}}'
+    xKey, yKey, color, mStyle, lg = 's','rho_H2', kCyan-1, 22, '#rho_{H_{2}}'
     g0 = makeGraph(data, xKey, yKey, color, mStyle)
     mlegend.AddEntry(g0, lg, "p")    
     mg.Add(g0)
@@ -520,9 +520,9 @@ def cv32():
             pFile = workpath + pFile
             print '.'*22,pFile,'.'*22
             data = getdata14c(pFile)
-            #cv32a(pFile,xTitle,data)
+            cv32a(pFile,xTitle,data)
             #cv32b(pFile,xTitle,data)
-            cv32bsum(pFile,xTitle,data)
+            #cv32bsum(pFile,xTitle,data)
             #cv32c(pFile,xTitle,data,1,'')
 
         for pFile,xTitle in pData1:

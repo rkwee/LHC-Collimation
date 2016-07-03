@@ -1,5 +1,5 @@
 import math
-from helpers import getBeam, tag_BH_4TeV, tag_BH_7TeV, tag_BH_6p5TeV, tag_BG_4TeV, tag_BH_3p5TeV, tag_BG_6p5TeV, tag_crab_HL
+from helpers import getBeam, tag_BH_4TeV, tag_BH_7TeV, tag_BH_6p5TeV, tag_BG_4TeV, tag_BH_3p5TeV, tag_BG_6p5TeV, tag_crab_HL, tag_BG_3p5TeV
 tag_HL   = 'HL_BH'
 
 
@@ -140,6 +140,11 @@ if tag_BH_4TeV.count('20GeV'): scaleFactor = 0.1
 tag = tag_BH_4TeV
 Beam, beam, beamn = getBeam(tag)
 lText = 'beamhalo 4 TeV ' + Beam
+
+tag = tag_BH_3p5TeV
+Beam, beam, beamn = getBeam(tag)
+lText = ' beamhalo 3.5 TeV ' + Beam
+
 hDict_BH_4TeV = { 
 
 
@@ -188,6 +193,9 @@ hDict_BH_4TeV = {
     'XYNKaonMinusE' + tag  : [ ['XYNKaonMinusE'] ,0.5, 0.92, 0.7, 1., 1,0, -50,50,-1,-1, 0, lText, 0.2,0.9, 1e-8,3e-5, ],
     }
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
+#lText = 'beamgas 3.5 TeV'
+#tag = tag_BG_3p5TeV
+#
 lText = 'beamgas 4 TeV'
 tag = tag_BG_4TeV
 if tag.count('bs'): lText = '4 TeV BG with beamsize'
@@ -215,7 +223,7 @@ hDict_BG_4TeV = {
     'RadNMuons' + tag: [ ['RadNMuonsEAll', 'RadNMuonsE20', 'RadNMuonsE100','RadNMuonsE1000'],0.4, 0.75, 0.95, 0.9, 0,1, 0.,390.,5e-11,5e-6, 1, lText, 0.2,0.9, -1,-1, ],
     'RadEnChar' + tag: [ ['RadEnNeg', 'RadEnPos', 'RadEnNeu','RadEnNeutrons','RadEnPhotons'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,1190.,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'RadEnDist' + tag:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.65, 0.65, 0.98, 0.9, 0,1, 0,400,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
-    'PhiNDist' + tag: [ ['PhiNAll', 'PhiNMuons','PhiNNeutrons','PhiNProtons','PhiNPhotons', 'PhiNElecPosi', 'PhiNPionsChar', 'PhiNKaonsChar'],0.72, 0.74, 0.98, 0.92, 0,1, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiNDist' + tag: [ ['PhiNAll', 'PhiNMuons','PhiNNeutrons','PhiNProtons','PhiNPhotons', 'PhiNElecPosi', 'PhiNPionsChar', 'PhiNKaonsChar'],0.72, 0.74, 0.98, 0.92, 0,1, -1,-1,3e-3,100, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiEnChar' + tag: [ ['PhiEnNeg', 'PhiEnPos', 'PhiEnNeu','PhiEnNeutrons','PhiEnPhotons'],0.52, 0.75, 0.98, 0.9, 0,1, -1,-1.,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiNMu' + tag: [ ['PhiNMuons','PhiNMuR10','PhiNMuR50','PhiNMuR100','PhiNMuR200','PhiNMuR300','PhiNMuR400','PhiNMuR500','PhiNMuR1000'],0.4, 0.64, 0.7, 0.92, 0,1, -1,-1,-1,-1, 1, lText, 0.2,0.9, -1,-1, ], 
 
@@ -229,6 +237,7 @@ hDict_BG_4TeV = {
     'YcoorNChar' + tag: [ ['YcoorNNeg', 'YcoorNPos', 'YcoorNNeu'],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
 
     'XYNAll' + tag           : [ ['XYNAll'],0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'XYNAllZoom' + tag       : [ ['XYNAll'],0.5, 0.92, 0.7, 1., 0,0, -10,10,-10,10, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNMuons' + tag         : [ ['XYNMuons'], 0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNMuonsE10' + tag      : [ ['XYNMuonsE10'], 0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNMuonsE500' + tag     : [ ['XYNMuonsE500'], 0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
@@ -249,17 +258,26 @@ hDict_BG_4TeV = {
     'OrigXZMuonsE100' + tag       : [ ['OrigXZMuonsE100'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
     'OrigYZMuonsE100' + tag       : [ ['OrigYZMuonsE100'],0.5, 0.92, 0.7, 1., 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.9, 8e-7,8e-3, ],
 
-    'PhiNMuonsZR1' + tag      : [ ['PhiNMuonsZ1R1', 'PhiNMuonsZ2R1', 'PhiNMuonsZ3R1', 'PhiNMuonsZ4R1'],0.33, 0.7, 0.95, 0.85, 0,1, -1,-1,3e-7,9e-3, 0, lText, 0.2,0.9, -1,-1, ],
-    'PhiEnMuonsZR1' + tag     : [ ['PhiEnMuonsZ1R1', 'PhiEnMuonsZ2R1', 'PhiEnMuonsZ3R1', 'PhiEnMuonsZ4R1'],0.45, 0.7, 0.95, 0.88, 0,1, -1,-1,1e-5,20, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiNAllZ' + tag      : [ ['PhiNAll','PhiNAllZ1', 'PhiNAllZ2', 'PhiNAllZ3', 'PhiNAllZ4'],0.25, 0.7, 0.6, 0.85, 0,1, -1,-1,1e-4,699, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiEnAllZ' + tag      : [ ['PhiEnAll','PhiEnAllZ1', 'PhiEnAllZ2', 'PhiEnAllZ3', 'PhiEnAllZ4'],0.26, 0.7, 0.6, 0.85, 0,1,-1,-1,1e-1,1e3, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiNProtonsZ' + tag      : [ ['PhiNProtons','PhiNPrZ1', 'PhiNPrZ2', 'PhiNPrZ3', 'PhiNPrZ4'],0.25, 0.7, 0.6, 0.85, 0,1, -1,-1,1e-4,99, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiEnProtonsZ' + tag      : [ ['PhiEnProtons','PhiEnPrZ1', 'PhiEnPrZ2', 'PhiEnPrZ3', 'PhiEnPrZ4'],0.26, 0.7, 0.6, 0.85, 0,1,-1,-1,1e-1,1e3, 0, lText, 0.2,0.9, -1,-1, ],
 
-    'PhiNMuonsZR2' + tag      : [ ['PhiNMuonsZ1R2', 'PhiNMuonsZ2R2', 'PhiNMuonsZ3R2', 'PhiNMuonsZ4R2'],0.33, 0.7, 0.95, 0.85, 0,1, -1,-1,3e-7,9e-3, 0, lText, 0.2,0.9, -1,-1, ],
-    'PhiEnMuonsZR2' + tag     : [ ['PhiEnMuonsZ1R2', 'PhiEnMuonsZ2R2', 'PhiEnMuonsZ3R2', 'PhiEnMuonsZ4R2'],0.45, 0.7, 0.95, 0.88, 0,1, -1,-1,1e-5,20, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiNMuonsZR1' + tag      : [ ['PhiNMuonsZ1R1', 'PhiNMuonsZ2R1', 'PhiNMuonsZ3R1', 'PhiNMuonsZ4R1'],0.3, 0.7, 0.95, 0.85, 0,1, -1,-1,3e-7,9e-3, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiEnMuonsZR1' + tag     : [ ['PhiEnMuonsZ1R1', 'PhiEnMuonsZ2R1', 'PhiEnMuonsZ3R1', 'PhiEnMuonsZ4R1'],0.3, 0.7, 0.95, 0.88, 0,1, -1,-1,1e-5,20, 0, lText, 0.2,0.9, -1,-1, ],
 
-    'PhiNMuonsZR1E100' + tag      : [ ['PhiNMuonsZ1R1E100', 'PhiNMuonsZ2R1E100', 'PhiNMuonsZ3R1E100', 'PhiNMuonsZ4R1E100'],0.33, 0.7, 0.95, 0.85, 0,1, -1,-1,3e-7,9e-3, 0, lText, 0.2,0.9, -1,-1, ],
-    'PhiEnMuonsZR1E100' + tag     : [ ['PhiEnMuonsZ1R1E100', 'PhiEnMuonsZ2R1E100', 'PhiEnMuonsZ3R1E100', 'PhiEnMuonsZ4R1E100'],0.45, 0.7, 0.95, 0.88, 0,1, -1,-1,1e-5,20, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiNMuonsZR2' + tag      : [ ['PhiNMuonsZ1R2', 'PhiNMuonsZ2R2', 'PhiNMuonsZ3R2', 'PhiNMuonsZ4R2'],0.13, 0.7, 0.95, 0.85, 0,1, -1,-1,3e-7,9e-3, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiEnMuonsZR2' + tag     : [ ['PhiEnMuonsZ1R2', 'PhiEnMuonsZ2R2', 'PhiEnMuonsZ3R2', 'PhiEnMuonsZ4R2'],0.13, 0.7, 0.95, 0.88, 0,1, -1,-1,1e-5,20, 0, lText, 0.2,0.9, -1,-1, ],
 
-    'PhiNMuonsZR2E100' + tag      : [ ['PhiNMuonsZ1R2E100', 'PhiNMuonsZ2R2E100', 'PhiNMuonsZ3R2E100', 'PhiNMuonsZ4R2E100'],0.33, 0.7, 0.95, 0.85, 0,1, -1,-1,3e-7,9e-3, 0, lText, 0.2,0.9, -1,-1, ],
-    'PhiEnMuonsZR2E100' + tag     : [ ['PhiEnMuonsZ1R2E100', 'PhiEnMuonsZ2R2E100', 'PhiEnMuonsZ3R2E100', 'PhiEnMuonsZ4R2E100'],0.45, 0.7, 0.95, 0.88, 0,1, -1,-1,1e-5,20, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiNMuonsZR1E100' + tag      : [ ['PhiNMuonsZ1R1E100', 'PhiNMuonsZ2R1E100', 'PhiNMuonsZ3R1E100', 'PhiNMuonsZ4R1E100'],0.3, 0.7, 0.95, 0.85, 0,1, -1,-1,3e-7,9e-3, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiEnMuonsZR1E100' + tag     : [ ['PhiEnMuonsZ1R1E100', 'PhiEnMuonsZ2R1E100', 'PhiEnMuonsZ3R1E100', 'PhiEnMuonsZ4R1E100'],0.3, 0.7, 0.95, 0.88, 0,1, -1,-1,1e-5,20, 0, lText, 0.2,0.9, -1,-1, ],
+
+    'PhiNMuonsZR2E100' + tag      : [ ['PhiNMuonsZ1R2E100', 'PhiNMuonsZ2R2E100', 'PhiNMuonsZ3R2E100', 'PhiNMuonsZ4R2E100'],0.3, 0.7, 0.95, 0.85, 0,1, -1,-1,3e-7,9e-3, 0, lText, 0.2,0.9, -1,-1, ],
+    'PhiEnMuonsZR2E100' + tag     : [ ['PhiEnMuonsZ1R2E100', 'PhiEnMuonsZ2R2E100', 'PhiEnMuonsZ3R2E100', 'PhiEnMuonsZ4R2E100'],0.3, 0.7, 0.95, 0.88, 0,1, -1,-1,1e-5,20, 0, lText, 0.2,0.9, -1,-1, ],
+
+    'OrigZ' + tag       : [ ['OrigZPhotons', 'OrigZProtons','OrigZMuon'],0.75, 0.88, 0.83, 0.92, 0,1, -1,-1,-1,-1, 0, lText, 0.2,0.96, -1,-1, ],
+    'OrigZE100' + tag       : [ ['OrigZPhotE100', 'OrigZPrE100','OrigZMuE100'],0.75, 0.88, 0.83, 0.92, 0,1, -1,-1,-1,-1, 0, lText, 0.2,0.96, -1,-1, ],
+
     }
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -300,11 +318,15 @@ hDict_BH_3p5TeV = {
     'XYNAll' + tag           : [ ['XYNAll'],0.5, 0.92, 0.7, 1., 1,0, -30,30,-30,30, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNMuons' + tag         : [ ['XYNMuons'], 0.5, 0.92, 0.7, 1., 1,0, 5e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNMuonsE10' + tag      : [ ['XYNMuonsE10'], 0.5, 0.92, 0.7, 1., 1,0, 5e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
-    'XYNMuonsE500' + tag     : [ ['XYNMuonsE500'], 0.5, 0.92, 0.7, 1., 1,0, 5e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'XYNMuonsE100' + tag     : [ ['XYNMuonsE100'], 0.5, 0.92, 0.7, 1., 1,0, 5e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNPhotons' + tag       : [ ['XYNPhotons'], 0.5, 0.92, 0.7, 1., 1,0, 1e-5,2e-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNElecPosi' + tag      : [ ['XYNElecPosi'],0.5, 0.92, 0.7, 1., 1,0, 1e-5,2e-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNChar' + tag          : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -30,30,-30,30, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNCharZoom' + tag      : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -6.,6.,6.,6., 0, lText, 0.2,0.9, -1,-1, ],
+    'XYNProtons' + tag         : [ ['XYNProtons'], 0.5, 0.92, 0.7, 1., 1,0, 5e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'XYNProtonsE10' + tag      : [ ['XYNProtonsE10'], 0.5, 0.92, 0.7, 1., 1,0, 5e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'XYNProtonsE100' + tag     : [ ['XYNProtonsE100'], 0.5, 0.92, 0.7, 1., 1,0, 5e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+
 
     'XYNNeutronsE' + tag      : [ ['XYNNeutronsE'] ,0.5, 0.92, 0.7, 1., 1,0, 1e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNProtonsE' + tag       : [ ['XYNProtonsE'] ,0.5, 0.92, 0.7, 1., 1,0, 1e-7,5e-6,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
@@ -382,8 +404,8 @@ def generateHybridDicts(tag,ccf,lText):
     'OrigXZMuonsE100' + tag       : [ ['OrigXZMuonsE100'],0.5, 0.88, 0.83, 0.92, 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
     'OrigYZMuonsE100' + tag       : [ ['OrigYZMuonsE100'],0.5, 0.88, 0.83, 0.92, 1,0, -1,-1, -80, 80, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
 
-    'ProfOrigXZMuons' + tag       : [ ['ProfOrigXZMuon'],0.75, 0.88, 0.83, 0.92, 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
-    'ProfOrigYZMuons' + tag       : [ ['ProfOrigYZMuon'],0.75, 0.88, 0.83, 0.92, 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
+    'OrigZ' + tag       : [ ['OrigZPhotons', 'OrigZProtons','OrigZMuons'],0.75, 0.88, 0.83, 0.92, 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
+    'OrigZE100' + tag       : [ ['OrigZPhotE100', 'OrigZPrE100','OrigZMuE100'],0.75, 0.88, 0.83, 0.92, 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, 8e-7,8e-3, ],
     }
 
     return hDict_hybrid

@@ -296,7 +296,7 @@ def do1dTcoorHisto(var,sDict, mt, hname, xaxis, particleTypes):
 
     return hist
 # ---------------------------------------------------------------------------------
-def do1dZcoorHisto(sDict, mt, hname, xaxis, particleTypes):
+def doOrigZHisto(sDict, mt, hname, xaxis, particleTypes):
 
     nbins   = len(xaxis)-1
     hist    = TH1F(hname, hname, nbins, array('d', xaxis))
@@ -582,15 +582,15 @@ def getHistogram(sDict, skey, mt):
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
         hist  = do1dTcoorHisto('y',sDict, mt, hname, xaxis, particleTypes) 
 
-    elif hname.startswith("Zcoor"):
-        binwidth = (xmax-xmin)/nbins
-        xaxis = [xmin+i*binwidth for i in range(nbins+1)]
-        hist  = do1dZcoorHisto(sDict, mt, hname, xaxis, particleTypes) 
-
     elif hname.startswith("OrigXY"):
         binwidth = (xmax-xmin)/nbins
         xaxis = [xmin+i*binwidth for i in range(nbins+1)]
         hist  = doOrigXYHisto(sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes)
+
+    elif hname.startswith("OrigZ"):
+        binwidth = (xmax-xmin)/nbins
+        xaxis = [xmin+i*binwidth for i in range(nbins+1)]
+        hist  = doOrigZHisto(sDict, mt, hname, xaxis, particleTypes)
 
     elif hname.startswith("OrigXZ"):
         binwidth = (xmax-xmin)/nbins

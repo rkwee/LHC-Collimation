@@ -239,13 +239,13 @@ def cv60():
 
 
     hDict = {
-        ## x,y in [m] #0 var #1 xnbins, xmin, xmax, ynbins, ymin, ymax, #2 xtitle, #3 ytitle
-        # 'xxpHist':['xp:x', [300,-20.,20., 300,-0.3,0.3],'x', 'x\'[mrad]'],
-        # 'yypHist':['yp:y', [300,-20.,20., 300,-0.3,0.3],'y', 'y\'[mrad]'],
-        # 'xsHist' :['x:s',  [300,0,1, 300,-15.,15.],'s[m]', 'x[m]'],
-        # 'ysHist' :['y:s',  [300,0,1,300,-15.,15.],'s[m]', 'y[m]'],
-        # 'xyHist':['y:x', [300,-15.,15., 300,-15.,15.],'x [mm]', 'y [mm]'],
-        'ypHist':['yp', [300,-0.3,0.3], 'y\'[mrad]', 'entries'],
+        ## x,y in [m] #0 var #1 xnbins, xmin, xmax, ynbins, ymin, ymax, #2 xtitle, #3 ytitle , #4 doNormalise
+        # 'xxpHist':['xp:x', [300,-20.,20., 300,-0.3,0.3],'x', 'x\'[mrad]',0,],
+        'yypHist':['yp:y', [300,-20.,20., 300,-0.3,0.3],'y', 'y\'[mrad]', 1,],
+        # 'xsHist' :['x:s',  [300,0,1, 300,-15.,15.],'s[m]', 'x[m]',0,],
+        # 'ysHist' :['y:s',  [300,0,1,300,-15.,15.],'s[m]', 'y[m]',0,],
+        # 'xyHist':['y:x', [300,-15.,15., 300,-15.,15.],'x [mm]', 'y [mm]',0,],
+        'ypHist':['yp', [300,-0.3,0.3], 'y\'[mrad]', 'entries',0,],
         }
 
     # -----------------------------------------------------------------------------------
@@ -352,6 +352,8 @@ def cv60():
                 if showInfo: print 'INFO: Have ',entries, ' entries in', hname, ' for ', collName
                 print hist
                 if entries: doDraw(hist)
+
+
 # ----------------------------------------------------------------------------
 
 

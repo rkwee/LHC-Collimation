@@ -6,7 +6,7 @@
 ## -------------------------------------------------------------------------------
 import ROOT, sys, os, time, math
 from ROOT import *
-import helpers, array
+import helpers, array, pymadx
 from helpers import *
 from array import array
 # -----------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ def cv61():
               projectpath + 'bgChecks2/impacts_real_NewScatt_4TeV_haloB2.txt.root',\
               projectpath + 'bgChecks2/NewScatt_4TeV_hHaloB2/run_test/collgaps.dat',\
               'TCT/4TeV/', '4 TeV B2', 1., \
-              100,0., 10.,
+              '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/4TeV/TCThaloStudies/b2/twiss_b4.data.thin'
             ],
 
         ]
@@ -104,6 +104,10 @@ def cv61():
         'yHist':['y', [3000,-15.,15], 'y [mrad]', 'entries',0,],
         }
 
+    # -----------------------------------------------------------------------------------
+    emittance_norm = 3.5e-6
+    gamma_rel = 4e3/0.938
+    emittance_geo = emittance_norm/gamma_rel
     # -----------------------------------------------------------------------------------
     def doDraw(hist,rel):
 
@@ -178,7 +182,24 @@ def cv61():
         print "and using","."*33, collgaps
 
         subfolder, energy, ymax = myset[3], myset[4], myset[5]
+        TwissFile = pymadx.Tfs(myset[6])
+
+        betaXDict = TwissFile.GetColumnDict('BETX')
+        betaYDict = TwissFile.GetColumnDict('BETY')
+
         for collName in colls:
+
+            betx = betaXDict[collName]
+            bety = betaYDict[collName]
+
+            sigmax = math.sqrt(emittance_geo * betx)
+            sigmay = math.sqrt(emittance_geo * bety)
+
+            sigmaxp = math.sqrt(emittance_geo/betx)
+            sigmayp = math.sqrt(emittance_geo/bety)
+
+            print "sigmax ", sigmax, "m"
+            print "sigmay ", sigmay, "m"
 
             try:
                 collid = cDict[collName][0]
