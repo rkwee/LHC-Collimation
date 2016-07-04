@@ -4,7 +4,7 @@
 # R Kwee, June 2013
 
 import os, math, time, ROOT
-from ROOT import TLatex, TGraph
+from ROOT import TLatex, TGraph, TH1F
 import gzip
 # ------------------------------------------------------------------------------------------------
 workpath = '/afs/cern.ch/work/r/rkwee/HL-LHC/'
@@ -18,12 +18,16 @@ projectpath = '/afs/cern.ch/project/lhc_mib/'
 # ------------------------------------------------------------------------------------------------
 # tags for bbG analysis *only for giving name!*
 tag_BH_3p5TeV = "_BH_3p5TeV_B1_20MeV"
+tag_BG_3p5TeV = "_BG_3p5TeV_20MeV"
 
-#tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
+tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
+tag_BH_4TeV = '_offmin500Hz_4TeV_B2_20MeV'
+tag_BH_4TeV = '_offplus500Hz_6500GeV_B2_20MeV'
 tag_BH_4TeV = '_BH_4TeV_B2_20MeV'
-tag_BH_4TeV = '_BH_4TeV_B1_20MeV'
+#tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
+#tag_BH_4TeV = '_BH_4TeV_B2_20GeV_from20MeV'
 
-tag_BG_4TeV = '_BG_4TeV_20GeV_bs'
+tag_BG_4TeV = '_BG_4TeV_20MeV'
 
 tag_BH_7TeV = '_BH_HL_tct5inrdB1_nomCollSett_20MeV'
 #tag_BH_7TeV = '_BH_HL_tct5inrdB1_20MeV'
@@ -37,8 +41,8 @@ tag_BH_6p5TeV = '_BH_6500GeV_haloB1_20MeV'
 tag_BG_6p5TeV = '_BG_6500GeV_flat_20GeV_bs'
 # ................................................................................................
 # -- ALSO SET ENERGY CUT
-#EnCut = '2.e-2'
-EnCut = '20.'
+EnCut = '2.e-2'
+#EnCut = '20.'
 # ------------------------------------------------------------------------------------------------
 length_LHC = 26658.8832
 IPs = [
@@ -233,6 +237,24 @@ def stringDateToTimeStamp(stringTime, format):
     return ts
 
 # ----------------------------------------------------------------------------
+def createDictFromRow(fileName):
+    debug = 0
+    dList = []
+    with open(fileName) as mf:
+
+        for line in mf:
+
+            dictkey = line.split()[0]
+
+            restofline = line.split(dictkey)[-1]
+            if debug: print "will have", len(restofline.split()), "elements for each key"
+
+            restoflineList = [ i for i in restofline.split()]
+            dList += [(dictkey, restoflineList)]
+
+    return dict(dList)
+
+# ----------------------------------------------------------------------------
 
 def collDict(collsummary):
     # -- needs a coll_summary_jdfsijdhf.dat file -- #
@@ -291,6 +313,27 @@ def makeTGraph(xList, yList, color, mStyle):
         gr.SetPoint(i+1, x, y)
 
     return gr
+# ----------------------------------------------------------------------------
+def makeTH1F(xList, yList, hname, nbins, xmin, xmax, color, mStyle):
+
+    """ returns TH1F of x, y """
+    hist = TH1F(hname, hname, nbins, xmin, xmax)
+    # TH1F(hname, hname, len(axis)-1, array('d', axis) )
+    # store sum of squares of weights 
+    hist.Sumw2()
+
+    hist.SetMarkerStyle(mStyle)
+    hist.SetLineWidth(1)
+    hist.SetLineColor(color)
+    hist.SetMarkerColor(color)
+
+    for i in range(1,len(xList)-1):
+        x=float(xList[i+1])
+        y=float(yList[i+1])
+        #print x, y
+        hist.Fill(x,y)
+
+    return hist
 # ----------------------------------------------------------------------------
 def getListFromColumn(colList, fname):
 

@@ -13,16 +13,23 @@ from array import array
 def cv41():
 
     # twiss file
-    tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/twiss_lhcb1_med_new_thin_800.tfs')
-    #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/twiss_b2_mym.data')
+    #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/twiss_lhcb1_med_new_thin_800.tfs')
+    #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/4TeV/twiss_b2_mym.data') # erased
+    # tf = pymadx.Tfs("/afs/cern.ch/user/r/rbruce/public/for_regina/MADX_4TeV/twiss_b1.data.thin") # alfa missing
+    #    tf = pymadx.Tfs("/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/4TeV/beamgas/twiss_b4.data.thin")
+    tf = pymadx.Tfs("/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/4TeV/beamgas/twiss_4tev_b1.data")
+
     # locations of sampling the beam-size
+    # - passen nicht mehr auf tfs
     pointsName = ['TCTH.4L1.B1', 'TCTVA.4L1.B1', 'MBRC.4L1.B1','MQXA.1L1..2', 'MQXB.B2L1..16', 'BPTX.5L1.B1', "MB.A8L1.B1..2", "MCD.9L1.B1", "MCBCH.10L1.B1", "MB.C13L1.B1..2"]
     #pointsName = ["MYM.S"]
-    pointsName = ['TCTH.4L1.B1']
+    #pointsName = ['TCTH.4L1.B1']
+
+    energy = "6.5TeV"
     # number of randomly produced values per s location
     N = 1000
 
-    doWrite = 0
+    doWrite = 1
 
     # canvas
     a,b = 2,len(pointsName)
@@ -34,7 +41,6 @@ def cv41():
 
     emittance_norm = 3.5e-6
     gamma_rel = 6.5e3/0.938
-    #gamma_rel = 4e3/0.938
     emittance_geo = emittance_norm/gamma_rel
     gauss1 = TF1('gauss1', 'exp(-0.5*(x**2))', -5.,5.)
     gauss2 = TF1('gauss2', 'exp(-0.5*(x**2))', -5.,5.)
@@ -196,8 +202,8 @@ def cv41():
 
     rel = '_gauss' 
     pname  = wwwpath
-    subfolder = 'TCT/6.5TeV/beamgas/'
-    pname += subfolder + 'twiss'+rel+'.pdf'
+    subfolder = "TCT/"+energy+"/beamgas/"
+    pname += subfolder + 'twiss'+rel+'_'+energy+'.pdf'
 
     print('Saving file as ' + pname ) 
     cv.SaveAs(pname)

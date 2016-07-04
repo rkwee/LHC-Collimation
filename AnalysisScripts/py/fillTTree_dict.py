@@ -56,7 +56,8 @@ R100h   = 293126 #Hz from cv07
 # ---------------------------------------------------------------------------------
 def generate_sDict( tag, norm, tBBG, yrel ):
     sDict_gen = { 
- 'EkinAll'+tag:[ ['all'],norm,60, 1e-2, 1e4, tBBG, 'all',kBlack, '-9999','E [GeV]', '#frac{dN(counts'+yrel+')}{dlog E}', -9999, -9999, -9999, ],
+ 
+'EkinAll'+tag:[ ['all'],norm,60, 1e-2, 1e4, tBBG, 'all',kBlack, '-9999','E [GeV]', '#frac{dN(counts'+yrel+')}{dlog E}', -9999, -9999, -9999, ],
  'EkinMuons'+tag:[ ['10', '11'], norm,60, 1e-2, 1e4, tBBG, '#mu^{#pm}',kAzure, '-9999','E [GeV]', '#frac{dN(counts'+yrel+')}{dlog E}', -9999, -9999, -9999, ],
  'EkinProtons'+tag:[ ['1'], norm,60, 1e-2, 1e4, tBBG, 'protons', kCyan, '-9999','E [GeV]', '#frac{dN(counts'+yrel+')}{dlog E}', -9999, -9999, -9999, ],
  'EkinNeutrons'+tag:[ ['8'], norm,60, 1e-2, 1e4, tBBG, 'neutrons', kRed, '-9999','E [GeV]', '#frac{dN(counts'+yrel+')}{dlog E}', -9999, -9999, -9999, ],
@@ -117,12 +118,17 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'RadEnNeu'+tag:[ ['7','24','8'], norm, 1200, 0, 1200, tBBG, 'n,K^{0},#gamma', kBlue, '-9999','r [cm]', 'particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
 
  'PhiNAll'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all',kBlack, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+   'PhiNAllZ1'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all in 22.6m < z < 59m',kOrange+3, 'z > 2260. : z < 5900. ','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNAllZ2'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all in 59m < z < 153m',kYellow+3, 'z > 5900. : z < 15300. ','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNAllZ3'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all in 153m < z < 269m',kBlue+2, 'z > 15300. : z < 26900. ','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNAllZ4'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all in 269m < z < 547m',kTeal+3, 'z > 26900. : z < 54700. ','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+
  'PhiNAllE100'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all E > 100 GeV',kBlack, 'E > 100','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNMuons'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} ',kAzure, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiNMuE100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm}  E > 100 GeV',kAzure+1, 'E > 100','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsE100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm}  E > 100 GeV',kAzure+1, 'E > 100','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNNeutrons'+tag:[ ['8'], norm, 100, -math.pi, math.pi, tBBG, 'neutrons', kRed, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ], 
  'PhiNProtons'+tag:[ ['1'], norm, 100, -math.pi, math.pi, tBBG, 'protons',kCyan, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiNPrE100'+tag:[ ['1'], norm, 100, -math.pi, math.pi, tBBG, 'protons E > 100 GeV',kCyan, 'E > 100','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNProtonsE100'+tag:[ ['1'], norm, 100, -math.pi, math.pi, tBBG, 'protons E > 100 GeV',kCyan, 'E > 100','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNPhotons'+tag:[ ['7'], norm, 100, -math.pi, math.pi, tBBG, '#gamma', kOrange+1, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNElecPosi'+tag:[ ['3', '4'],norm, 100, -math.pi, math.pi, tBBG, 'e^{#pm}',kOrange-2, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNPionsChar'+tag:[ ['13','14',], norm, 100, -math.pi, math.pi, tBBG, '#pi^{#pm}', kViolet, '-9999','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
@@ -158,31 +164,42 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  # 'PhiNMuRlt1000'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1000 cm',kCyan-8,'r < 1000','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  
  'PhiEnAll'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all',kBlack, '-9999','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnAllZ1'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all in 22.6m < z < 59m',kCyan+3, 'z > 2260. : z < 5900. ','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnAllZ2'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all in 59m < z < 153m',kBlue-4, 'z > 5900. : z < 15300. ','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnAllZ3'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all in 153m < z < 269m',kMagenta-2, 'z > 15300. : z < 26900. ','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnAllZ4'+tag:[ ['all'],norm, 100, -math.pi, math.pi, tBBG, 'all in 269m < z < 547m',kRed-3, 'z > 26900. : z < 54700. ','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+
+ 'PhiEnPrZ1'+tag:[ ['1'],norm, 100, -math.pi, math.pi, tBBG, 'p in 22.6m < z < 59m',kCyan+3, 'z > 2260. : z < 5900. ','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnPrZ2'+tag:[ ['1'],norm, 100, -math.pi, math.pi, tBBG, 'p in 59m < z < 153m',kBlue-4, 'z > 5900. : z < 15300. ','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnPrZ3'+tag:[ ['1'],norm, 100, -math.pi, math.pi, tBBG, 'p in 153m < z < 269m',kMagenta-2, 'z > 15300. : z < 26900. ','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnPrZ4'+tag:[ ['1'],norm, 100, -math.pi, math.pi, tBBG, 'p in 269m < z < 547m',kRed-3, 'z > 26900. : z < 54700. ','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+
  'PhiEnMuons'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} ',kAzure, '-9999','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnNeutrons'+tag:[ ['8'], norm, 100, -math.pi, math.pi, tBBG, 'neutrons', kRed, '-9999','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnProtons'+tag:[ ['1'], norm, 100, -math.pi, math.pi, tBBG, 'protons',kCyan, '-9999','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnProtonsE100'+tag:[ ['1'], norm, 100, -math.pi, math.pi, tBBG, 'protons E > 100 GeV',kCyan, 'E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnPhotons'+tag:[ ['7'], norm, 100, -math.pi, math.pi, tBBG, '#gamma',kOrange+1, '-9999','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnElecPosi'+tag:[ ['3','4'], norm, 100, -math.pi, math.pi, tBBG, 'e^{#pm}',kOrange-2, '-9999','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnPions'+tag:[ ['13','14'],norm, 100, -math.pi, math.pi, tBBG, '#pi^{#pm}',kPink+1, '-9999','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnKaons'+tag:[ ['15','16','24'],norm, 100, -math.pi, math.pi, tBBG, 'K^{#pm,0}',kSpring-1, '-9999','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
 
- 'PhiNMuonsZ1R1E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 22.6m < z < 59m',kOrange-9, 'z > 2260. : z < 5900. : r < 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiNMuonsZ2R1E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 59m < z < 153m',kRed-9, 'z > 5900. : z < 15300. : r < 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiNMuonsZ3R1E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 153m < z < 269m',kPink-9, 'z > 15300. : z < 26900. : r < 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiNMuonsZ4R1E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 269m < z < 547m',kMagenta-9, 'z > 26900. : r < 100. ','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsZ1R1'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 22.6m < z < 59m',kOrange-6, 'z > 2260. : z < 5900. : r < 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsZ2R1'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 59m < z < 153m',kRed-6, 'z > 5900. : z < 15300. : r < 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsZ3R1'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 153m < z < 269m',kPink-6, 'z > 15300. : z < 26900. : r < 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsZ4R1'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 269m < z < 547m',kMagenta-6, 'z > 26900. : r < 100. ','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
 
- 'PhiEnMuonsZ1R1'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 22.6m < z < 59m',kGreen-9, 'z > 2260. : z < 5900. : r < 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiEnMuonsZ2R1'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 59m < z < 153m',kBlue-9, 'z > 5900. : z < 15300. : r < 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiEnMuonsZ3R1'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 153m < z < 269m',kRed-9, 'z > 15300. : z < 26900. : r < 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiEnMuonsZ4R1'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 269m < z < 547m',kCyan-9, 'z > 26900. : r < 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnMuonsZ1R1'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 22.6m < z < 59m',kGreen-6, 'z > 2260. : z < 5900. : r < 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnMuonsZ2R1'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 59m < z < 153m',kBlue-6, 'z > 5900. : z < 15300. : r < 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnMuonsZ3R1'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 153m < z < 269m',kRed-6, 'z > 15300. : z < 26900. : r < 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnMuonsZ4R1'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} r < 1m, 269m < z < 547m',kCyan-6, 'z > 26900. : r < 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
 
- 'PhiNMuonsZ1R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 22.6m < z < 59m',kGreen-9, 'z > 2260. : z < 5900. : r < 200. :  r > 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiNMuonsZ2R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 59m < z < 153m',kGreen-7, 'z > 59000. : z < 15300. : r < 200. :  r > 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiNMuonsZ3R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 153m < z < 269m',kRed-9, 'z > 15300. : z < 26900. : r > 100. : r < 200.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiNMuonsZ4R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 269m < z < 547m',kCyan-9, 'z > 26900. : r < 200. : r > 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsZ1R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 22.6m < z < 59m',kGreen-6, 'z > 2260. : z < 5900. : r < 200. :  r > 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsZ2R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 59m < z < 153m',kBlue-6, 'z > 5900. : z < 15300. : r < 200. :  r > 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsZ3R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 153m < z < 269m',kRed-6, 'z > 15300. : z < 26900. : r > 100. : r < 200.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsZ4R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 269m < z < 547m',kCyan-6, 'z > 26900. : r < 200. : r > 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
 
- 'PhiEnMuonsZ1R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 22.6m < z < 59m',kBlue-3, 'z > 2260. : z < 5900. : r < 200. :  r > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiEnMuonsZ2R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 59m < z < 153m',kGreen-3, 'z > 59000. : z < 15300. : r < 200. :  r > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+  'PhiEnMuonsZ1R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 22.6m < z < 59m',kBlue-3, 'z > 2260. : z < 5900. : r < 200. :  r > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+  'PhiEnMuonsZ2R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 59m < z < 153m',kGreen-3, 'z > 5900. : z < 15300. : r < 200. :  r > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnMuonsZ3R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 153m < z < 269m',kRed-3, 'z > 15300. : z < 26900. : r > 100. : r < 200.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnMuonsZ4R2'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} 1m < r < 2m, 269m < z < 547m',kCyan-3, 'z > 26900. : r < 200. : r > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
 
@@ -196,15 +213,24 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'PhiEnMuonsZ3R1E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, r < 1m, 153m < z < 269m',kRed-9, 'z > 15300. : z < 26900. : r < 100. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnMuonsZ4R1E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, r < 1m, 269m < z < 547m',kCyan-9, 'z > 26900. : r < 100. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
 
- 'PhiNMuonsZ1R2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 1m < r < 2m, 22.6m < z < 59m',kGreen-9, 'z > 2260. : z < 5900. : r < 200. :  r > 100. : E > 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiNMuonsZ2R2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 1m < r < 2m, 59m < z < 153m',kGreen-7, 'z > 59000. : z < 15300. : r < 200. :  r > 100. : E > 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+  'PhiNMuonsZ1R2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 1m < r < 2m, 22.6m < z < 59m',kGreen-9, 'z > 2260. : z < 5900. : r < 200. :  r > 100. : E > 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsZ2R2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 1m < r < 2m, 59m < z < 153m',kGreen-7, 'z > 5900. : z < 15300. : r < 200. :  r > 100. : E > 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNMuonsZ3R2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 1m < r < 2m, 153m < z < 269m',kRed-9, 'z > 15300. : z < 26900. : r > 100. : r < 200. : E > 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
  'PhiNMuonsZ4R2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 1m < r < 2m, 269m < z < 547m',kCyan-9, 'z > 26900. : r < 200. : r > 100. : E > 100.','#phi [rad]', 'particles/rad'+yrel, -9999, -9999, -9999, ],
 
- 'PhiEnMuonsZ1R2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 1m < r < 2m, 22.6m < z < 59m',kBlue-3, 'z > 2260. : z < 5900. : r < 200. :  r > 100. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
- 'PhiEnMuonsZ2R2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 1m < r < 2m, 59m < z < 153m',kGreen-3, 'z > 59000. : z < 15300. : r < 200. :  r > 100. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+  'PhiEnMuonsZ1R2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 1m < r < 2m, 22.6m < z < 59m',kBlue-3, 'z > 2260. : z < 5900. : r < 200. :  r > 100. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+  'PhiEnMuonsZ2R2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 1m < r < 2m, 59m < z < 153m',kGreen-3, 'z > 5900. : z < 15300. : r < 200. :  r > 100. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnMuonsZ3R2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 1m < r < 2m, 153m < z < 269m',kRed-3, 'z > 15300. : z < 26900. : r > 100. : r < 200. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnMuonsZ4R2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 1m < r < 2m, 269m < z < 547m',kCyan-3, 'z > 26900. : r < 200. : r > 100. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+
+ 'PhiNMuonsZ1E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 22.6m < z < 59m',kBlue-3, 'z > 2260. : z < 5900. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsZ2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 59m < z < 153m',kGreen-3, 'z > 5900. : z < 15300. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsZ3E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 153m < z < 269m',kRed-3, 'z > 15300. : z < 26900. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiNMuonsZ4E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 269m < z < 547m',kCyan-3, 'z > 26900.  : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnMuonsZ1E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 22.6m < z < 59m',kBlue-3, 'z > 2260. : z < 5900. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnMuonsZ2E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 59m < z < 153m',kGreen-3, 'z > 5900. : z < 15300. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnMuonsZ3E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 153m < z < 269m',kRed-3, 'z > 15300. : z < 26900. : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
+ 'PhiEnMuonsZ4E100'+tag:[ ['10', '11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{#pm} E > 100GeV, 269m < z < 547m',kCyan-3, 'z > 26900.  : E > 100.','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
 
  'PhiEnMuPlus'+tag:[ ['10'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{+} ',kCyan-8, '-9999','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
  'PhiEnMuMinus'+tag:[ ['11'], norm, 100, -math.pi, math.pi, tBBG, '#mu^{-} ',kAzure+8, '-9999','#phi [rad]', 'GeV/rad'+yrel, -9999, -9999, -9999, ],
@@ -287,10 +313,16 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'OrigXZMuonsE100'+tag:[ ['10', '11'], norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} E_{kin} > 100 GeV', kWhite, '100.','z [cm]','x [cm]', 240, -120, 120, ], 
  'OrigYZMuonsE100'+tag:[ ['10', '11'], norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} E_{kin} > 100 GeV', kWhite, '100.','z [cm]','y [cm]', 240, -120, 120, ], 
 
- 'ZcoorOrigMuE100'+tag:[ ['11','10'], norm, 262, 2260., 54660., tBBG, '#mu^{#pm} E > 1 m',kMagenta+2,'E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
- 'ZcoorOrigMuRt1E100'+tag:[ ['11','10'], norm, 262, 2260., 54660., tBBG, '#mu^{#pm} r < 1 m, E > 100 GeV',kMagenta+1,'r < 100. : E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
- 'ZcoorOrigMuRgt1E100'+tag:[ ['11','10'], norm, 262, 2260., 54660., tBBG, '#mu^{#pm} r > 1 m & E > 100 GeV',kBlue+1,'r > 100. : E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+'OrigZPhotons'+tag:[ ['7'],  norm,262, 2260., 54660, tBBG, '#gamma ', kPink-3, '-9999','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+'OrigZPhotE100'+tag:[ ['7'],  norm, 262, 2260., 54660, tBBG, '#gamma E > 100 GeV ', kRed, 'E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+'OrigZProtons'+tag:[ ['1'],  norm,262, 2260., 54660, tBBG, 'p ', kGreen, '-9999','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+'OrigZPrE100'+tag:[ ['1'],  norm, 262, 2260., 54660, tBBG, 'p E > 100 GeV ', kCyan, 'E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+'OrigZMuon'+tag:[ ['10', '11'],  norm,262, 2260., 54660, tBBG, '#mu^{#pm} ', kBlue-2, '-9999','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+'OrigZMuE100'+tag:[ ['10', '11'],  norm, 262, 2260., 54660, tBBG, '#mu^{#pm} E > 100 GeV ', kBlue+2, 'E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+ 'OrigZMuRt1E100'+tag:[ ['11','10'], norm, 262, 2260., 54660., tBBG, '#mu^{#pm} r < 1 m, E > 100 GeV',kMagenta+1,'r < 100. : E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+ 'OrigZMuRgt1E100'+tag:[ ['11','10'], norm, 262, 2260., 54660., tBBG, '#mu^{#pm} r > 1 m & E > 100 GeV',kBlue+1,'r > 100. : E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
  }
+
     return sDict_gen
 # ---------------------------------------------------------------------------------
 # comp plots BG vs BH

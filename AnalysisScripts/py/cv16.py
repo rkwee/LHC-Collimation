@@ -14,8 +14,8 @@ def cv16():
     # DONT USE
     # --- norm4TeVB1  = 1380 *1.4e11/360000 * (265+95.)/(61832091+12732234) # 98 TCTH 65 TCTV, 6.37e6 6.1e6 primaries  
     # --- norm4TeVB2 = 1380 * 1.4e11/360000 * (521.0+454.0)/(69021155+63014399)
-    norm4TeVB1 = 1380 *1.4e11/360000 * (65+98.)/(6.1e6+6.37e6) # 98 TCTH 65 TCTV, 6.37e6 6.1e6 primaries  
-    norm4TeVB2 = 1380 * 1.4e11/360000 * (124.0+115)/(6.4e6+6.3e6)
+    #norm4TeVB1 = 1380 *1.4e11/360000 * (65+98.)/(6.1e6+6.37e6) # 98 TCTH 65 TCTV, 6.37e6 6.1e6 primaries  
+    #norm4TeVB2 = 1380 * 1.4e11/360000 * (124.0+115)/(6.4e6+6.3e6)
 
     # old scatt
     norm4TeVB1oldHalo = 1380 *1.4e11/360000 * (265+95.)/(61832091+12732234) # 98 TCTH 65 TCTV, 6.37e6 6.1e6 primaries  
@@ -44,19 +44,21 @@ def cv16():
 
     # #fNum   = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
     # #fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
-    fNum = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
-    fDenom   = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
-    normDenom, normNum = 1./norm4TeVB1oldHalo, 1./norm4TeVB2oldHalo
-    subfolder = wwwpath + 'TCT/4TeV/tctimpacts/oldScatt/compB1B2oldScatt/'
-    # fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
-    # fDenom = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
-    # normDenom, normNum = 1./norm4TeVB1newHalo, 1./norm4TeVB2newHalo
-    # subfolder = wwwpath + 'TCT/4TeV/tctimpacts/newScatt/compB1B2/'
+    # fNum = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
+    # fDenom   = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    # normDenom, normNum = 1./norm4TeVB1oldHalo, 1./norm4TeVB2oldHalo
+    # subfolder = wwwpath + 'TCT/4TeV/tctimpacts/oldScatt/compB1B2oldScatt/'
+    fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
+    fDenom = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
+    #    normDenom, normNum = 1./norm4TeVB1newHalo, 1./norm4TeVB2newHalo
+    normDenom, normNum = 1., 1.
+    subfolder = wwwpath + 'TCT/4TeV/tctimpacts/newScatt/compB1B2/perTCThit/'
     lTextNum = 'B2'
     lTextDenom = 'B1'
     tagDenom, tagNum = '_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV'
     nColor, dColor = kOrange-3, kPink-6
-    yrel = '/s'
+    yrel = '/TCT hit'
+    # yrel = '/s'
 
     # fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
     # fDenom   = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
@@ -102,37 +104,53 @@ def cv16():
     # yrel = '/s'
     # yrel = '/TCT hit'
 
-    # fNum = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
-    # fDenom = workpath + 'data/3p5TeV/results_beam-halo_3.5TeV-R1_D1_20MeV_b2_nprim2344800_66.root'
-    # subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/normalised/'
-    # lTextNum, lTextDenom = '4 TeV', '3.5 TeV'
-    # normNum, normDenom = 1./norm4TeVB2, 1./(run1iniFlux * norm3500GeVB2)
+    # fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
+    # fDenom = workpath + 'runs/3.5TeV/results_beam-halo_3.5TeV-R1_D1_20MeV_b2_nprim2344800_66.root'
+    # subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/'
+    # lTextNum, lTextDenom = '4 TeV w/ x-ing', '3.5 TeV w/o x-ing'
+    # #normNum, normDenom = 1./norm4TeVB2, 1./(run1iniFlux * norm3500GeVB2)
+    # normNum, normDenom = 1., 1.
     # tagDenom, tagNum = '_BH_3p5TeV_B2_20MeV', '_BH_4TeV_B2_20MeV'
+    # subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/' 
     # nColor, dColor = kOrange+1, kBlue-3
-    # yrel = '/s'
+    # yrel = '/TCT hit'
 
     # subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/'
     # normDenom, normNum = 1.,1.     
     # yrel = '/TCT hit'
 
-    # fNum = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
-    # fDenom = workpath + 'data/3p5TeV/results_beam-halo_3.5TeV-L1_20MeV_b1_nprim1731200_66.root'    
+    # # - comparison BH 3.5 vs 4 TeV
+    # # #-- OLD SIM    # fNum = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    # fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
+    # fDenom =  projectpath + 'bbgen/3.5TeV/results_beam-halo_3.5TeV-L1_20MeV_b1_nprim1731200_66.root'
     # lTextNum, lTextDenom = '4 TeV', '3.5 TeV'
     # #normNum, normDenom, yrel, addon = 1./norm4TeVB1, 1./(run1iniFlux * norm3500GeVB1), '/s', 'normalised/'
     # normNum, normDenom, yrel, addon = 1.,1., '/TCT hit', ''
     # tagDenom, tagNum = '_BH_3p5TeV_B1_20MeV', '_BH_4TeV_B1_20MeV'
     # nColor, dColor = kOrange+3, kMagenta-3
-    # subfolder = wwwpath + 'TCT/4TeV/compB1_3p5vs4TeV/' + addon 
+    # subfolder = wwwpath + 'TCT/4TeV/compBHB1_3p5vs4TeV/' + addon 
     
+
+    # # comparison BG 3.5 vs 4 TeV 
+    # fNum = projectpath + '4TeVBGnoBS/results_beam-gas_4TeV-IR1_to_arc_20MeV_cutoff_100M_nprim7283044_66.root'
+    # fDenom = projectpath + '4TeVBGnoBS/results_beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66.root'
+    # subfolder = wwwpath + 'TCT/4TeV/compBG_3p5_vs_4TeV/'
+    # lTextDenom, lTextNum = '3.5 TeV w/o x-ing', '4 TeV w/ x-ing'
+    # normDenom, normNum = 1.,1.
+    # tagDenom, tagNum = '_BG_3p5TeV_20MeV', '_BG_4TeV_20MeV'
+    # nColor, dColor = kOrange-1, kRed-2
+    # yrel = '/inel.BG int.'
+
     # ------------------------------------------------------------------------
     # # beamgas 4 TeV
-    # fDenom = workpath + 'data/4TeV/results_beam-gas_4TeV-IR1_to_arc_20MeV_cutoff_nprim28788000_66.root'
-    # fNum = workpath + 'data/4TeV/results_ir1_BG_4TeV_settings_from_TWISS_20MeV_b1_nprim2952500_67.root'
-    # fNum = workpath + 'data/4TeV/results_ir1_BG_4TeV_settings_from_TWISS_20MeV_b1_nprim4414500_67.root'
+    # fNum = projectpath + '4TeVBGnoBS/results_beam-gas_4TeV-IR1_to_arc_20MeV_cutoff_100M_nprim7283044_66.root'
+    # #fNum = projectpath + 'bbgen/4TeV/beamgas/results_ir1_BG_bs_4TeV_settings_from_TWISS_20MeV_b1_nprim5925000_67.root'
+    # #fNum = projectpath + 'beamisze/4TeV_beamsize/runBG_UVcorr/results_ir1_BG_4TeV_settings_from_TWISS_20MeV_b1_nprim4414500_67.root'
+    # fDenom = '/afs/cern.ch/project/lhc_mib/valBG4TeV/results_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
     # subfolder = wwwpath + 'TCT/4TeV/beamgas/beamsizeRatio/'
-    # lTextNum, lTextDenom = 'with', 'without bs'
+    # lTextNum, lTextDenom = 'pointlike', 'w/ beamsize'
     # normDenom, normNum = 1.,1.
-    # tagNum, tagDenom = '_BG_4TeV_20MeV_bs', '_BG_4TeV_20MeV'
+    # tagDenom, tagNum = '_BG_4TeV_20MeV_bs', '_BG_4TeV_20MeV'
     # nColor, dColor = kOrange-1, kRed-3
     # yrel = '/inel.BG int.'
 
@@ -146,15 +164,15 @@ def cv16():
     # nColor, dColor = kOrange-1, kMagenta-3
     # yrel = '/inel.BG int.'
 
-    # # beamgas 6.5 TeV, 20 MeV vs 6.5 TeV, 20 GeV
-    # fNum = projectpath + 'bbgen/6.5TeV/runs400_20MeV/results_ir1_BG_bs_6500GeV_b1_20MeV_nprim2716000_67.root'
-    # fDenom = projectpath + 'beamgas/6500GeV_beamsize/runs10k_20GeV/results_ir1_BG_bs_6500GeV_b1_20GeV_nprim181730000_67.root'
-    # subfolder = wwwpath + 'TCT/compBG_6.5TeV/'
-    # lTextNum, lTextDenom = '20 GeV', '20 MeV'
-    # normDenom, normNum = 1.,1.
-    # tagDenom, tagNum = '_BG_6500GeV_flat_20GeV_bs', '_BG_6500GeV_flat_20MeV_bs'
-    # nColor, dColor = kBlue-1, kMagenta-3
-    # yrel = '/inel.BG int.'
+ #    # # beamgas 6.5 TeV, 20 MeV vs 6.5 TeV, 20 GeV
+ # fNum = projectpath + 'bbgen/6.5TeV/runs400_20MeV/results_ir1_BG_bs_6500GeV_b1_20MeV_nprim2716000_67.root'
+ #    fDenom = projectpath + 'beamgas/6500GeV_beamsize/runs10k_20GeV/results_ir1_BG_bs_6500GeV_b1_20GeV_nprim181730000_67.root'
+ #    subfolder = wwwpath + 'TCT/compBG_6.5TeV/'
+ #    lTextNum, lTextDenom = '20 MeV', '20 GeV'
+ #    normDenom, normNum = 1.,1.
+ #    tagDenom, tagNum = '_BG_6500GeV_flat_20GeV_bs', '_BG_6500GeV_flat_20MeV_bs'
+ #    nColor, dColor = kBlue-1, kMagenta-3
+ #    yrel = '/inel.BG int.'
 
     # # # beamgas 4 TeV 20 MeV vs 20 GeV
     # fNum = projectpath + 'bbgen/4TeV/beamgas/withBeamSize/results_ir1_BG_4TeV_settings_from_TWISS_20MeV_b1_nprim5925000_67.root'
@@ -240,29 +258,42 @@ def cv16():
     # dColor, nColor = kRed-4, kBlue-3
 
     # # ------------------------------------------------------------------------
+    # 6.5 TeV
+
     # fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_ntct1324_30.root'
-    # fDenom = workpath + 'runs/4TeV_Halo/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
-    # # fNum = workpath + 'data/6p5TeV/results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root'
-    # # fDenom = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    # fDenom = projectpath + 'valBG4TeV/results_beam_halo_6.5TeV_80cm_IR1B1_20MeV_nprim4702400_66.root'
+    # # # old scattering routine
+    # # fDenom = workpath + 'runs/4TeV_Halo/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    # lTextNum = 'old format'
+    # lTextDenom = 'new format'
+    # normDenom, normNum, yrel, addon = 1., 1., '/TCT hit', ''
+    # tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_6500GeV_haloB1_20MeV'
+    # nColor, dColor = kOrange-3, kPink-5
+    # subfolder = wwwpath + 'TCT/6.5TeV/tctimpacts/validationBH/' 
+
+    # fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_ntct1324_30.root'
+    # fDenom = 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
+    # # # old scattering routine
+    # # fDenom = workpath + 'runs/4TeV_Halo/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
     # lTextNum = '6.5 TeV'
     # lTextDenom = '4 TeV'
-    # normDenom, normNum, yrel, addon = 1./norm4TeVB1, 1./norm6500GeVB1, '/s', ''
-    # #normDenom, normNum, yrel, addon = 1., 1., '/TCT hit', 'unnormalised/'
+    # #    normDenom, normNum, yrel, addon = 1./norm4TeVB1, 1./norm6500GeVB1, '/s', ''
+    # normDenom, normNum, yrel, addon = 1., 1., '/TCT hit', 'perTCThit/'
     # tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_4TeV_B1_20MeV'
-    # nColor, dColor = kOrange-3, kPink-6
-    # subfolder = wwwpath + 'TCT/comp4TeV6.5TeVB1/' + addon
+    # nColor, dColor = kOrange-3, kPink-5
+    # subfolder = wwwpath + 'TCT/compBHB1_4TeV_vs_6.5TeVB1/' 
 
 
     # fNum = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
-    # fDenom = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
-    # # fNum = workpath + 'data/6p5TeV/results_ir1_BH_6500GeV_b2_20MeV_nprim3646000_30.root'
-    # # fDenom = workpath + 'data/4TeV/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
-    # subfolder = wwwpath + 'TCT/comp4TeV6.5TeVB2/'
+    # fDenom = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
+    # # ## -- fDenom = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'     # -- 4TeV are old fluka sim -- newer exist!
+    # subfolder = wwwpath + 'TCT/compBHB2_4TeV_vs_6.5TeV/'
     # lTextNum = '6.5 TeV'
     # lTextDenom = '4 TeV'
-    # normNum, normDenom = 1./norm6500GeVB1, 1./norm4TeVB1
+    # normNum, normDenom = 1., 1.
     # tagNum, tagDenom = '_BH_6500GeV_haloB2_20MeV', '_BH_4TeV_B2_20MeV'
-    # nColor, dColor = kOrange-3, kPink-3
+    # nColor, dColor = kOrange-3, kPink-4
+    # yrel = '/TCT hit'
 
     # fNum = workpath + 'runs/4TeV_Halo/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
     # fDenom = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
@@ -423,7 +454,7 @@ def cv16():
 
         integralNum = histNum.Integral()
         integralDenom = histDenom.Integral()
-        ratioInts = integralNum/integralDenom
+        if integralDenom: ratioInts = integralNum/integralDenom
 
         if hnameNum.count('Rad'):
             histNum.Rebin()
@@ -447,7 +478,7 @@ def cv16():
         histDenom.SetMarkerStyle(20)
         histDenom.SetMarkerSize(msize)
         histNum.SetMarkerSize(msize)
-        print normNum, normDenom
+        print 'normalised factors',normNum, normDenom
         histNum.Scale(1./normNum)
         histDenom.Scale(1./normDenom)
 
@@ -488,7 +519,7 @@ def cv16():
         mlegend.Draw()
 
         lab = mylabel(42)
-        lab.DrawLatex(0.56, 0.955, sDict[skey][6])
+        lab.DrawLatex(0.356, 0.955, sDict[skey][6])
         lab = mylabel(62)
         lab.SetTextSize(0.055)
         lab.DrawLatex(.8,y1-0.07,Beam)

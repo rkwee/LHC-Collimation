@@ -15,6 +15,7 @@ def cv45():
     # current path
     cpath = workpath + 'runs/checkTrajectory6500GeV/4TeV/'
     cpath = '/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/'
+
     trakfiles = [
         # filen name, Xindex, Yindex, markerstyle, 
         # ['/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/madSY_b2.dat', 0,1, kGreen+1, 21, ],
@@ -38,7 +39,7 @@ def cv45():
         # [cpath + 'BGAS10.dat', 2,1, kBlack, 6, 'input final BEAMGAS', '_yBGAS10', 'y cm'], # 0x 1y 2z 3u 4v 
         # [cpath + 'BGAS10.dat', 2,0, kBlack, 6, 'input final BEAMGAS', '_xBGAS10', 'x cm'], # 0x 1y 2z 3u 4v 
         # [cpath + 'BGAS.dat', 2,1, kBlack, 6, 'input final BEAMGAS', '_yBGAS', 'y cm'], # 0x 1y 2z 3u 4v repls
-        [cpath + 'awked_downselected_fort.89.10.cv53', 2,1, kBlack, 6, 'input final BEAMGAS 6.5 TeV', '_yBGAS', 'y cm'], # 0x 1y 2z 3u 4v repls
+        [cpath + 'awked_downselected_fort.89.10.cv53', 2,1, kBlack, 6, 'input flukaBEAMGAS 6.5 TeV', '_yBGAS', 'y cm'], # 0x 1y 2z 3u 4v repls
         # [cpath + 'awked_downselected_fort.89.10.cv53', 2,0, kBlack, 6, 'input final BEAMGAS 6.5 TeV', '_xBGAS', 'x cm'], # 0x 1y 2z 3u 4v repls
 
        ]
@@ -89,8 +90,9 @@ def cv45():
         rel += 'Zoom'
 
     mlegend.Draw()
-
+    cpath = '/afs/cern.ch/user/r/rkwee/public/www/HL-LHC/TCT/6.5TeV/beamgas/'
     pname = cpath + 'inputFluka6500GeV'+rel+'.root'
+    pname = cpath + 'inputFluka6500GeV'+rel+'.pdf'
 
     print('Saving file as ' + pname ) 
     cv.Print(pname)

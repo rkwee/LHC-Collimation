@@ -15,7 +15,15 @@ def cv46():
 
     # number of randomly produced values per s location
     N = 1000
-    doWrite = 0
+    doWrite = 1
+
+    energy = "6.5TeV"
+    gamma_rel = 6.5e3/0.938
+    betaStar = 0.8
+
+    energy = "4TeV"
+    gamma_rel = 4e3/0.938
+    betaStar = 0.6
 
     pointsName = ['IP1']
 
@@ -28,7 +36,6 @@ def cv46():
     cv.SetTopMargin(0.15)
 
     emittance_norm = 3.5e-6
-    gamma_rel = 6.5e3/0.938
 
     emittance_geo = emittance_norm/gamma_rel
     gauss1 = TF1('gauss1', 'exp(-0.5*(x**2))', -5.,5.)
@@ -62,9 +69,9 @@ def cv46():
         c_y3 += [ TGraph() ]
         c_y3[-1].Set(N)
 
-        betx = 0.8
+        betx = betaStar
         alfx = 0.
-        bety = 0.8
+        bety = betaStar
         alfy = 0.
         s    = "0.0"
 
@@ -73,7 +80,8 @@ def cv46():
 
         foutname = name + '_N' + str(N) + '.txt'
         #foutname = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/INIC6p5.dat'
-        foutname = '/afs/cern.ch/project/lhc_mib/beamsize/6500GeV_beamsize/checkTrajectory6500GeV/orbitDump/INIC6p5.dat'
+        #  foutname = '/afs/cern.ch/project/lhc_mib/beamsize/6500GeV_beamsize/checkTrajectory6500GeV/orbitDump/INIC6p5.dat'
+        foutname = '/afs/cern.ch/project/lhc_mib/valBG4TeV/inicon/INIC4TeV.dat'
 
         if doWrite:
             fot = open(foutname, 'w')
@@ -205,10 +213,10 @@ def cv46():
         # hxIP.Draw('colz')
         # j+=1
 
-    rel = '_gauss' 
+    rel = 'gauss' 
     pname  = wwwpath
-    subfolder = 'TCT/6.5TeV/beamgas/'
-    pname += subfolder + 'IP1'+rel+'.pdf'
+    subfolder = 'TCT/'+energy+'/beamgas/'
+    pname += subfolder + 'IP1_'+rel+'_'+energy+'.pdf'
 
     print('Saving file as ' + pname ) 
     cv.SaveAs(pname)

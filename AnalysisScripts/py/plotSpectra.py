@@ -71,8 +71,11 @@ def plotSpectra(bbgFile, tag, doComp):
 
     elif rfname.count('BG_bs_4TeV') or rfname.count('beam-gas_4TeV'): 
         hDict = hDict_BG_4TeV
-        subfolder= 'TCT/4TeV/beamgas/fluka/'
-        if not rfname.count('beam-gas_4TeV'): 
+        # if rfname.count('100M'):
+        #     subfolder= 'TCT/3p5TeV/beamgas/'
+        if rfname.count('beam-gas_4TeV'): 
+            subfolder= 'TCT/4TeV/beamgas/fluka/RoderiksBG4TeV/'
+        else:
             subfolder= 'TCT/4TeV/beamgas/fluka/bs/'+ EnCutOff + '/'
         if debug: print "Using 4 TeV format", '.'*10
         yrel = '/inel.BG int.'
@@ -90,7 +93,7 @@ def plotSpectra(bbgFile, tag, doComp):
         yrel = '/inel. BG int.'
 
     elif rfname.count('beam-halo_3.5TeV'): 
-        hDict = hDict_BH_3p5TeV
+        hDict = hDict_BH_4TeV
         subfolder= 'TCT/3p5TeV/' + beam + '/'
         if debug: print "Using 4 TeV format", '.'*10
 
@@ -112,6 +115,10 @@ def plotSpectra(bbgFile, tag, doComp):
     elif rfname.count('BH_6500GeV'): 
         hDict = hDict_BH_6p5TeV
         subfolder = 'TCT/6.5TeV/haloShower/'+beam+'/'
+
+    elif rfname.count('80cm'): 
+        hDict = hDict_BH_6p5TeV
+        subfolder = 'TCT/6.5TeV/tctimpacts/'+beam+'/oldFormat/'
 
     elif rfname.count('crab'): 
         subfolder= 'TCT/HL/nominalColl/2015/crabcf/v3/tct5inrd/nomTAN/'
@@ -146,6 +153,7 @@ def plotSpectra(bbgFile, tag, doComp):
 
     for hkey in hDict.keys():
       
+      pname = wwwpath + subfolder + hkey 
       print "Plotting ...", hkey
       hists = []
       cv = TCanvas( 'cv'+hkey, 'cv'+hkey, 1200, 900)
@@ -157,7 +165,6 @@ def plotSpectra(bbgFile, tag, doComp):
       hList = hDict[hkey][0] 
       x1, y1, x2, y2 = hDict[hkey][1],hDict[hkey][2],hDict[hkey][3],hDict[hkey][4]
       doLogx, doLogy = hDict[hkey][5], hDict[hkey][6]
-      pname = wwwpath + subfolder + hkey 
       XurMin, XurMax = hDict[hkey][7],hDict[hkey][8]
       YurMin, YurMax = hDict[hkey][9],hDict[hkey][10]
       ZurMin, ZurMax = hDict[hkey][15],hDict[hkey][16]
