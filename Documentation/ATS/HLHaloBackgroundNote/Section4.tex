@@ -25,15 +25,25 @@ Beam-halo induced showers on the tertiary collimators depend on the initial dist
 
 \begin{table}%[!hbt]
    \centering
-   \caption{Leakage on to the TCTs of the respective IR wrt.~total losses on IR7 primary collimators averged over simulation case.}
+   \caption{Leakage from IR7 primary to IR1/IR5 tertiary collimators averaged over simulation h+v case.}
 
    \begin{tabular}{c|c|c}
        \hline
-       Leakage factors & B1 & B2\\
-       \hline
+       4 TeV  & B1 & B2\\
        \hline
        IR1 & 1.23 $\times 10^{-5}$ & 1.85 $\times 10^{-5}$  \\
-       IR5 & 1.27 $\times 10^{-5}$ & 1.72 $\times 10^{-5}$  \\
+       IR5 & 4.82 $\times 10^{-6}$ & 1.72 $\times 10^{-5}$  \\
+       \hline       \hline
+       6.5 TeV  & B1 & B2\\
+       \hline
+       IR1 & 1.06 $\times 10^{-5}$ & 1.38 $\times 10^{-5}$  \\
+       IR5 & 7.08 $\times 10^{-6}$ & 4.45 $\times 10^{-5}$  \\
+       \hline       \hline
+       HL 7 TeV TCT4/5s IN  & B1 & B2\\
+       \hline
+       IR1 & 4.65 $\times 10^{-4}$ & 1.38 $\times 10^{-5}$  \\
+       IR5 & 7.08 $\times 10^{-6}$ & 4.45 $\times 10^{-5}$  \\
+
        \hline
    \end{tabular}
    \label{leakageFactors4TeV}
@@ -305,7 +315,9 @@ We can study the crossing angle effect on background in IR1 using the 3.5~TeV ha
 
 We have data for both, beam-halo and beam-gas to study the crossing angle effect. The observable is again the azimuthal distribution of particles and energy.\\
 
-{\center{\textit{Discussion}}\\} The beam-gas data in Fig.~\ref{xingCompBG} have a clear signature of the improved simulation technique. In contrast, the beam-halo data in Fig.~\ref{xingCompBH} exhibit as only effect when comparing 3.5 TeV to 4 TeV simulations that the distributions without crossing angle are slightly more symmetric in $\phi$. 
+{\center{\textit{Discussion}}\\} The beam-gas data in Fig.~\ref{xingCompBG} have a clear signature of the improved simulation technique including the crossing angle. There is a general accumulattion in the upper part of the vertical plane; the beam is directed downwards but as the sampling position is still in the upper hemisphere the peak of particles is around $+ \frac{\pi}{2}$. Muon distributions are not significantly affected as other effects are more dominating the azimuthal distribution (like magnetic fields effects). 
+
+In contrast, the beam-halo data in Fig.~\ref{xingCompBH} do not exhibit clear differences when comparing 3.5 TeV to 4 TeV simulations. As only effect we find that the distributions without crossing angle are slightly more symmetric in $\phi$. This can be explained as follows: 
 
 \begin{figure}
 \begin{center}
@@ -353,7 +365,7 @@ We have data for both, beam-halo and beam-gas to study the crossing angle effect
   \includegraphics[width=0.4\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/ratioPhiEnMuE100.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{beam-gas data: Clear effect of crossing angle visible! However the distribution of high energy muons do not change significantly.
+ \caption{beam-gas data: Clear effect of crossing angle visible showing accumulations of particles at around $\frac{\pi}{2}$ in the vertical plane. The distribution of muons and in particular high energy muons are not significantly affected.
   \label{xingCompBG}}
 \end{figure}
 
