@@ -1,4 +1,26 @@
-\section{Simulation Results for HL--LHC}
+\section{Simulation Results for HL--LHC\label{hllhcResults}}
+\subsection{HL-LHC cases}
+Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC, deploying different collimator layouts (in IR1/5 TCT4s only and TCT4s + TCT5s) and alternative collimator settings, so called \twosigmaret~settings to quantify the effect of the TCT5s for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in FLUKA at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in FLUKA a production and transportation cut-off at 20 MeV.
+
+\begin{table}%[hbt]
+   \centering
+   \caption{HL half-gap collimator settings calculated for a normalised emittance of $\epsilon_{\mathrm{n}}$ of 3.5~$\mu$m. Full and updated settings can be found in~\cite{collSettRef}.}
+
+   \begin{tabular}{l|c|c}
+       \hline
+       collimators &        nominal settings & $2\sigma$-retracted settings\\
+                   &         [$\sigma$] &  [$\sigma$]\\
+       \hline
+       TCP3 & 12 (now 15) & 15 \\
+       TCSG3 & 15.6 (now 18)& 18 \\
+       TCP7 & 6 & 5.7 \\
+       TCSG7 & 7 & 7.7 \\
+       TCT IR1/5 & 8.3 & 10.5 \\
+       \hline
+   \end{tabular}
+   \label{collSettings}
+\end{table}
+
 
 \subsection{Beam-Gas}
 \subsection{Beam-Halo }
