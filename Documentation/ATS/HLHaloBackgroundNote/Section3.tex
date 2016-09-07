@@ -13,7 +13,16 @@ The simulation is performed in two steps: First, we use SixTrack~\cite{SixTrackR
 
 When interacting with the jaw material of the TCTH or TCTV shower particles are created and stream towards the experiment. Every particle passing an imaginary (x,y)-plane at 22.6~m away from the IP, essentially between the triplet magnets and the TAS, is recorded and written out. The left plot of Fig.~\ref{tctHits} shows part of the \fluka~geometry and in green the hits in an horizontal collimator TCTH.4L1 with absorbed protons from an horizontal and vertical halo distribution. On the right of Fig.~\ref{tctHits} one can see how deep these positions are with respect to the jaw surface shown for the collimator pair of IR1. This depth distribution is shown here as an example and discussed in more detail together with the other simulation cases in Sec.~\ref{evolut}.
 
-\begin{figure}[!htb]
+\begin{figure}%[!htb]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{figures/IR1_layout_runII.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Machine layout for the nominal LHC (as in Run I and II) of the left side of IR1 with IP1 at s = 0 for the incoming beam. Highlighted are the tertiary collimators (TCT4) at around -147~m, TCLs are debris collimators for the outgoing beam.
+  \label{nominalLHC_layout}}
+\end{figure}
+
+\begin{figure}%[!htb]
 \begin{center}
   \includegraphics[width=0.4\textwidth]{figures/6500GeV/xz_6500GeV_b1_TCT4.pdf}
   \includegraphics[width=0.4\textwidth]{figures/6500GeV/inelposition_sum_HALOB1.pdf}
@@ -25,72 +34,44 @@ When interacting with the jaw material of the TCTH or TCTV shower particles are 
 
 
 \subsection{Beam-Gas simulations}
-Beam-gas interactions were simulated with \fluka~using the same geometry for Run I and Run II which goes up to 550~m, but with different magnetic fields for a 4 TeV and a 6.5 TeV proton beam and the respective optics. Protons were forced to undergo an inelastic interaction on positions on the ideal orbit. A new technique used here includes the variation of the transverse beam size which in particular is large just before the triplet when the beam is squeezed for collisions. 
+Beam-gas interactions were simulated with \fluka~using a detailed geometry up to the arc. % for Run I and Run II which goes up to 550~m, but with different magnetic fields for a 4 TeV and a 6.5 TeV proton beam and the respective optics.
+ Protons were forced to undergo an inelastic interaction with residual gas molecules on positions on the ideal orbit. A new technique used here includes the variation of the transverse beam size which in particular is large just before the triplet when the beam is squeezed for collisions, more details on that is given in Sec.~\ref{beamgasBS}. 
 
-The sampling positions were read into \fluka~and like for the beam-halo simulations each shower particle reaching the interface plane at 22.6~m is used to dump information streaming towards the experiment. That input file was created by dumping positions of the trajectory with different starting positions, e.g.~the ideal orbit goes through (0,0) in (x,y) at the IP. Assuming a gaussian distribution of the beam particles one can produce matched phase space coordinates in the transverse plane, as shown in Fig.~\ref{ip1_gauss}, at the IP.
+The sampling positions were read into \fluka~and like for the beam-halo simulations each shower particle reaching the interface plane at 22.6~m is used to dump information about fluxes towards the experiment. %That input file was created by dumping positions of the trajectory with different starting positions, e.g.~the ideal orbit goes through (0,0) in (x,y) at the IP. Assuming a gaussian distribution of the beam particles one can produce matched phase space coordinates in the transverse plane, as shown in Fig.~\ref{ip1_gauss}, at the IP.
 
-The normalisation with the intensity and pressure profile is done as follows: A representative fill of the run was selected and gauge data is used in the pressure simulation in order to interpolate in between the gauges and also split by molecule type using the VAcuum Simulation COde, VASCO.
+Simulations can either be done normalising the results distribution in a subsequent step or at run time. The advantage of the first method is distributions can be normalised to several pressure profiles given the information is kept of the origin of creation of the particle at the interface plane. More details are given directly per case.% The normalisation with the intensity and pressure profile was done as follows: A representative fill of the run was selected and gauge data is used in the pressure simulation in order to interpolate in between the measurement points and also estimate the contribution per molecule type using the VAcuum Simulation COde, VASCO. The result file can then be re-weighted with the pressure in a subsequent step, thus the unweighted results correspond to a flat pressure. 
 
 
 %Normalisation to the pressure proton-nitrogen interactions are simulated in order to scale in a second step the contributions to the pressure profile usually expressed in $N_2$-equivalent.
 
-\begin{figure}%[!htb]
-\begin{center}
-\includegraphics[width=0.9\textwidth]{figures/IP1_gauss.pdf}
-\includegraphics[width=0.9\textwidth]{figures/twiss_gauss.pdf}
-\end{center}
-%% \begin{picture} (0.,0.)
-%% \setlength{\unitlength}{1.0cm}
-%% \small{
-%%     \put ( 4.,7.35){(a)}
-%%     \put ( 12.4,7.35){(b)}
-%%     \put ( 4.,1.){(c)}
-%%     \put ( 12.4,1.){(d)}}
-%% \end{picture}
-\vspace{-0.6cm}
- \caption{Matched phase space coordinates at IP1 in x (a) and y (b) and at an example position (here TCTH).
-  \label{ip1_gauss}}
-\end{figure}
-
-
-
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=0.44\textwidth]{figures/inputFluka6500GeV_yBGAS.pdf}
-\includegraphics[width=0.44\textwidth]{figures/xBGAS10z1.pdf}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Positions as sampled in FLUKA with variations of the transverse beam size vertically (a) shown for full range until the arc and horizontally (b) shown for the first 85~m from the IP.
-  \label{BGASflukaInp}}
-\end{figure}
-
-
 \subsection{Run I and Run II Simulation Cases}
-For Run I and II real physics configurations of the LHC we used as in 2012 and 2015. At 4~TeV in 2012, the optics were $\beta^* = 60$ cm and TCT collimator settings in IR1/IR5 TCTs were set to 9~$\sigma$~\cite{parametersRun1}. For Run II, the optics changed to $\beta^* = 80$~cm which was used in the machine throughout 2015 for proton-proton collisions and IR1/IR5 collimators were set to 13.7~$\sigma$. For both runs, a vertical crossing angle of $290~\mu$m was taken into account in the simulations.
+For Run I and II real physics configurations of the LHC we used as in 2012 and 2015. At 4~TeV in 2012, the optics were $\beta^* = 60$ cm and TCT collimator settings in IR1/IR5 TCTs were set to 9~$\sigma$~\cite{parametersRun1}. For Run II, the optics changed to $\beta^* = 80$~cm which was used in the machine throughout 2015 for proton-proton collisions and IR1/IR5 collimators were set to 13.7~$\sigma$. For both runs, a vertical crossing angle of $290~\mu$m was taken into account in the simulations. More simulation and run parameters can be found in Tab.~\ref{paramsRun12}. 
 
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=0.9\textwidth]{figures/NominalLHC_IR1_layout.pdf}
-\end{center}
-\vspace{-0.6cm}
- \caption{Machine layout for the nominal LHC (as in Run I and II) of the left side of IR1 with IP1 at s = 0 for the incoming beam. Highlighted are the tertiary collimators at around -147~m.
-  \label{nominalLHC_layout}}
-\end{figure}
+\begin{table}
+   \centering
+   \caption{Run I (2012) and Run II (2015) simulation parameters.}
+   \begin{tabular}{l||c|c}
+       \hline
+       beam energy & 4 TeV & 6.5~TeV \\
+       $\beta^*$ optics  & 60~cm &  80~cm \\
+       bunch intensity & 1.4$\times 10^{11}$ protons &  1.2$\times 10^{11}$ protons\\
+       number of bunches & 1380 & 2748\\
+       bunch spacing & 50~ns & 25~ns\\
+       half-crossing angle IP1~/~5 & 145~$\mu$rad & 145~$\mu$rad \\
+       TCP.IR7~/~TCSG.IR7~/~TCT.IR1 & 4.3~/~6.3~/~9.0~$\sigma$ & 5.5~/~8.0~/~13.7~$\sigma$ \\
+       \hline
+   \end{tabular}
+   \label{paramsRun12}
+\end{table}
 
 
 \subsection{HL-LHC Simulation Cases}
-Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC, deploying different collimator layouts (in IR1/5 TCT4s only and TCT4s + TCT5s) and alternative collimator settings, so called \twosigmaret~settings to quantify the effect of the TCT5s for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in \fluka~at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in \fluka~a production and transportation cut-off at 20 MeV.
 
-\begin{table}%[hbt]
+Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC and variants and to estimate quantitatively any advantages in term of background with different collimator layouts. An alternative set of collimator openings, so called \twosigmaret~settings, was prepared based on experience with the machine and is listed in Tab.~\ref{HLcollSettings}. In particular, the aim was to quantify the effect of additional tertiary collimators, TCT5s, for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in \fluka~at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in \fluka~a production and transportation cut-off at 20 MeV. Section~\ref{hllhcResults} is dedicated to all the HL simulation details.
+
+\begin{table}[hbt]
    \centering
-   \caption{HL half-gap collimator settings calculated for a normalised emittance of $\epsilon_{\mathrm{n}}$ of 3.5~$\mu$m. Full and updated settings can be found in~\cite{collSettRef}.}
+   \caption{HL half-gap collimator settings calculated for a normalised emittance of $\epsilon_{\mathrm{n}}$ of 3.5~$\mu$m. Full and updated settings can be found in~\cite{collSettRef}. If included, the TCT5s had the same settings as the TCT4s.}
 
    \begin{tabular}{l|c|c}
        \hline
@@ -101,9 +82,22 @@ Several cases were simulated in order to characterise the cleaning efficiency fo
        TCSG3 & 15.6 (now 18)& 18 \\
        TCP7 & 6 & 5.7 \\
        TCSG7 & 7 & 7.7 \\
-       TCT IR1/5 & 8.3 & 10.5 \\
+       TCT4 IR1/5 & 8.3 & 10.5 \\
        \hline
    \end{tabular}
-   \label{collSettings}
+   \label{HLcollSettings}
 \end{table}
 
+\begin{table}[!hbt]
+   \centering
+   \caption{Simulation parameters for HL-LHC normalisation for $\beta^* =$15~cm ATS optics.}
+   \begin{tabular}{l|c}
+       \hline
+       beam energy & 7 TeV \\
+       bunch intensity & 2.2$\times 10^{11}$ protons\\
+       bunch spacing & 25~ns \\
+       number of bunches & 2736 \\
+       \hline
+   \end{tabular}
+   \label{hlscenario}
+\end{table}

@@ -2,6 +2,45 @@
 
 \subsection{Comparison of halo hit distributions}
 
+\begin{table}%[!hbt]
+   \centering
+   \caption{Leakage from IR7 primary to IR1/IR5 tertiary collimators averaged over simulation h+v case.}
+
+   \begin{tabular}{c|c|c}
+       \hline
+       4 TeV  & B1 & B2\\
+
+       IR1 & 1.23 $\times 10^{-5}$ & 1.85 $\times 10^{-5}$  \\
+       IR5 & 4.82 $\times 10^{-6}$ & 1.72 $\times 10^{-5}$  \\
+       \hline
+       6.5 TeV  & B1 & B2\\
+
+       IR1 & 1.06 $\times 10^{-5}$ & 1.38 $\times 10^{-5}$  \\
+       IR5 & 7.08 $\times 10^{-6}$ & 4.45 $\times 10^{-5}$  \\
+       \hline       
+       HL nominal settings, round beam  & B1 & \\ %see lhc_mib/HL1.0/factors 
+       
+       IR1 & 4.65 $\times 10^{-4}$ &  \\ 
+       IR5 & 1.02 $\times 10^{-4}$ &  \\ %.5*(3154.0/50278617.0+7500.0/52836357.0)
+       % IR3 h=10888.0, v=8398.0
+       \hline
+       HL retracted settings, round beam  & B1 & B2 \\
+       
+       IR1 & 1.21 $\times 10^{-4}$ &  2.37 $\times 10^{-4}$ \\ % B1 : .5*(9712.0/54532193.0 + 3366.0/52154816.0) || B2: 0.5 *(9948.0/40401333.0 + 6064.0/26614313.0)
+       IR5 & 1.02 $\times 10^{-4}$ &  6.90 $\times 10^{-6}$ \\ % B1 : .5*(3154.0/50278617.0+7500.0/52836357.0) || B2: 0.5 * (473.0/40401333.0 + 56.0/26614313.0)
+       % IR3 primaries B1: v=15774.0, h=19277.0, B2: h=165.0,v=15.0
+       \hline
+
+       HL retracted settings, flat beam  & B1 \\       
+       IR1 & 1.39 $\times 10^{-4}$ & \\ % B1 : .5*(7814.0/35831038.0 + 306.0/5052849.0)
+       IR5 & 1.66 $\times 10^{-5}$ & \\ % B1 : .5*(660.0/35831038.0 + 75.0/5052849.0)
+       \hline
+   \end{tabular}
+   \label{leakageFactors}
+\end{table}
+
+
+
 \begin{figure}[!htb]
 \begin{center}
 \includegraphics[width=0.495\textwidth]{figures/inelposition_sum_impacts_real_minus500Hz_4TeVB1.pdf}

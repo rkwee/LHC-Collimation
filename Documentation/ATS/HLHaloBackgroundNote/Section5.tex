@@ -1,42 +1,11 @@
 \section{Simulation Results for HL--LHC\label{hllhcResults}}
-\subsection{HL-LHC cases}
-Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC, deploying different collimator layouts (in IR1/5 TCT4s only and TCT4s + TCT5s) and alternative collimator settings, so called \twosigmaret~settings to quantify the effect of the TCT5s for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in FLUKA at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in FLUKA a production and transportation cut-off at 20 MeV.
+%\subsection{HL-LHC cases}
+%Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC, deploying different collimator layouts (in IR1/5 TCT4s only and TCT4s + TCT5s) and alternative collimator settings, so called \twosigmaret~settings to quantify the effect of the TCT5s for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in FLUKA at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in FLUKA a production and transportation cut-off at 20 MeV.
 
-\begin{table}%[hbt]
-   \centering
-   \caption{HL half-gap collimator settings calculated for a normalised emittance of $\epsilon_{\mathrm{n}}$ of 3.5~$\mu$m. Full and updated settings can be found in~\cite{collSettRef}.}
-
-   \begin{tabular}{l|c|c}
-       \hline
-       collimators &        nominal settings & $2\sigma$-retracted settings\\
-                   &         [$\sigma$] &  [$\sigma$]\\
-       \hline
-       TCP3 & 12 (now 15) & 15 \\
-       TCSG3 & 15.6 (now 18)& 18 \\
-       TCP7 & 6 & 5.7 \\
-       TCSG7 & 7 & 7.7 \\
-       TCT IR1/5 & 8.3 & 10.5 \\
-       \hline
-   \end{tabular}
-   \label{collSettings}
-\end{table}
 
 
 \subsection{Beam-Gas}
 \subsection{Beam-Halo }
-\begin{table}%[hbt]
-   \centering
-   \caption{Simulation parameters for HL-LHC normalisation.}
-   \begin{tabular}{l|c}
-       \hline
-       beam energy & 7 TeV \\
-       bunch intensity & 2.2$\times 10^{11}$ protons\\
-       bunch spacing & 25~ns \\
-       number of bunches & 2736 \\
-       \hline
-   \end{tabular}
-   \label{hlscenario}
-\end{table}
 
 We assume the nominal HL--LHC scenario with parameters as in Tab.~\ref{hlscenario}. For the study of collimator losses and halo background, so-called 2$\sigma$-retracted collimator settings w.r.t.~nominal are used, which were based on the LHC Run I (2010~--~2013) experience and are more realistic, see Table~\ref{collSettings} and~\cite{collSettRef}. Background studies with nominal collimator settings were presented in~\cite{lastyear}. The current baseline of ATS optics for $\beta^{*}$ of 15~cm for round beams (version HLLHCv1.0\footnote{The FLUKA geometry contained layout updates of v1.1, but v1.0 collimator settings were used assuming the uncertainties from the version differences are negligable.}) is used in the simulations.  Unless otherwise indicated, the results are scaled to a beam lifetime of 12 minutes, which is the worst case scenario that the collimators are 
 designed to withstand.\\
@@ -45,7 +14,7 @@ Another ATS optics scenario was also studied with the purpose of validating the 
 
 \begin{table}%[hbt]
    \centering
-   \caption{Simulation cases (HLLHC v1.0).}\vskip2mm
+   \caption{Beam-halo simulation cases (HLLHC v1.0).}\vskip2mm
    \begin{tabular}{|l|l|l|l|}
        \hline
        collimator settings & TCT5s & beam halo & optics \\
@@ -57,8 +26,8 @@ Another ATS optics scenario was also studied with the purpose of validating the 
        \twosigmaret & in  & h+v B2 & round \\ \hline
        \twosigmaret & out  & h+v B1 & flat \\
        \twosigmaret & in  & h+v B1 & flat \\ 
-       \twosigmaret & in  & h+v B1 & sround \\ 
-       \twosigmaret & in  & h+v B1 & sflat \\ 
+%       \twosigmaret & in  & h+v B1 & sround \\ 
+%       \twosigmaret & in  & h+v B1 & sflat \\ 
 
        \hline
 

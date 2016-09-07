@@ -1,6 +1,6 @@
 \section{Simulation Results for LHC's Run I and Run II\label{run1run2}}
 
-The two background sources were investigated for several run scenarios. During Run I, we had two beam energies, 3.5 TeV in 2010--11 and 4~TeV in 2012\footnote{A detailed overview of parameters in Run 1 can be found in~\cite{ParametersRun1}} While the 3.5~TeV background data has been presented in~\cite{nimPaperRod}, we focus on new developments made since that paper and use these improvements for 4 TeV and Run II simulation cases. Beam-halo simulations consider now a crossing angle in the simulation as it has been present in the machine. Another improvement concerns beam-gas simulations for which the transverse beam size is taken into account to have the simulations closer to reality. First general characteristics of both background sources at an virtual plane are presented.
+The two background sources as previously described were investigated for several run scenarios. During Run I, the LHC was operated with two beam energies, 3.5 TeV in 2010--11 and 4~TeV in 2012\footnote{A detailed overview of parameters in Run I can be found in~\cite{parametersRun1}}. While the 3.5~TeV background data has been presented in~\cite{nimPaperRod}, we focus on new developments made since that paper and use these improvements for 4 TeV and Run II simulation cases. Beam-halo simulations consider now a crossing angle in the simulation as it has been present in the machine. Another improvement concerns beam-gas simulations for which the transverse beam size is taken into account to have the simulations closer to reality. First general characteristics of both background sources at an virtual plane are presented.
 
 \subsection{Run I: 4 TeV Beam-Halo}
 
@@ -23,114 +23,14 @@ Beam-halo induced showers on the tertiary collimators depend on the initial dist
   \label{inel4TeV}}
 \end{figure}
 
-\begin{table}%[!hbt]
-   \centering
-   \caption{Leakage from IR7 primary to IR1/IR5 tertiary collimators averaged over simulation h+v case.}
-
-   \begin{tabular}{c|c|c}
-       \hline
-       4 TeV  & B1 & B2\\
-
-       IR1 & 1.23 $\times 10^{-5}$ & 1.85 $\times 10^{-5}$  \\
-       IR5 & 4.82 $\times 10^{-6}$ & 1.72 $\times 10^{-5}$  \\
-       \hline
-       6.5 TeV  & B1 & B2\\
-
-       IR1 & 1.06 $\times 10^{-5}$ & 1.38 $\times 10^{-5}$  \\
-       IR5 & 7.08 $\times 10^{-6}$ & 4.45 $\times 10^{-5}$  \\
-       \hline       
-       HL nominal settings, round beam  & B1 & \\ %see lhc_mib/HL1.0/factors 
-       
-       IR1 & 4.65 $\times 10^{-4}$ &  \\ 
-       IR5 & 1.02 $\times 10^{-4}$ &  \\ %.5*(3154.0/50278617.0+7500.0/52836357.0)
-       % IR3 h=10888.0, v=8398.0
-       \hline
-       HL retracted settings, round beam  & B1 & B2 \\
-       
-       IR1 & 1.21 $\times 10^{-4}$ &  2.37 $\times 10^{-4}$ \\ % B1 : .5*(9712.0/54532193.0 + 3366.0/52154816.0) || B2: 0.5 *(9948.0/40401333.0 + 6064.0/26614313.0)
-       IR5 & 1.02 $\times 10^{-4}$ &  6.90 $\times 10^{-6}$ \\ % B1 : .5*(3154.0/50278617.0+7500.0/52836357.0) || B2: 0.5 * (473.0/40401333.0 + 56.0/26614313.0)
-       % IR3 primaries B1: v=15774.0, h=19277.0, B2: h=165.0,v=15.0
-       \hline
-
-       HL retracted settings, flat beam  & B1 \\       
-       IR1 & 1.39 $\times 10^{-4}$ & \\ % B1 : .5*(7814.0/35831038.0 + 306.0/5052849.0)
-       IR5 & 1.66 $\times 10^{-5}$ & \\ % B1 : .5*(660.0/35831038.0 + 75.0/5052849.0)
-       \hline
-   \end{tabular}
-   \label{leakageFactors4TeV}
-\end{table}
-
-%% \begin{table}
-%%    \centering
-%%    \caption{Run I (2012) simulation parameters and settings at 3.5 TeV with $\beta^* = 60$~cm optics.}
-%%    \begin{tabular}{l|c}
-%%        \hline
-%%        beam energy & 3.5 TeV \\
-%%        bunch intensity & 1.4$\times 10^{11}$ protons\\
-%%        number of bunches & 1380 \\
-%%        bunch spacing & 50~ns \\
-%%        half-crossing angle IP1~/~5 & 145~$\mu$rad \\
-%%        TCP.IR7~/~TCSG.IR7~/~TCT.IR1 & 4.3~/~6.3~/~9.0~$\sigma$ \\
-%%        \hline
-%%    \end{tabular}
-%%    \label{paramsRun0}
-%% \end{table}
-
-\begin{table}
-   \centering
-   \caption{Run I (2012) simulation parameters at 4 TeV with $\beta^* = 60$~cm optics.}
-   \begin{tabular}{l|c}
-       \hline
-       beam energy & 4 TeV \\
-       bunch intensity & 1.4$\times 10^{11}$ protons\\
-       number of bunches & 1380 \\
-       bunch spacing & 50~ns \\
-       half-crossing angle IP1~/~5 & 145~$\mu$rad \\
-       TCP.IR7~/~TCSG.IR7~/~TCT.IR1 & 4.3~/~6.3~/~9.0~$\sigma$ \\
-       \hline
-   \end{tabular}
-   \label{paramsRun1}
-\end{table}
-
-\begin{table}
-   \centering
-   \caption{Run II (2015) simulation parameters at 6.5 TeV with $\beta^* = 80$~cm optics.}
-   \begin{tabular}{l|c}
-       \hline
-       beam energy & 6.5 TeV \\
-       bunch intensity & 1.2$\times 10^{11}$ protons\\
-       number of bunches & 2748 \\
-       bunch spacing & 25~ns \\
-       half-crossing angle IP1~/~5 & 145~$\mu$rad \\
-       TCP.IR7~/~TCSG.IR7~/~TCT.IR1 & 5.5~/~8.0~/~13.7~$\sigma$ \\
-       \hline
-   \end{tabular}
-   \label{paramsRun2}
-\end{table}
-
-\begin{table}
-   \centering
-   \caption{HL simulation parameters at 7 TeV with $\beta^* = 15$~cm optics (HLv1.0).}
-   \begin{tabular}{l|c}
-       \hline
-       beam energy & 7 TeV \\
-       bunch intensity & 2.2$\times 10^{11}$ protons\\
-       number of bunches & 2736 \\
-       bunch spacing & 25~ns \\
-       half-crossing angle IP1~/~5& 295~$\mu$rad \\
-       TCP.IR7~/~TCSG.IR7~/~TCT.IR1 nominal & 6.0~/~7.0~/~8.3~$\sigma$ \\
-       TCP.IR7~/~TCSG.IR7~/~TCT.IR1 retracted & 5.7~/~7.7~/~10.5~$\sigma$ \\
-       \hline
-   \end{tabular}
-   \label{paramsHL}
-\end{table}
-
+General characteristic distributions of B1 halo induced showers per TCT hit are shown in Fig.~\ref{dist4TeVB1}. The energy spectrum of all types of charged and neutral particle species is shown in Fig.~\ref{dist4TeVB1}~(a). We note the peak at beam energy of the protons arising from single diffractive dissociations, these are almost unperturbed beam particles loosing very little energy only. One can also see that in the 10 to around 500 GeV regime muons are the most dominant particle species, at low energy there are overwhelmingly many photons, followed by electrons. The azimuthal distribution of their energy as Fig.~\ref{dist4TeVB1}~(b) is dominated by protons which is clear from the single diffractive part. The energy of muons peak in the horizontal plane. The transverse radial distribtion shows that only muons reach out and most of the energy is confined to r~=~150~cm.  
 \begin{figure}%[!htb]
 \begin{center}
-\includegraphics[width=0.411\textwidth]{figures/4TeV/Ekin_BH_4TeV_B1_20MeV.pdf}
-\includegraphics[width=0.411\textwidth]{figures/4TeV/PhiEnDist_BH_4TeV_B1_20MeV.pdf}
-\includegraphics[width=0.411\textwidth]{figures/4TeV/RadNDist_BH_4TeV_B1_20MeV.pdf}
-\includegraphics[width=0.411\textwidth]{figures/4TeV/RadEnDist_BH_4TeV_B1_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/4TeV/Ekin_BH_4TeV_B1_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/4TeV/PhiEnDist_BH_4TeV_B1_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/4TeV/RadNDist_BH_4TeV_B1_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/4TeV/RadEnDist_BH_4TeV_B1_20MeV.pdf}
+%\includegraphics[width=0.49\textwidth]{figures/4TeV/XYNMuons_BH_4TeV_B1_20MeV.pdf} %% EMPTY PLOT
 \end{center}
 \begin{picture} (0.,0.)
 \setlength{\unitlength}{1.0cm}
@@ -145,7 +45,7 @@ Beam-halo induced showers on the tertiary collimators depend on the initial dist
   \label{dist4TeVB1}}
 \end{figure}
 
-
+Comparing B1 to B2 halo induced distributions as in Fig.~\ref{comp4TeVB1B2}, one can see all of the shapes are quite similar. The energy spectrum of all particles (a), the enery of all particles  . beam-gas interaction there can be more expected from B2 than B1.
 %% \begin{figure}[!htb]
 %% \begin{center}
 %% \includegraphics[width=0.411\textwidth]{figures/4TeV/Ekin_BH_4TeV_B2_20MeV.pdf}
@@ -169,22 +69,22 @@ Beam-halo induced showers on the tertiary collimators depend on the initial dist
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=0.411\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioEkinAll.pdf}
-%\includegraphics[width=0.411\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioEkinMuons.pdf}
-\includegraphics[width=0.411\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioPhiEnAll.pdf}
-\includegraphics[width=0.411\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioPhiEnMuons.pdf}
-\includegraphics[width=0.411\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioPhiEnProtons.pdf}
+\includegraphics[width=0.4\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioEkinAll.pdf}
+%\includegraphics[width=0.4\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioEkinMuons.pdf}
+\includegraphics[width=0.4\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioPhiEnAll.pdf}
+\includegraphics[width=0.4\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioPhiEnMuons.pdf}
+\includegraphics[width=0.4\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioPhiEnProtons.pdf}
 \end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,9.05){(a)}
-    \put ( 12.4,9.05){(b)}
-    \put ( 4.,1.){(c)}
-    \put ( 12.4,1.){(d)}}
-\end{picture}
+%% \begin{picture} (0.,0.)
+%% \setlength{\unitlength}{1.0cm}
+%% \small{
+%%     \put ( 4.,9.05){(a)}
+%%     \put ( 12.4,9.05){(b)}
+%%     \put ( 4.,1.){(c)}
+%%     \put ( 12.4,1.){(d)}}
+%% \end{picture}
 \vspace{-0.6cm}
- \caption{Comparison of B1 and B2 halo shower distributions at the interface plane normalised to the Run I machine configuration and for 100h of beam lifetime.
+ \caption{Comparison of B1 and B2 halo shower distributions at the interface plane.
   \label{comp4TeVB1B2}}
 \end{figure}
 
@@ -192,12 +92,14 @@ Beam-halo induced showers on the tertiary collimators depend on the initial dist
 
 \subsection{Run I: 4 TeV Beam-Gas}
 
+Beam-gas induced showers are shown in Fig.~\ref{dist4TeVBGbs}, highlighting as well the energy spectrum (a) and the energy distribution in $\phi$ (b), the particle multiplicity (c) and energy as function of $r$.
+
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=0.411\textwidth]{figures/4TeV/bs_20MeV/Ekin_BG_4TeV_20MeV_bs.pdf}
-\includegraphics[width=0.411\textwidth]{figures/4TeV/bs_20MeV/PhiEnDist_BG_4TeV_20MeV_bs.pdf}
-\includegraphics[width=0.411\textwidth]{figures/4TeV/bs_20MeV/RadNDist_BG_4TeV_20MeV_bs.pdf}
-\includegraphics[width=0.411\textwidth]{figures/4TeV/bs_20MeV/RadEnDist_BG_4TeV_20MeV_bs.pdf}
+\includegraphics[width=0.458\textwidth]{figures/4TeV/bs_20MeV/Ekin_BG_4TeV_20MeV_bs.pdf}
+\includegraphics[width=0.458\textwidth]{figures/4TeV/bs_20MeV/PhiEnDist_BG_4TeV_20MeV_bs.pdf}
+\includegraphics[width=0.458\textwidth]{figures/4TeV/bs_20MeV/RadNDist_BG_4TeV_20MeV_bs.pdf}
+\includegraphics[width=0.458\textwidth]{figures/4TeV/bs_20MeV/RadEnDist_BG_4TeV_20MeV_bs.pdf}
 \end{center}
 \begin{picture} (0.,0.)
 \setlength{\unitlength}{1.0cm}
@@ -208,15 +110,15 @@ Beam-halo induced showers on the tertiary collimators depend on the initial dist
     \put ( 12.4,1.){(d)}}
 \end{picture}
 \vspace{-0.6cm}
- \caption{Beam-gas induced background at the interface plane. (a) shows the energy distribution, (b) is the energy in $\phi$, (c) is the radial transverse distribution $r$ and (d) the energy in $r$.
+ \caption{Beam-gas induced background at the interface plane. (a) shows the energy distribution, (b) is the energy in $\phi$, (c) is the transverse radial distribution $r$ and (d) the energy in $r$.
   \label{dist4TeVBGbs}}
 \end{figure}
 
 \subsection{New simulation technique}
 Previous studies as in Ref.~\cite{nimPaperRod} used methods relaying on approximations of either of the beam or on its trajectory. One approximation is that the transverse beam size was neglected. In particular, just before the triplet the beamsize is very large and addtional interactions in that location could contribute to shower particles at the interface plane. We investigate how the additional improvements, i.e.~the inclusion of the crossing angle and beam size, effect previous simulations. 
 
-\subsubsection{Beam Size}
-Two cases were simulated in \fluka, with exactly the same setup for the 2012 Run I scenario, see Table~\ref{paramsRun1}, but using a different input file for positions at which beam-gas interactions are sampled.
+\subsubsection{Beam Size \label{beamgasBS}}
+Two cases were simulated in \fluka, with exactly the same setup for the 2012 Run I scenario, see Table~\ref{paramsRun12}, but using a different input file for positions at which beam-gas interactions are sampled.
 
 The new input file contains variations of the ideal orbit with matched phase space coordinates. They represent the space the beam-particles can occupy defining the transverse extension of the beam. Initial seeds to create the trajectory are generated at the IP where the optical functions are $\alpha = 0$, $\beta = \beta^* = 60$~cm. Using a normalised coordinate system the phase space coordinates were calculated as in Eq.\ref{eq1} and used as initial seeds in \fluka~to serve as an initial point to dump the trajectory.
 
@@ -230,6 +132,46 @@ x' = & \sqrt{\frac{\epsilon}{\beta}} \cdot X' - \frac{\alpha X}{\sqrt{\beta \eps
 
 with $\epsilon$ being the emittance, $\alpha, \beta$ and $\gamma$ the usual twiss parameters from the definition of the emittance as conservative in $\epsilon = \gamma x^2 + \beta x'^2 + 2 \alpha x x'$, and $X$ and $X'$ satisfying the circle equation, $X^2 + X'^2 = 1$. 
 
+
+\begin{figure}%[!htb]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{figures/IP1_gauss.pdf}
+\includegraphics[width=0.9\textwidth]{figures/twiss_gauss.pdf}
+\end{center}
+%% \begin{picture} (0.,0.)
+%% \setlength{\unitlength}{1.0cm}
+%% \small{
+%%     \put ( 4.,7.35){(a)}
+%%     \put ( 12.4,7.35){(b)}
+%%     \put ( 4.,1.){(c)}
+%%     \put ( 12.4,1.){(d)}}
+%% \end{picture}
+\vspace{-0.6cm}
+ \caption{Matched phase space coordinates at IP1 in x and y (top) and at an example position (bottom, here TCTH).
+  \label{ip1_gauss}}
+\end{figure}
+
+
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.44\textwidth]{figures/inputFluka6500GeV_yBGAS.pdf}
+\includegraphics[width=0.44\textwidth]{figures/xBGAS10z1.pdf}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Positions as sampled in FLUKA with variations of the transverse beam size vertically (a) shown for full range until the arc and horizontally (b) shown for the first 85~m from the IP.
+  \label{BGASflukaInp}}
+\end{figure}
+
+
+
 {\center{\textit{Discussion}}\\}
 Characteristic distributions are shown in Fig.~\ref{dist4TeVBGbs}. The energy spectra, Fig.~\ref{dist4TeVBGbs}(a), highlights a typcial shape for beam-gas interaction: in contrast to beam-halo showers it does not have the single diffractive peak at beam energy. Beam-gas induced protons have a smooth increase up to beam-energy which are prossible due to inelastic proton-nitrogen interaction where the proton stays intact but are scattered with all possible angles loosing gradually more less energy. The peak at beam-energy means that most of the protons loose only negligable energy while interacting. From Fig.~\ref{dist4TeVBGbs}(c,d) we can derive that most of the particles are in the very centre as (d) confirms these are the most energetic ones. 
 
@@ -242,7 +184,7 @@ We investigate a possible effect of the beam size in the azimuthal ($\phi$) dist
   \includegraphics[width=0.85\textwidth]{figures/twiss_b1_sigma_IR1Right_4TeV.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{Top: around 150 m of IR1 layout, bottom: beam sizes up to 550~m upstream in horizontal and vertical plane. The red lines indicate the longitudinal sections as in the top drawing. 
+ \caption{Top: around 150 m of IR1 layout, bottom: beam sizes up to 49~m upstream in horizontal and vertical plane. The red lines indicate the longitudinal sections as in the top drawing. 
   \label{twissfileBS}}
 \end{figure}
 
@@ -436,11 +378,11 @@ The same method is used as in the 4 TeV simulations changing to the Run II 2015 
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=0.411\textwidth]{figures/BH_run2/Ekin_BH_6500GeV_haloB2_20MeV.pdf}
-\includegraphics[width=0.411\textwidth]{figures/BH_run2/PhiEnDist_BH_6500GeV_haloB2_20MeV.pdf}
-%\includegraphics[width=0.411\textwidth]{figures/BH_run2/PhiNDist_BH_6500GeV_haloB2_20MeV.pdf}
-\includegraphics[width=0.411\textwidth]{figures/BH_run2/OrigYZMuons_BH_6500GeV_haloB2_20MeV.pdf}
-\includegraphics[width=0.411\textwidth]{figures/BH_run2/OrigXYMuons_BH_6500GeV_haloB2_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/BH_run2/Ekin_BH_6500GeV_haloB2_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/BH_run2/PhiEnDist_BH_6500GeV_haloB2_20MeV.pdf}
+%\includegraphics[width=0.49\textwidth]{figures/BH_run2/PhiNDist_BH_6500GeV_haloB2_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/BH_run2/OrigYZMuons_BH_6500GeV_haloB2_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/BH_run2/OrigXYMuons_BH_6500GeV_haloB2_20MeV.pdf}
 \end{center}
 \begin{picture} (0.,0.)
 \setlength{\unitlength}{1.0cm}
@@ -451,17 +393,17 @@ The same method is used as in the 4 TeV simulations changing to the Run II 2015 
     \put ( 12.4,1.){(d)}}
 \end{picture}
 \vspace{-0.6cm}
- \caption{Halo induced background by Beam 1 at the interface plane. (a) shows the energy distribution, (b) is the energy in $\phi$, (c) is the radial transverse distribution $r$ and (d) the energy in $r$.
+ \caption{B1 halo induced background at the interface plane. (a) shows the energy distribution, (b) is the energy in $\phi$, (c) is the radial transverse distribution $r$ and (d) the energy in $r$ for different particle types.
   \label{dist6500GeVB2}}
 \end{figure}
 
 
 \begin{figure}[!htb]
 \begin{center}
-  \includegraphics[width=0.411\textwidth]{figures/BH_run2/compBH_B1_vs_B2_rate/ratioEkinAll.pdf}
-  \includegraphics[width=0.411\textwidth]{figures/BH_run2/compBH_B1_vs_B2_rate/ratioPhiEnAll.pdf}
-  \includegraphics[width=0.411\textwidth]{figures/BH_run2/compBH_B1_vs_B2_rate/ratioPhiEnMuons.pdf}
-  \includegraphics[width=0.411\textwidth]{figures/BH_run2/compBH_B1_vs_B2_rate/ratioPhiEnProtons.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/BH_run2/compBH_B1_vs_B2_rate/ratioEkinAll.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/BH_run2/compBH_B1_vs_B2_rate/ratioPhiEnAll.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/BH_run2/compBH_B1_vs_B2_rate/ratioPhiEnMuons.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/BH_run2/compBH_B1_vs_B2_rate/ratioPhiEnProtons.pdf}
 \end{center}
 \begin{picture} (0.,0.)
 \setlength{\unitlength}{1.0cm}
