@@ -30,6 +30,13 @@ def cv16():
 
     norm6500GeVB1 = 2748 * 1.2e11/360000 *0.5*(739./62515929 +(312+273.)/62692523) # 2.1e-5
     norm6500GeVB2 = 2748 * 1.2e11/360000 *0.5*(779./50890652+773./63119778.) # 2.76e-5 take the average of H an V runs!
+
+    # python /afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/AnalysisScripts/py/collsummary.py -f 6.5TeV_vHaloB2_h5/coll_summary_6.5TeV_vHaloB2_h5.dat -c TCT*R5
+    # IR5 B1: h:( 53754939.0 protons on IR7 primaries, 346.0 protons on TCT*L5.B1), v(52838656.0 on primaries IR7,  408.0 protons on TCTL5)
+    # .5*( 346.0/53754939.0 + 408.0/52838656.0 ) = 7.0791187088930279e-06
+    # IR5 B2: h:( 43718962.0 IR7,  302.0 protons ), v(53000835.0, 106.0 protons. )
+    # 0.5 * (302.0/43718962.0 + 106.0/53000835.0) = 4.4538612500709768e-06
+
     run1iniFlux = 368 * 1.2e11/360000. # from Roderiks NIM paper: 2010: 368 up to 2011 1380
     norm3500GeVB1 = 1.02813e-5 # from http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam-halo_3.5TeV/flukaIR15.html
     norm3500GeVB2 = 2.25625e-5 # from http://bbgen.web.cern.ch/bbgen/bruce/fluka_beam-halo_3.5TeV/flukaIR15.html
@@ -193,7 +200,8 @@ def cv16():
     HLinitialFlux = 2736*2.2e11/360000 # 1.7e9
     normTCT5LOUTb2 = HLinitialFlux * 21822/(47196776+63051589) # 2e-4
     normTCT5LOUTb1 = HLinitialFlux *12091./(63828643+61405975) # 9.7e-5
-    normTCT5INb1 = HLinitialFlux * 13073/(63740261+61392508) # 1e-4
+    # nominal caes
+    normTCT5INb1 = HLinitialFlux * 0.5*(15813.0/50278617.0 + 32557.0/52836357.0)# 13073/(63740261+61392508) # 1e-4
     normTCT5INb2 = HLinitialFlux * 11172./(47203328+63096910) # 1e-4
 
     normTCT5INb1nom = HLinitialFlux * (15813.0/61193703 + 32557.0/63640747) # 7.7e-4

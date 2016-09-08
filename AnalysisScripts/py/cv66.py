@@ -27,7 +27,7 @@ def calc_pint_tot(rho_C, rho_H, rho_O):
     pint_tot = [pint_H[i] + pint_O[i] + pint_C[i] for i in range(len(pint_O))]
     return pint_tot
 
-def cv67():
+def cv66():
 # --------------------------------------------------------------------------------
 # density profile is given in the following format:
 # densities per molecule as function of s-coordinate
@@ -86,7 +86,7 @@ def cv67():
     # calculate the scaled number
 
     # unscaled inf
-    hname, nbins, xmin, xmax = 'muons', 523, 22.5, 550
+    hname, nbins, xmin, xmax = 'muons', 525, 22.5, 550
     hist = TH1F(hname, hname, nbins, xmin, xmax)
     hist.Sumw2()
     hist.GetXaxis().SetTitle('s [m]')
@@ -106,14 +106,7 @@ def cv67():
     hname = 'muons_flatpressure'
     hist_flat = hist.Clone(hname)
     hist_pint = hist.Clone("pint")
-    hist_e100  = hist.Clone("e100")
-    hist_e100p = hist.Clone("e100p")
-
-    cuts = "(particle == 10 || particle == 11) && energy_ke > 100.0"
-    var  = 'z_interact * 0.01'
-    print "INFO: applying", cuts, "to", var, "in", "e100"
-    mt.Project("e100", var, cuts)
-
+    var = "z_interact*0.01"
     cuts = "(particle == 10 || particle == 11) && energy_ke > 0.02"
     print "INFO: applying", cuts, "to", var, "in", hname
     mt.Project(hname, var, cuts)
@@ -146,12 +139,11 @@ def cv67():
         m = hist_flat.GetBinContent(i)
         scale = beamintensity * hist_pint.GetBinContent(i)
         hist.SetBinContent(i,scale * m)
-        hist_e100p.SetBinContent(i, scale * hist_e100.GetBinContent(i))
 
 
     cv = TCanvas( 'cv', 'cv', 2100, 900)
 
-    x1, y1, x2, y2 = 0.7, 0.65, 0.9, 0.88
+    x1, y1, x2, y2 = 0.57, 0.65, 0.9, 0.88
     mlegend = TLegend( x1, y1, x2, y2)
     mlegend.SetFillColor(0)
     mlegend.SetFillStyle(0)
@@ -160,36 +152,41 @@ def cv67():
     mlegend.SetShadowColor(0)
     mlegend.SetBorderSize(0)
 
-    ytitle = "particles/m/BG int."
-    #hist_pint.Draw("p")
+    ytitle = "arbitrary units"
     YurMin, YurMax = 2e2, 9e6
     hist.GetYaxis().SetRangeUser(YurMin,YurMax)
+    hist.SetMarkerColor(kRed)
+    hist.SetLineColor(kRed)
+    hist.GetYaxis().SetTitle(ytitle)
     XurMin,XurMax = 0.,545.
     hist.GetXaxis().SetRangeUser(XurMin,XurMax)
-    hist_flat.SetLineColor(kRed)
-    hist_flat.GetYaxis().SetTitle(ytitle)
-    hist_e100p.SetFillColor(kRed-3)
-    hist_e100p.SetLineColor(kRed-3)
-#    hist_flat.Draw("hist")
+    YurMin, YurMax = 2e2, 9e6
+    hist.GetYaxis().SetRangeUser(YurMin,YurMax)
     hist.Draw("hist")
-    hist_e100p.Draw("histsame")
+    hist_flat.Scale(1e2)
+    hist_flat.Draw("histsame")
+    hist_pint.SetLineColor(kGreen-3)
+    hist_pint.Scale(1e16)
+    hist_pint.Draw("histsame")
 
-    lg, lm = "#mu^{#pm}", 'l'
+    lg, lm = "interaction probability x10^{16}", 'l'
+    mlegend.AddEntry(hist_pint, lg, lm)
+
+    lg, lm = "#mu^{#pm} normalised to pressure profile", 'l'
+    mlegend.AddEntry(hist, lg, lm)
+
+    lg, lm = "#mu^{#pm} rates/BG int. flat pressure", 'l'
     mlegend.AddEntry(hist_flat, lg, lm)
-
-    lg, lm = "#mu^{#pm} E > 100 GeV", 'f'
-    mlegend.AddEntry(hist_e100p, lg, lm)
 
     gPad.SetLogy(1)
     gPad.RedrawAxis()
 
     lab = mylabel(42)
     lab.DrawLatex(0.45, 0.9, '4 TeV beam-gas' )
-#    lab.DrawLatex(0.7, 0.82, '#mu^{#pm}' )
 
     mlegend.Draw()
 
-    pname = wwwpath + 'TCT/beamgas/pressure_profiles_2012/muonrates.pdf'
+    pname = wwwpath + 'TCT/beamgas/pressure_profiles_2012/flatvsprofile.pdf'
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 

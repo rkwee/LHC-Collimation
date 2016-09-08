@@ -11,6 +11,22 @@ from ROOT import *
 from cv32 import getdata14c
 from helpers import makeTGraph, mylabel, wwwpath
 # --------------------------------------------------------------------------------
+# calc total interaction probability
+
+def calc_pint_tot(rho_C, rho_H, rho_O):
+    # 3.5 TeV inel cross-sections proton-atom from paper
+    sigma_O = 316.e-31
+    sigma_C = 258.e-31
+    sigma_H =  37.e-31
+    Trev = 2*math.pi/112450
+
+    pint_C = [sigma_C*j/Trev for j in rho_C[1:]]
+    pint_H = [sigma_H*j/Trev for j in rho_H[1:]]
+    pint_O = [sigma_O*j/Trev for j in rho_O[1:]]
+
+    pint_tot = [pint_H[i] + pint_O[i] + pint_C[i] for i in range(len(pint_O))]
+    return pint_tot
+
 def cv65():
 # --------------------------------------------------------------------------------
 # density profile is given in the following format:
@@ -66,7 +82,6 @@ def cv65():
         except ValueError:
             continue
 
-
     # --
     # plot atomic densities
 
@@ -84,17 +99,8 @@ def cv65():
     mg = TMultiGraph()
     lm = 'pl'
 
-    # 3.5 TeV inel cross-sections proton-atom from paper
-    sigma_O = 316.e-31
-    sigma_C = 258.e-31
-    sigma_H =  37.e-31
-    Trev = 2*math.pi/112450
+    pint_tot = calc_pint_tot(rho_C, rho_H, rho_O)
 
-    pint_C = [sigma_C*j/Trev for j in rho_C[1:]]
-    pint_H = [sigma_H*j/Trev for j in rho_H[1:]]
-    pint_O = [sigma_O*j/Trev for j in rho_O[1:]]
-
-    pint_tot = [pint_H[i] + pint_O[i] + pint_C[i] for i in range(len(pint_O))]
     xlist, ylist, col, mstyle, lg = s[1:], pint_tot, kBlack, 28, 'total'
     g3 = makeTGraph(xlist, ylist, col, mstyle)
     mlegend.AddEntry(g3, lg, lm)    
