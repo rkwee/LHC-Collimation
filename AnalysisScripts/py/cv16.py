@@ -55,17 +55,17 @@ def cv16():
     # fDenom   = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
     # normDenom, normNum = 1./norm4TeVB1oldHalo, 1./norm4TeVB2oldHalo
     # subfolder = wwwpath + 'TCT/4TeV/tctimpacts/oldScatt/compB1B2oldScatt/'
-    fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
-    fDenom = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
-    #    normDenom, normNum = 1./norm4TeVB1newHalo, 1./norm4TeVB2newHalo
-    normDenom, normNum = 1., 1.
-    subfolder = wwwpath + 'TCT/4TeV/tctimpacts/newScatt/compB1B2/perTCThit/'
-    lTextNum = 'B2'
-    lTextDenom = 'B1'
-    tagDenom, tagNum = '_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV'
-    nColor, dColor = kOrange-3, kPink-6
-    yrel = '/TCT hit'
-    # yrel = '/s'
+    # fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
+    # fDenom = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
+    # #    normDenom, normNum = 1./norm4TeVB1newHalo, 1./norm4TeVB2newHalo
+    # normDenom, normNum = 1., 1.
+    # subfolder = wwwpath + 'TCT/4TeV/tctimpacts/newScatt/compB1B2/perTCThit/'
+    # lTextNum = 'B2'
+    # lTextDenom = 'B1'
+    # tagDenom, tagNum = '_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV'
+    # nColor, dColor = kOrange-3, kPink-6
+    # yrel = '/TCT hit'
+    # # yrel = '/s'
 
     # fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
     # fDenom   = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
@@ -198,13 +198,15 @@ def cv16():
     # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_hHaloB2_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_hHaloB2_roundthin.dat 
     # awk '{ sum += $4; } END { print sum; }' H5_HL_TCT5LOUT_relaxColl_vHaloB2_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_vHaloB2_roundthin.dat 
     HLinitialFlux = 2736*2.2e11/360000 # 1.7e9
-    normTCT5LOUTb2 = HLinitialFlux * 21822/(47196776+63051589) # 2e-4
-    normTCT5LOUTb1 = HLinitialFlux *12091./(63828643+61405975) # 9.7e-5
-    # nominal caes
-    normTCT5INb1 = HLinitialFlux * 0.5*(15813.0/50278617.0 + 32557.0/52836357.0)# 13073/(63740261+61392508) # 1e-4
-    normTCT5INb2 = HLinitialFlux * 11172./(47203328+63096910) # 1e-4
 
-    normTCT5INb1nom = HLinitialFlux * (15813.0/61193703 + 32557.0/63640747) # 7.7e-4
+    # retracted settings
+    normTCT5LOUTb1 = HLinitialFlux * 0.5*(9024.0/54609869.0 + 3071.0/52175081.0)##12091./(63828643+61405975) # 9.7e-5
+    normTCT5LOUTb2 = HLinitialFlux * 0.5*(9936.0/40392116.0 + 11898.0/53157089.0)#21822/(47196776+63051589) # 2e-4
+    normTCT5INb1 = HLinitialFlux * 0.5*(9712.0/54532193.0 + 3366.0/52154816.0)
+    normTCT5INb2 = HLinitialFlux * 0.5 * (9948.0/40401333.0 + 6064.0/26614313.0)## 11172./(47203328+63096910) # 1e-4 sum of all tcts over protons lost on primary for h and v separately
+
+    # nominal cases
+    normTCT5INb1nom = HLinitialFlux * 0.5*(32557.0/52836357.0 + 15813.0/50278617.0)#(15813.0/61193703 + 32557.0/63640747) # 7.7e-4
 
     # fDenom = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_30.root'
     # fNum = projectpath + 'HL1.0/FL_HL_TCT5IN_nomCollSett_haloB1/results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root'
@@ -214,37 +216,39 @@ def cv16():
     # normNum, normDenom = 1./normTCT5INb1, 1./norm6500GeVB1
     # dColor, nColor = kPink-1, kBlue-4
     # yrel = '/s'
-
-
+ 
     # fNum = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5LOUT_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'
     # fDenom = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
-    # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINOUTB1/'
+    # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINOUTB1/perTCThit/'
     # lTextNum = 'TCT4 only'
     # lTextDenom = 'TCT5 in'
-    # tagDenom, tagNum = '_BH_HL_tct5inrdB1_20MeV', '_BH_HL_tct5otrdB1_20MeV'
-    # normDenom, normNum = 1./normTCT5INb1, 1./normTCT5LOUTb1
+    # tagDenom, tagNum =  '_BH_HL_tct5inrdB1_20MeV', '_BH_HL_tct5otrdB1_20MeV'
+    # yrel,normDenom, normNum = '/s',1./normTCT5INb1, 1./normTCT5LOUTb1
+    # yrel,normDenom, normNum = '/TCT hit',1., 1.
     # dColor, nColor = kPink-1, kBlue-1
-    # yrel = '/s'
+    
 
     # fNum = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
     # fDenom = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30.root'
-    # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINB1B2/'
-    # lTextNum = 'TCT5 in B1'
-    # lTextDenom = 'TCT5 in B2'
+    # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINB1B2/perTCThit/'
+    # lTextNum = 'TCT5 in, B1'
+    # lTextDenom = 'TCT5 in, B2'
     # tagDenom, tagNum = '_BH_HL_tct5inrdB2_20MeV', '_BH_HL_tct5inrdB1_20MeV'
-    # normDenom, normNum =  1./normTCT5INb2, 1./normTCT5INb1
+    # #normDenom, normNum,yrel =  1./normTCT5INb2, 1./normTCT5INb1, "/s"
+    # normDenom, normNum,yrel =  1., 1., "/TCT hit"
     # dColor, nColor = kPink, kBlue+2
-    # yrel = '/s'
+
 
     # fNum = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5LOUT_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
     # fDenom = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30.root'
-    # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINOUTB2/'
+    # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINOUTB2/perTCThit/'
     # lTextNum = 'TCT4 only'
     # lTextDenom = 'TCT5 in'
-    # normDenom, normNum = 1./normTCT5INb2, 1./normTCT5LOUTb2
+    # normDenom, normNum, yrel = 1./normTCT5INb2, 1./normTCT5LOUTb2, '/s'
+    # normDenom, normNum, yrel = 1., 1., '/TCT hit'
     # tagNum, tagDenom = '_BH_HL_tct5otrdB2_20MeV', '_BH_HL_tct5inrdB2_20MeV'
     # dColor, nColor = kGreen-2, kMagenta+1
-    # yrel = '/s'
+
 
     # fDenom = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
     # fNum = workpath + 'runs/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30.root'
@@ -312,16 +316,18 @@ def cv16():
     # tagNum, tagDenom = '_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV'
     # nColor, dColor = kOrange-3, kPink-3
 
-    # fDenom = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
-    # fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_30.root'
-    # # fDenom = workpath + 'data/6p5TeV/results_ir1_BH_6500GeV_b2_20MeV_nprim3646000_30.root'
-    # # fNum = workpath + 'data/6p5TeV/results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root'
-    # subfolder = wwwpath + 'TCT/6.5TeV/tctimpacts/compB1B2/'
-    # lTextNum = 'B1'
-    # lTextDenom = 'B2'
-    # normDenom, normNum = 1./norm6500GeVB2, 1./norm6500GeVB1
-    # tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_6500GeV_haloB2_20MeV'
-    # nColor, dColor = kOrange+5, kGreen+2
+#     fDenom = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
+#     fNum = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_6500GeV_b1_20MeV_nprim4752000_30.root'
+#     # fDenom = workpath + 'data/6p5TeV/results_ir1_BH_6500GeV_b2_20MeV_nprim3646000_30.root'
+#     # fNum = workpath + 'data/6p5TeV/results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root'
+#     subfolder = wwwpath + 'TCT/6.5TeV/tctimpacts/compB1B2/perTCThit/'
+#     lTextNum = 'B1'
+#     lTextDenom = 'B2'
+# #    normDenom, normNum = 1./norm6500GeVB2, 1./norm6500GeVB1
+#     normDenom, normNum = 1.,1.
+#     tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_6500GeV_haloB2_20MeV'
+#     nColor, dColor = kOrange+5, kGreen+2
+#     yrel = "/TCT hit"
 
     # fNum =  '/afs/cern.ch/project/lhc_mib/tct_simulations/FlukaRuns/runs_usrbin/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_nprim4269100_30.root'
     # fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/FL_TCT5IN_roundthin/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
@@ -333,11 +339,12 @@ def cv16():
     # dColor, nColor = kMagenta-2, kBlue-1
 
     # fNum = projectpath + 'HL1.0/FL_HL_TCT5IN_nomCollSett_haloB1/results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root'
-    # fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/FL_TCT5IN_roundthin/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
-    # subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/'
+    # fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
+    # subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/perTCThit/'
     # lTextNum = 'nominal'
     # lTextDenom = 'retracted'
     # normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
+    # normDenom, normNum, yrel = 1., 1., '/TCT hit'
     # tagDenom,tagNum =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
     # dColor, nColor = kMagenta-2, kBlue-2
 
@@ -349,6 +356,18 @@ def cv16():
     # normNum, normDenom, yrel = 1., 1., '/TCT hit'
     # tagDenom, tagNum =  '_crabcfb1_modTAN', '_crabcfb1'
     # dColor, nColor = kMagenta+4, kBlue+3
+
+    # ------------------------------------------------------------------------
+
+    # offmomentum 
+    fNum =  '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVminusB2/results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
+    fDenom = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVplusB2/results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
+    subfolder = wwwpath + 'TCT/4TeV/tctimpacts/newScatt/comppm500Hz/'
+    lTextNum = '-500 Hz'
+    lTextDenom = '+500 Hz'
+    normNum, normDenom, yrel = 1., 1., '/TCT hit'
+    tagNum, tagDenom =  '_offmin500Hz_4TeV_B2_20MeV', '_offplus500Hz_4TeV_B2_20MeV'
+    dColor, nColor = kMagenta+4, kBlue+3
 
     # ------------------------------------------------------------------------
 
@@ -423,7 +442,7 @@ def cv16():
         if skey.startswith('Rad'): 
             p1.SetLogy(1)
             isLogy = 1
-            XurMin, XurMax = 0.0, 1000.
+            XurMin, XurMax = 0.0, 600.
 
         if skey.count('Zcoor'):
             p1.SetLogy(1)
@@ -464,11 +483,11 @@ def cv16():
         integralDenom = histDenom.Integral()
         if integralDenom: ratioInts = integralNum/integralDenom
 
-        if hnameNum.count('Rad'):
-            histNum.Rebin()
-            histDenom.Rebin()
-            # pass
-            print "Rebinning Rad histograms"
+        # if hnameNum.count('Rad'):
+        #     histNum.Rebin()
+        #     histDenom.Rebin()
+        #     pass
+        #     print "Rebinning Rad histograms"
 
         histNum.GetXaxis().SetTitle(xtitle)
         histNum.GetYaxis().SetTitle(ytitle)

@@ -79,11 +79,13 @@ def cv35():
         try:
             nhits += [ [tct,[float(cDict_tct5in_hB1rd[tct][3]) , float(cDict_tct5in_vB1rd[tct][3]), \
                                  float(cDict_tct5lout_hB1rd[tct][3]), float(cDict_tct5lout_vB1rd[tct][3])]] ]
+
         except KeyError:
             nhits += [ [tct,[float(cDict_tct5in_hB1rd[tct][3]) , float(cDict_tct5in_vB1rd[tct][3]), \
                                  0., 0.]]] 
             
-    print nhits
+        print nhits[-1]
+
     nhitsDict = dict(nhits)
     normhits = []
     for tct in colls:
@@ -172,8 +174,8 @@ def cv35():
     lab.DrawLatex(x1-0.44, y1+0.16, 'incoming B1    round beam optics')
 
     pname = wwwpath
-    pname += 'TCT/HL/relaxedColl/newScatt/fluka/compTCT5LINOUT_roundthin_B1_'+thisIR+'.png'
+    pname += 'TCT/HL/relaxedColl/newScatt/fluka/compTCT5LINOUT_roundthin_B1_'+thisIR+'.pdf'
 
 
-    cv.SaveAs(pname)
+    #cv.SaveAs(pname)
 
