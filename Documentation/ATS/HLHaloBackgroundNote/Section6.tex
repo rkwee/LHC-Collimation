@@ -1,10 +1,15 @@
 \section{Evolution of Background in LHC and Comparison to HL--LHC\label{evolut}}
 
-\subsection{Comparison of halo hit distributions}
+\subsection{IR7 Leakage for beam-halo simulations}
+The approach to normalise the halo induced distributions is to scale the distribution per TCT hit up by the initial particle flux (thus the total number of protons initially in the machine, the product of the number of bunches, $N_{\mathrm{bunch}}$, times the intensity per bunch, $I_{\mathrm{bunch}}$ per time unit $\tau$ for which we assume a stable beam operation scenario of 100 hours beam life time) multiplied by a sixtrack conversion factor, which takes into account the efficiency of the collimator settings and is calculated by the ratio of absorbed protons on the TCTs at IR1 or 5 and those absorbed by the TCPs in IR7 per simulation case h and v. Using the absorbed protons at IR7 primaries makes it easier to compare BLM losses in IR7, also losses on secondaries or tertiaries do not change dramatically, i.e. an order of magnitude, when having them considered in the denominator as well to obtain IR7 leakage factors.
 
-\begin{table}%[!hbt]
+\begin{equation} \label{eq3}
+\frac{N_{\mathrm{bunch}} \cdot I_{\mathrm{bunch}}}{\tau_{\mathrm{stable \, beam}}} \times \Bigg[ \frac{1}{2} \cdot \Big( \frac{N_{\mathrm{TCTV}} + N_{\mathrm{TCTH}}}{N_{\mathrm{TCP.IR7}}}\Big)_{\mathrm{h}} + \Big( \frac{N_{\mathrm{TCTV}} + N_{\mathrm{TCTH}}}{N_{\mathrm{TCP.IR7}}} \Big)_{\mathrm{v}}  \Bigg]
+\end{equation}
+
+\begin{table}[!h]
    \centering
-   \caption{Leakage from IR7 primary to IR1/IR5 tertiary collimators averaged over simulation h+v case.}
+   \caption{Leakage from IR7 primary to IR1/IR5 TCTs averaged over simulation h+v case.}
 
    \begin{tabular}{c|c|c}
        \hline
@@ -36,10 +41,54 @@
        IR5 & 1.66 $\times 10^{-5}$ & \\ % B1 : .5*(660.0/35831038.0 + 75.0/5052849.0)
        \hline
    \end{tabular}
-   \label{leakageFactors}
+   \label{leakageFactorsIR7}
 \end{table}
 
 
+\subsection{IR3 Leakage for off-momentum simulations}
+\begin{table}[!h]
+   \centering
+   \caption{Leakage from IR3 primary to IR1/IR5 TCTs from off-momentum simulations.}
+
+   \begin{tabular}{l|c|c}
+       \hline
+       4 TeV, + 500~Hz  & B1 & B2\\
+       TCP.IR3  & 6279727 & 995698  \\
+       TCTs IR1 (h+v) & 6 (6 + 0) & 11919 (695 + 11224) \\
+       TCTs IR5 (h+v) & 28304 (5387 + 22917) & 16 (14 + 2) \\
+       IR3 to IR1 & 9.5 10$^{-7}$ & 0.012 \\
+       IR3 to IR5 & 0.0045 & 1.6 10$^{-5}$ \\
+       \hline
+       4 TeV, -~500~Hz  & B1 & B2\\
+       TCP.IR3  & 1853387 & 3501844 \\
+       TCTs IR1 (h+v) & 93 (37 + 56) & 22278 (4851+17427) \\
+       TCTs IR5 (h+v) &  4735 (1746 + 2989) & 23 (22 + 1) \\
+       IR3 to IR1 & 5.0 10$^{-5}$ & 0.0063 \\
+       IR3 to IR5 & 0.0025 & 6.2 10$^{-6}$ \\
+       \hline
+
+       6.5 TeV, + 500~Hz  & B1 & B2\\
+       TCP.IR3  & 8055019 & 5648325  \\
+       TCTs IR1 (h+v) & 3 (3 + 0) & 11951 (5607 + 6344) \\
+       TCTs IR5 (h+v) & 17963 (8711 + 9252) & 9 (9 + 0)\\
+       IR3 to IR1 & 3.7 10$^{-7}$ & 0.0021 \\
+       IR3 to IR5 & 0.0022 & 1.5 10$^{-6}$ \\
+       \hline
+       6.5 TeV, - 500~Hz  & B1 & B2\\
+       TCP.IR3  &  3389385 &   \\
+       TCTs IR1 (h+v) &  1 (1 + 0) &   \\
+       TCTs IR5 (h+v) &  7642 (4337 + 3305) &  \\
+       IR3 to IR1 &  2.9 10$^{-7}$ &  \\
+       IR3 to IR5 &  0.0022 &   \\
+       \hline
+
+   \end{tabular}
+   \label{leakageFactorsIR3}
+\end{table}
+
+
+
+\subsection{Comparison of halo hit distributions}
 
 \begin{figure}[!htb]
 \begin{center}
@@ -206,5 +255,46 @@
 \end{figure}
 
 
-\subsection{Run I vs HL--LHC}
+\subsection{Run I vs Run II \label{compRunI+II}}
+
+
+\begin{figure}[!htb]
+\begin{center}
+  \includegraphics[width=0.49\textwidth]{figures/compBHB1_4TeV_vs_6.5TeV/ratioEkinAll.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/compBHB1_4TeV_vs_6.5TeV/ratioPhiEnAll.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/compBHB1_4TeV_vs_6.5TeV/ratioPhiEnMuons.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/compBHB1_4TeV_vs_6.5TeV/ratioPhiEnMuR500.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Comparison of halo induced background at 4 and 6.5~TeV in the azimuthal distributions of all particles at the interface plane (top) and high-energy muons and protons (bottom) and their energy.
+  \label{compBHB1run1run2}}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+  \includegraphics[width=0.49\textwidth]{figures/compBHB2_4TeV_vs_6.5TeV/ratioEkinAll.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/compBHB2_4TeV_vs_6.5TeV/ratioPhiEnAll.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/compBHB2_4TeV_vs_6.5TeV/ratioPhiEnMuons.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/compBHB2_4TeV_vs_6.5TeV/ratioPhiEnMuR500.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Comparison of halo induced background at 4 and 6.5~TeV in the azimuthal distributions of all particles at the interface plane (top) and high-energy muons and protons (bottom) and their energy.
+  \label{compBHB2run1run2}}
+\end{figure}
+
+
+
+\begin{figure}[!htb]
+\begin{center}
+  \includegraphics[width=0.49\textwidth]{figures/compBG_4TeV_vs_6.5TeV/ratioEkinAll.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/compBG_4TeV_vs_6.5TeV/ratioPhiEnAll.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/compBG_4TeV_vs_6.5TeV/ratioPhiNMuE100.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/compBG_4TeV_vs_6.5TeV/ratioPhiEnMuE100.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Comparison BG interactions in the azimuthal distributions of all particles at the interface plane (top) and high-energy muons (bottom) and their energy at 4 and 6.5 TeV.
+  \label{compBGrun1run2}}
+\end{figure}
+
+
 \subsection{Run II vs HL--LHC}
