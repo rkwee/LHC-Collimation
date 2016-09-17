@@ -1,6 +1,6 @@
 \section{Evolution of Background in LHC and Comparison to HL--LHC\label{evolut}}
 
-\subsection{IR7 Leakage for beam-halo simulations}
+\subsection{IR7 TCP to TCT conversion factors in beam-halo simulations}
 The approach to normalise the halo induced distributions is to scale the distribution per TCT hit up by the initial particle flux (thus the total number of protons initially in the machine, the product of the number of bunches, $N_{\mathrm{bunch}}$, times the intensity per bunch, $I_{\mathrm{bunch}}$ per time unit $\tau$ for which we assume a stable beam operation scenario of 100 hours beam life time) multiplied by a sixtrack conversion factor, which takes into account the efficiency of the collimator settings and is calculated by the ratio of absorbed protons on the TCTs at IR1 or 5 and those absorbed by the TCPs in IR7 per simulation case h and v. Using the absorbed protons at IR7 primaries makes it easier to compare BLM losses in IR7, also losses on secondaries or tertiaries do not change dramatically, i.e. an order of magnitude, when having them considered in the denominator as well to obtain IR7 leakage factors.
 
 \begin{equation} \label{eq3}
@@ -9,19 +9,24 @@ The approach to normalise the halo induced distributions is to scale the distrib
 
 \begin{table}[!h]
    \centering
-   \caption{Leakage from IR7 primary to IR1/IR5 TCTs averaged over simulation h+v case.}
+   \caption{TCP-to-TCT conversions for IR7 TCPs and IR1/IR5 TCTs averaged over simulation h+v case.}
 
-   \begin{tabular}{c|c|c}
+   \begin{tabular}{c|c|c|c|c}
+
+       & hB1 & vB1 & hB2 & vB2\\ \hline       
+       & \multicolumn{4}{c}{4 TeV} \\       \hline
+       TCPs in IR7 & 50807535 & 53036514 & 49207325 & 46222723 \\
+       TCTs in IR1 & 622 & 930 & 1179 & 967 \\
+       ICTs in IR5 & 958 & 626 & 1893 & 135 \\ 
+       IR7 to IR1  & \multicolumn{2}{c}{1.49 $\times 10^{-5}$} & \multicolumn{2}{c}{1.85 $\times 10^{-5}$ } \\
+       IR7 to IR5  & \multicolumn{2}{c}{4.82 $\times 10^{-6}$} & \multicolumn{2}{c}{1.72 $\times 10^{-5}$ } \\
        \hline
-       4 TeV  & B1 & B2\\
-
-       IR1 & 1.23 $\times 10^{-5}$ & 1.85 $\times 10^{-5}$  \\
-       IR5 & 4.82 $\times 10^{-6}$ & 1.72 $\times 10^{-5}$  \\
-       \hline
-       6.5 TeV  & B1 & B2\\
-
-       IR1 & 1.06 $\times 10^{-5}$ & 1.38 $\times 10^{-5}$  \\
-       IR5 & 7.08 $\times 10^{-6}$ & 4.45 $\times 10^{-5}$  \\
+       & \multicolumn{4}{c}{6.5 TeV} \\       \hline
+       TCPs in IR7 & 53731448 & 52806720 & 43692659 & 52962459 \\
+       TCTs in IR1 & 739 & 585 & 779 & 773 \\
+       TCTs in IR5 & 346 & 408 & 302 & 106 \\
+       IR7 to IR1 &  \multicolumn{2}{c}{1.24 $\times 10^{-5}$} &  \multicolumn{2}{c}{1.38 $\times 10^{-5}$ } \\
+       IR7 to IR5 &  \multicolumn{2}{c}{7.08 $\times 10^{-6}$} &  \multicolumn{2}{c}{4.45 $\times 10^{-5}$ } \\
        \hline       
        HL nominal settings, round beam  & B1 & \\ %see lhc_mib/HL1.0/factors 
        
@@ -45,7 +50,7 @@ The approach to normalise the halo induced distributions is to scale the distrib
 \end{table}
 
 
-\subsection{IR3 Leakage for off-momentum simulations}
+\subsection{IR3 to TCT conversion factors in off-momentum simulations}
 \begin{table}[!h]
    \centering
    \caption{Leakage from IR3 primary to IR1/IR5 TCTs from off-momentum simulations.}
@@ -255,10 +260,29 @@ The approach to normalise the halo induced distributions is to scale the distrib
 \end{figure}
 
 
-\subsection{Run I vs Run II \label{compRunI+II}}
+\subsection{Comparison of different simulation cases \label{compRun1Run2}}
 
 
-\begin{figure}[!htb]
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.49\textwidth]{figures/4TeV/bs_20MeV/RadNMuons_BG_4TeV_20MeV_bs.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/6500GeV/20MeV/RadNMuons_BG_6500GeV_flat_20MeV_bs.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/4TeV/haloB1_20MeV/RadNMuons_BH_4TeV_B1_20MeV.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/4TeV/haloB2_20MeV/RadNMuons_BH_4TeV_B2_20MeV.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/4TeV/offmom/20MeV/RadNMuons_offplus500Hz_4TeV_B2_20MeV.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/4TeV/offmom/20MeV/RadNMuons_offmin500Hz_4TeV_B2_20MeV.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/BH_run2/b1/RadNMuons_BH_6500GeV_haloB1_20MeV.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/BH_run2/b2/RadNMuons_BH_6500GeV_haloB2_20MeV.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Comparison 
+  \label{compRadNMuonsRun1}}
+\end{figure}
+
+
+
+\subsubsection{4 TeV vs. 6.5~TeV beam-halo}
+\begin{figure}
 \begin{center}
   \includegraphics[width=0.49\textwidth]{figures/compBHB1_4TeV_vs_6.5TeV/ratioEkinAll.pdf}
   \includegraphics[width=0.49\textwidth]{figures/compBHB1_4TeV_vs_6.5TeV/ratioPhiEnAll.pdf}
