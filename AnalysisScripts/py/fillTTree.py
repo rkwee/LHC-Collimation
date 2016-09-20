@@ -111,7 +111,7 @@ def do1dRadHisto(sDict, mt, hname, xaxis, particleTypes):
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
 
     #    if debug: print 'INFO: Ignoring binarea!!!'
-    for i in range(nbins):
+    for i in range(1,nbins+1):
         binArea = math.pi * (xaxis[i+1]**2 - xaxis[i]**2)
         content = hist.GetBinContent(i)
         hist.SetBinContent(i,content/binArea)
@@ -147,7 +147,7 @@ def do1dRadEnHisto(mt, hname, xaxis, particleTypes):
     mt.Project(hname, var, cut)
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
 
-    for i in range(nbins):
+    for i in range(1,nbins+1):
         binArea = math.pi * (xaxis[i+1]**2 - xaxis[i]**2)
         content = hist.GetBinContent(i)
         hist.SetBinContent(i,content/binArea)
@@ -200,7 +200,7 @@ def do1dPhiHisto(sDict, mt, hname, xaxis, particleTypes):
     mt.Project(hname, var, cut)
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
 
-    for i in range(nbins):
+    for i in range(1,nbins+1):
         content = hist.GetBinContent(i)
         binWidth = hist.GetBinWidth(i)
         hist.SetBinContent(i,content/binWidth)
@@ -253,7 +253,7 @@ def do1dPhiEnHisto(sDict, mt, hname, xaxis, particleTypes):
     mt.Project(hname, var, cut)
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
 
-    for i in range(nbins):
+    for i in range(1,nbins+1):
         content = hist.GetBinContent(i)
         binWidth = hist.GetBinWidth(i)
         hist.SetBinContent(i,content/binWidth)
@@ -288,7 +288,7 @@ def do1dTcoorHisto(var,sDict, mt, hname, xaxis, particleTypes):
     mt.Project(hname, var, cut)
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
 
-    for i in range(nbins):
+    for i in range(1,nbins+1):
         content = hist.GetBinContent(i)
         binWidth = hist.GetBinWidth(i)
         hist.SetBinContent(i,content/binWidth)
@@ -336,7 +336,7 @@ def doOrigZHisto(sDict, mt, hname, xaxis, particleTypes):
     mt.Project(hname, var, cut)
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
 
-    for i in range(nbins):
+    for i in range(1,nbins+1):
         content = hist.GetBinContent(i)
         binWidth = hist.GetBinWidth(i)
         hist.SetBinContent(i,content/binWidth)
