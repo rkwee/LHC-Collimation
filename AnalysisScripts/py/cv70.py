@@ -9,7 +9,7 @@
 import ROOT, sys, glob, os, math, helpers
 from ROOT import *
 from array import array
-from fillTTree import getXLogAxis
+from fillTTree import *
 from fillTTree_dict import generate_sDict
 # get function to read the data if 14 columns are present 
 from cv32 import getdata14c
@@ -30,6 +30,10 @@ def calc_pint_tot(rho_C, rho_H, rho_O):
 
     pint_tot = [pint_H[i] + pint_O[i] + pint_C[i] for i in range(len(pint_O))]
     return pint_tot
+
+def resultFileBG(k,rel):
+    n = os.path.join(os.path.dirname(k),"results_pressure2012_"+rel+k.split('/')[-1])
+    return  n
 
 def cv70():
 # --------------------------------------------------------------------------------
@@ -87,124 +91,155 @@ def cv70():
             continue
 
     # --
-    # x axis, value
-    nbins, xmin, xmax = 60, 1e-2, 1.e4
-    xaxis = getXLogAxis(nbins, xmin, xmax)
-    xnbins = len(xaxis)-1
-
-    # y axis, weigths
-    hname, ynbins, ymin, ymax = 'all', 523, 22.5, 550
-    twoDhist = TH2F(hname, hname, xnbins, array('d', xaxis), ynbins, ymin, ymax)
-    # -- create histogram with same axis for pint 
-    hist_pint = twoDhist.ProjectionY("pint")
-    pint_tot = calc_pint_tot(rho_C, rho_H, rho_O)
-    pint_incomingbeam = {}
-
-    for i,spos in enumerate(s): 
-        if spos < 0.: 
-            z = -spos
-            pint_incomingbeam[z] = pint_tot[i]
-            zbin = hist_pint.FindBin(z)
-            hist_pint.SetBinContent(zbin, pint_incomingbeam[z])
-
-    # first value is for arc
-    arcvalue = pint_tot[1]
-
-    startarc = 260.
-    startarcBin = hist_pint.FindBin(startarc)
-    for i in range(startarcBin, ynbins-1): hist_pint.SetBinContent(i,arcvalue)    
-    # --
-
 
     datafile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
     bbgFile = datafile + ".root"
     print "Opening", bbgFile
+    tag = '_BG_4TeV_20MeV_bs'
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
     rfile = TFile.Open(bbgFile, "READ")
+    tBBG = rfile.Get("particle")
+    yrel = ''
+    print tBBG
+    sDict = generate_sDict(tag, norm, tBBG, yrel)
 
-    hists = []
-    cnt = 0
-
-    mt  = rfile.Get('particle')
-
-    particleTypes = [10, 11]
-
-    # -- fill 2d histo
-    hname_flat = 'EkinAll_flatpressure'
-    twoDhist_flat = twoDhist.Clone(hname_flat)
-    twoDhist_flat.Sumw2()
-
-    hname_reweighted = 'EkinAll_reweighted'
-    twoDhist_reweighted = twoDhist.Clone(hname_reweighted)
-
-    # y is on y-axis, x on x-axis
-    # var = "y:x"
-
-    var = '0.01*z_interact:energy_ke'
-    cuts = "weight * ( energy_ke > 0.2 )"
-    print "INFO: applying", cuts, "to", var, "in", hname_flat
-    mt.Project(hname_flat, var, cuts)
-
-    print "entries  ", twoDhist_flat.GetEntries()
-    hist_flat = twoDhist_flat.ProjectionX("makeit1d_flat")
-    hist_flat.SetLineColor(kGreen-2)
-
-    beamintensity = 2e14
-    nprim = float(bbgFile.split('nprim')[-1].split('_')[0]) 
+    # -- small version of fillTTree
+    beamintensity = 2e14    
     Trev  = 2*math.pi/112450
     kT = 1.38e-23*300
 
-    # compute normalisation fct for each bin
+    # rootfile with results
+    rfoutname = resultFileBG(bbgFile,'')
+    
+    print 'writing ','.'*33, rfoutname
+    rfOUTile = TFile.Open(rfoutname, "RECREATE")
 
-    for w in range(1,ynbins+1):
-        scale = beamintensity * hist_pint.GetBinContent(w)
-        for v in range(1,xnbins+1):
-            m = twoDhist_flat.GetBinContent(v,w)  
-            print "Weight", scale * m, "m", m, "scale",scale, "x,y", v,w
-            twoDhist_reweighted.SetBinContent(v,w,scale * m)
+    rHists,hists_flat, hists_reweighted, cnt = [],[],[], 0
+    sk = []
+    for skey in sDict.keys():
 
-    cv = TCanvas( 'cv', 'cv', 1500, 900)
+        if skey.count("Sel"): continue
+        elif skey.count("Neg"): continue
+        elif skey.count("Pos"): continue
+        elif skey.count("Z"): continue
+        elif skey.count("Neu_"): continue
+        elif skey.count("Char"): continue
+        elif skey.count("Plus") or skey.count("Minus"): continue
+        elif skey.split(tag)[0].endswith("0") or skey.count("XY"): continue
+        elif skey.count("Pio") or skey.count("Kao"): continue
 
-    x1, y1, x2, y2 = 0.7, 0.65, 0.9, 0.88
-    mlegend = TLegend( x1, y1, x2, y2)
-    mlegend.SetFillColor(0)
-    mlegend.SetFillStyle(0)
-    mlegend.SetLineColor(0)
-    mlegend.SetTextSize(0.035)
-    mlegend.SetShadowColor(0)
-    mlegend.SetBorderSize(0)
+        # for testing
+        # if not skey.startswith("Rad"): continue
 
-    # YurMin, YurMax = 2e2, 9e6
-    # hist.GetYaxis().SetRangeUser(YurMin,YurMax)
-    # XurMin,XurMax = 0.,545.
-    # hist.GetXaxis().SetRangeUser(XurMin,XurMax)
-    ytitle = "GeV/m/BG int."
-    hist_flat.Scale(1./hist_flat.Integral())
-    hist_flat.GetYaxis().SetTitle(ytitle)
-    hist_flat.Draw("h")
-    lg, lm = "flat", 'l'
-    mlegend.AddEntry(hist_flat, lg, lm)
+        sk += [skey]
+        
+        print "histogram ", len(sk)+1, "."*33, skey
 
-    hist_reweighted = twoDhist_reweighted.ProjectionX("makeit1d_reweighted")
-    hist_reweighted.SetLineColor(kPink-3)
-    hist_reweighted.Scale(1./hist_reweighted.Integral())
-    hist_reweighted.GetYaxis().SetTitle(ytitle)
-    hist_reweighted.Draw("hsame")
-    lg, lm = "reweighted", 'l'
-    mlegend.AddEntry(hist_reweighted, lg, lm)
-    #twoDhist_reweighted.Draw("colz")
-#    hist_pint.Draw("hist")
-    cv.SetLogx(1)
-    cv.SetLogy(1)
-    gPad.RedrawAxis()
+    for j,skey in enumerate(sk):
+        print "Now on #",j,">"*5, skey
+        cnt += 1
 
-    lab = mylabel(42)
-    lab.DrawLatex(0.45, 0.9, '4 TeV beam-gas' )
-#    lab.DrawLatex(0.7, 0.82, '#mu^{#pm}' )
+        # -- x axis, value
+        particleTypes = sDict[skey][0]
+        hname         = skey
+        xnbins        = sDict[skey][2]
+        xmin          = sDict[skey][3]
+        xmax          = sDict[skey][4]
+        mt            = tBBG
 
-    mlegend.Draw()
+        var = ''
+        energyweight = ''
+        cuts = [' energy_ke > 0.02 ']
+        if skey.startswith("Ekin"):
+            xaxis = getXLogAxis(xnbins, xmin, xmax)
+            var = "energy_ke"        
 
-    pname = wwwpath + 'TCT/4TeV/beamgas/fluka/bs/reweighted/Ekin.pdf'
-    print('Saving file as ' + pname ) 
-    cv.Print(pname)
+        elif hname.startswith("Rad"):
+            binwidth = xmax/xnbins
+            xaxis = [i*binwidth for i in range(xnbins+1)]
+            var = '(TMath::Sqrt(x*x + y*y))'
+            if skey.count("En"): energyweight = "energy_ke * "
+
+        elif hname.startswith("Phi"):
+            binwidth = (xmax-xmin)/xnbins
+            xaxis = [xmin+i*binwidth for i in range(xnbins+1)]
+            var = '(TMath::ATan2(y,x))'
+            if skey.count("En"): energyweight = "energy_ke * "
+
+        if not particleTypes[0].count('ll'):
+            pcuts = [ 'particle ==' + p for p in particleTypes  ]
+            pcut  = '||'.join(pcuts)
+            cuts += ['('+ pcut + ')']
+
+        # -- y axis, weigths
+        ynbins, ymin, ymax =  523, 22.5, 550
+        twoDhist = TH2F(skey, skey, xnbins, array('d', xaxis), ynbins, ymin, ymax)
+
+        hname_flat = skey + '_flat'
+        twoDhist_flat = twoDhist.Clone(hname_flat)
+        twoDhist_flat.Sumw2()
+
+        hname_reweighted = skey + '_reweighted'
+        twoDhist_reweighted = twoDhist.Clone(hname_reweighted)
+
+        var = '0.01*z_interact:' + var
+        cuts = "weight * "+energyweight+"("+" && ".join(cuts) + ") "
+        print "INFO: applying", cuts, "to", var, "in", hname_flat
+        mt.Project(hname_flat, var, cuts)
+
+        print "entries  ", twoDhist_flat.GetEntries()
+        hist_flat = twoDhist_flat.ProjectionX("makeit1d_flat" + skey)
+        hist_flat.SetLineColor(kTeal-2)
+
+        # -- create histogram with same axis for pint 
+        if cnt == 1:
+            hist_pint = twoDhist.ProjectionY("pint")
+            pint_tot = calc_pint_tot(rho_C, rho_H, rho_O)
+            pint_incomingbeam = {}
+
+            for i,spos in enumerate(s): 
+                if spos < 0.: 
+                    z = -spos
+                    pint_incomingbeam[z] = pint_tot[i]
+                    zbin = hist_pint.FindBin(z)
+                    hist_pint.SetBinContent(zbin, pint_incomingbeam[z])
+
+            # first value is for arc
+            arcvalue = pint_tot[1]
+
+            startarc = 260.
+            startarcBin = hist_pint.FindBin(startarc)
+            for i in range(startarcBin, ynbins-1): hist_pint.SetBinContent(i,arcvalue)    
+        # --
+        # compute re-weights for each bin
+        for w in range(1,ynbins+1):
+            scale = beamintensity * hist_pint.GetBinContent(w)
+            for v in range(1,xnbins+1):
+                m = twoDhist_flat.GetBinContent(v,w)  
+                #print "Weight", scale * m, "m", m, "scale",scale, "x,y", v,w
+                twoDhist_reweighted.SetBinContent(v,w,scale * m)
+
+        hists_flat += [twoDhist_flat]          
+        hists_reweighted += [twoDhist_reweighted]
+        rHists += [skey]
+
+    #     hcolor = sDict[skey][7]
+    #     hists[-1].SetLineColor(hcolor)
+    #     hists[-1].SetLineWidth(3)
+
+    #     if not i: 
+    #         if   type(hists[-1]) == TH1F: hists[-1].Draw("HIST")
+    #         hists[-1].SetMarkerColor(hcolor)
+    #         hists[-1].Draw("P")
+    #     else:
+    #         if   type(hists[-1]) == TH1F: hists[-1].Draw("HISTSAME")
+        
+        # writing two d hists
+        hists_flat[-1].Write()
+        hists_reweighted[-1].Write()
+
+    rfOUTile.Close()
+    print 'wrote ','.'*20, rfoutname
+    
+    # --
 
