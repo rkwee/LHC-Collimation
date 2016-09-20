@@ -7,6 +7,7 @@ The simulation of background in the LHC can be very demanding in terms of CPU as
 To evaluate the contribution of background sources we use FLUKA~\cite{flukaRef1,flukaRef2}, a general purpose Monte Carlo generator, calculating particle interaction and transport within matter for a user-defined geometry. It uses modern physics models and experimental data as available by the Particle Data Group~\cite{pdgRef}.
 We use a geometry built up to 550~m of the right side of IR1 for the present LHC machine (the layout is symmetric around the IP1), for HL-LHC scenarios the geometry reaches up the tertiary collimators of around 215~m. 
 
+Note, that usually the distributions are indicated per interaction, for beam-halo simulations distributions are shown per hit in the tertiary collimator (TCT) and for beam-gas (BG) it is per proton-nitrogen interaction.
 
 \subsection{Beam-Halo simulations}
 The simulation is performed in two steps: First, we use SixTrack~\cite{SixTrackRef} to track halo proton distributions customised by the user through a magnetic field lattice, usually prepared using MadX (for more information see also~\cite{chiarasThesis}). The beam halo is usually simulated in horizontal (h) and vertical (v) distributions. When a collimator is hit, a built-in, recently updated Monte-Carlo model~\cite{claudiasThesis} decides on the physics process. Protons continue in the lattice until they dissociate in an inelastic interaction with the collimator material or (in a post-processing step) are lost on the aperture. As a result, loss locations around the ring can be identified and protons absorbed by the TCTs serve in second step as seeds in \fluka~to start off forced inelastic interactions.
@@ -35,23 +36,106 @@ When interacting with the jaw material of the TCTH or TCTV shower particles are 
 
 \subsection{Beam-Gas simulations}
 Beam-gas interactions were simulated with \fluka~using a detailed geometry up to the arc. % for Run I and Run II which goes up to 550~m, but with different magnetic fields for a 4 TeV and a 6.5 TeV proton beam and the respective optics.
- Protons were forced to undergo an inelastic interaction with residual gas molecules on positions on the ideal orbit. A new technique used here includes the variation of the transverse beam size which in particular is large just before the triplet when the beam is squeezed for collisions, more details on that is given in Sec.~\ref{beamgasBS}. 
+ Protons were forced to undergo an inelastic interaction with residual gas molecules on positions on the ideal orbit. A new technique used here includes the variation of the transverse beam size which in particular is large just before the triplet when the beam is squeezed for collisions.
 
 The sampling positions were read into \fluka~and like for the beam-halo simulations each shower particle reaching the interface plane at 22.6~m is used to dump information about fluxes towards the experiment. 
 
 Simulations can either be done normalising the results distribution in a subsequent step or at run time. The advantage of the first method is distributions can be normalised to several pressure profiles given the information is kept of the origin of creation of the particle at the interface plane. More details are given directly per case.% The normalisation with the intensity and pressure profile was done as follows: A representative fill of the run was selected and gauge data is used in the pressure simulation in order to interpolate in between the measurement points and also estimate the contribution per molecule type using the VAcuum Simulation COde, VASCO. The result file can then be re-weighted with the pressure in a subsequent step, thus the unweighted results correspond to a flat pressure. 
 
+\subsection{New simulation techniques}
+Previous studies as in Ref.~\cite{nimPaperRod} used methods relaying on approximations of either of the beam or on its trajectory. One approximation is that the transverse beam size was neglected. In particular, just before the triplet the beamsize is very large and addtional interactions in that location could contribute to shower particles at the interface plane. We will investigate in Sec.~\ref{run1run2} how the additional improvements, i.e.~the inclusion of the beam size and crossing angle, effect previous simulations. 
 
-%Normalisation to the pressure proton-nitrogen interactions are simulated in order to scale in a second step the contributions to the pressure profile usually expressed in $N_2$-equivalent.
+\subsubsection{Setup to include the beam size}
+Two cases were simulated in \fluka, with exactly the same setup for the 2012 Run I scenario, see Table~\ref{paramsRun12}, but using a different input file for positions at which beam-gas interactions are sampled.
+
+The new input file was created by dumping positions of the trajectory with different starting positions. The ideal orbit goes through (0,0) in (x,y) at the IP. Assuming a gaussian distribution of the beam particles one can produce matched phase space coordinates in the transverse plane, as shown in Fig.~\ref{ip1_gauss}, at the IP where the optical functions are $\alpha = 0$, $\beta = \beta^* = 60$~cm. Using a normalised coordinate system, the phase space coordinates were calculated as in Eq.~\ref{eq1} and used as initial seeds in \fluka~to create the trajectory. 1000 trajectories were created and randomly 10 sampling positions per longitudinal coordinate were chosen. The final input file to \fluka~is visualised in Fig.~\ref{BGASflukaInp}. One would expect the beam size to be largest after the D1 at the entrance of the triplet in Fig.~\ref{ip1_gauss}~(a). Looking back to Fig.~\ref{nominalLHC_layout} we identify first a squeeze in x (red bottom box), then in y (purple top box) and then in x again and indeed this is also what we see if the beamsize is calculated theoretically using the MadX $\beta-$functions\footnote{given by $\sigma_{x,y} = \sqrt{\epsilon_{geo} \cdot \beta_{x,y}}$ with $\epsilon_{\textrm{geo}} = \frac{ \epsilon_{\textrm{n}}}{\gamma_{\textrm{rel}}}$} as shown in Fig.~\ref{twissfileBS}.
+
+\begin{equation} \label{eq1}
+  \begin{split}
+x = & \, \sqrt{\beta \epsilon} \cdot X \\
+x' = & \sqrt{\frac{\epsilon}{\beta}} \cdot X' - \frac{\alpha X}{\sqrt{\beta \epsilon}}
+  \end{split}
+\end{equation}
+
+with $\epsilon$ being the emittance, $\alpha, \beta$ and $\gamma$ the usual twiss parameters from the definition of the emittance as conservative in $\epsilon = \gamma x^2 + \beta x'^2 + 2 \alpha x x'$, and $X$ and $X'$ satisfying the circle equation, $X^2 + X'^2 = 1$. 
+
+
+\begin{figure}%[!htb]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{figures/IP1_gauss.pdf}
+\includegraphics[width=0.9\textwidth]{figures/twiss_gauss.pdf}
+\end{center}
+%% \begin{picture} (0.,0.)
+%% \setlength{\unitlength}{1.0cm}
+%% \small{
+%%     \put ( 4.,7.35){(a)}
+%%     \put ( 12.4,7.35){(b)}
+%%     \put ( 4.,1.){(c)}
+%%     \put ( 12.4,1.){(d)}}
+%% \end{picture}
+\vspace{-0.6cm}
+ \caption{Matched phase space coordinates at IP1 in x and y (top) and at an example position (bottom, here TCTH). The rings indicate in $\sigma$ the gaussian distribution.
+  \label{ip1_gauss}}
+\end{figure}
+
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.44\textwidth]{figures/inputFluka6500GeV_yBGAS.pdf}
+\includegraphics[width=0.44\textwidth]{figures/xBGAS10z1.pdf}
+\end{center}
+\begin{picture} (0.,0.)
+\setlength{\unitlength}{1.0cm}
+\small{
+    \put ( 4.,1.){(a)}
+    \put ( 12.4,1.){(b)}
+}
+\end{picture}
+\vspace{-0.6cm}
+ \caption{Positions as sampled in \fluka~with variations of the transverse beam size vertically (a) shown for full range until the arc and horizontally (b) shown for the first 85~m from the IP without arc.
+  \label{BGASflukaInp}}
+\end{figure}
+
+\begin{figure}[!htb]
+  \begin{center}
+    \includegraphics[width=0.442\textwidth]{figures/6500GeV/x_MQXA_3R1}
+    \includegraphics[width=0.442\textwidth]{figures/6500GeV/y_MQXA_3R1}
+%    \includegraphics[width=0.32\textwidth]{figures/6500GeV/yp_MQXA_3R1}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Comparison of the calculated beam size by MadX (left corner) and gaussian fit parameters (right corner) of input sample for the angle $x$ and $y$ at an example position inside the triplet.
+  \label{bgFitCheck}}
+\end{figure}
+
+%% %Muons, Protons
+A global view on particle distributions in $\phi$ shows that the former peaks, in particular when looking at Fig.~\ref{bsRatioPhiAll} in the vertical plane at $\pm\frac{\pi}{2}$ is ``washed out'' but else no major differences can be observed. 
+
+The distributions per species, muons and protons, are shown in Fig.~\ref{bsRatioPhiMP} and one can observe clearly in the proton distributions that the shoulders are a little wider and instead the peak is not as high as when no beam size was taken into account. For muons one can conclude it does not change anything significantly.
+
+Having a closer look to proton distributions we investigate if an increase is visible where the beam size is indeed large just downstram the interface plane, from 22.6 to 59~m. Comparing the shapes per z-region of all particles and protons only one can see most of the energy comes from protons as visible from Fig.~\ref{bsZ2}. A direct comparison of the shapes in Fig.~\ref{bsZ} reveals all differences are almost entirely due to protons.
+
+\begin{figure}%[!htb]
+\begin{center}
+  \includegraphics[width=0.85\textwidth]{figures/twiss_b1_sigma_IR1Right_4TeV.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Beam sizes in IR1 in horizontal and vertical plane. The red lines indicate the longitudinal s-sections: from 22.6~m to 59~m it contains triplet, 59~m to 153~m is where the beampipes are split and the D1 sits, in 153--269~m is the D2 and goes up to the end of the LSS1 and at 269~m the arc starts and is shown up to 550~m.
+  \label{twissfileBS}}
+\end{figure}
+
+\subsubsection{Simulations with crossing angle}
+The motivation to introduce a crossing angle in the machine is to avoid parasitic interactions of the beam while they travel in the same beam pipe in the interaction region. A small crossing angle allows for a quasi head-on collision of two bunches while other bunches are kept separated. The amount of the crossing angle is given by other beam-beam effects which one wants to suppress and is trade-off between maximising luminosity and keeping the beam stable. The plane in which the angle is introduced is chosen such that one can compensate partially another long-range beam-beam effect resulting in either a positive or negative tune shift. While in IR1 the crossing angle is in the vertical plane, it is in the horizontal plane in IR5.
+
+In all simulations from 4~TeV onwards, the corrector magnets were powered in MadX and \fluka~so one can estimate the effect. XXX
 \subsection{Off-momentum particles simulations}
 Off-momentum particles are ususally efficiently cleaned in IR3, but as off-amplitude particles leak from IR7, they represent as well a source of background leaking into the experimental areas. Even if one knows already from measurements, regular off-momentum loss maps are taken for the purpose of validating collimator settings, one can see it is not a dominant source. Measured off-momenta are in the range of
 \begin{equation}
-  \delta = \frac{\Delta \mathrm{p}}{\mathrm{p}} = 1.6 10^{-3}
+  \delta = \frac{\Delta \mathrm{p}}{\mathrm{p}} = 1.6 \, \,10^{-3}
 \end{equation}
 
 The simulations were performed with SixTrack using a frequency shift which for sure will cut-off the entire initial off-momentum particle distribution. The IR3 primary collimator cut was set to 
-\subsection{Run I and Run II Simulation Cases}
-For Run I and II real physics configurations of the LHC we used as in 2012 and 2015. At 4~TeV in 2012, the optics were $\beta^* = 60$ cm and TCT collimator settings in IR1/IR5 TCTs were set to 9~$\sigma$~\cite{parametersRun1}. For Run II, the optics changed to $\beta^* = 80$~cm which was used in the machine throughout 2015 for proton-proton collisions and IR1/IR5 collimators were set to 13.7~$\sigma$. For both runs, a vertical crossing angle of $290~\mu$m was taken into account in the simulations. More simulation and run parameters can be found in Tab.~\ref{paramsRun12}. 
+\subsection{Run I and Run II simulation cases}
+For Run I and II, real physics configurations of the LHC were used for most of the $pp$ physics runs in 2012 and 2015. At 4~TeV in 2012, the optics were for a $\beta^* = 60$ cm and TCT collimator settings in IR1/IR5 TCTs were set to 9~$\sigma$~\cite{parametersRun1}. For Run II, the optics changed to $\beta^* = 80$~cm which was used in the machine throughout 2015 for proton-proton collisions and IR1/IR5 collimators were set to 13.7~$\sigma$. For both runs, a vertical crossing angle of $290~\mu$m was taken into account in the simulations. More simulation and run parameters can be found in Tab.~\ref{paramsRun12}. 
 
 \begin{table}
    \centering
@@ -71,9 +155,9 @@ For Run I and II real physics configurations of the LHC we used as in 2012 and 2
 \end{table}
 
 
-\subsection{HL-LHC Simulation Cases}
+\subsection{HL-LHC simulation cases}
 
-Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC and variants and to estimate quantitatively any advantages in term of background with different collimator layouts. An alternative set of collimator openings, so called \twosigmaret~settings, was prepared based on experience with the machine and is listed in Tab.~\ref{HLcollSettings}. In particular, the aim was to quantify the effect of additional tertiary collimators, TCT5s, for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in \fluka~at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in \fluka~a production and transportation cut-off at 20 MeV. Section~\ref{hllhcResults} is dedicated to all the HL simulation details.
+Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC and variants and to estimate quantitatively any advantages in terms of background with different collimator layouts. An alternative set of collimator openings, so called \twosigmaret~settings, was prepared based on experience with the machine and is listed in Tab.~\ref{HLcollSettings}. In particular, the aim was to quantify the effect of additional tertiary collimators, TCT5s, for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in \fluka~at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in \fluka~a production and transportation cut-off at 20 MeV. Section~\ref{hllhcResults} is dedicated to all the HL simulation details.
 
 \begin{figure}%[!htb]
 \begin{center}
