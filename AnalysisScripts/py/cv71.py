@@ -31,8 +31,9 @@ def doPhi(hist,nbins):
     return hist
 
 def doRad(hist,nbins):
+    xaxis = hist.GetXaxis()
     for i in range(1,nbins+1):
-        binArea = math.pi * (xaxis[i+1]**2 - xaxis[i]**2)
+        binArea = math.pi * (xaxis.GetBinUpEdge(i)**2 - xaxis.GetBinUpEdge(i-1)**2)
         content = hist.GetBinContent(i)
         hist.SetBinContent(i,content/binArea)
         hist.SetBinError(i,hist.GetBinError(i)/binArea)
@@ -71,13 +72,13 @@ def cv71():
         elif skey.count("Neg"): continue
         elif skey.count("Pos"): continue
         elif skey.count("Z"): continue
-        #elif skey.count("Rad"): continue
+        elif skey.count("Neu_"): continue
         elif skey.count("Char"): continue
         elif skey.count("Plus") or skey.count("Minus"): continue
         elif skey.split(tag)[0].endswith("0") or skey.count("XY"): continue
         elif skey.count("Pio") or skey.count("Kao"): continue
 
-        cv = TCanvas( 'cv', 'cv', 1400, 900)
+        cv = TCanvas(skey+ 'cv',skey+ 'cv', 1400, 900)
 
         x1, y1, x2, y2 = 0.7, 0.75, 0.9, 0.88
         mlegend = TLegend( x1, y1, x2, y2)
@@ -97,6 +98,7 @@ def cv71():
         hist_reweighted = twoDhist_reweighted.ProjectionX(skey + "makeit1d_reweighted")
         nbins = hist_reweighted.GetNbinsX()
 
+        XurMin,XurMax = -1,-1.
         doLogx, doLogy = 0, 0
         if skey.count("Ekin"):
             hist_flat = doEkin(hist_flat,nbins)
@@ -106,33 +108,44 @@ def cv71():
             hist_flat = doPhi(hist_flat,nbins)
             hist_reweighted = doPhi(hist_reweighted,nbins)
             doLogx, doLogy = 0,1
+        elif skey.count("Rad"):
+            hist_flat = doRad(hist_flat,nbins)
+            hist_reweighted = doRad(hist_reweighted,nbins)
+            hist_flat.Rebin(3)
+            hist_reweighted.Rebin(3)
+            doLogx, doLogy = 0,1
+            XurMin,XurMax = 0, 600.
             
         hname = skey
         xtitle = sDict[hname][9]
-        ytitle = sDict[hname][10]
+        ytitle = sDict[hname][10] + ' a.u.'
 
         hist_flat.Scale(1./hist_flat.Integral())
         hist_flat.GetXaxis().SetTitle(xtitle)
         hist_flat.GetYaxis().SetTitle(ytitle)
+
+        if XurMin != -1:
+            hist_flat.GetXaxis().SetRangeUser(XurMin, XurMax)
+
         hist_flat.Draw("h")
         lg, lm = "flat", 'l'
         mlegend.AddEntry(hist_flat, lg, lm)
 
         hist_reweighted.SetLineColor(kPink-3)
+        hist_reweighted.SetMarkerColor(kPink-3)
         hist_reweighted.Scale(1./hist_reweighted.Integral())
         hist_reweighted.GetYaxis().SetTitle(ytitle)
         hist_reweighted.Draw("hsame")
         lg, lm = "reweighted", 'l'
         mlegend.AddEntry(hist_reweighted, lg, lm)
-        #twoDhist_reweighted.Draw("colz")
-    #    hist_pint.Draw("hist")
+
         cv.SetLogx(doLogx)
         cv.SetLogy(doLogy)
         gPad.RedrawAxis()
 
-    #     lab = mylabel(42)
-    #     lab.DrawLatex(0.45, 0.9, '4 TeV beam-gas' )
-    # #    lab.DrawLatex(0.7, 0.82, '#mu^{#pm}' )
+        lab = mylabel(42)
+        lab.DrawLatex(0.2, 0.9, '4 TeV beam-gas' )
+        lab.DrawLatex(0.5, 0.82, sDict[hname][6] )
 
         mlegend.Draw()
 
