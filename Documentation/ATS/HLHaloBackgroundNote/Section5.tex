@@ -4,7 +4,7 @@
 
 \subsection{Beam-Gas}
 
-Beam-gas simulations in HL scenarios had been described in Ref.~\cite{ipac2014_rkh} and were not updated since.
+We refer for the most recent beam-gas simulations in HL scenarios to Ref.~\cite{ipac2014_rkh}.
 
 \subsection{Beam-Halo}
 The aim was to study loss locations for different collimator layouts and settings and evaluate quantitatively on halo background in IR1. The simulation technique as described in Sec.~\ref{simSetup} was performed in detail for the more realistic collimator settings scenario, so-called \twosigmaret~settings, and all cases are listed in Tab.~\ref{hlscenario}. The baseline collimator layout contains the TCT4s and TCT5s, although the position may not be fixed to the meter precise for the moment due to lack of sufficient space at the positions as shown in Fig.~\ref{hllhc_layout}. 
@@ -113,10 +113,10 @@ We focus on the different loads of TCT4s and TCT5s in IR1 and IR5 and are intere
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.495\textwidth]{figures/HL/tct5inrd/Ekin_BH_HL_tct5inrdB1_20MeV.pdf}
-\includegraphics[width=0.495\textwidth]{figures/HL/tct5inrd/PhiEnDist_BH_HL_tct5inrdB1_20MeV.pdf}
-\includegraphics[width=0.495\textwidth]{figures/HL/tct5inrd/RadNDist_BH_HL_tct5inrdB1_20MeV.pdf}
-\includegraphics[width=0.495\textwidth]{figures/HL/tct5inrd/RadEnDist_BH_HL_tct5inrdB1_20MeV.pdf}
+\includegraphics[width=0.43\textwidth]{figures/HL/tct5inrd/Ekin_BH_HL_tct5inrdB1_20MeV.pdf}
+\includegraphics[width=0.43\textwidth]{figures/HL/tct5inrd/PhiEnDist_BH_HL_tct5inrdB1_20MeV.pdf}
+\includegraphics[width=0.43\textwidth]{figures/HL/tct5inrd/RadNDist_BH_HL_tct5inrdB1_20MeV.pdf}
+\includegraphics[width=0.43\textwidth]{figures/HL/tct5inrd/RadEnDist_BH_HL_tct5inrdB1_20MeV.pdf}
 \end{center}
 %% \begin{picture} (0.,0.)
 %% \setlength{\unitlength}{1.0cm}
@@ -156,12 +156,12 @@ We focus on the different loads of TCT4s and TCT5s in IR1 and IR5 and are intere
 
 % ------------------------------------------------------------------------------------------
 % comparisons
-In a further simulation step, we evaluate the actual change in particle flux at the interface plane in IR1 using \fluka. Although the load on TCT4s is reduced by about a factor 4 for round B1 optics, shower particles created at TCT5s contribute to halo-induced background as well. We show in Fig.~\ref{tct5inrdb1retr} the case \twosigmaret~settings and TCT5s included. When comparing to the case with the same collimator settings but TCT4s only, one can see in Fig.~\ref{} the energy spectra for all particles and muons only reaching the interface location is depicted in Fig.~\ref{Ekin}, and their transversal radial distribution in Fig.~\ref{compRadN}. One can see in the ratio of the top plot of Fig.~\ref{Ekin} that all particles will be reduced except those with an energy reaching the beam energy when TCT5s are also installed. The integral ratio of the total number of particles indicates that close to 2 times less particles reach the interface plane when the TCT5s are in. The bottom plot of Fig.~\ref{Ekin} shows the number of muons with an energy of 100~GeV decreases, however the number of higher energy muons will rather increase by about 20~\% and even more. The lower bins of Fig.~\ref{compRadN} represent the space close to the beampipe. They will be up to a factor 3 less populated (almost entirely due to photons and electrons, not shown) if the TCT5s are in. The bottom plot of Fig.~\ref{compRadN} shows that muon distributions and their ratios feature a very similar shape.
+In a further simulation step, we evaluate the actual change in particle flux at the interface plane in IR1 using \fluka. Although the load on TCT4s is reduced by about a factor 4 for round B1 optics, shower particles created at TCT5s contribute to halo-induced background as well. We show in Fig.~\ref{tct5inrdb1retr} the case \twosigmaret~settings and TCT5s included. We compare to the case with the same collimator settings but TCT4s only in Fig.~\ref{compTCT5inoutEkin} the energy spectra for all particles and muons only reaching the interface location. Their transversal radial distribution is shown in Fig.~\ref{compRadN}. One can see in the ratio of the top plot of Fig.~\ref{Ekin} that all particles will be reduced except those with an energy reaching the beam energy when TCT5s are also installed. The integral ratio of the total number of particles indicates that close to 2 times less particles reach the interface plane when the TCT5s are in. The bottom plot of Fig.~\ref{Ekin} shows the number of muons with an energy of 100~GeV decreases, however the number of higher energy muons will rather increase by about 20~\% and even more. The lower bins of Fig.~\ref{compRadN} represent the space close to the beampipe. They will be up to a factor 3 less populated (almost entirely due to photons and electrons, not shown) if the TCT5s are in. The bottom plot of Fig.~\ref{compRadN} shows that muon distributions and their ratios feature a very similar shape.
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioEkinAll}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioEkinMuons}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioEkinAll}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioEkinMuons}
 \end{center}
 \begin{picture} (0.,0.)
 \setlength{\unitlength}{1.0cm}
@@ -172,17 +172,17 @@ In a further simulation step, we evaluate the actual change in particle flux at 
 \end{picture}
 \vspace{-0.6cm}
  \caption{Energy distribution for all particles (a) and muons (b) at the interface plane.
-  \label{Ekin}}
+  \label{compTCT5inoutEkin}}
 \end{figure}
 
 
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioPhiNAll}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioPhiNMuons}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioPhiEnAll}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioPhiEnMuons}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioPhiNAll}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioPhiNMuons}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioPhiEnAll}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioPhiEnMuons}
 \end{center}
 %% \begin{picture} (0.,0.)
 %% \setlength{\unitlength}{1.0cm}
@@ -198,10 +198,10 @@ In a further simulation step, we evaluate the actual change in particle flux at 
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioRadNAll}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioRadNMuons}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioRadEnAll}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioRadEnMuons}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioRadNAll}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioRadNMuons}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioRadEnAll}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioRadEnMuons}
 \end{center}
 %% \begin{picture} (0.,0.)
 %% \setlength{\unitlength}{1.0cm}
@@ -220,8 +220,8 @@ In a further simulation step, we evaluate the actual change in particle flux at 
 \subsubsection{Comparing layout for B2}
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioEkinAll}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioEkinMuons}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioEkinAll}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioEkinMuons}
 \end{center}
 \begin{picture} (0.,0.)
 \setlength{\unitlength}{1.0cm}
@@ -239,10 +239,10 @@ In a further simulation step, we evaluate the actual change in particle flux at 
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioPhiNAll}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioPhiNMuons}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioPhiEnAll}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioPhiEnMuons}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioPhiNAll}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioPhiNMuons}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioPhiEnAll}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioPhiEnMuons}
 \end{center}
 %% \begin{picture} (0.,0.)
 %% \setlength{\unitlength}{1.0cm}
@@ -258,10 +258,10 @@ In a further simulation step, we evaluate the actual change in particle flux at 
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioRadNAll}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioRadNMuons}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioRadEnAll}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioRadEnMuons}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioRadNAll}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioRadNMuons}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioRadEnAll}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINOUTB2/perTCThit/ratioRadEnMuons}
 \end{center}
 %% \begin{picture} (0.,0.)
 %% \setlength{\unitlength}{1.0cm}
@@ -284,10 +284,10 @@ In a further simulation step, we evaluate the actual change in particle flux at 
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.495\textwidth]{figures/HL/compNomRetrCollSett/perTCThit/ratioEkinAll.pdf}
-\includegraphics[width=0.495\textwidth]{figures/HL/compNomRetrCollSett/perTCThit/ratioPhiEnAll.pdf}
-\includegraphics[width=0.495\textwidth]{figures/HL/compNomRetrCollSett/perTCThit/ratioRadNAll.pdf}
-\includegraphics[width=0.495\textwidth]{figures/HL/compNomRetrCollSett/perTCThit/ratioRadEnAll.pdf}
+\includegraphics[width=0.43\textwidth]{figures/HL/compNomRetrCollSett/perTCThit/ratioEkinAll.pdf}
+\includegraphics[width=0.43\textwidth]{figures/HL/compNomRetrCollSett/perTCThit/ratioPhiEnAll.pdf}
+\includegraphics[width=0.43\textwidth]{figures/HL/compNomRetrCollSett/perTCThit/ratioRadNAll.pdf}
+\includegraphics[width=0.43\textwidth]{figures/HL/compNomRetrCollSett/perTCThit/ratioRadEnAll.pdf}
 \end{center}
 %% \begin{picture} (0.,0.)
 %% \setlength{\unitlength}{1.0cm}
@@ -308,10 +308,10 @@ In a further simulation step, we evaluate the actual change in particle flux at 
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINB1B2/perTCThit/ratioEkinAll.pdf}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINB1B2/perTCThit/ratioPhiEnAll.pdf}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINB1B2/perTCThit/ratioRadNAll.pdf}
-\includegraphics[width=0.495\textwidth]{figures/HL/compINB1B2/perTCThit/ratioRadEnAll.pdf}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINB1B2/perTCThit/ratioEkinAll.pdf}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINB1B2/perTCThit/ratioPhiEnAll.pdf}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINB1B2/perTCThit/ratioRadNAll.pdf}
+\includegraphics[width=0.43\textwidth]{figures/HL/compINB1B2/perTCThit/ratioRadEnAll.pdf}
 \end{center}
 %% \begin{picture} (0.,0.)
 %% \setlength{\unitlength}{1.0cm}

@@ -1,6 +1,6 @@
 \section{Simulation Results for LHC's Run I and Run II\label{run1run2}}
 
-The two background sources as previously described were investigated for several run scenarios. During Run I, the LHC was operated with two beam energies, 3.5 TeV in 2010--11 and 4~TeV in 2012\footnote{A detailed overview of parameters in Run I can be found in~\cite{parametersRun1}}. While the 3.5~TeV background data has been presented in~\cite{nimPaperRod}, we focus on new developments made since that paper and use these improvements for 4 TeV and Run II simulation cases. Beam-halo simulations consider now a crossing angle in the simulation as it has been present in the machine. Another improvement concerns beam-gas simulations for which the transverse beam size is taken into account to have the simulations closer to reality. First general characteristics of both background sources at an virtual plane are presented.
+The two background sources as previously described were investigated for several run scenarios. During Run I, the LHC was operated with two beam energies, 3.5 TeV in 2010--11 and 4~TeV in 2012\footnote{A detailed overview of parameters in Run I can be found in~\cite{parametersRun1}}. While the 3.5~TeV background data has been presented in~\cite{nimPaperRod}, we focus on new developments made since that paper and use these improvements for 4 TeV and Run II simulation cases. Beam-halo simulations consider now a crossing angle in the simulation as it has been present in the machine. Another improvement concerns beam-gas simulations for which the transverse beam size is taken into account to have the simulations closer to reality. 
 
 \subsection{Run I: 4 TeV Beam-Halo}
 
@@ -23,14 +23,13 @@ Beam-halo induced showers on the tertiary collimators depend on the initial dist
   \label{inel4TeV}}
 \end{figure}
 
-General characteristic distributions of B1 halo induced showers per TCT hit are shown in Fig.~\ref{dist4TeVB1}. The energy spectrum of all types of charged and neutral particle species is shown in Fig.~\ref{dist4TeVB1}~(a). We note the peak at beam energy of the protons arising from single diffractive dissociations, these are almost unperturbed beam particles loosing very little energy only. One can also see that in the 10 to around 500 GeV regime muons are the most dominant particle species, at low energy there are overwhelmingly many photons, followed by electrons. The azimuthal distribution of their energy as Fig.~\ref{dist4TeVB1}~(b) is dominated by protons which is clear from the single diffractive part. The energy of muons peak in the horizontal plane. The transverse radial distribtion shows that only muons reach out and most of the energy is confined to r~=~150~cm.  
-\begin{figure}[!htb]
+General, characteristic distributions of B1 halo induced showers per TCT hit are shown in Fig.~\ref{dist4TeVB1}. The energy spectrum of all types of charged and neutral particle species is shown in Fig.~\ref{dist4TeVB1}~(a). We note the peak at beam energy of the protons arising from single diffractive dissociations, these are almost unperturbed beam particles loosing very little energy only. One can also see that in the 10 to around 500 GeV regime muons are the most dominant particle species, at low energy there are overwhelmingly many photons, followed by electrons. The azimuthal distribution of their energy as Fig.~\ref{dist4TeVB1}~(b) is dominated by protons which is clear from the single diffractive part. The energy of muons peak in the horizontal plane. The transverse radial distribtion shows that only muons reach out and most of the energy is confined to r~=~150~cm.  
+\begin{figure}%[!htb]
 \begin{center}
-\includegraphics[width=0.49\textwidth]{figures/4TeV/Ekin_BH_4TeV_B1_20MeV.pdf}
-\includegraphics[width=0.49\textwidth]{figures/4TeV/PhiEnDist_BH_4TeV_B1_20MeV.pdf}
-\includegraphics[width=0.49\textwidth]{figures/4TeV/RadNDist_BH_4TeV_B1_20MeV.pdf}
-\includegraphics[width=0.49\textwidth]{figures/4TeV/RadEnDist_BH_4TeV_B1_20MeV.pdf}
-%\includegraphics[width=0.49\textwidth]{figures/4TeV/XYNMuons_BH_4TeV_B1_20MeV.pdf} %% EMPTY PLOT
+\includegraphics[width=0.49\textwidth]{figures/4TeV/haloB1_20MeV/Ekin_BH_4TeV_B1_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/4TeV/haloB1_20MeV/PhiEnDist_BH_4TeV_B1_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/4TeV/haloB1_20MeV/RadNDist_BH_4TeV_B1_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/4TeV/haloB1_20MeV/RadEnDist_BH_4TeV_B1_20MeV.pdf}
 \end{center}
 \begin{picture} (0.,0.)
 \setlength{\unitlength}{1.0cm}
@@ -45,7 +44,11 @@ General characteristic distributions of B1 halo induced showers per TCT hit are 
   \label{dist4TeVB1}}
 \end{figure}
 
-Comparing B1 to B2 halo induced distributions as in Fig.~\ref{comp4TeVB1B2}, one can see all of the shapes are quite similar. The energy spectrum of all particles (a), the enery of all particles (b) of muons (c) and protons (d) in $\phi$. One can recognise that there can be more energy expected from B2 than from B1 per beam-gas interaction. Since the normalisation to an absolute scale (not shown here) is the same for B1 and B2, simulation predicts a higher rate from B2 as well.
+Comparing B1 to B2 halo induced distributions as in Fig.~\ref{comp4TeVB1B2}, one can see all of the shapes are quite similar. The energy spectrum of all particles (a), the enery of all particles (b) of muons (c) and protons (d) in $\phi$. One can recognise that there can be more energy expected from B2 than from B1 per TCT hit. 
+
+
+
+%Since the normalisation to an absolute scale (not shown here) is the same for B1 and B2, simulation predicts a higher rate from B2 as well.
 %% \begin{figure}[!htb]
 %% \begin{center}
 %% \includegraphics[width=0.411\textwidth]{figures/4TeV/Ekin_BH_4TeV_B2_20MeV.pdf}
@@ -75,16 +78,8 @@ Comparing B1 to B2 halo induced distributions as in Fig.~\ref{comp4TeVB1B2}, one
 \includegraphics[width=0.4\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioPhiEnMuons.pdf}
 \includegraphics[width=0.4\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioPhiEnProtons.pdf}
 \end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,9.05){(a)}
-    \put ( 12.4,9.05){(b)}
-    \put ( 4.,1.){(c)}
-    \put ( 12.4,1.){(d)}}
-\end{picture}
 \vspace{-0.6cm}
- \caption{Comparison of B1 and B2 halo shower distributions at the interface plane. The numbers in the ratio plot is the integral of the ratio curve and indicates by how much nominator or denominator is larger. The error bars indicate statistical uncertainties only.
+ \caption{Comparison of B1 and B2 halo shower distributions at the interface plane. The numbers in the ratio plot is the ratio of both integrals of the top distributions to indicate by how much nominator or denominator is larger. The error bars indicate statistical uncertainties only.
   \label{comp4TeVB1B2}}
 \end{figure}
 
@@ -103,6 +98,7 @@ One immediate difference one notices is there is on average a factor 10 or more 
 \includegraphics[width=0.49\textwidth]{figures/4TeV/bs_20MeV/PhiEnDist_BG_4TeV_20MeV_bs.pdf}
 \includegraphics[width=0.49\textwidth]{figures/4TeV/bs_20MeV/RadNDist_BG_4TeV_20MeV_bs.pdf}
 \includegraphics[width=0.49\textwidth]{figures/4TeV/bs_20MeV/RadEnDist_BG_4TeV_20MeV_bs.pdf}
+
 \end{center}
 \begin{picture} (0.,0.)
 \setlength{\unitlength}{1.0cm}
@@ -117,76 +113,15 @@ One immediate difference one notices is there is on average a factor 10 or more 
   \label{dist4TeVBGbs}}
 \end{figure}
 % --------------------------------------------------------------------------------------------
-\subsection{New simulation techniques}
-Previous studies as in Ref.~\cite{nimPaperRod} used methods relaying on approximations of either of the beam or on its trajectory. One approximation is that the transverse beam size was neglected. In particular, just before the triplet the beamsize is very large and addtional interactions in that location could contribute to shower particles at the interface plane. We investigate how the additional improvements, i.e.~the inclusion of the crossing angle and beam size, effect previous simulations. 
+\subsubsection{Comparison to previous technique}
 
-\subsubsection{Setup to include the beam size and comparison \label{beamgasBS}}
-Two cases were simulated in \fluka, with exactly the same setup for the 2012 Run I scenario, see Table~\ref{paramsRun12}, but using a different input file for positions at which beam-gas interactions are sampled.
+We compare the simulations the two techniques, with and without beam size. Comparisons are made in Fig.~\ref{bsRatioPhiAll} showing $\phi$ distributions of all particles and their energy. One can see that the distributions are smoother with the new technique. Especially the peaks at $\pm \frac{\pi}{2}$ in the energy plot show clearly there is a re-distribution to the ``shoulders''.
 
-The new input file was created by dumping positions of the trajectory with different starting positions. The ideal orbit goes through (0,0) in (x,y) at the IP. Assuming a gaussian distribution of the beam particles one can produce matched phase space coordinates in the transverse plane, as shown in Fig.~\ref{ip1_gauss}, at the IP where the optical functions are $\alpha = 0$, $\beta = \beta^* = 60$~cm. Using a normalised coordinate system, the phase space coordinates were calculated as in Eq.~\ref{eq1} and used as initial seeds in \fluka~to create the trajectory. 1000 trajectories were created and randomly 10 sampling positions per longitudinal coordinate were chosen. The final input file to \fluka~is visualised in Fig.~\ref{BGASflukaInp}. One would expect the beam size to be largest after the D1 at the entrance of the triplet in Fig.~\ref{ip1_gauss}~(a). Looking back to Fig.~\ref{nominalLHC_layout} we identify first a squeeze in x (red bottom box), then in y (purple top box) and then in x again and indeed this is also what we see if the beamsize is calculated theoretically using the MadX $\beta-$functions\footnote{given by $\sigma_{x,y} = \sqrt{\epsilon_{geo} \cdot \beta_{x,y}}$ with $\epsilon_{\textrm{geo}} = \frac{ \epsilon_{\textrm{n}}}{\gamma_{\textrm{rel}}}$} as shown in Fig.~\ref{twissfileBS}.
+As the energy in $\phi$ is almost shaped by protons, we show protons and muons as they are the ones reaching far into the detector region. Indeed, there is almost the same picture for the azimuthal proton distributions shown in Fig.\ref{bsRatioPhiMP}. The effect is more pronounced for high energy protons as well in the same figure. On muons also in the figure, the new technique does not seem to have a significant impact at all.
 
-\begin{equation} \label{eq1}
-  \begin{split}
-x = & \, \sqrt{\beta \epsilon} \cdot X \\
-x' = & \sqrt{\frac{\epsilon}{\beta}} \cdot X' - \frac{\alpha X}{\sqrt{\beta \epsilon}}
-  \end{split}
-\end{equation}
+We investigate different z-sections to study if there is a difference where we know that the beam size is rather large. This is compared in Fig.~\ref{bsZ2} and Fig.~\ref{bsZ} for all particles and muons.
 
-with $\epsilon$ being the emittance, $\alpha, \beta$ and $\gamma$ the usual twiss parameters from the definition of the emittance as conservative in $\epsilon = \gamma x^2 + \beta x'^2 + 2 \alpha x x'$, and $X$ and $X'$ satisfying the circle equation, $X^2 + X'^2 = 1$. 
-
-
-\begin{figure}%[!htb]
-\begin{center}
-\includegraphics[width=0.9\textwidth]{figures/IP1_gauss.pdf}
-\includegraphics[width=0.9\textwidth]{figures/twiss_gauss.pdf}
-\end{center}
-%% \begin{picture} (0.,0.)
-%% \setlength{\unitlength}{1.0cm}
-%% \small{
-%%     \put ( 4.,7.35){(a)}
-%%     \put ( 12.4,7.35){(b)}
-%%     \put ( 4.,1.){(c)}
-%%     \put ( 12.4,1.){(d)}}
-%% \end{picture}
-\vspace{-0.6cm}
- \caption{Matched phase space coordinates at IP1 in x and y (top) and at an example position (bottom, here TCTH). The rings indicate in $\sigma$ the gaussian distribution.
-  \label{ip1_gauss}}
-\end{figure}
-
-
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=0.44\textwidth]{figures/inputFluka6500GeV_yBGAS.pdf}
-\includegraphics[width=0.44\textwidth]{figures/xBGAS10z1.pdf}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Positions as sampled in \fluka~with variations of the transverse beam size vertically (a) shown for full range until the arc and horizontally (b) shown for the first 85~m from the IP without arc.
-  \label{BGASflukaInp}}
-\end{figure}
-
-%% %Muons, Protons
-A global view on particle distributions in $\phi$ shows that the former peaks, in particular when looking at Fig.~\ref{bsRatioPhiAll} in the vertical plane at $\pm\frac{\pi}{2}$ is ``washed out'' but else no major differences can be observed. 
-
-The distributions per species, muons and protons, are shown in Fig.~\ref{bsRatioPhiMP} and one can observe clearly in the proton distributions that the shoulders are a little wider and instead the peak is not as high as when no beam size was taken into account. For muons one can conclude it does not change anything significantly.
-
-Having a closer look to proton distributions we investigate if an increase is visible where the beam size is indeed large just downstram the interface plane, from 22.6 to 59~m. Comparing the shapes per z-region of all particles and protons only one can see most of the energy comes from protons as visible from Fig.~\ref{bsZ2}. A direct comparison of the shapes in Fig.~\ref{bsZ} reveals all differences are almost entirely due to protons.
-
-\begin{figure}%[!htb]
-\begin{center}
-  \includegraphics[width=0.85\textwidth]{figures/twiss_b1_sigma_IR1Right_4TeV.pdf}
-\end{center}
-\vspace{-0.6cm}
- \caption{Beam sizes in IR1 in horizontal and vertical plane. The red lines indicate the longitudinal s-sections: from 22.6~m to 59~m it contains triplet, 59~m to 153~m is where the beampipes are split and the D1 sits, in 153--269~m is the D2 and goes up to the end of the LSS1 and at 269~m the arc starts and is shown up to 550~m.
-  \label{twissfileBS}}
-\end{figure}
-
+We can conclude that this new technique has a slight effect only, thus neglecting the beam size does not alter any previous results.%and we can exclude that this technique is a source
 
 \begin{figure}%[!htb]
 \begin{center}
@@ -206,7 +141,7 @@ Having a closer look to proton distributions we investigate if an increase is vi
   \includegraphics[width=0.411\textwidth]{figures/4TeV/beamsizeRatio/ratioPhiEnMuons.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{4 TeV azimuthal distributions of multiplicity of high energy protons (top) and muons (bottom) and all proton and muon energies.
+ \caption{4 TeV azimuthal distributions of multiplicity (left) of high energy protons (top) and muons (bottom) and all proton and muon energies.
   \label{bsRatioPhiMP}}
 \end{figure}
 
@@ -253,22 +188,21 @@ Having a closer look to proton distributions we investigate if an increase is vi
 %%  \caption{4 TeV azimuthal distributions of high-energy muons for different z-sections as in bottom of Fig.~\ref{twissfileBS}.
 %%   \label{bsRatioPhiEnMu}}
 %% \end{figure}
-
-\subsubsection{Simulations with crossing angle}
-The motivation to introduce a crossing angle in the machine is to avoid parasitic interactions of the beam while they travel in the same beam pipe in the interaction region. A small crossing angle allows for a quasi head-on collision of two bunches while other bunches are kept separated. The amount of the crossing angle is given by other beam-beam effects which one wants to suppress and is trade-off between maximising luminosity and keeping the beam stable. The plane in which the angle is introduced is chosen such that one can compensate partially another long-range beam-beam effect resulting in either a positive or negative tune shift. While in IR1 the crossing angle is in the vertical plane, it is in the horizontal plane in IR5.
+ 
+\subsubsection{Effect of the crossing angle}
 
 We can study the crossing angle effect on background in IR1 using the 3.5~TeV simulation data of~\cite{nimPaperRod}, thus halo and beam-gas induced, without any crossing angle included in the simulations and the 4 TeV halo data with a crossing angle of 290~$\mu$rad. For this comparison, we show the distributions at the interface plane per TCT hit. 
 
-We find that the beam-gas data in Fig.~\ref{xingCompBG} exhibit a clear signature of the improved simulation technique including the crossing angle. There is a general accumulattion in the upper part of the vertical plane; the beam is directed downwards but as the sampling position is still in the upper hemisphere the peak of particles is around $+ \frac{\pi}{2}$. Muon distributions are not significantly affected as other effects are more dominating the azimuthal distribution (like magnetic fields effects). 
+We find that the beam-gas data in Fig.~\ref{xingCompBG} exhibit a clear signature of the improved simulation technique including the crossing angle. There is a general accumulation in the upper part of the vertical plane; the beam is directed downwards but as the sampling position is still in the upper hemisphere the peak of particles is around $+ \frac{\pi}{2}$. Muon distributions are not significantly affected as other effects are more dominating the azimuthal distribution (like magnetic fields effects). 
 
-In contrast, the beam-halo data in Fig.~\ref{xingCompBH} do not exhibit clear differences when comparing 3.5~TeV to 4 TeV simulations. As only effect we find that the distributions without crossing angle are slightly more symmetric in $\phi$. The reason for that is that particles of all forward angles are created at the TCTs and secondaries loose the initial crossing angle of the beam protons.
+In contrast, the beam-halo data in Fig.~\ref{xingCompBH1} and Fig.~\ref{xingCompBH2} do not exhibit clear differences when comparing 3.5~TeV to 4 TeV simulations. As only effect we find that the distributions without crossing angle are slightly more symmetric in $\phi$. The reason for that is that particles of all forward angles are created at the TCTs and secondaries loose the initial direction of the crossing angle of the beam protons.
 
 \begin{figure}
 \begin{center}
-  \includegraphics[width=0.4\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/ratioPhiEnAll.pdf}
-  \includegraphics[width=0.4\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/ratioPhiEnPhotons.pdf}
-  \includegraphics[width=0.4\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/ratioPhiEnMuons.pdf}
-  \includegraphics[width=0.4\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/ratioPhiEnMuE100.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/ratioPhiEnAll.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/ratioPhiEnPhotons.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/ratioPhiEnMuons.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/ratioPhiEnMuE100.pdf}
 \end{center}
 \vspace{-0.6cm}
  \caption{beam-gas data: Clear effect of crossing angle visible showing accumulations of particles at around $\frac{\pi}{2}$ in the vertical plane. The distribution of muons and in particular high energy muons are not significantly affected.
@@ -277,39 +211,28 @@ In contrast, the beam-halo data in Fig.~\ref{xingCompBH} do not exhibit clear di
 
 \begin{figure}
 \begin{center}
-  \includegraphics[width=0.24\textwidth]{figures/compBHB1_3p5vs4TeV/ratioPhiEnAll.pdf}
-  \includegraphics[width=0.24\textwidth]{figures/compBHB1_3p5vs4TeV/ratioPhiEnPhotons.pdf}
-  \includegraphics[width=0.24\textwidth]{figures/compBHB1_3p5vs4TeV/ratioPhiEnMuons.pdf}
-  \includegraphics[width=0.24\textwidth]{figures/compBHB1_3p5vs4TeV/ratioPhiEnMuE100.pdf}
-
-  \includegraphics[width=0.24\textwidth]{figures/4TeV/compB2_3p5vs4TeV/ratioPhiEnAll.pdf}
-  \includegraphics[width=0.24\textwidth]{figures/4TeV/compB2_3p5vs4TeV/ratioPhiEnPhotons.pdf}
-  \includegraphics[width=0.24\textwidth]{figures/4TeV/compB2_3p5vs4TeV/ratioPhiEnMuons.pdf}
-  \includegraphics[width=0.24\textwidth]{figures/4TeV/compB2_3p5vs4TeV/ratioPhiEnMuE100.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/compBHB1_3p5vs4TeV/ratioPhiEnAll.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/compBHB1_3p5vs4TeV/ratioPhiEnPhotons.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/compBHB1_3p5vs4TeV/ratioPhiEnMuons.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/compBHB1_3p5vs4TeV/ratioPhiEnMuE100.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{B2 beam-halo data: Energy enhancement between $-\frac{\pi}{2}$ and $-\pi$, enhancement of photons in horizontal plane?? More muons around $-\frac{\pi}{2}$? No significant different for 100 GeV muons, even less energy around $\frac{\pi}{2}$.
-  \label{xingCompBH}}
+ \caption{beam-halo data for B1
+  \label{xingCompBH1}}
 \end{figure}
 
 \begin{figure}
 \begin{center}
-  \includegraphics[width=0.24\textwidth]{figures/compBHB1_4TeV_vs_6.5TeV/ratioEkinAll.pdf}
-  \includegraphics[width=0.24\textwidth]{figures/compBHB1_4TeV_vs_6.5TeV/ratioPhiEnAll.pdf}
-  \includegraphics[width=0.24\textwidth]{figures/compBHB1_4TeV_vs_6.5TeV/ratioPhiEnPhotons.pdf}
-  \includegraphics[width=0.24\textwidth]{figures/compBHB1_4TeV_vs_6.5TeV/ratioPhiEnMuons.pdf}
-%  \includegraphics[width=0.24\textwidth]{figures/compBHB1_4TeV_vs_6.5TeV/ratioPhiEnMuE100.pdf}
-
-  \includegraphics[width=0.24\textwidth]{figures/compBHB2_4TeV_vs_6.5TeV/ratioEkinAll.pdf}
-  \includegraphics[width=0.24\textwidth]{figures/compBHB2_4TeV_vs_6.5TeV/ratioPhiEnAll.pdf}
-  %\includegraphics[width=0.24\textwidth]{figures/compBHB2_4TeV_vs_6.5TeV/ratioPhiEnPhotons.pdf}
-  \includegraphics[width=0.24\textwidth]{figures/compBHB2_4TeV_vs_6.5TeV/ratioPhiEnMuons.pdf}
-  \includegraphics[width=0.24\textwidth]{figures/compBHB2_4TeV_vs_6.5TeV/ratioPhiEnMuE100.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/4TeV/compB2_3p5vs4TeV/ratioPhiEnAll.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/4TeV/compB2_3p5vs4TeV/ratioPhiEnPhotons.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/4TeV/compB2_3p5vs4TeV/ratioPhiEnMuons.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/4TeV/compB2_3p5vs4TeV/ratioPhiEnMuE100.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{Beam-halo data: B1 (top) B2 (bottom)
-  \label{valXingBH}}
+ \caption{B2 beam-halo data: for b2 Energy enhancement between $-\frac{\pi}{2}$ and $-\pi$, enhancement of photons in horizontal plane?? More muons around $-\frac{\pi}{2}$? No significant different for 100 GeV muons, even less energy around $\frac{\pi}{2}$.
+  \label{xingCompBH2}}
 \end{figure}
+
 
 \subsubsection{Re-normalising beam gas events with pressure profile}
 
@@ -319,10 +242,11 @@ The interaction probability per gas species $i$ and per seconds is given by
 \begin{equation} \label{eq2}
 p_{\mathrm{int},i} = \sigma_{i} \cdot \rho_{i}(s) \cdot \frac{1}{T_{\mathrm{rev}}}
 \end{equation}
-with $\sigma_i$ the cross-section of the atom, $T_{\mathrm{rev}}$ the revolution period of the beam. We used the inelastic cross-sections for H, C and O as indicated in Ref.~\cite{nimPaperRod} as they are expected to be very similar to those at 4~TeV.
+with $\sigma_i$ the cross-section of the atom, $T_{\mathrm{rev}}$ the revolution period of the beam. We used the inelastic cross-sections for H, C and O as indicated in Ref.~\cite{nimPaperRod} as they are approximately similar to those at 4~TeV.
 
-To obtain the normalisation per bin we applied the same method as it has been done for 3.5~TeV \cite{nimPaperRod}, scaling with the beam intensity and the total interaction probability. The method is shown in the top plot of Fig.~\ref{normed}, in green the total interaction probability up to the arc (the pressure has been extended to the arc by taking closest value as constant), in black the number of muons per beam-gas interaction and in red the multiplication of both scaled to the maximum beam intensity of that fill (2 $\times$ 10$^{14}$ protons). One can see the result is mainly shaped by the pressure map. The bottom plot shows again the number of muons per second together with high energy muons. 
+To obtain the normalisation per bin we applied the same method as it has been done for 3.5~TeV \cite{nimPaperRod}, scaling with the beam intensity and the total interaction probability. The beam-intensity in the LHC fill 2736 was about $2.04 \times 10^{14}$ for B1 and $2.07 \times 10^{14}$ for B2. The method is shown in the top plot of Fig.~\ref{normed}, in green the total interaction probability up to the arc (the pressure has been extended to the arc by taking closest value as constant), in black the number of muons per beam-gas interaction and in red the multiplication of both scaled to the maximum beam intensity of that fill. One can see the result is mainly shaped by the pressure map. The bottom plot shows again the number of muons per second together with high energy muons. 
 
+In Fig.~\ref{reweighted1} we compare the distributions without re-scaling to a profile which corresponds to a flat profile and reweighted according to the pressure shown in Fig.~\ref{pressure2012}. The y-axis is in a.u.\footnote{we also kept the label of the type of distribution}.
 
 \begin{figure}[!htb]
 \begin{center}
@@ -342,6 +266,23 @@ To obtain the normalisation per bin we applied the same method as it has been do
 \vspace{-0.6cm}
  \caption{Origin of muon production normalised to the pressure shown in Fig.~\ref{pressure2012}. of all energies (black line) and muons with an energy above 100 GeV (filled red).
   \label{normed}}
+\end{figure}
+
+
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/EkinAll_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/EkinMuons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/PhiEnAll_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/PhiEnMuons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/RadNAll_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/RadNMuons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/RadEnAll_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/RadEnMuons_BG_4TeV_20MeV_bs}
+\end{center}
+\vspace{-0.6cm}
+ \caption{The distributions are normalised to 1 to better compare the shapes for all particles (left) and muons (right).
+  \label{reweighted1}} 
 \end{figure}
 % --------------------------------------------------------------------------------------------
 \subsection{Run I: Off-momentum induced showers at 4 TeV}
@@ -382,6 +323,7 @@ Off-momentum particles are ususally efficiently cleaned in IR3, but as off-ampli
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioEkinMuons.pdf}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioEkinProtons.pdf}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioEkinNeutrons.pdf}
+  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioEkinPhotons.pdf}
 \end{center}
 \vspace{-0.6cm}
  \caption{Off-momentum particles generated by a positive frequency shift induce particle distributions.
@@ -391,9 +333,11 @@ Off-momentum particles are ususally efficiently cleaned in IR3, but as off-ampli
 \begin{figure}[!htb]
 \begin{center}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiEnAll.pdf}
-  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiEnMuons.pdf}
-  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiEnMuE100.pdf}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiEnProtons.pdf}
+  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiEnNeutrons.pdf}
+  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiEnMuons.pdf}
+  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiNMuR500.pdf}
+  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiEnMuR500.pdf}
 \end{center}
 \vspace{-0.6cm}
  \caption{Off-momentum particles generated by a positive frequency shift induce particle distributions.
@@ -406,6 +350,8 @@ Off-momentum particles are ususally efficiently cleaned in IR3, but as off-ampli
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnMuons.pdf}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnProtons.pdf}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnPhotons.pdf}
+  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnNeutrons.pdf}
+  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnMuons.pdf}
 \end{center}
 \vspace{-0.6cm}
  \caption{Off-momentum particles generated by a positive frequency shift induce particle distributions.
@@ -454,13 +400,13 @@ The same method is used as in the 4 TeV simulations changing to the Run II 2015 
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=0.49\textwidth]{figures/BH_run2/Ekin_BH_6500GeV_haloB2_20MeV.pdf}
-\includegraphics[width=0.49\textwidth]{figures/BH_run2/PhiEnDist_BH_6500GeV_haloB2_20MeV.pdf}
-%\includegraphics[width=0.49\textwidth]{figures/BH_run2/PhiNDist_BH_6500GeV_haloB2_20MeV.pdf}
-\includegraphics[width=0.49\textwidth]{figures/BH_run2/RadNDist_BH_6500GeV_haloB2_20MeV.pdf}
-\includegraphics[width=0.49\textwidth]{figures/BH_run2/RadEnDist_BH_6500GeV_haloB2_20MeV.pdf}
-\includegraphics[width=0.49\textwidth]{figures/BH_run2/OrigYZMuons_BH_6500GeV_haloB2_20MeV.pdf}
-\includegraphics[width=0.49\textwidth]{figures/BH_run2/OrigXYMuons_BH_6500GeV_haloB2_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/BH_run2/b2/Ekin_BH_6500GeV_haloB2_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/BH_run2/b2/PhiEnDist_BH_6500GeV_haloB2_20MeV.pdf}
+%\includegraphics[width=0.49\textwidth]{figures/BH_run2/b2/PhiNDist_BH_6500GeV_haloB2_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/BH_run2/b2/RadNDist_BH_6500GeV_haloB2_20MeV.pdf}
+\includegraphics[width=0.49\textwidth]{figures/BH_run2/b2/RadEnDist_BH_6500GeV_haloB2_20MeV.pdf}
+%\includegraphics[width=0.49\textwidth]{figures/BH_run2/b2/OrigYZMuons_BH_6500GeV_haloB2_20MeV.pdf}
+%\includegraphics[width=0.49\textwidth]{figures/BH_run2/b2/OrigXYMuons_BH_6500GeV_haloB2_20MeV.pdf}
 \end{center}
 \begin{picture} (0.,0.)
 \setlength{\unitlength}{1.0cm}
