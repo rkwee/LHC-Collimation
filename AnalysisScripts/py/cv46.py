@@ -10,20 +10,25 @@ import helpers, array, random
 from helpers import wwwpath, length_LHC, mylabel, gitpath, length_LHC
 from array import array
 # -----------------------------------------------------------------------------------
+
+def getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx):
+    small_xp =  math.sqrt(emittance_geo/betx) * big_xp - math.sqrt(emittance_geo)*alfx*big_x/math.sqrt(betx)
+    return small_xp
+
 def cv46():
 
-
     # number of randomly produced values per s location
-    N = 1000
+    N = 100
     doWrite = 1
 
     energy = "6.5TeV"
     gamma_rel = 6.5e3/0.938
     betaStar = 0.8
 
-    energy = "4TeV"
-    gamma_rel = 4e3/0.938
-    betaStar = 0.6
+    # out
+    # energy = "4TeV"
+    # gamma_rel = 4e3/0.938
+    # betaStar = 0.6
 
     pointsName = ['IP1']
 
@@ -81,7 +86,8 @@ def cv46():
         foutname = name + '_N' + str(N) + '.txt'
         #foutname = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/INIC6p5.dat'
         #  foutname = '/afs/cern.ch/project/lhc_mib/beamsize/6500GeV_beamsize/checkTrajectory6500GeV/orbitDump/INIC6p5.dat'
-        foutname = '/afs/cern.ch/project/lhc_mib/valBG4TeV/inicon/INIC4TeV.dat'
+        # foutname = '/afs/cern.ch/project/lhc_mib/valBG4TeV/inicon/INIC4TeV.dat'
+        foutname = '/afs/cern.ch/project/lhc_mib/bgChecks3/INIC6500GeV.dat'
 
         if doWrite:
             fot = open(foutname, 'w')
@@ -91,35 +97,34 @@ def cv46():
             # histogram 
             big_x  = gauss1.GetRandom()
             big_xp = gauss2.GetRandom()
-            small_xp = math.sqrt(emittance_geo/betx) * big_xp - (alfx*big_x)/math.sqrt(emittance_geo * betx)
+            small_xp = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
             small_x  = big_x*sigx 
             hx[-1].Fill(small_x,small_xp)
             cx = small_xp
-
 
             # 3 contour lines
             phi = 2*random.random()*math.pi
             big_x  = math.cos(phi)
             big_xp = math.sin(phi)
-            small_xp = math.sqrt(emittance_geo/betx) * big_xp - (alfx*big_x)/math.sqrt(emittance_geo * betx)
+            small_xp = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
             small_x  = big_x*sigx 
             c_x1[-1].SetPoint(i+1,small_x,small_xp)
 
             big_x  = 2*math.cos(phi)
             big_xp = 2*math.sin(phi)
-            small_xp = math.sqrt(emittance_geo/betx) * big_xp - (alfx*big_x)/math.sqrt(emittance_geo * betx)
+            small_xp = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
             small_x  = big_x*sigx 
             c_x2[-1].SetPoint(i+1,small_x,small_xp)
 
             big_x  = 3*math.cos(phi)
             big_xp = 3*math.sin(phi)
-            small_xp = math.sqrt(emittance_geo/betx) * big_xp - (alfx*big_x)/math.sqrt(emittance_geo * betx)
+            small_xp = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
             small_x  = big_x*sigx 
             c_x3[-1].SetPoint(i+1,small_x,small_xp)
 
             big_y  = gauss3.GetRandom()
             big_yp = gauss4.GetRandom()
-            small_yp = math.sqrt(emittance_geo/bety) * big_yp - alfy*big_y/math.sqrt(emittance_geo*bety)
+            small_yp = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
             small_y  = math.sqrt(bety*emittance_geo) * big_y
             hy[-1].Fill(small_y,small_yp)
 
@@ -137,19 +142,19 @@ def cv46():
             phi = 2*random.random()*math.pi
             big_y  = math.cos(phi)
             big_yp = math.sin(phi)
-            small_yp = math.sqrt(emittance_geo/bety) * big_yp - alfy*big_y/math.sqrt(emittance_geo*bety)
+            small_yp = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
             small_y  = big_y*sigy 
             c_y1[-1].SetPoint(i+1,small_y,small_yp)
 
             big_y  = 2*math.cos(phi)
             big_yp = 2*math.sin(phi)
-            small_yp = math.sqrt(emittance_geo/bety) * big_yp - alfy*big_y/math.sqrt(emittance_geo*bety)
+            small_yp = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
             small_y  = big_y*sigy
             c_y2[-1].SetPoint(i+1,small_y,small_yp)
 
             big_y  = 3*math.cos(phi)
             big_yp = 3*math.sin(phi)
-            small_yp = math.sqrt(emittance_geo/bety) * big_yp - alfy*big_y/math.sqrt(emittance_geo*bety)
+            small_yp = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
             small_y  = big_y*sigy 
             c_y3[-1].SetPoint(i+1,small_y,small_yp)
 
@@ -216,7 +221,7 @@ def cv46():
     rel = 'gauss' 
     pname  = wwwpath
     subfolder = 'TCT/'+energy+'/beamgas/'
-    pname += subfolder + 'IP1_'+rel+'_'+energy+'.pdf'
+    pname += subfolder + 'IP1_'+rel+'_'+energy+'bgCheck3.png'
 
     print('Saving file as ' + pname ) 
     cv.SaveAs(pname)
