@@ -18,7 +18,7 @@ def getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx):
 def cv46():
 
     # number of randomly produced values per s location
-    N = 100
+    N = 1000
     doWrite = 1
 
     energy = "6.5TeV"
@@ -26,9 +26,9 @@ def cv46():
     betaStar = 0.8
 
     # out
-    # energy = "4TeV"
-    # gamma_rel = 4e3/0.938
-    # betaStar = 0.6
+    energy = "4TeV"
+    gamma_rel = 4e3/0.938
+    betaStar = 0.6
 
     pointsName = ['IP1']
 
@@ -83,11 +83,13 @@ def cv46():
         sigx = math.sqrt(emittance_geo * betx)
         sigy = math.sqrt(emittance_geo * bety)
 
+        print sigx, sigy, "sigx, sigy"
         foutname = name + '_N' + str(N) + '.txt'
         #foutname = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/INIC6p5.dat'
         #  foutname = '/afs/cern.ch/project/lhc_mib/beamsize/6500GeV_beamsize/checkTrajectory6500GeV/orbitDump/INIC6p5.dat'
         # foutname = '/afs/cern.ch/project/lhc_mib/valBG4TeV/inicon/INIC4TeV.dat'
         foutname = '/afs/cern.ch/project/lhc_mib/bgChecks3/INIC6500GeV.dat'
+        foutname = '/afs/cern.ch/project/lhc_mib/bgChecks3/INIC4TeV_fout.dat'
 
         if doWrite:
             fot = open(foutname, 'w')
@@ -97,10 +99,10 @@ def cv46():
             # histogram 
             big_x  = gauss1.GetRandom()
             big_xp = gauss2.GetRandom()
-            small_xp = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
-            small_x  = big_x*sigx 
-            hx[-1].Fill(small_x,small_xp)
-            cx = small_xp
+            small_xp_fout = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
+            small_x_fout  = big_x*sigx 
+            hx[-1].Fill(small_x_fout,small_xp_fout)
+            cx_fout = small_xp_fout
 
             # 3 contour lines
             phi = 2*random.random()*math.pi
@@ -124,18 +126,18 @@ def cv46():
 
             big_y  = gauss3.GetRandom()
             big_yp = gauss4.GetRandom()
-            small_yp = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
-            small_y  = math.sqrt(bety*emittance_geo) * big_y
-            hy[-1].Fill(small_y,small_yp)
+            small_yp_fout = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
+            small_y_fout  = sigy * big_y
+            hy[-1].Fill(small_y_fout,small_yp_fout)
 
             # consider also crossing angle 
-            cy = small_yp + 145.e-6
+            cy_fout = small_yp_fout + 145.e-6
 
-            hxIP.Fill(100.*small_x, 100.*small_y)
+            hxIP.Fill(100.*small_x_fout, 100.*small_y_fout)
 
             # write out format for INICON.dat that is input for source_no_interactions_no_random_part.f
             # convert to fluka units, ie m in cm
-            lineINICON = str(100*small_x) + ' ' + str(100.*small_y) + ' ' + ' 0.0 ' + str(cx) + ' ' + str(cy) + ' 0.0   0.0 \n'
+            lineINICON = str(100.*small_x_fout) + ' ' + str(100.*small_y_fout) + ' ' + ' 0.0 ' + str(cx_fout) + ' ' + str(cy_fout) + ' 0.0   0.0 \n'
             line = str(i+1) + ' ' + lineINICON
             if doWrite: fot.write(lineINICON)
 
@@ -221,7 +223,7 @@ def cv46():
     rel = 'gauss' 
     pname  = wwwpath
     subfolder = 'TCT/'+energy+'/beamgas/'
-    pname += subfolder + 'IP1_'+rel+'_'+energy+'bgCheck3.png'
+    pname += subfolder + 'IP1_'+rel+'_'+energy+'bgCheck3.pdf'
 
     print('Saving file as ' + pname ) 
     cv.SaveAs(pname)
