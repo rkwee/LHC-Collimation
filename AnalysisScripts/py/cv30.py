@@ -18,18 +18,18 @@ from array import array
 def cv30():
 
     debug        = 1
-    doWriteRFile = 0
+    doWriteRFile = 1
     plotLossMaps = 1
 
-    doIR1 = 0
+    doIR1 = 1
 
 
     # subfolder to which figures are written
     pname  = wwwpath
-    pname = ''
+#    pname = ''
     subfolder = 'TCT/HL/nominalColl/2015/lossmaps/'
 #    subfolder = 'TCT/HL/relaxedColl/newScatt/lossmaps/'
-    subfolder = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/'
+#    subfolder = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/'
 #    subfolder = 'TCT/6.5TeV/'
 #    subfolder = 'TCT/4TeV/'
 
@@ -55,20 +55,24 @@ def cv30():
         # ('H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin'),
         # ('H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin'),
         # ('H5_HL_TCT5IN_relaxColl_vHaloB1_sroundthin'),
-        # ('H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin'),
+        # ('H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin'), 
         # ('H5_HL_TCT5IN_relaxColl_vHaloB1_sflatthin'),
         # ('H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin'),
         # ('H5_HL_TCT5IN_relaxColl_hHaloB1_sroundthin'),
-        # ('H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin'),
+        # ('H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin'), 
         # ('H5_HL_TCT5IN_relaxColl_hHaloB1_sflatthin'),
 
-        ('H5_HL_nomSett_hHalo_b1'),
-        ('H5_HL_nomSett_vHalo_b1'),
+        # ('H5_HL_nomSett_hHalo_b1'),
+        # ('H5_HL_nomSett_vHalo_b1'),
+
 
         ]
 
 
     for coll in colls:
+        pname  = wwwpath
+    #    pname = ''
+
 
         if not coll.startswith('_'): 
             tag  = coll
@@ -189,6 +193,7 @@ def cv30():
             trname = 'normtree' + coll
 
             doZooms = ['fullring','IR7', 'IR5']
+            doZooms = ['IR5']
             if rfname.count("IR1"): doZooms = ['IR1']
 
             for doZoom in doZooms: 
