@@ -75,27 +75,43 @@ def cv43():
 
     #       ],
         
-        [ workpath + 'runs/6.5TeV_hHaloB1_h5/coll_summary_6.5TeV_hHaloB1_h5.dat', \
-              gitpath + 'FlukaRoutines/6.5TeV/b1/HALOB1.dat.root', \
-              gitpath  + 'SixTrackConfig/6.5TeV/MED800/B1/collgaps.dat',\
-              'TCT/6.5TeV/', '6.5 TeV B1', 0.7, \
-              100,0., 10.,
-          ],
+        # [ workpath + 'runs/6.5TeV_hHaloB1_h5/coll_summary_6.5TeV_hHaloB1_h5.dat', \
+        #       gitpath + 'FlukaRoutines/6.5TeV/b1/HALOB1.dat.root', \
+        #       gitpath  + 'SixTrackConfig/6.5TeV/MED800/B1/collgaps.dat',\
+        #       'TCT/6.5TeV/', '6.5 TeV B1', 0.7, \
+        #       100,0., 10.,
+        #   ],
 
-        [ workpath + 'runs/6.5TeV_hHaloB2_h5/coll_summary_6.5TeV_hHaloB2_h5.dat', \
-              gitpath + 'FlukaRoutines/6.5TeV/b2/HALOB2.dat.root', \
-              gitpath  + 'SixTrackConfig/6.5TeV/MED800/B2/collgaps.dat',\
-              'TCT/6.5TeV/', '6.5 TeV B2', 5.e-1, \
-              100,0., 10.,
-          ],
+        # [ workpath + 'runs/6.5TeV_hHaloB2_h5/coll_summary_6.5TeV_hHaloB2_h5.dat', \
+        #       gitpath + 'FlukaRoutines/6.5TeV/b2/HALOB2.dat.root', \
+        #       gitpath  + 'SixTrackConfig/6.5TeV/MED800/B2/collgaps.dat',\
+        #       'TCT/6.5TeV/', '6.5 TeV B2', 5.e-1, \
+        #       100,0., 10.,
+        #   ],
 
         # # 4 TeV
+        [ projectpath + 'bgChecks2/NewScatt_4TeV_hHaloB1/coll_summary_NewScatt_4TeV_hHaloB1.dat',\
+              projectpath + 'bgChecks2/impacts_real_NewScatt_4TeV_haloB1.txt.root',\
+              gitpath + 'SixTrackConfig/4TeV/TCThaloStudies/b1/collgaps.dat',\
+              'TCT/4TeV/tctimpacts/', '4 TeV B1', 1., \
+              100,0., 20.,
+            ],
+
+
+        [ projectpath + 'bgChecks2/NewScatt_4TeV_hHaloB2/coll_summary_NewScatt_4TeV_hHaloB2.dat',\
+              projectpath + 'bgChecks2/impacts_real_NewScatt_4TeV_haloB2.txt.root',\
+              gitpath + 'SixTrackConfig/4TeV/TCThaloStudies/b2/collgaps.dat',\
+              'TCT/4TeV/tctimpacts/', '4 TeV B2', 1., \
+              100,0., 20.,
+            ],
+
         # [ workpath + 'runs/4TeV_Halo/coll_summary_TCT_4TeV_B2hHalo.dat',\
         #       workpath + 'runs/4TeV_Halo/HALO4TeVB2.dat.root',\
         #       gitpath + 'SixTrackConfig/4TeV/TCThaloStudies/b2/collgaps.dat',\
         #       'TCT/4TeV/B2/', '4 TeV B2', 1., \
         #       100,0., 10.,
         #     ],
+
 
         # [ workpath + 'runs/4TeV_Halo/coll_summary_TCT_4TeV_B1hHalo.dat',\
         #       workpath + 'runs/sourcedirs/TCT_4TeV_60cm/fluka/impacts_real_HALO.dat.root',\
@@ -282,7 +298,7 @@ def cv43():
         cv.SaveAs(pname)
 
         # do a separate canvas for summary plot 
-        cvSum = TCanvas( 'cvSum', 'cvSum', 900, 700)
+        cvSum = TCanvas( 'cvSum' + str(i), 'cvSum' + str(i), 900, 700)
 
         x1, y1, x2, y2 = 0.48,0.7,0.9,0.93
         thelegend = TLegend( x1, y1, x2, y2)
@@ -323,7 +339,7 @@ def cv43():
 
         pname  = wwwpath
         pname += subfolder + 'inelposition_sum_'+rel+'.pdf'
-        pname = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/inelposition_sum_'+rel+'.pdf'
+        #pname = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/inelposition_sum_'+rel+'.pdf'
         cvSum.SaveAs(pname)
     # -----------------------------------------------------------------------------------
     # get the histograms
