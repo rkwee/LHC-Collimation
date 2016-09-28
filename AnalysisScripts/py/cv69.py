@@ -1,8 +1,8 @@
 #!/usr/bin/python
 #
-# # compare all BKG types at 4 TeV
+# # compare all BKG types at 6.5 TeV
 #   Sep 16 rkwee
-#   cv16->this 
+#   cv16->cv68->cv69
 ## -------------------------------------------------------------------------------
 import ROOT, sys, glob, os
 from ROOT import *
@@ -10,13 +10,7 @@ from helpers import *
 from createTTree import treeName
 from fillTTree_dict import generate_sDict
 ## -------------------------------------------------------------------------------
-def cv68():
-    # new halo (new scatt)
-    norm4TeVB1newHalo = 1380 *1.4e11/360000 * 0.5*(622.0/60948098 + 930.0/64935501) 
-    # IR5: (866+92 + 170.0+456 )/(60948098 + 64935501) = 1.26e-5,>>> (866+92)/60948098 + (170.0+456)/64935501 = 9.64e-06
-
-    norm4TeVB2newHalo = 1380 * 1.4e11/360000 * (1179.0/59198135 +967/56887051.)/2.  
-    # IR5: (1893.0 + 135)/(59198135 +56887051) = 1.75e-5, >>> 1893.0/59198135 +135/56887051. = 3.435e-05
+def cv69():
 
     norm6500GeVB1 = 2748 * 1.2e11/360000 *0.5*(739./62515929 +(312+273.)/62692523) # 2.1e-5
     norm6500GeVB2 = 2748 * 1.2e11/360000 *0.5*(779./50890652+773./63119778.) # 2.76e-5 take the average of H an V runs!
@@ -349,21 +343,19 @@ def cv68():
 
     # ------------------------------------------------------------------------
 
-    # all at 4 TeV
-    f1 = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
-    f2 = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
-    f3 = '/afs/cern.ch/project/lhc_mib/valBG4TeV/results_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
-    f4 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVplusB2/results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
-    f5 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVminusB2/results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
-    filenames = [f1,f2,f3,f4,f5]
+    # all at 6.5 TeV
+    f1 = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root'
+    f2 = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
+    f3 = projectpath + 'bbgen/6.5TeV/results_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root' # hat falschen tag!
+    filenames = [f1,f2,f3]
 
-    subfolder = wwwpath + 'TCT/4TeV/compAllBKG/'
+    subfolder = wwwpath + 'TCT/6.5TeV/compAllBKG/'
 
-    lTexts = ['Halo B1', 'Halo B2', 'beam-gas','+500 Hz', '-500 Hz']
-    tags   = ['_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV', '_BG_4TeV_20MeV_bs' , '_offplus500Hz_4TeV_B2_20MeV', '_offmin500Hz_4TeV_B2_20MeV']
-    cols   = [kBlue, kRed, kOrange-3,kMagenta+4, kBlue+3]
-    mars   = [ 20, 24, 33, 22, 23 ]
-    dOpt   = [ 'h', 'hsame', 'hsame', 'hsame', 'hsame']
+    lTexts = ['Halo B1', 'Halo B2', 'beam-gas']
+    tags   = ['_BH_6500GeV_haloB1_20MeV','_BH_6500GeV_haloB2_20MeV', '_BG_6500GeV_flat_20GeV_bs']
+    cols   = [kAzure+9, kPink-8, kYellow-2]
+    mars   = [ 20, 24, 33 ]
+    dOpt   = [ 'h', 'hsame', 'hsame']
     # ------------------------------------------------------------------------
 
     # need one file to generate sDict
@@ -392,10 +384,10 @@ def cv68():
 
         cv = TCanvas( 'cv'+skey, 'cv'+skey,  10, 10, 1200, 900 )     
 
-        x1, y1, x2, y2 = 0.65,0.73,0.9,0.9 # right corner        
+        x1, y1, x2, y2 = 0.65,0.78,0.9,0.9 # right corner        
 
         if skey.count("PhiEnAll") or skey.count("PhiEnPhot") or skey.count("PhiNAllE") or skey.count("PhiNP") or skey.count("EnPro"):
-            x1, y1, x2, y2 = 0.2,0.75,0.4,0.9 # left corner
+            x1, y1, x2, y2 = 0.2,0.78,0.45,0.9 # left corner
 
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)
@@ -462,15 +454,17 @@ def cv68():
                 break
 
         # skip all histograms when one is missing        
-        if not hists[0]: continue
        
         cv.cd()
         if isLogx:  cv.SetLogx()
         if isLogy:  cv.SetLogy()
 
         for i in range(len(hists)):
-            hists[i].Draw(dOpt[i])
-            mlegend.AddEntry(hists[i], lTexts[i], "lp")
+            if hists[i]:
+                hists[i].Draw(dOpt[i])
+                mlegend.AddEntry(hists[i], lTexts[i], "lp")
+            else:
+                break
 
         mlegend.Draw()
 
@@ -478,7 +472,7 @@ def cv68():
         lab.DrawLatex(0.356, 0.955, sDict[skey][6])
         lab = mylabel(62)
         lab.SetTextSize(0.055)
-        lab.DrawLatex(.8,y1-0.07,'')
+        lab.DrawLatex(x1+0.06,y1-0.06,'6.5 TeV')
 
         lab = mylabel(42)
         lab.SetTextSize(0.1)
@@ -502,7 +496,6 @@ def cv68():
                 YurMin, YurMax = 0.1, 10*max(Ymax)
             elif hnames[i].count("EnMuE"):
                 YurMin, YurMax = 1e-3, 10*max(Ymax)
-
 
         print "Setting y axes", YurMin, YurMax
         # set the axes
