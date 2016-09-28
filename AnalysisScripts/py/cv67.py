@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #
-#
+# reweights by pressure profile
+# Sept 16
 #
 # R Kwee, 2016
 # 
