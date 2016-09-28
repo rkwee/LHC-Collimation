@@ -16,7 +16,7 @@ zmin, zmax = 2260., 55060.
 #zmin, zmax = 2260., 14960.
 #zmin, zmax = 2260., 21560.
 # to disable the zcut have zOn > zmax
-zOn = 9e4
+zOn = 9e8
 # for all use energy cut at 20 MeV
 encut = 'energy_ke > ' + EnCut
 debug = 1
