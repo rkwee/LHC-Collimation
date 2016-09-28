@@ -21,15 +21,24 @@ def cv41():
 
     # locations of sampling the beam-size
     # - passen nicht mehr auf tfs
-    pointsName = ['TCTH.4L1.B1', 'TCTVA.4L1.B1', 'MBRC.4L1.B1','MQXA.1L1..2', 'MQXB.B2L1..16', 'BPTX.5L1.B1', "MB.A8L1.B1..2", "MCD.9L1.B1", "MCBCH.10L1.B1", "MB.C13L1.B1..2"]
+    #pointsName = ['TCTH.4L1.B1', 'TCTVA.4L1.B1', 'MBRC.4L1.B1','MQXA.1L1..2', 'MQXB.B2L1..16', 'BPTX.5L1.B1', "MB.A8L1.B1..2", "MCD.9L1.B1", "MCBCH.10L1.B1", "MB.C13L1.B1..2"]
     #pointsName = ["MYM.S"]
     #pointsName = ['TCTH.4L1.B1']
+    pointsName = ["IP1"]
+
 
     energy = "6.5TeV"
+    gamma_rel = 6.5e3/0.938
+    betaStar = 0.8
+
+    energy = "4TeV"
+    gamma_rel = 4e3/0.938
+    betaStar = 0.6
+
     # number of randomly produced values per s location
     N = 1000
 
-    doWrite = 1
+    doWrite = 0
 
     # canvas
     a,b = 2,len(pointsName)
@@ -40,7 +49,7 @@ def cv41():
     cv.SetTopMargin(0.1)
 
     emittance_norm = 3.5e-6
-    gamma_rel = 6.5e3/0.938
+
     emittance_geo = emittance_norm/gamma_rel
     gauss1 = TF1('gauss1', 'exp(-0.5*(x**2))', -5.,5.)
     gauss2 = TF1('gauss2', 'exp(-0.5*(x**2))', -5.,5.)
@@ -81,6 +90,7 @@ def cv41():
         sigx = math.sqrt(emittance_geo * betx)
         sigy = math.sqrt(emittance_geo * bety)
 
+        print sigy, sigx, "sigy, sigx"
         foutname = name + '_N' + str(N) + '.txt'
         if doWrite: fot = open(foutname, 'w')
 
@@ -145,7 +155,7 @@ def cv41():
 
 
 
-        print 'wrote', foutname
+        if doWrite:print 'wrote', foutname
         cStyle = 6
         ms = 0.01
         xtitle, ytitle = 'x [m]', "x' [rad]"
@@ -203,7 +213,7 @@ def cv41():
     rel = '_gauss' 
     pname  = wwwpath
     subfolder = "TCT/"+energy+"/beamgas/"
-    pname += subfolder + 'twiss'+rel+'_'+energy+'.pdf'
+    pname += subfolder + 'twiss'+rel+'_'+energy+'.png'
 
     print('Saving file as ' + pname ) 
     cv.SaveAs(pname)
