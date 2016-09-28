@@ -14,13 +14,10 @@ import lossmap, helpers, array
 from helpers import wwwpath, length_LHC, mylabel, gitpath, makeTGraph, projectpath
 from array import array
 # -----------------------------------------------------------------------------------
-def getStatErrFromTProf(mt, varComp):
+def getStatErrFromTProf(mt, varComp,ynbins, ymin, ymax):
 
     # make 1 bin 1cm
-    xnbins, xmin, xmax = 54693,0.,54693.
-
-    # cut out shitty trajectory
-    ynbins, ymin, ymax = 300, -0.15, 2.
+    xnbins, xmin, xmax = 54694,0.,54693.
 
     # -- getting the mean value
     # 1.
@@ -43,15 +40,17 @@ def getStatErrFromTProf(mt, varComp):
 def cv75():
 
     # twiss file
-    # tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/twiss_lhcb1_med_new_thin_800.tfs')
+    # tf = pymadx.Tfs("/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/4TeV/beamgas/twiss_4tev_b1.data")
     energy = "4TeV"
     gamma_rel = 4e3/0.938
     betaStar = 0.6
     # tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/1cm/twiss_lhcb1_med_new_thin_800_1cm.tfs')
-    tf = pymadx.Tfs("/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/4TeV/beamgas/twiss_4tev_b1.data")
+
+    #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/twiss_lhcb1_med_new_thin_800.tfs')
+    tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/background_2015_80cm/twiss_b2_80cm.tfs')
     gamma_rel = 6.5e3/0.938
-    gamma_rel = 4.e3/0.938
-    energy = '4TeV'
+    energy = '6.5TeV'
+    betaStar = 0.8
 
     BETX = tf.GetColumn('BETX')
     BETY = tf.GetColumn('BETY')
@@ -76,31 +75,31 @@ def cv75():
         #print "using", s_shifted
 
     S_shifted.sort()
-    # XurMin, XurMax = length_LHC-550, length_LHC
-    # rel = '_orbit_IR1Left_4TeV'
-    # lShift = 0.5
 
     XurMin, XurMax = 0,548.
-    rel = '_compsigma_IR1Right_4TeV'
-    # rel = '_sigma_IR1Right_4TeV'
-    # rel = '_orbit_IR1_4TeV'
-    lShift = 0.0
+    XurMin, XurMax = 0,5.
+    rel = '_compsigma2_IR1Right_' + energy
 
-    # XurMin, XurMax = IP5-300, IP5+300
-    # rel = '_IP5'
-    # XurMin, XurMax = IP8-300, IP8+300
-    # rel = '_IP8'
+    lShift = 0.0
     # -----------------------------------------------
     # fluka part from cv74
 
-    filename = projectpath + 'HaloRun2/valBG4TeV2/oneFileAllTraj.dat.89.root'
-    filename = projectpath + 'HaloRun2/valBG4TeV2/traj_fort.89.10.root'
+#    filename = projectpath + 'HaloRun2/valBG4TeV2/oneFileAllTraj.dat.89.root'
+#    filename = projectpath + 'HaloRun2/valBG4TeV2/traj_fort.89.10.root'
 
+    filename = '/afs/cern.ch/project/lhc_mib/HaloRun2/valBG4TeV2/400Traj.fort.89.root'
     print "Opening", filename
     rf = TFile.Open(filename)
     mt = rf.Get("particle")
-    SIGYflu = getStatErrFromTProf(mt, "YTRACK")
-    srange_meter = [0.01*s for s in range(1,54694)]
+    SIGXflu  = getStatErrFromTProf(mt, "XTRACK",300,-1000.,1)
+#    SIGYflu1 = getStatErrFromTProf(mt, "YTRACK",300,0.,2) # to cut off outlier use only up to s=1000cm
+#    SIGYflu2 = getStatErrFromTProf(mt, "YTRACK",300,-1.,2)# then use this when outlier is gone
+
+ #   SIGYflu  = [ SIGYflu1[i] for i in range(1001)]
+ #   SIGYflu += [ SIGYflu2[i] for i in range(1001,54694)]
+
+    SIGYflu = getStatErrFromTProf(mt, "YTRACK",300,-1.,2)
+    srange_meter = [0.01*s for s in range(54694)]
 
     a,b = 1,1
     cv = TCanvas( 'cv', 'cv', a*2100, b*900)
@@ -131,24 +130,25 @@ def cv75():
     mlegend.AddEntry(g0, lg, lm)    
     mg.Add(g0)
 
+    print '-'*11, lg
     xList, yList, color, mStyle, lg = S_shifted, SIGY, kGreen-2, 20, '#sigma_{y} from Twiss'
     g1 = makeTGraph(xList, yList, color, mStyle)
     mlegend.AddEntry(g1, lg, lm)    
     mg.Add(g1)
     ytitle = 'beam size [cm]'
-
+    print '-'*11, lg
     print len(S_shifted)
     
     xList, yList, color, mStyle, lg = srange_meter, SIGYflu, kGreen+1, 21, '#sigma_{y} from fluka'
     g1 = makeTGraph(xList, yList, color, mStyle)
     mlegend.AddEntry(g1, lg, lm) 
     mg.Add(g1)
-
-    # xList, yList, color, mStyle, lg = S_shifted, PY, kBlue+1, 27, "y'"
-    # g3 = makeTGraph(xList, yList, color, mStyle)
-    # mlegend.AddEntry(g3, lg, lm) 
-    # mg.Add(g3)
-
+    print '-'*11, lg
+    xList, yList, color, mStyle, lg = srange_meter, SIGXflu, kBlue+1, 27, "#sigma_{x} from fluka"
+    g3 = makeTGraph(xList, yList, color, mStyle)
+    mlegend.AddEntry(g3, lg, lm) 
+    mg.Add(g3)
+    print '-'*11, lg
 
     mg.Draw("a"+lm)
 
