@@ -1,6 +1,9 @@
 #!/usr/bin/python
 #
 # from cv23->31->34->35
+#
+# plot to compare HL optics
+#
 # R Kwee-Hinzmann, Apr 2015
 # ---------------------------------------------------------------------------------
 import ROOT, sys, glob, os, math, helpers, subprocess
@@ -92,7 +95,7 @@ def cv36():
     normhitsDict = dict(normhits)
     print normhits
 
-    # define histo
+    # define histo, use Sumw2()!!
     hname, nbins, xmin, xmax = "compTCT5IN_round", 4, -0.5, 3.5
     hist_round = TH1F(hname, hname, nbins, xmin, xmax)
     hname = "compTCT5IN_hB1_round"
