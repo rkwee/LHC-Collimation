@@ -9,6 +9,33 @@ from helpers import *
 from createTTree import treeName
 from fillTTree_dict import generate_sDict, nprimIN, nprimOUT, normOUT, normIN, calcR12m
 ## -------------------------------------------------------------------------------
+
+def doRebin(hist,rbf):
+
+    hist_rebinned = hist.Clone(hist.GetName()+"rebinned")
+    # must be rad hist!
+    # take out normalisation by binarea
+    nbins = hist.GetNbinsX()
+    print "rebinning ", hist.GetName(), "with ", nbins 
+    for bin in range(1,nbins+1):
+        binArea = math.pi*(hist.GetBinLowEdge(bin+1)**2 -hist.GetBinLowEdge(bin)**2)
+        hist_rebinned.SetBinContent(bin,hist.GetBinContent(bin) * binArea)
+        hist_rebinned.SetBinError(bin,hist.GetBinError(bin) * binArea)
+
+    # rebin
+    hist_rebinned.Rebin(rbf)
+
+    # take back in normalisation by new binarea
+    nbins = hist_rebinned.GetNbinsX()
+    print "rebinned ", hist_rebinned.GetName(), ". new nbin= ", nbins 
+    for bin in range(1,nbins+1):
+        binArea = math.pi*(hist_rebinned.GetBinLowEdge(bin+1)**2 -hist_rebinned.GetBinLowEdge(bin)**2)
+        hist_rebinned.SetBinContent(bin,hist.GetBinContent(bin)/binArea)
+        hist_rebinned.SetBinError(bin,hist.GetBinError(bin)/binArea)
+
+    return hist_rebinned
+
+# --------------------------------------------------------------------------------
 def cv16():
 
     # DONT USE
@@ -28,7 +55,7 @@ def cv16():
     norm4TeVB2newHalo = 1380 * 1.4e11/360000 * (1179.0/59198135 +967/56887051.)/2.  
     # IR5: (1893.0 + 135)/(59198135 +56887051) = 1.75e-5, >>> 1893.0/59198135 +135/56887051. = 3.435e-05
 
-    norm6500GeVB1 = 2748 * 1.2e11/360000 *0.5*(739./62515929 +(312+273.)/62692523) # 2.1e-5
+    norm6500GeVB1 = 2748 * 1.2e11/360000 *0.5*(739./62515929 +(312+273.)/62692523) # 2.1e-5 TCPs 
     norm6500GeVB2 = 2748 * 1.2e11/360000 *0.5*(779./50890652+773./63119778.) # 2.76e-5 take the average of H an V runs!
 
     # python /afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/AnalysisScripts/py/collsummary.py -f 6.5TeV_vHaloB2_h5/coll_summary_6.5TeV_vHaloB2_h5.dat -c TCT*R5
@@ -49,20 +76,15 @@ def cv16():
     # tagNum, tagDenom = 'BH_4TeV_B2', 'BH_4TeV_B2_20MeV'
     # nColor, dColor = kCyan+1, kTeal
 
-    # #fNum   = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
-    # #fDenom = workpath + 'results/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
     # fNum = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim7945000_66.root'
-    # fDenom   = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
-    # normDenom, normNum = 1./norm4TeVB1oldHalo, 1./norm4TeVB2oldHalo
-    # subfolder = wwwpath + 'TCT/4TeV/tctimpacts/oldScatt/compB1B2oldScatt/'
-    # fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
-    # fDenom = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
-    # #    normDenom, normNum = 1./norm4TeVB1newHalo, 1./norm4TeVB2newHalo
+    # #fDenom   = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
+    # subfolder = wwwpath + 'TCT/4TeV/tctimpacts/compNewScattB1/'
+    # fDenom = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
+    # #fNum   = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
     # normDenom, normNum = 1., 1.
-    # subfolder = wwwpath + 'TCT/4TeV/tctimpacts/newScatt/compB1B2/perTCThit/'
-    # lTextNum = 'B2'
-    # lTextDenom = 'B1'
-    # tagDenom, tagNum = '_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV'
+    # lTextNum = 'B2 old'
+    # lTextDenom = 'B2 new'
+    # tagDenom, tagNum = '_BH_4TeV_B2_20MeV', '_BH_4TeV_B2_20MeV'
     # nColor, dColor = kOrange-3, kPink-6
     # yrel = '/TCT hit'
     # # yrel = '/s'
@@ -112,6 +134,7 @@ def cv16():
     # yrel = '/TCT hit'
 
     # fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
+
     # fDenom = workpath + 'runs/3.5TeV/results_beam-halo_3.5TeV-R1_D1_20MeV_b2_nprim2344800_66.root'
     # subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/'
     # lTextNum, lTextDenom = '4 TeV w/ x-ing', '3.5 TeV w/o x-ing'
@@ -338,15 +361,15 @@ def cv16():
     # tagDenom, tagNum =  '_BH_HL_tct5inrdB1_20MeV', '_crabcfb1'
     # dColor, nColor = kMagenta-2, kBlue-1
 
-    # fNum = projectpath + 'HL1.0/FL_HL_TCT5IN_nomCollSett_haloB1/results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root'
-    # fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
-    # subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/perTCThit/'
-    # lTextNum = 'nominal'
-    # lTextDenom = 'retracted'
-    # normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
-    # normDenom, normNum, yrel = 1., 1., '/TCT hit'
-    # tagDenom,tagNum =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
-    # dColor, nColor = kMagenta-2, kBlue-2
+    fNum = projectpath + 'HL1.0/FL_HL_TCT5IN_nomCollSett_haloB1/results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root'
+    fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
+    subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/perTCThit/'
+    lTextNum = 'nominal'
+    lTextDenom = 'retracted'
+    normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
+    normDenom, normNum, yrel = 1., 1., '/TCT hit'
+    tagDenom,tagNum =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
+    dColor, nColor = kMagenta-2, kBlue-2
 
     # fNum =  '/afs/cern.ch/project/lhc_mib/crabcfb1/runs_usrbin/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_nprim4269100_30.root'
     # fDenom = '/afs/cern.ch/project/lhc_mib/tct_simulations/FlukaRuns/runs_modTAN/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_modTAN_nprim1390500_30.root'
@@ -359,7 +382,7 @@ def cv16():
 
     # ------------------------------------------------------------------------
 
-    # offmomentum 
+    # # offmomentum 
     fNum =  '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVminusB2/results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
     fDenom = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVplusB2/results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
     subfolder = wwwpath + 'TCT/4TeV/tctimpacts/newScatt/comppm500Hz/'
@@ -403,7 +426,7 @@ def cv16():
         if skey.count('XY'): continue
         if skey.count('Orig'): continue
         if skey.startswith('Prof'): continue
-        # if not skey.count('EkinNeutro'): continue
+#        if not skey.count('PhiEn'): continue
 
         cv = TCanvas( 'cv'+skey, 'cv'+skey, 100, 120, 600, 600 )
 
@@ -443,6 +466,10 @@ def cv16():
             p1.SetLogy(1)
             isLogy = 1
             XurMin, XurMax = 0.0, 600.
+            YurMin, YurMax = 2e-12,1e-2
+
+        if skey.startswith('Phi'): 
+            XurMin, XurMax = 3.14, 3.01
 
         if skey.count('Zcoor'):
             p1.SetLogy(1)
@@ -483,11 +510,16 @@ def cv16():
         integralDenom = histDenom.Integral()
         if integralDenom: ratioInts = integralNum/integralDenom
 
-        # if hnameNum.count('Rad'):
-        #     histNum.Rebin()
-        #     histDenom.Rebin()
-        #     pass
-        #     print "Rebinning Rad histograms"
+        print "integralNum, integralDenom", integralNum, integralDenom
+        print "histNum.GetNbinsX(), histDenom.GetNbinsX()", histNum.GetNbinsX(), histDenom.GetNbinsX()
+
+
+        if hnameNum.count('Rad'):
+            ##pass
+            histNum = doRebin(histNum,5)            
+            histDenom = doRebin(histDenom,5)
+        
+        print "histNum.GetNbinsX(), histDenom.GetNbinsX()", histNum.GetNbinsX(), histDenom.GetNbinsX()
 
         histNum.GetXaxis().SetTitle(xtitle)
         histNum.GetYaxis().SetTitle(ytitle)
