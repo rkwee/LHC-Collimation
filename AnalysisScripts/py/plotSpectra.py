@@ -20,6 +20,7 @@ zOn = 3e4
 # ---------------------------------------------------------------------------------
 def plotSpectra(bbgFile, tag, doComp):
 
+
     print "Using ...", bbgFile
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
     tBBG = TFile.Open(bbgFile).Get(treeName)
@@ -69,13 +70,13 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/6.5TeV/tctimpacts/offplus500Hz/'+ Beam + '/'+EnCutOff + '/'
         if debug: print "Using 4 TeV BH dict", '.'*10
 
-    elif rfname.count('BG_bs_4TeV') or rfname.count('beam-gas_4TeV'): 
+    elif rfname.count('BG_bs_4TeV') or rfname.count('beam-gas_4TeV') or rfname.count('beam_gas_3.5TeV_IR1_to_arc_20MeV'): 
         hDict = hDict_BG_4TeV
-        # if rfname.count('100M'):
-        #     subfolder= 'TCT/3p5TeV/beamgas/'
-        if rfname.count('beam-gas_4TeV'): 
+        if rfname.count('beam_gas_3.5TeV_IR1_to_arc_20MeV'):
+            subfolder= 'TCT/3p5TeV/beamgas/'
+        elif rfname.count('beam-gas_4TeV'): 
             subfolder= 'TCT/4TeV/beamgas/fluka/RoderiksBG4TeV/'
-        else:
+        elif rfname.count('BG_bs_4TeV'):
             subfolder= 'TCT/4TeV/beamgas/fluka/bs/'+ EnCutOff + '/'
         if debug: print "Using 4 TeV format", '.'*10
         yrel = '/inel.BG int.'
@@ -85,12 +86,6 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/6.5TeV/beamgas/fluka/bs/' + EnCutOff + '/'
         if debug: print "Using 6.5 TeV BG format", '.'*10
         yrel = '/inel.BG int.'
-
-    elif rfname.count('BG_3p5TeV'): 
-        hDict = hDict_BG_3p5TeV
-        subfolder= 'TCT/3p5TeV/'
-        if debug: print "Using 4 TeV format", '.'*10
-        yrel = '/inel. BG int.'
 
     elif rfname.count('beam-halo_3.5TeV'): 
         hDict = hDict_BH_4TeV
@@ -114,7 +109,7 @@ def plotSpectra(bbgFile, tag, doComp):
 
     elif rfname.count('BH_6500GeV'): 
         hDict = hDict_BH_6p5TeV
-        subfolder = 'TCT/6.5TeV/haloShower/'+beam+'/'
+        subfolder = 'TCT/6.5TeV/tctimpacts/'+beam+'/'
 
     elif rfname.count('80cm'): 
         hDict = hDict_BH_6p5TeV
@@ -130,6 +125,8 @@ def plotSpectra(bbgFile, tag, doComp):
     else:
         print "no dictionary defined"
         sys.exit()
+
+    print "-"*11,"using subfolder", subfolder
 
     if not os.path.exists(wwwpath + subfolder):
         print 'making dir', wwwpath + subfolder
@@ -150,110 +147,111 @@ def plotSpectra(bbgFile, tag, doComp):
 
     if rfname.count('comp') or rfname.count('Comp'):
         tag = ''
-
     for hkey in hDict.keys():
       
-      pname = wwwpath + subfolder + hkey 
-      print "Plotting ...", hkey
-      hists = []
-      cv = TCanvas( 'cv'+hkey, 'cv'+hkey, 1200, 900)
+        try:
+            pname = wwwpath + subfolder + hkey 
+            print "Plotting ...", hkey
+            hists = []
+            cv = TCanvas( 'cv'+hkey, 'cv'+hkey, 1200, 900)
 
-      gStyle.SetPalette(1)
-      cv.SetRightMargin(0.15)
-      #cv.SetLeftMargin(-0.1)
+            gStyle.SetPalette(1)
+            cv.SetRightMargin(0.15)
+            #cv.SetLeftMargin(-0.1)
 
-      hList = hDict[hkey][0] 
-      x1, y1, x2, y2 = hDict[hkey][1],hDict[hkey][2],hDict[hkey][3],hDict[hkey][4]
-      doLogx, doLogy = hDict[hkey][5], hDict[hkey][6]
-      XurMin, XurMax = hDict[hkey][7],hDict[hkey][8]
-      YurMin, YurMax = hDict[hkey][9],hDict[hkey][10]
-      ZurMin, ZurMax = hDict[hkey][15],hDict[hkey][16]
-      doFill = hDict[hkey][11]
-      lText  = hDict[hkey][12] 
-      lx, ly = hDict[hkey][13],hDict[hkey][14]
+            hList = hDict[hkey][0] 
+            x1, y1, x2, y2 = hDict[hkey][1],hDict[hkey][2],hDict[hkey][3],hDict[hkey][4]
+            doLogx, doLogy = hDict[hkey][5], hDict[hkey][6]
+            XurMin, XurMax = hDict[hkey][7],hDict[hkey][8]
+            YurMin, YurMax = hDict[hkey][9],hDict[hkey][10]
+            ZurMin, ZurMax = hDict[hkey][15],hDict[hkey][16]
+            doFill = hDict[hkey][11]
+            lText  = hDict[hkey][12] 
+            lx, ly = hDict[hkey][13],hDict[hkey][14]
 
-      mlegend = TLegend(x1-0.07, y1, x2, y2)
-      mlegend.SetFillColor(0)
-      mlegend.SetFillStyle(0)
-      mlegend.SetLineColor(0)
-      mlegend.SetTextSize(0.035)
-      mlegend.SetShadowColor(0)
-      mlegend.SetBorderSize(0)
-      
-      for i,hname in enumerate(hList):
-           hname += tag
-           hists += [rfile.Get(hname)]
+            mlegend = TLegend(x1-0.07, y1, x2, y2)
+            mlegend.SetFillColor(0)
+            mlegend.SetFillStyle(0)
+            mlegend.SetLineColor(0)
+            mlegend.SetTextSize(0.035)
+            mlegend.SetShadowColor(0)
+            mlegend.SetBorderSize(0)
 
-           if not hists[-1]:
-               print "WARNING: histogram", hname," not found","!"*10
-               continue
+            for i,hname in enumerate(hList):
+                 hname += tag
+                 hists += [rfile.Get(hname)]
 
-           print "INFO: ", hists[-1].GetName(), ' has ', hists[-1].GetEntries(), ' entries.'
-           
-           hcolor = sDict[hname][7]
-           hists[-1].SetLineColor(hcolor)
-           hists[-1].SetLineWidth(2)
-           # if doFill:  hists[-1].SetFillColor(hcolor)
-           
-           norm   = sDict[hname][1]
-           if norm != 1.: print 'had been normalised by ', norm
-           #hists[-1].Scale(1./norm)
-           leg = "l"
-           if not i: 
-               if   type(hists[-1]) == TH1F: hists[-1].Draw("HIST")
-               elif type(hists[-1]) == TH2F: hists[-1].Draw("COLZ")
-               elif type(hists[-1]) == TProfile: 
-                   hists[-1].SetMarkerColor(hcolor)
-                   hists[-1].Draw("P")
-                   leg = "lp"
-           else:
-               if   type(hists[-1]) == TH1F: hists[-1].Draw("HISTSAME")
+                 if not hists[-1]:
+                     print "WARNING: histogram", hname," not found","!"*10
+                     continue
 
-           prettyName = sDict[hname][6]
-           mlegend.AddEntry(hists[-1],prettyName, leg)
-           
-           xtitle = sDict[hname][9]
-           ytitle = sDict[hname][10]
-        
-      # ....................................
-      if not hists[-1] or not hists[0]:
-          continue
+                 print "INFO: ", hists[-1].GetName(), ' has ', hists[-1].GetEntries(), ' entries.'
 
-      if XurMin != -1:
-          hists[0].GetXaxis().SetRangeUser(XurMin, XurMax)
+                 hcolor = sDict[hname][7]
+                 hists[-1].SetLineColor(hcolor)
+                 hists[-1].SetLineWidth(2)
+                 # if doFill:  hists[-1].SetFillColor(hcolor)
 
-      if YurMin != -1:
-          hists[0].GetYaxis().SetRangeUser(YurMin, YurMax)
+                 norm   = sDict[hname][1]
+                 if norm != 1.: print 'had been normalised by ', norm
+                 #hists[-1].Scale(1./norm)
+                 leg = "l"
+                 if not i: 
+                     if   type(hists[-1]) == TH1F: hists[-1].Draw("HIST")
+                     elif type(hists[-1]) == TH2F: hists[-1].Draw("COLZ")
+                     elif type(hists[-1]) == TProfile: 
+                         hists[-1].SetMarkerColor(hcolor)
+                         hists[-1].Draw("P")
+                         leg = "lp"
+                 else:
+                     if   type(hists[-1]) == TH1F: hists[-1].Draw("HISTSAME")
 
-      if ZurMin != -1 and type(hists[0]) == TH2F: 
-          hists[0].GetZaxis().SetRangeUser(ZurMin, ZurMax)
-        
-      hists[0].GetYaxis().SetTitleSize(0.04)
-      hists[0].GetYaxis().SetLabelSize(0.035)
-      hists[0].GetXaxis().SetTitleSize(0.04)
-      hists[0].GetXaxis().SetLabelSize(0.035)
-      if type(hists[0]) == TH2F: 
-          hists[0].GetZaxis().SetLabelSize(0.035)
+                 prettyName = sDict[hname][6]
+                 mlegend.AddEntry(hists[-1],prettyName, leg)
 
-      hists[0].GetXaxis().SetTitle(xtitle)
-      hists[0].GetYaxis().SetTitle(ytitle)
+                 xtitle = sDict[hname][9]
+                 ytitle = sDict[hname][10]
 
-      mlegend.Draw()
-      lab = mylabel(62)
-      lab.DrawLatex(lx,ly,lText)
-      #lab.DrawLatex(0.74,ly,Beam)
+            # ....................................
+            if not hists[-1] or not hists[0]:
+                continue
 
-      gPad.RedrawAxis()
-      if type(hists[0]) == TH2F: 
-          gPad.SetLogz(doLogx)
-      else:
-          cv.SetGridx(0)
-          cv.SetGridy(0)
-          cv.SetLogx(doLogx)
-          cv.SetLogy(doLogy)
-      
-      print('Saving file as' + pname ) 
-      cv.Print(pname + '.pdf')
-      #cv.Print(pname + '.png')
+            if XurMin != -1:
+                hists[0].GetXaxis().SetRangeUser(XurMin, XurMax)
 
+            if YurMin != -1:
+                hists[0].GetYaxis().SetRangeUser(YurMin, YurMax)
+
+            if ZurMin != -1 and type(hists[0]) == TH2F: 
+                hists[0].GetZaxis().SetRangeUser(ZurMin, ZurMax)
+
+            hists[0].GetYaxis().SetTitleSize(0.04)
+            hists[0].GetYaxis().SetLabelSize(0.035)
+            hists[0].GetXaxis().SetTitleSize(0.04)
+            hists[0].GetXaxis().SetLabelSize(0.035)
+            if type(hists[0]) == TH2F: 
+                hists[0].GetZaxis().SetLabelSize(0.035)
+
+            hists[0].GetXaxis().SetTitle(xtitle)
+            hists[0].GetYaxis().SetTitle(ytitle)
+
+            mlegend.Draw()
+            lab = mylabel(62)
+            lab.DrawLatex(lx,ly,lText)
+            #lab.DrawLatex(0.74,ly,Beam)
+
+            gPad.RedrawAxis()
+            if type(hists[0]) == TH2F: 
+                gPad.SetLogz(doLogx)
+            else:
+                cv.SetGridx(0)
+                cv.SetGridy(0)
+                cv.SetLogx(doLogx)
+                cv.SetLogy(doLogy)
+
+            print('Saving file as' + pname ) 
+            cv.Print(pname + '.pdf')
+            #cv.Print(pname + '.png')
+        except KeyError:
+            continue
 # ---------------------------------------------------------------------------------

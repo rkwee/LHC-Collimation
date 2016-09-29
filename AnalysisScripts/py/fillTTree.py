@@ -663,7 +663,14 @@ def fillHistos(bbgFile, tag, doComp):
           continue
 
        cnt += 1
+
+
+       # shorten!!
+       # if skey.count('RadNMuons_'): pass
+       # elif skey.count('RadNNeutrons_'): pass
+       # else: continue
        print "Getting ...", skey, '... #', cnt
+
 
        mt     = sDict[skey][5]
        hists += [getHistogram(sDict, skey, mt)]          
