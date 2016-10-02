@@ -45,7 +45,7 @@ def cv78():
 
     lTexts = ['beam-gas', 'Halo B1', 'Halo B2','+500 Hz', '-500 Hz']
     tags   = [ '_BG_4TeV_20MeV_bs_reweighted','_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV' , '_offplus500Hz_4TeV_B2_20MeV', '_offmin500Hz_4TeV_B2_20MeV']
-    cols   = [kOrange-3, kBlue, kRed,kMagenta+4, kBlue+3]
+    cols   = [kOrange-3, kBlue, kRed,kMagenta+4, kTeal+4]
     mars   = [33, 20, 24, 22, 23 ]
     dOpt   = [ 'h', 'hsame', 'hsame', 'hsame', 'hsame']
     scalf  = [ 1., norm4TeVB1newHalo, norm4TeVB2newHalo, norm4TeVoffmomPLUS500, norm4TeVoffmomMINUS500]
@@ -80,14 +80,14 @@ def cv78():
         elif skey.count("Pio") or skey.count("Kao"): continue
 
         # # for testing
-        # elif not skey.count('PhiNNeutrons'): continue
+        #        elif not skey.count('Rad'): continue
 
         cv = TCanvas( 'cv'+skey, 'cv'+skey,  10, 10, 1200, 900 )     
 
         x1, y1, x2, y2 = 0.65,0.73,0.95,0.93 # right corner        
 
         if skey.count("PhiEnAll") or skey.count("PhiEnPhot") or skey.count("PhiNAllE") or skey.count("PhiNP") or skey.count("EnPro"):
-            x1, y1, x2, y2 = 0.2,0.75,0.4,0.9 # left corner
+            x1, y1, x2, y2 = 0.2,0.75,0.44,0.93 # left corner
 
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)
@@ -167,12 +167,25 @@ def cv78():
             if hnames[i].count("Phi"):
                 XurMin, XurMax = -3.14, 3.01
                 YurMin, YurMax = 1e-5*max(Ymax), max(Ymax)*1e2
+                if hnames[i].count("En"):
+                    YurMin, YurMax = 1e-7*max(Ymax), max(Ymax)*5e4
+                    
             elif hnames[i].count("Ekin"):
                 YurMin, YurMax = 1e-8*max(Ymax), max(Ymax)*1e3
+
+
+            elif hnames[i].count("Rad"):
+                XurMin, XurMax = 0.,600.
+                YurMin, YurMax = 1e-5,1e9
+                if  hnames[i].count("All"):
+                    YurMin, YurMax = 1e-5,1e12
+
             if XurMin != -1:
                 hists[i].GetXaxis().SetRangeUser(XurMin,XurMax)
 
+            print "Setting y axes", YurMin, YurMax, dOpt[i]
             if YurMin != -1:
+                print "Setting y axes", YurMin, YurMax, dOpt[i]
                 hists[i].GetYaxis().SetRangeUser(YurMin,YurMax)
 
             if hists[i].GetName().endswith("reweighted"):
@@ -181,6 +194,7 @@ def cv78():
                 hists[i].ProjectionX().GetYaxis().SetTitle(ytitle)
                 hists[i].ProjectionX().Draw(dOpt[i])
             else:
+                hists[i].GetXaxis().SetTitle(xtitle)
                 hists[i].Draw(dOpt[i])
             mlegend.AddEntry(hists[i], lTexts[i], "lp")
 

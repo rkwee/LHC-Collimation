@@ -353,6 +353,7 @@ def cv68():
     f1 = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
     f2 = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
     f3 = '/afs/cern.ch/project/lhc_mib/valBG4TeV/results_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
+    f3 = projectpath + 'bbgen/4TeV/beamgas/results_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
     f4 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVplusB2/results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
     f5 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVminusB2/results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
     filenames = [f1,f2,f3,f4,f5]
@@ -361,7 +362,7 @@ def cv68():
 
     lTexts = ['Halo B1', 'Halo B2', 'beam-gas','+500 Hz', '-500 Hz']
     tags   = ['_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV', '_BG_4TeV_20MeV_bs' , '_offplus500Hz_4TeV_B2_20MeV', '_offmin500Hz_4TeV_B2_20MeV']
-    cols   = [kBlue, kRed, kOrange-3,kMagenta+4, kBlue+3]
+    cols   = [kBlue, kRed, kOrange-3,kMagenta+4, kTeal+4]
     mars   = [ 20, 24, 33, 22, 23 ]
     dOpt   = [ 'h', 'hsame', 'hsame', 'hsame', 'hsame']
     # ------------------------------------------------------------------------
@@ -392,10 +393,10 @@ def cv68():
 
         cv = TCanvas( 'cv'+skey, 'cv'+skey,  10, 10, 1200, 900 )     
 
-        x1, y1, x2, y2 = 0.65,0.73,0.9,0.9 # right corner        
+        x1, y1, x2, y2 = 0.65,0.73,0.95,0.93 # right corner        
 
         if skey.count("PhiEnAll") or skey.count("PhiEnPhot") or skey.count("PhiNAllE") or skey.count("PhiNP") or skey.count("EnPro"):
-            x1, y1, x2, y2 = 0.2,0.75,0.4,0.9 # left corner
+            x1, y1, x2, y2 = 0.2,0.75,0.44,0.93 # left corner
 
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)
@@ -488,7 +489,7 @@ def cv68():
         if hnames[i].count('Ekin'):
             YurMin, YurMax = 0.0001, 5*max(Ymax)
             if hnames[i].count('EkinProt'):
-                YurMin, YurMax = 0.000001, 30*max(Ymax)
+                YurMin, YurMax = 1e-6, 30*max(Ymax)
         if hnames[i].count("Rad"):
             XurMin, XurMax = 0.00001, 600.
             YurMin, YurMax = 1e-9, 10*max(Ymax)
