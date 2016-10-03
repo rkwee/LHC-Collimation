@@ -14,7 +14,7 @@ gitpath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/'
 projectpath = '/afs/cern.ch/project/lhc_mib/'
 #workpath = '/Users/rkwee/Documents/RHUL/work/runs/TCT/'
 #wwwpath  = '/Users/rkwee/Documents/RHUL/work/results/www/'
-#gitpath  = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/'
+gitpath  = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/'
 # ------------------------------------------------------------------------------------------------
 # tags for bbG analysis *only for giving name!*
 tag_BH_3p5TeV = "_BH_3p5TeV_B1_20MeV"
@@ -306,11 +306,11 @@ def makeTGraph(xList, yList, color, mStyle):
     gr.SetLineColor(color)
     gr.SetMarkerColor(color)
 
-    for i in range(1,len(xList)-1):
-        x=float(xList[i+1])
-        y=float(yList[i+1])
-        #print x, y
-        gr.SetPoint(i+1, x, y)
+    for i in range(len(xList)):
+        x=float(xList[i])
+        y=float(yList[i])
+        #if i<10:print x, y
+        gr.SetPoint(i, x, y)
 
     return gr
 # ----------------------------------------------------------------------------
