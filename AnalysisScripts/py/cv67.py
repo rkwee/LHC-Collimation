@@ -19,6 +19,12 @@ def calc_pint_tot(rho_C, rho_H, rho_O):
     sigma_O = 316.e-31
     sigma_C = 258.e-31
     sigma_H =  37.e-31
+
+    # 4 TeV inel cross sections scaled up
+    sigma_O = 318.e-31
+    sigma_C = 260.e-31
+    sigma_H = 37.1e-31
+
     Trev = 2*math.pi/112450
 
     pint_C = [sigma_C*j/Trev for j in rho_C[1:]]
