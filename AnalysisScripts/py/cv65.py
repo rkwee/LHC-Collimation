@@ -15,8 +15,9 @@ from helpers import makeTGraph, mylabel, wwwpath
 
 def calc_pint_tot(rho_C, rho_H, rho_O):
     # 3.5 TeV inel cross-sections proton-atom from paper
-    sigma_O = 316.e-31
-    sigma_C = 258.e-31
+    # updated to 4 TeV 
+    sigma_O = 318.e-31
+    sigma_C = 260.e-31
     sigma_H =  37.e-31
     Trev = 2*math.pi/112450
 
@@ -25,7 +26,7 @@ def calc_pint_tot(rho_C, rho_H, rho_O):
     pint_O = [sigma_O*j/Trev for j in rho_O[1:]]
 
     pint_tot = [pint_H[i] + pint_O[i] + pint_C[i] for i in range(len(pint_O))]
-    return pint_tot
+    return pint_H, pint_C, pint_O, pint_tot
 
 def cv65():
 # --------------------------------------------------------------------------------
@@ -87,7 +88,7 @@ def cv65():
 
     cv = TCanvas( 'cv', 'cv', 2100, 900)
 
-    x1, y1, x2, y2 = 0.8, 0.65, 0.9, 0.9
+    x1, y1, x2, y2 = 0.8, 0.7, 0.9, 0.92
     mlegend = TLegend( x1, y1, x2, y2)
     mlegend.SetFillColor(0)
     mlegend.SetFillStyle(0)
@@ -99,7 +100,7 @@ def cv65():
     mg = TMultiGraph()
     lm = 'pl'
 
-    pint_tot = calc_pint_tot(rho_C, rho_H, rho_O)
+    pint_C, pint_H, pint_O, pint_tot = calc_pint_tot(rho_C, rho_H, rho_O)
 
     xlist, ylist, col, mstyle, lg = s[1:], pint_tot, kBlack, 28, 'total'
     g3 = makeTGraph(xlist, ylist, col, mstyle)
@@ -122,16 +123,16 @@ def cv65():
     mlegend.AddEntry(g2, lg, lm)    
     mg.Add(g2)
 
-    mg.Draw("ap")
+    mg.Draw("alp")
 
     gPad.SetLogy(1)
     gPad.RedrawAxis()
 
     lab = mylabel(42)
-    lab.DrawLatex(0.45, 0.9, 'interaction probability' )
+    lab.DrawLatex(0.45, 0.88, 'interaction probability' )
 
     mg.SetTitle("pressure profiles")
-    mg.GetXaxis().SetTitle('s [m]')
+    mg.GetXaxis().SetTitle('distance to IP1 [m]')
     mg.GetYaxis().SetTitle('p_{int}')#"density #rho [atoms/m^{3}]")
     mg.GetYaxis().SetRangeUser(8e-17,9e-11)
     mlegend.Draw()
