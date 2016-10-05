@@ -11,6 +11,7 @@ from ROOT import *
 from array import array
 # get function to read the data if 14 columns are present 
 from cv32 import getdata14c
+import cv16
 from helpers import makeTGraph, mylabel, wwwpath
 from fillTTree_dict import generate_sDict
 # --------------------------------------------------------------------------------
@@ -111,8 +112,8 @@ def cv71():
         elif skey.count("Rad"):
             hist_flat = doRad(hist_flat,nbins)
             hist_reweighted = doRad(hist_reweighted,nbins)
-            hist_flat.Rebin(3)
-            hist_reweighted.Rebin(3)
+            hist_flat = helpers.doRebin(hist_flat,3)
+            hist_reweighted = helpers.doRebin(hist_reweighted,3)
             doLogx, doLogy = 0,1
             XurMin,XurMax = 0, 600.
             
@@ -127,7 +128,7 @@ def cv71():
         if XurMin != -1:
             hist_flat.GetXaxis().SetRangeUser(XurMin, XurMax)
 
-        hist_flat.Draw("h")
+        hist_flat.Draw("")
         lg, lm = "flat", 'l'
         mlegend.AddEntry(hist_flat, lg, lm)
 
