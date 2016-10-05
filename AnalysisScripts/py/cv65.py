@@ -72,7 +72,7 @@ def getAtomicRho(data):
         except ValueError:
             continue
 
-        return s, rho_C, rho_H, rho_O
+    return s, rho_C, rho_H, rho_O
 def cv65():
 # --------------------------------------------------------------------------------
 # density profile is given in the following format:
@@ -82,6 +82,7 @@ def cv65():
 # note, that the source routine needs fluka units, ie *cm*!
 # --------------------------------------------------------------------------------
     bgfile    = '/afs/cern.ch/work/r/rkwee/HL-LHC/beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv'
+    bgfile    = '/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv'
 
     data = getdata14c(bgfile)
     print 'data keys are',data.keys()
@@ -143,6 +144,7 @@ def cv65():
     mlegend.Draw()
 
     pname = wwwpath + 'TCT/beamgas/pressure_profiles_2012/pint.pdf'
+    pname = 'pint.pdf'
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 

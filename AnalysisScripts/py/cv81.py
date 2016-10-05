@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 # reads histograms with reweights
-# Sept 16
+# Oct 16
 #
 # R Kwee, 2016
 # 
@@ -9,8 +9,6 @@
 import ROOT, sys, glob, os, math, helpers
 from ROOT import *
 from array import array
-# get function to read the data if 14 columns are present 
-from cv32 import getdata14c
 from helpers import makeTGraph, mylabel, wwwpath
 from fillTTree_dict import generate_sDict
 # --------------------------------------------------------------------------------
