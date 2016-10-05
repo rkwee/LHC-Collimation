@@ -48,8 +48,9 @@ def cv71():
 
     datafile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
     bbgFile = datafile + ".root"
-    print "Opening", bbgFile
     tag = '_BG_4TeV_20MeV_bs'
+
+    print "Opening", bbgFile
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
     rfile = TFile.Open(bbgFile, "READ")
     tBBG = rfile.Get("particle")
@@ -58,7 +59,7 @@ def cv71():
     sDict = generate_sDict(tag, norm, tBBG, yrel)
 
     # -- small version of plotSpectra
-    beamintensity = 2e14    
+    beamintensity = 2e14 
     Trev  = 2*math.pi/112450
     kT = 1.38e-23*300
 
