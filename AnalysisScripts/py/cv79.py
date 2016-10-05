@@ -368,7 +368,7 @@ def cv79():
         lm = 'l'
         pint_H, pint_C,pint_O, pint_tot = getpint(rho_H,rho_C,rho_O)
 
-        xlist, ylist, col, mstyle, lg = data['s'],rho_total_atomic , kBlack, 20, 'total'
+        xlist, ylist, col, mstyle, lg = data['s'],pint_tot , kBlack, 20, 'total'
         g3 = makeTGraph(xlist, ylist, col, mstyle)
         mlegend.AddEntry(g3, lg, lm)    
         mg.Add(g3)
@@ -398,8 +398,8 @@ def cv79():
         lab = mylabel(42)
         lab.DrawLatex(0.45, 0.88, lText)        
         
-        pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV'
-        pname = pFile.split('.txt')[0] + "_"+rel+".pdf"
+        pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/'
+        pname = pFile.split('.txt')[0].split("/")[-1] + "_"+rel+".pdf"
         print('Saving file as ' + pname )
         cv.Print(pname)
 
