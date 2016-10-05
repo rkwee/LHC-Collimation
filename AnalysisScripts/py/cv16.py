@@ -10,32 +10,6 @@ from createTTree import treeName
 from fillTTree_dict import generate_sDict, nprimIN, nprimOUT, normOUT, normIN, calcR12m
 ## -------------------------------------------------------------------------------
 
-def doRebin(hist,rbf):
-
-    hist_rebinned = hist.Clone(hist.GetName()+"rebinned")
-    # must be rad hist!
-    # take out normalisation by binarea
-    nbins = hist.GetNbinsX()
-    print "rebinning ", hist.GetName(), "with ", nbins 
-    for bin in range(1,nbins+1):
-        binArea = math.pi*(hist.GetBinLowEdge(bin+1)**2 -hist.GetBinLowEdge(bin)**2)
-        hist_rebinned.SetBinContent(bin,hist.GetBinContent(bin) * binArea)
-        hist_rebinned.SetBinError(bin,hist.GetBinError(bin) * binArea)
-
-    # rebin
-    hist_rebinned.Rebin(rbf)
-
-    # take back in normalisation by new binarea
-    nbins = hist_rebinned.GetNbinsX()
-    print "rebinned ", hist_rebinned.GetName(), ". new nbin= ", nbins 
-    for bin in range(1,nbins+1):
-        binArea = math.pi*(hist_rebinned.GetBinLowEdge(bin+1)**2 -hist_rebinned.GetBinLowEdge(bin)**2)
-        hist_rebinned.SetBinContent(bin,hist.GetBinContent(bin)/binArea)
-        hist_rebinned.SetBinError(bin,hist.GetBinError(bin)/binArea)
-
-    return hist_rebinned
-
-# --------------------------------------------------------------------------------
 def cv16():
 
     # DONT USE

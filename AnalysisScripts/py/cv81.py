@@ -11,7 +11,6 @@ from ROOT import *
 from array import array
 # get function to read the data if 14 columns are present 
 from cv32 import getdata14c
-import cv16
 from helpers import makeTGraph, mylabel, wwwpath
 from fillTTree_dict import generate_sDict
 # --------------------------------------------------------------------------------
@@ -42,30 +41,35 @@ def doRad(hist,nbins):
 
 # --------------------------------------------------------------------------------
 def resultFileBG(k,rel):
-    n = os.path.join(os.path.dirname(k),"results_pressure2012_"+rel+k.split('/')[-1])
+    n = os.path.join(os.path.dirname(k),"results_pressure2015_"+rel+k.split('/')[-1])
     return  n
 # --------------------------------------------------------------------------------
-def cv71():
+def cv81():
 
     datafile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
-    bbgFile = datafile + ".root"
     tag = '_BG_4TeV_20MeV_bs'
+    beamintensity = 2e14
 
+    energy = "6.5 TeV"
+    datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67'
+    tag = '_BG_6500GeV_flat_20MeV_bs' #!! MMMeV NOT GeV
+    beamintensity = 2.29e14 ## https://acc-stats.web.cern.ch/acc-stats/#lhc/fill-details 4536, ring 1.
+    
+    bbgFile = datafile + ".root"
     print "Opening", bbgFile
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
     rfile = TFile.Open(bbgFile, "READ")
     tBBG = rfile.Get("particle")
     yrel = ''
-    print tBBG
     sDict = generate_sDict(tag, norm, tBBG, yrel)
 
-    # -- small version of plotSpectra
-    beamintensity = 2e14 
+    # -- small version of plotSpectra    
     Trev  = 2*math.pi/112450
     kT = 1.38e-23*300
 
     # rootfile with results
     rfoutname = resultFileBG(bbgFile,'')
+    print "Opening", "."*30,bbgFile
     rf = TFile.Open(rfoutname, "READ")
 
     for i,skey in enumerate(sDict.keys()):
@@ -96,6 +100,7 @@ def cv71():
         twoDhist_flat = rf.Get(twoDhname_flat)
         twoDhist_reweighted = rf.Get(twoDhname_reweighted)
 
+        print twoDhist_flat, skey
         hist_flat = twoDhist_flat.ProjectionX(skey + "makeit1d_flat")
         hist_reweighted = twoDhist_reweighted.ProjectionX(skey + "makeit1d_reweighted")
         nbins = hist_reweighted.GetNbinsX()
@@ -129,12 +134,12 @@ def cv71():
         if XurMin != -1:
             hist_flat.GetXaxis().SetRangeUser(XurMin, XurMax)
 
-        hist_flat.Draw("")
+        hist_flat.Draw("h")
         lg, lm = "flat", 'l'
         mlegend.AddEntry(hist_flat, lg, lm)
 
-        hist_reweighted.SetLineColor(kPink-3)
-        hist_reweighted.SetMarkerColor(kPink-3)
+        hist_reweighted.SetLineColor(kAzure-3)
+        hist_reweighted.SetMarkerColor(kAzure-3)
         hist_reweighted.Scale(1./hist_reweighted.Integral())
         hist_reweighted.GetYaxis().SetTitle(ytitle)
         hist_reweighted.Draw("hsame")
@@ -146,12 +151,13 @@ def cv71():
         gPad.RedrawAxis()
 
         lab = mylabel(42)
-        lab.DrawLatex(0.2, 0.9, '4 TeV beam-gas' )
+        lab.DrawLatex(0.2, 0.9, energy+' beam-gas' )
         lab.DrawLatex(0.5, 0.82, sDict[hname][6] )
 
         mlegend.Draw()
 
-        pname = wwwpath + 'TCT/4TeV/beamgas/fluka/bs/reweighted/'+skey+'.pdf'
-        print('Saving file as ' + pname ) 
+        pname = wwwpath + 'TCT/6.5TeV/beamgas/fluka/bs/reweighted/'+skey+'.pdf'
+        pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/' + skey + '.pdf'
+        print('Saving file as ' + pname) 
         cv.Print(pname)
 

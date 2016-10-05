@@ -56,6 +56,39 @@ IPs = [
  ("IP8",    23315.378983  ),      
 ]
 
+# --------------------------------------------------------------------------------
+def doRebin(hist,rbf):
+
+    hist_rebinned = hist.Clone(hist.GetName()+"rebinned")
+    # must be rad hist!
+    if not hist_rebinned.GetName().count("Rad"):
+        print "is it really a rad histogram??"
+        sys.exit()
+    else:
+        print "rebinning", hist.GetName()
+
+        
+    # take out normalisation by binarea
+    nbins = hist.GetNbinsX()
+    print "rebinning ", hist.GetName(), "with ", nbins 
+    for bin in range(1,nbins+1):
+        binArea = math.pi*(hist.GetBinLowEdge(bin+1)**2 -hist.GetBinLowEdge(bin)**2)
+        hist_rebinned.SetBinContent(bin,hist.GetBinContent(bin) * binArea)
+        hist_rebinned.SetBinError(bin,hist.GetBinError(bin) * binArea)
+
+    # rebin
+    hist_rebinned.Rebin(rbf)
+
+    # take back in normalisation by new binarea
+    nbins = hist_rebinned.GetNbinsX()
+    print "rebinned ", hist_rebinned.GetName(), ". new nbin= ", nbins 
+    for bin in range(1,nbins+1):
+        binArea = math.pi*(hist_rebinned.GetBinLowEdge(bin+1)**2 -hist_rebinned.GetBinLowEdge(bin)**2)
+        hist_rebinned.SetBinContent(bin,hist.GetBinContent(bin)/binArea)
+        hist_rebinned.SetBinError(bin,hist.GetBinError(bin)/binArea)
+
+    return hist_rebinned
+# --------------------------------------------------------------------------------
 def mylabel(font):
 
     mylabel = TLatex()
