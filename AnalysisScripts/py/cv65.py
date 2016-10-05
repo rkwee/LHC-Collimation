@@ -26,22 +26,11 @@ def calc_pint_tot(rho_C, rho_H, rho_O):
     pint_O = [sigma_O*j/Trev for j in rho_O[1:]]
 
     pint_tot = [pint_H[i] + pint_O[i] + pint_C[i] for i in range(len(pint_O))]
-    return pint_H, pint_C, pint_O, pint_tot
+    return pint_C, pint_H, pint_O, pint_tot
 
-def cv65():
-# --------------------------------------------------------------------------------
-# density profile is given in the following format:
-# densities per molecule as function of s-coordinate
-# x,y,z, cx, cy, cz as function of (different s-coordinate)
-# merge densities with coordinates
-# note, that the source routine needs fluka units, ie *cm*!
-# --------------------------------------------------------------------------------
-    bgfile    = '/afs/cern.ch/work/r/rkwee/HL-LHC/beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv'
-
+def getAtomicRho(data):
     debug = 0
 
-    data = getdata14c(bgfile)
-    print 'data keys are',data.keys()
     nb_s = len(data['s'])
     print 'number of s values', nb_s
 
@@ -83,7 +72,23 @@ def cv65():
         except ValueError:
             continue
 
+        return s, rho_C, rho_H, rho_O
+def cv65():
+# --------------------------------------------------------------------------------
+# density profile is given in the following format:
+# densities per molecule as function of s-coordinate
+# x,y,z, cx, cy, cz as function of (different s-coordinate)
+# merge densities with coordinates
+# note, that the source routine needs fluka units, ie *cm*!
+# --------------------------------------------------------------------------------
+    bgfile    = '/afs/cern.ch/work/r/rkwee/HL-LHC/beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv'
+
+    data = getdata14c(bgfile)
+    print 'data keys are',data.keys()
+
     # --
+    s, rho_C, rho_H, rho_O = getAtomicRho(data)
+
     # plot atomic densities
 
     cv = TCanvas( 'cv', 'cv', 2100, 900)
