@@ -44,13 +44,19 @@ def resultFileBG(k,rel):
 # --------------------------------------------------------------------------------
 def cv81():
 
+    energy = "4 TeV"
     datafile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
+    datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
     tag = '_BG_4TeV_20MeV_bs'
     beamintensity = 2e14
+    bgcl = kAzure-3
+    bgcl = kPink-3
+    
 
     energy = "6.5 TeV"
     datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67'
     tag = '_BG_6500GeV_flat_20MeV_bs' #!! MMMeV NOT GeV
+    bgcl = kYellow-2
     beamintensity = 2.29e14 ## https://acc-stats.web.cern.ch/acc-stats/#lhc/fill-details 4536, ring 1.
     
     bbgFile = datafile + ".root"
@@ -148,9 +154,7 @@ def cv81():
         if XurMin != -1:
             hist_flat.GetXaxis().SetRangeUser(XurMin, XurMax)
 
-        bgcl = kAzure-3
-        bgcl = kYellow-2
-        lg, lm = "flat", 'lp'
+        lg, lm = "flat", 'l'
         mlegend.AddEntry(hist_flat, lg, lm)
         #        hist_flat.SetLineStyle(2)
 
@@ -160,7 +164,7 @@ def cv81():
 
         hist_reweighted.GetYaxis().SetTitle(ytitle)
         hist_reweighted.Draw("hp")
-        hist_flat.Draw("hsame")
+        hist_flat.Draw("histsame")
         lg, lm = "reweighted", 'lp'
         mlegend.AddEntry(hist_reweighted, lg, lm)
 
@@ -175,7 +179,9 @@ def cv81():
         mlegend.Draw()
 
         pname = wwwpath + 'TCT/6.5TeV/beamgas/fluka/bs/reweighted/'+skey+'.pdf'
-        pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/' + skey + '.pdf'
+        pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/cv81_' + skey + '.pdf'
+        if energy.count("4 TeV"):
+            pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/cv81_' + skey + '.pdf'
         print('Saving file as ' + pname) 
         cv.Print(pname)
 
