@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# # compare all BKG types at 4 TeV
+# # compare all BKG types at 4 TeV and 6.5TeV
 # compare with proper normalisation
 
 #   Sep 16 rkwee
@@ -30,25 +30,42 @@ def cv78():
     # .5*( 346.0/53754939.0 + 408.0/52838656.0 ) = 7.0791187088930279e-06
     # IR5 B2: h:( 43718962.0 IR7,  302.0 protons ), v(53000835.0, 106.0 protons. )
     # 0.5 * (302.0/43718962.0 + 106.0/53000835.0) = 4.4538612500709768e-06
-
+    do4TeV = 0
     # ------------------------------------------------------------------------
+    if do4TeV:
+        # all at 4 TeV
+        f1 = '/afs/cern.ch/project/lhc_mib/valBG4TeV/results_pressure2012_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
+        f2 =  projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
+        f3 =  projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
+        f4 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVplusB2/results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
+        f5 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVminusB2/results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
+        filenames = [f1,f2,f3,f4,f5]
 
-    # all at 4 TeV
-    f1 = '/afs/cern.ch/project/lhc_mib/valBG4TeV/results_pressure2012_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
-    f2 =  projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
-    f3 =  projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
-    f4 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVplusB2/results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
-    f5 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVminusB2/results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
-    filenames = [f1,f2,f3,f4,f5]
+        subfolder = wwwpath + 'TCT/4TeV/compAllBKG/normalised/'
 
-    subfolder = wwwpath + 'TCT/4TeV/compAllBKG/normalised/'
+        lTexts = ['beam-gas', 'Halo B1', 'Halo B2','+500 Hz', '-500 Hz']
+        tags   = [ '_BG_4TeV_20MeV_bs_reweighted','_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV' , '_offplus500Hz_4TeV_B2_20MeV', '_offmin500Hz_4TeV_B2_20MeV']
+        cols   = [kOrange-3, kBlue, kRed,kMagenta+4, kTeal+4]
+        mars   = [33, 20, 24, 22, 23 ]
+        dOpt   = [ 'h', 'hsame', 'hsame', 'hsame', 'hsame']
+        scalf  = [ 1., norm4TeVB1newHalo, norm4TeVB2newHalo, norm4TeVoffmomPLUS500, norm4TeVoffmomMINUS500]
+    elif 1:
 
-    lTexts = ['beam-gas', 'Halo B1', 'Halo B2','+500 Hz', '-500 Hz']
-    tags   = [ '_BG_4TeV_20MeV_bs_reweighted','_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV' , '_offplus500Hz_4TeV_B2_20MeV', '_offmin500Hz_4TeV_B2_20MeV']
-    cols   = [kOrange-3, kBlue, kRed,kMagenta+4, kTeal+4]
-    mars   = [33, 20, 24, 22, 23 ]
-    dOpt   = [ 'h', 'hsame', 'hsame', 'hsame', 'hsame']
-    scalf  = [ 1., norm4TeVB1newHalo, norm4TeVB2newHalo, norm4TeVoffmomPLUS500, norm4TeVoffmomMINUS500]
+        # all at 6.5 TeV # from cv69
+        thispath = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/'
+        f1 = thispath + 'results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root'
+        f2 = thispath + 'results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
+        f3 = thispath + 'results_pressure2015_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
+        filenames = [f3, f1,f2]
+
+        subfolder = wwwpath + 'TCT/6.5TeV/compAllBKG/normalised/'
+
+        lTexts = ['beam-gas', 'Halo B1', 'Halo B2']
+        tags   = ['_BG_6500GeV_flat_20MeV_bs_reweighted','_BH_6500GeV_haloB1_20MeV','_BH_6500GeV_haloB2_20MeV']
+        cols   = [kYellow-2, kAzure+9, kPink-8]
+        mars   = [ 33, 20, 24 ]
+        dOpt   = [ 'h', 'hsame', 'hsame']
+        scalf  = [1., norm6500GeVB1, norm6500GeVB2]
     # ------------------------------------------------------------------------
     debug = 0
     # need one file to generate sDict
@@ -59,11 +76,13 @@ def cv78():
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
     tBBG = TFile.Open(bbgFile).Get(treeName)
     sDict = generate_sDict(tag, norm, tBBG, yrel)
-
-    if not os.path.exists(subfolder):
-        print 'making dir',  subfolder
-        os.mkdir(subfolder)
-
+    try:
+        if not os.path.exists(subfolder):
+            print 'making dir',  subfolder
+            os.mkdir(subfolder)
+    except:
+        pass
+    
     rfs = [  TFile.Open(f_i) for f_i in filenames ]
 
     msize = 0.05
@@ -81,7 +100,7 @@ def cv78():
 
         # # for testing
         #        elif not skey.count('Rad'): continue
-
+               
         cv = TCanvas( 'cv'+skey, 'cv'+skey,  10, 10, 1200, 900 )     
 
         x1, y1, x2, y2 = 0.65,0.73,0.95,0.93 # right corner        
@@ -210,20 +229,7 @@ def cv78():
         lab.SetTextSize(0.1)
 #        lab.SetTextColor(col)
 
-        # if hnames[i].count('Ekin'):
-
-
-            #            YurMin, YurMax = ymin, 4*max(Ymax)
-        #     if hnames[i].count("All"):
-        #         YurMin, YurMax = ymin, 10*max(Ymax)
-        #     elif hnames[i].count("EnPro"):
-        #         YurMin, YurMax = 0.1, 10*max(Ymax)
-        #     elif hnames[i].count("EnMuE"):
-        #         YurMin, YurMax = 1e-3, 10*max(Ymax)
-
-        #gPad.RedrawAxis()
-
         pname = subfolder+hnames[i].split('_')[0]+'.pdf'
-
+        pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/cv78_' + hnames[i].split('_')[0]+'.pdf'
         print pname
         cv.SaveAs(pname)

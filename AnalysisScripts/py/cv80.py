@@ -134,19 +134,14 @@ def cv80():
             pint_incomingbeam = {}
 
             # incoming beam is left side of B1
-            for i,spos in enumerate(data['s']): 
-                if spos < 0.: 
-                    z = -spos
+            for i,spos in enumerate(data['s']):
+                if float(spos)<0:
+                    z = -float(spos)
                     pint_incomingbeam[z] = pint_tot[i]
                     zbin = hist_pint.FindBin(z)
                     hist_pint.SetBinContent(zbin, pint_incomingbeam[z])
+                    #print z, zbin, pint_incomingbeam[z]
 
-            # first value is for arc
-            arcvalue = pint_tot[1]
-
-            startarc = 260.
-            startarcBin = hist_pint.FindBin(startarc)
-            for i in range(startarcBin, ynbins-1): hist_pint.SetBinContent(i,arcvalue)    
         # --
         # compute re-weights for each bin
         for w in range(1,ynbins+1):
@@ -164,6 +159,9 @@ def cv80():
         hists_flat[-1].Write()
         hists_reweighted[-1].Write()
 
+    # for debugging
+    hist_pint.Write()
+        
     rfOUTile.Close()
     print 'wrote ','.'*20, rfoutname
     

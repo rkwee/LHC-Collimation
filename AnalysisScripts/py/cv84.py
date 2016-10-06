@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# reads histograms with reweights
+# plot flat and reweighted 2d histo
 # Oct 16
 #
 # R Kwee, 2016
@@ -42,7 +42,7 @@ def resultFileBG(k,rel):
     n = os.path.join(os.path.dirname(k),"results_pressure2015_"+rel+k.split('/')[-1])
     return  n
 # --------------------------------------------------------------------------------
-def cv81():
+def cv84():
 
     datafile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
     tag = '_BG_4TeV_20MeV_bs'
@@ -82,16 +82,13 @@ def cv81():
         elif skey.split(tag)[0].endswith("0") or skey.count("XY"): continue
         elif skey.count("Pio") or skey.count("Kao"): continue
 
-        # # FOR DEBUGGING
-        # elif not skey.count("EkinMu"): continue
-
-        doLeft = 0
-        if skey.count("Phi"): doLeft = 1
-        cv = TCanvas(skey+ 'cv',skey+ 'cv', 1400, 900)
-        # right corner
+        # FOR TESTING
+        elif not skey.count("Ekin"): continue
+        a,b = 1,2
+        cv = TCanvas(skey+ 'cv',skey+ 'cv', a*1400, b*900)
+        cv.Divide(a,b)
+        
         x1, y1, x2, y2 = 0.7, 0.75, 0.9, 0.88
-        if doLeft:
-            x1, y1, x2, y2 = 0.2, 0.75, 0.5, 0.88
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)
         mlegend.SetFillStyle(0)
@@ -99,83 +96,46 @@ def cv81():
         mlegend.SetTextSize(0.035)
         mlegend.SetShadowColor(0)
         mlegend.SetBorderSize(0)
+        xtitle = sDict[skey][9]
+
+
 
         twoDhname_flat = skey + '_flat'
         twoDhname_reweighted = skey + '_reweighted'
         twoDhist_flat = rf.Get(twoDhname_flat)
         twoDhist_reweighted = rf.Get(twoDhname_reweighted)
+        twoDhist_reweighted.GetXaxis().SetTitle(xtitle)
+        lg, lm = "reweighted", 'l'
+#        mlegend.AddEntry(hist_reweighted, lg, lm)
 
-        print twoDhist_flat, skey
-        hist_flat = twoDhist_flat.ProjectionX(skey + "makeit1d_flat")
-        hist_reweighted = twoDhist_reweighted.ProjectionX(skey + "makeit1d_reweighted")
-        nbins = hist_reweighted.GetNbinsX()
-
-        XurMin,XurMax = -1,-1.
-        YurMin,YurMax = -1,-1.
         doLogx, doLogy = 0, 0
         if skey.count("Ekin"):
-            hist_flat = doEkin(hist_flat,nbins)
-            hist_reweighted = doEkin(hist_reweighted,nbins)
-            doLogx, doLogy = 1,1
-            YurMin,YurMax = 1e-5,8e-1
+             doLogx, doLogy = 1,1
         elif skey.count("Phi"):
-            hist_flat = doPhi(hist_flat,nbins)
-            hist_reweighted = doPhi(hist_reweighted,nbins)
-            doLogx, doLogy = 0,1
-            YurMin,YurMax = 1e-3,2e-1
+             doLogx, doLogy = 0,1
         elif skey.count("Rad"):
-            hist_flat = doRad(hist_flat,nbins)
-            hist_reweighted = doRad(hist_reweighted,nbins)
-            hist_flat = helpers.doRebin(hist_flat,3)
-            hist_reweighted = helpers.doRebin(hist_reweighted,3)
-            doLogx, doLogy = 0,1
-            YurMin,YurMax = 1e-12,1.2
-            #XurMin,XurMax = 0, 600.
-            
-        hname = skey
-        xtitle = sDict[hname][9]
-        ytitle = sDict[hname][10] + ' a.u.'
+             doLogx, doLogy = 0,1
 
-        hist_flat.Scale(1./hist_flat.Integral())
-        hist_reweighted.Scale(1./hist_reweighted.Integral())
-        
-        hist_flat.GetXaxis().SetTitle(xtitle)
-        hist_reweighted.GetXaxis().SetTitle(xtitle)
-
-        hist_flat.GetYaxis().SetRangeUser(YurMin,YurMax)
-        hist_reweighted.GetYaxis().SetRangeUser(YurMin,YurMax)
-
-        if XurMin != -1:
-            hist_flat.GetXaxis().SetRangeUser(XurMin, XurMax)
-
-        bgcl = kAzure-3
-        bgcl = kYellow-2
-        lg, lm = "flat", 'lp'
-        mlegend.AddEntry(hist_flat, lg, lm)
-        #        hist_flat.SetLineStyle(2)
-
-        hist_reweighted.SetLineColor(bgcl)
-        hist_reweighted.SetMarkerColor(bgcl)
-        hist_reweighted.SetMarkerStyle(20)
-
-        hist_reweighted.GetYaxis().SetTitle(ytitle)
-        hist_reweighted.Draw("hp")
-        hist_flat.Draw("hsame")
-        lg, lm = "reweighted", 'lp'
-        mlegend.AddEntry(hist_reweighted, lg, lm)
+        cv.cd(2)
+        twoDhist_reweighted.Draw("colz")
+        cv.SetLogx(doLogx)
+        cv.SetLogy(doLogy)
+        gPad.RedrawAxis()
+        cv.cd(1)
+        twoDhist_flat.Draw("colz")
 
         cv.SetLogx(doLogx)
         cv.SetLogy(doLogy)
         gPad.RedrawAxis()
 
         lab = mylabel(42)
-        lab.DrawLatex(0.41, 0.955, energy+' beam-gas' )
-        lab.DrawLatex(0.5, 0.82, sDict[hname][6] )
+        lab.DrawLatex(0.2, 0.9, 'flat (1)' )
+        lab.DrawLatex(0.5, 0.82, 'reweighted (2)' )
 
-        mlegend.Draw()
+        #   mlegend.Draw()
 
         pname = wwwpath + 'TCT/6.5TeV/beamgas/fluka/bs/reweighted/'+skey+'.pdf'
-        pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/' + skey + '.pdf'
+        pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/2d_' + skey + '.pdf'
         print('Saving file as ' + pname) 
         cv.Print(pname)
 
