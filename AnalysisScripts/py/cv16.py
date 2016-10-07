@@ -415,12 +415,13 @@ def cv16():
 
         # testing
         #if not skey.count('PhiNAll'): continue
-
+        goLeft = 0
+        if skey.count("Phi"): goLeft = 1
 
         cv = TCanvas( 'cv'+skey, 'cv'+skey, 100, 120, 600, 600 )
 
         x1, y1, x2, y2 = 0.65,0.75,0.9,0.9 # right corner
-        #x1, y1, x2, y2 = 0.2,0.75,0.4,0.9 # left corner
+        if goLeft: x1, y1, x2, y2 = 0.2,0.75,0.4,0.9 # left corner
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)
         mlegend.SetFillStyle(0)
@@ -444,7 +445,7 @@ def cv16():
         if skey.count('Ekin'): 
             p1.SetLogx(1)
             p1.SetLogy(1)
-            XurMin, XurMax = 0.02, 7.5e3
+            XurMin, XurMax = 0.02, 8e3
             isLogy = 1
 
         if skey.count('En'):
@@ -454,14 +455,20 @@ def cv16():
         if skey.startswith('Rad'): 
             p1.SetLogy(1)
             isLogy = 1
-            XurMin, XurMax = 0.0, 600.
-            YurMin, YurMax = 2e-12,1e-2
+            #XurMin, XurMax = 0.0, 600.
+            if not skey.count("reweighted"): YurMin, YurMax = 2e-12,1e-2
+            elif skey.count("RadEn") : YurMin, YurMax = 2,1e10
 
         if skey.count('Phi'): 
             XurMin, XurMax = 3.14, 3.01
+            if skey.endswith("reweighted"):
+                YurMin, YurMax = 2e8,9e10
+                if skey.count("EnMu"):
+                    YurMin, YurMax = 2e5,9e8
+            
             if skey.count('PhiN'):
                 p1.SetLogy(1)
-                if skey.endswith("reweighted"): YurMin, YurMax = 1e8,1e9
+                if skey.endswith("reweighted"): YurMin, YurMax = 1e5,9e9
             
         if skey.count('Zcoor'):
             p1.SetLogy(1)
