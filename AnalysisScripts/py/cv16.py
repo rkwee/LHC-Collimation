@@ -168,6 +168,18 @@ def cv16():
     # nColor, dColor = kOrange-1, kMagenta-3
     # yrel = '/inel.BG int.'
 
+    # # beamgas 4 TeV vs 6.5 TeV reweighted
+    thispath = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/'
+    fNum = thispath + 'results_pressure2012_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
+    fDenom = thispath + 'results_pressure2015_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
+    subfolder = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/compBGreweighted/'
+    lTextNum, lTextDenom = '4 TeV', '6.5 TeV'
+    normDenom, normNum = 1.,1. # IS ALREADY Normalised
+    tagNum, tagDenom = '_BG_4TeV_20MeV_bs_reweighted', '_BG_6500GeV_flat_20MeV_bs_reweighted'
+    nColor, dColor = kGray+2, kBlue+4
+    labelText = ''
+    yrel = '/s'
+
  #    # # beamgas 6.5 TeV, 20 MeV vs 6.5 TeV, 20 GeV
  # fNum = projectpath + 'bbgen/6.5TeV/runs400_20MeV/results_ir1_BG_bs_6500GeV_b1_20MeV_nprim2716000_67.root'
  #    fDenom = projectpath + 'beamgas/6500GeV_beamsize/runs10k_20GeV/results_ir1_BG_bs_6500GeV_b1_20GeV_nprim181730000_67.root'
@@ -335,15 +347,15 @@ def cv16():
     # tagDenom, tagNum =  '_BH_HL_tct5inrdB1_20MeV', '_crabcfb1'
     # dColor, nColor = kMagenta-2, kBlue-1
 
-    fNum = projectpath + 'HL1.0/FL_HL_TCT5IN_nomCollSett_haloB1/results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root'
-    fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
-    subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/perTCThit/'
-    lTextNum = 'nominal'
-    lTextDenom = 'retracted'
-    normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
-    normDenom, normNum, yrel = 1., 1., '/TCT hit'
-    tagDenom,tagNum =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
-    dColor, nColor = kMagenta-2, kBlue-2
+    # fNum = projectpath + 'HL1.0/FL_HL_TCT5IN_nomCollSett_haloB1/results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root'
+    # fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
+    # subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/perTCThit/'
+    # lTextNum = 'nominal'
+    # lTextDenom = 'retracted'
+    # normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
+    # normDenom, normNum, yrel = 1., 1., '/TCT hit'
+    # tagDenom,tagNum =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
+    # dColor, nColor = kMagenta-2, kBlue-2
 
     # fNum =  '/afs/cern.ch/project/lhc_mib/crabcfb1/runs_usrbin/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_nprim4269100_30.root'
     # fDenom = '/afs/cern.ch/project/lhc_mib/tct_simulations/FlukaRuns/runs_modTAN/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_modTAN_nprim1390500_30.root'
@@ -356,15 +368,15 @@ def cv16():
 
     # ------------------------------------------------------------------------
 
-    # # offmomentum 
-    fNum =  '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVminusB2/results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
-    fDenom = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVplusB2/results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
-    subfolder = wwwpath + 'TCT/4TeV/tctimpacts/newScatt/comppm500Hz/'
-    lTextNum = '-500 Hz'
-    lTextDenom = '+500 Hz'
-    normNum, normDenom, yrel = 1., 1., '/TCT hit'
-    tagNum, tagDenom =  '_offmin500Hz_4TeV_B2_20MeV', '_offplus500Hz_4TeV_B2_20MeV'
-    dColor, nColor = kMagenta+4, kBlue+3
+    # # # offmomentum 
+    # fNum =  '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVminusB2/results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
+    # fDenom = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVplusB2/results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
+    # subfolder = wwwpath + 'TCT/4TeV/tctimpacts/newScatt/comppm500Hz/'
+    # lTextNum = '-500 Hz'
+    # lTextDenom = '+500 Hz'
+    # normNum, normDenom, yrel = 1., 1., '/TCT hit'
+    # tagNum, tagDenom =  '_offmin500Hz_4TeV_B2_20MeV', '_offplus500Hz_4TeV_B2_20MeV'
+    # dColor, nColor = kMagenta+4, kBlue+3
 
     # ------------------------------------------------------------------------
 
@@ -400,7 +412,10 @@ def cv16():
         if skey.count('XY'): continue
         if skey.count('Orig'): continue
         if skey.startswith('Prof'): continue
-#        if not skey.count('PhiEn'): continue
+
+        # testing
+        #if not skey.count('PhiNAll'): continue
+
 
         cv = TCanvas( 'cv'+skey, 'cv'+skey, 100, 120, 600, 600 )
 
@@ -429,7 +444,7 @@ def cv16():
         if skey.count('Ekin'): 
             p1.SetLogx(1)
             p1.SetLogy(1)
-            #XurMin, XurMax = 0.02, 7.0e3
+            XurMin, XurMax = 0.02, 7.5e3
             isLogy = 1
 
         if skey.count('En'):
@@ -442,9 +457,12 @@ def cv16():
             XurMin, XurMax = 0.0, 600.
             YurMin, YurMax = 2e-12,1e-2
 
-        if skey.startswith('Phi'): 
+        if skey.count('Phi'): 
             XurMin, XurMax = 3.14, 3.01
-
+            if skey.count('PhiN'):
+                p1.SetLogy(1)
+                if skey.endswith("reweighted"): YurMin, YurMax = 1e8,1e9
+            
         if skey.count('Zcoor'):
             p1.SetLogy(1)
             p1.SetGridx(1)
@@ -480,6 +498,11 @@ def cv16():
             print "WARNING : Didn't find ", hnameDenom
             continue
 
+        if histNum.GetName().endswith("reweighted"):
+            histNum = histNum.ProjectionX()
+            histDenom = histDenom.ProjectionX()
+
+        
         integralNum = histNum.Integral()
         integralDenom = histDenom.Integral()
         if integralDenom: ratioInts = integralNum/integralDenom
@@ -530,13 +553,14 @@ def cv16():
             if skey.count('Ekin'):
                 histNum.SetMaximum(5*ymax)
 
-
         if XurMin != -1:
             histNum.GetXaxis().SetRangeUser(XurMin,XurMax)
 
         if YurMin != -1:
             histNum.GetYaxis().SetRangeUser(YurMin,YurMax)
 
+        print "XurMin,XurMax", XurMin,XurMax
+        print "YurMin,YurMax", YurMin,YurMax
             # if skey.count('PhiEnMuPlus'): 
             #     histNum.GetYaxis().SetRangeUser(20,2e4)
         if dOptNum.count("same"):
