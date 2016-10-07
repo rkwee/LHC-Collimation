@@ -30,15 +30,27 @@ def cv78():
     # .5*( 346.0/53754939.0 + 408.0/52838656.0 ) = 7.0791187088930279e-06
     # IR5 B2: h:( 43718962.0 IR7,  302.0 protons ), v(53000835.0, 106.0 protons. )
     # 0.5 * (302.0/43718962.0 + 106.0/53000835.0) = 4.4538612500709768e-06
-    do4TeV = 0
+
+    do4TeV,do6500GeV = 1,0
     # ------------------------------------------------------------------------
     if do4TeV:
+
+        energy = "4 TeV"
         # all at 4 TeV
         f1 = '/afs/cern.ch/project/lhc_mib/valBG4TeV/results_pressure2012_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
         f2 =  projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
         f3 =  projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
         f4 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVplusB2/results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
         f5 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVminusB2/results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
+
+        # local
+        thispath = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/'
+        f1 = thispath + 'results_pressure2012_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
+        f2 = thispath + 'results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
+        f3 = thispath + 'results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
+        f4 = thispath + 'results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
+        f5 = thispath + 'results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
+
         filenames = [f1,f2,f3,f4,f5]
 
         subfolder = wwwpath + 'TCT/4TeV/compAllBKG/normalised/'
@@ -47,12 +59,13 @@ def cv78():
         tags   = [ '_BG_4TeV_20MeV_bs_reweighted','_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV' , '_offplus500Hz_4TeV_B2_20MeV', '_offmin500Hz_4TeV_B2_20MeV']
         cols   = [kOrange-3, kBlue, kRed,kMagenta+4, kTeal+4]
         mars   = [33, 20, 24, 22, 23 ]
-        dOpt   = [ 'h', 'hsame', 'hsame', 'hsame', 'hsame']
+        dOpt   = [ 'hp', 'hsame', 'hsame', 'hsame', 'hsame']
         scalf  = [ 1., norm4TeVB1newHalo, norm4TeVB2newHalo, norm4TeVoffmomPLUS500, norm4TeVoffmomMINUS500]
-    elif 1:
 
+    elif do6500GeV:
+
+        energy = "6.5 TeV"
         # all at 6.5 TeV # from cv69
-        thispath = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/'
         f1 = thispath + 'results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root'
         f2 = thispath + 'results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
         f3 = thispath + 'results_pressure2015_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
@@ -64,7 +77,7 @@ def cv78():
         tags   = ['_BG_6500GeV_flat_20MeV_bs_reweighted','_BH_6500GeV_haloB1_20MeV','_BH_6500GeV_haloB2_20MeV']
         cols   = [kYellow-2, kAzure+9, kPink-8]
         mars   = [ 33, 20, 24 ]
-        dOpt   = [ 'h', 'hsame', 'hsame']
+        dOpt   = [ 'hist', 'histsame', 'histsame']
         scalf  = [1., norm6500GeVB1, norm6500GeVB2]
     # ------------------------------------------------------------------------
     debug = 0
@@ -105,7 +118,7 @@ def cv78():
 
         x1, y1, x2, y2 = 0.65,0.73,0.95,0.93 # right corner        
 
-        if skey.count("PhiEnAll") or skey.count("PhiEnPhot") or skey.count("PhiNAllE") or skey.count("PhiNP") or skey.count("EnPro"):
+        if 0:# skey.count("PhiEnAll") or skey.count("PhiEnPhot") or skey.count("PhiNAllE") or skey.count("PhiNP") or skey.count("EnPro"):
             x1, y1, x2, y2 = 0.2,0.75,0.44,0.93 # left corner
 
         mlegend = TLegend( x1, y1, x2, y2)
@@ -121,7 +134,7 @@ def cv78():
 
         hname = skey # contains tag
         hnames = [ hname.replace(tag, tg) for tg in tags ] 
-        print 'plotting ', hnames
+        if debug: print 'plotting ', hnames
 
         xtitle, ytitle = sDict[skey][9], sDict[skey][10]
 
@@ -130,7 +143,7 @@ def cv78():
         Ymax, Ymin = [], []
         for i,rf  in enumerate(rfs):
 
-            print "trying to get", hnames[i], "from ", rf
+            if debug: print "trying to get", hnames[i], "from ", rf
             hists += [ rf.Get(hnames[i]) ]
 
             if not hists[-1]:
@@ -171,7 +184,8 @@ def cv78():
 
         # skip all histograms when one is missing        
         if not hists[0]: continue
-       
+        hists[0].GetXaxis().SetTitle(xtitle)
+        
         cv.cd()
         if isLogx:  cv.SetLogx()
         if isLogy:  cv.SetLogy()
@@ -181,35 +195,32 @@ def cv78():
             hists[i].Scale(scalf[i])
 
 
-            print "Setting y axes", YurMin, YurMax, dOpt[i]
+            if debug: print "Setting y axes", YurMin, YurMax, dOpt[i]
 
             if hnames[i].count("Phi"):
                 XurMin, XurMax = -3.14, 3.01
-                YurMin, YurMax = 1e-5*max(Ymax), max(Ymax)*1e2
+                YurMin, YurMax = 1e-5*max(Ymax), max(Ymax)*1e4
                 if hnames[i].count("En"):
                     YurMin, YurMax = 1e-7*max(Ymax), max(Ymax)*5e4
                     
             elif hnames[i].count("Ekin"):
-                YurMin, YurMax = 1e-8*max(Ymax), max(Ymax)*1e3
+                YurMin, YurMax = 1e-2,8e10
 
 
             elif hnames[i].count("Rad"):
                 XurMin, XurMax = 0.,600.
-                YurMin, YurMax = 1e-5,1e9
+                YurMin, YurMax = 1e-5,1e10
                 if  hnames[i].count("All"):
                     YurMin, YurMax = 1e-5,1e12
 
             if XurMin != -1:
                 hists[i].GetXaxis().SetRangeUser(XurMin,XurMax)
 
-            print "Setting y axes", YurMin, YurMax, dOpt[i]
-            if YurMin != -1:
-                print "Setting y axes", YurMin, YurMax, dOpt[i]
+            if YurMin != -1:                
                 hists[i].GetYaxis().SetRangeUser(YurMin,YurMax)
 
             if hists[i].GetName().endswith("reweighted"):
                 hists[i].ProjectionX().GetYaxis().SetRangeUser(YurMin,YurMax)
-                hists[i].ProjectionX().GetXaxis().SetTitle(xtitle)
                 hists[i].ProjectionX().GetYaxis().SetTitle(ytitle)
                 hists[i].ProjectionX().Draw(dOpt[i])
             else:
@@ -220,10 +231,10 @@ def cv78():
         mlegend.Draw()
 
         lab = mylabel(42)
-        lab.DrawLatex(0.356, 0.955, sDict[skey][6])
-        lab = mylabel(62)
-        lab.SetTextSize(0.055)
-        lab.DrawLatex(.8,y1-0.07,'')
+        lab.SetTextSize(0.06)
+        lab.DrawLatex(0.39, 0.855, sDict[skey][6])
+        nlab = mylabel(42)
+        nlab.DrawLatex(0.45,0.955,energy)
 
         lab = mylabel(42)
         lab.SetTextSize(0.1)
@@ -231,5 +242,7 @@ def cv78():
 
         pname = subfolder+hnames[i].split('_')[0]+'.pdf'
         pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/cv78_' + hnames[i].split('_')[0]+'.pdf'
+        if do4TeV:
+            pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/cv78_' + hnames[i].split('_')[0]+'.pdf'
         print pname
         cv.SaveAs(pname)

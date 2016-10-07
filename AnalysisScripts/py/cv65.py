@@ -144,7 +144,7 @@ def cv65():
     mlegend.Draw()
 
     pname = wwwpath + 'TCT/beamgas/pressure_profiles_2012/pint.pdf'
-    pname = 'pint.pdf'
+    pname = 'cv75_pint.pdf'
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 
