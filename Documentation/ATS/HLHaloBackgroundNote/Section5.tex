@@ -2,11 +2,10 @@
 
 %Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC, deploying different collimator layouts (in IR1/5 TCT4s only and TCT4s + TCT5s) and alternative collimator settings, so called \twosigmaret~settings to quantify the effect of the TCT5s for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in FLUKA at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in FLUKA a production and transportation cut-off at 20 MeV.
 
-\subsection{Beam-Gas}
-
-We refer for the most recent beam-gas simulations in HL scenarios to Ref.~\cite{ipac2014_rkh}.
+This section describes the several case studies for HL, focussing on beam-halo. As mentioned earlier, the HL beam-gas simulations as described in Ref.~\cite{ipac2014_rkh} are still the most recent of this kind.
 
 \subsection{Beam-Halo}
+
 The aim was to study loss locations for different collimator layouts and settings and evaluate quantitatively on halo background in IR1. The simulation technique as described in Sec.~\ref{simSetup} was performed in detail for the more realistic collimator settings scenario, so-called \twosigmaret~settings, and all cases are listed in Tab.~\ref{hlscenario}. The baseline collimator layout contains the TCT4s and TCT5s, although the position may not be fixed to the meter precise for the moment due to lack of sufficient space at the positions as shown in Fig.~\ref{hllhc_layout}. 
 
 Two different HL optics (version HLLHCv1.0\footnote{The FLUKA geometry contained layout updates of v1.1, but v1.0 collimator settings were used assuming the uncertainties from the version differences are negligable.}) were studied:
@@ -56,22 +55,28 @@ A zoom into loss locations in the experimental IRs of ATLAS and CMS are shown in
 \end{figure}
 
 
-%% \begin{figure}[!htb]
-%% \begin{center}
-%% \includegraphics[width=0.495\textwidth]{figures/compTCT5LINOUT_roundthin_B1_IR1IR5}
-%% \includegraphics[width=0.495\textwidth]{figures/compTCT5LINOUT_flatthin_B1_IR1IR5}
-%% \end{center}
-%% \begin{picture} (0.,0.)
-%% \setlength{\unitlength}{1.0cm}
-%% \small{
-%%     \put ( 4.,1.){(a)}
-%%     \put ( 12.4,1.){(b)}
-%% }
-%% \end{picture}
-%% \vspace{-0.6cm}
-%%  \caption{Summary of hits load of the single TCTs for the cases TCT5 are out and in for round (a) and flat (b) beam optics.
-%%   \label{compTCT5INOUT}}
-%% \end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_tct5otrd.pdf}
+\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_tcotrdb2.pdf}
+
+\end{center}
+\vspace{-0.6cm}
+ \caption{Positions of inelastic interactions as given by SixTrack within the collimator jaws.
+  \label{inelHLtct5in}}
+\end{figure}
+
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_tct5inrd.pdf}
+\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_tcinrdb2.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Positions of inelastic interactions as given by SixTrack within the collimator jaws.
+  \label{inelHLtct5in}}
+\end{figure}
 
 
 

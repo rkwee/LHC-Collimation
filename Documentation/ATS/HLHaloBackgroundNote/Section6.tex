@@ -1,4 +1,57 @@
 \section{Evolution of Background in LHC and Comparison to HL--LHC\label{evolut}}
+\subsection{Comparison of Run I background sources}
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/EkinAll.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/PhiEnAll.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/EkinMuons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/PhiEnMuons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/EkinProtons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/PhiEnProtons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/EkinPhotons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/PhiEnPhotons.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{comparison of all background sources at 4 TeV normalised per interaction.
+  \label{compPM_raden}}
+\end{figure}
+
+
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/normalised/EkinAll.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/normalised/PhiEnAll.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/normalised/EkinMuons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/normalised/PhiEnMuons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/normalised/EkinProtons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/normalised/PhiEnProtons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/normalised/EkinPhotons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/4TeV/compAllBKG/normalised/PhiEnPhotons.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{comparison of all background sources at 4 TeV normalised to a rate.
+  \label{compPM_raden_norm}}
+\end{figure}
+
+% --------------------------------------------------------------------------------------------
+\subsection{Comparison of Run II background sources}
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.42\textwidth]{figures/6500GeV/compAllBKG/EkinAll.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/6500GeV/compAllBKG/PhiEnAll.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/6500GeV/compAllBKG/EkinMuons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/6500GeV/compAllBKG/PhiEnMuons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/6500GeV/compAllBKG/EkinProtons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/6500GeV/compAllBKG/PhiEnProtons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/6500GeV/compAllBKG/EkinPhotons.pdf}
+  \includegraphics[width=0.42\textwidth]{figures/6500GeV/compAllBKG/PhiEnPhotons.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{comparison of all background sources at 6.5~TeV.
+  \label{compAllBKG_6.5}}
+\end{figure}
+
+% --------------------------------------------------------------------------------------------
 
 \subsection{IR7 TCP to TCT conversion factors in beam-halo simulations}
 The approach to normalise the halo induced distributions is to scale the distribution per TCT hit up by the initial particle flux (thus the total number of protons initially in the machine, the product of the number of bunches, $N_{\mathrm{bunch}}$, times the intensity per bunch, $I_{\mathrm{bunch}}$ per time unit $\tau$ for which we assume a stable beam operation scenario of 100 hours beam life time) multiplied by a sixtrack conversion factor, which takes into account the efficiency of the collimator settings and is calculated by the ratio of absorbed protons on the TCTs at IR1 or 5 and those absorbed by the TCPs in IR7 per simulation case h and v. Using the absorbed protons at IR7 primaries makes it easier to compare BLM losses in IR7, also losses on secondaries or tertiaries do not change dramatically, i.e. an order of magnitude, when having them considered in the denominator as well to obtain IR7 leakage factors.
@@ -106,169 +159,16 @@ The approach to normalise the halo induced distributions is to scale the distrib
 
 \subsection{Comparison of halo hit distributions}
 
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_impacts_real_minus500Hz_4TeVB1.pdf}
-\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_impacts_real_minus500Hz_4TeVB2.pdf}
-\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_impacts_real_4TeV_plus500Hz_TCT_B1.pdf}
-\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_impacts_real_4TeV_plus500Hz_TCT_B2.pdf}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Positions of inelastic interactions as given by SixTrack within the collimator jaws.
-  \label{inel4TeVOffmom}}
-\end{figure}
 
-
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_HALOB1.pdf}
-\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_HALOB2.pdf}
-%% figures/inelposition_sum_HALOB2.pdf
-%% figures/inelposition_sum_impacts_real_6500GeV_minus500Hz_TCT_b1.pdf
-%% figures/inelposition_sum_impacts_real_6500GeV_plus500Hz_TCT_B1.pdf
-%% figures/inelposition_sum_impacts_real_6500GeV_plus500Hz_TCT_B2.pdf
-%% figures/inelposition_sum_impacts_real_HL_TCT5IN_nomColl_haloB1.pdf
-%% figures/inelposition_sum_impacts_real_HL_TCT5IN_relaxColl_HaloB1_flatthin.pdf
-%% figures/inelposition_sum_impacts_real_NewScatt_4TeV_haloB1.pdf
-%% figures/inelposition_sum_impacts_real_NewScatt_4TeV_haloB2.pdf
-%% figures/inelposition_sum_impacts_real_NewScatt_TCT_4TeV_B2.pdf
-%% figures/inelposition_sum_impacts_real_minus500Hz_4TeVB1.pdf
-%% figures/inelposition_sum_impacts_real_minus500Hz_4TeVB2.pdf
-%% figures/inelposition_sum_impacts_real_tct5inb1_crabs.pdf
-%% figures/inelposition_sum_impacts_real_tct5otb1_crabs.pdf
-%% figures/inelposition_sum_tcinrdb2.pdf
-%% figures/inelposition_sum_tcotrdb2.pdf
-%% figures/inelposition_sum_tct5inrd.pdf
-%% figures/inelposition_sum_tct5otrd.pdf}
-
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Positions of inelastic interactions as given by SixTrack within the collimator jaws.
-  \label{inel6p5}}
-\end{figure}
-
-
-
-
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_tct5inrd.pdf}
-\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_tcinrdb2.pdf}
-%% figures/inelposition_sum_impacts_real_4TeV_plus500Hz_TCT_B1.pdf
-%% figures/inelposition_sum_impacts_real_4TeV_plus500Hz_TCT_B2.pdf
-%% figures/inelposition_sum_impacts_real_6500GeV_minus500Hz_TCT_b1.pdf
-%% figures/inelposition_sum_impacts_real_6500GeV_plus500Hz_TCT_B1.pdf
-%% figures/inelposition_sum_impacts_real_6500GeV_plus500Hz_TCT_B2.pdf
-%% figures/inelposition_sum_impacts_real_HL_TCT5IN_nomColl_haloB1.pdf
-%% figures/inelposition_sum_impacts_real_HL_TCT5IN_relaxColl_HaloB1_flatthin.pdf
-%% figures/inelposition_sum_impacts_real_NewScatt_4TeV_haloB1.pdf
-%% figures/inelposition_sum_impacts_real_NewScatt_4TeV_haloB2.pdf
-%% figures/inelposition_sum_impacts_real_NewScatt_TCT_4TeV_B2.pdf
-%% figures/inelposition_sum_impacts_real_minus500Hz_4TeVB1.pdf
-%% figures/inelposition_sum_impacts_real_minus500Hz_4TeVB2.pdf
-%% figures/inelposition_sum_impacts_real_tct5inb1_crabs.pdf
-%% figures/inelposition_sum_impacts_real_tct5otb1_crabs.pdf
-%% figures/inelposition_sum_tcinrdb2.pdf
-%% 
-%% figures/inelposition_sum_tct5inrd.pdf
-%% 
-
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Positions of inelastic interactions as given by SixTrack within the collimator jaws.
-  \label{inelHLtct5in}}
-\end{figure}
-
-
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_tct5otrd.pdf}
-\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_tcotrdb2.pdf}
-%% figures/inelposition_sum_impacts_real_4TeV_plus500Hz_TCT_B1.pdf
-%% figures/inelposition_sum_impacts_real_4TeV_plus500Hz_TCT_B2.pdf
-%% figures/inelposition_sum_impacts_real_6500GeV_minus500Hz_TCT_b1.pdf
-%% figures/inelposition_sum_impacts_real_6500GeV_plus500Hz_TCT_B1.pdf
-%% figures/inelposition_sum_impacts_real_6500GeV_plus500Hz_TCT_B2.pdf
-%% figures/inelposition_sum_impacts_real_HL_TCT5IN_nomColl_haloB1.pdf
-%% figures/inelposition_sum_impacts_real_HL_TCT5IN_relaxColl_HaloB1_flatthin.pdf
-%% figures/inelposition_sum_impacts_real_NewScatt_4TeV_haloB1.pdf
-%% figures/inelposition_sum_impacts_real_NewScatt_4TeV_haloB2.pdf
-%% figures/inelposition_sum_impacts_real_NewScatt_TCT_4TeV_B2.pdf
-%% figures/inelposition_sum_impacts_real_minus500Hz_4TeVB1.pdf
-%% figures/inelposition_sum_impacts_real_minus500Hz_4TeVB2.pdf
-%% figures/inelposition_sum_impacts_real_tct5inb1_crabs.pdf
-%% figures/inelposition_sum_impacts_real_tct5otb1_crabs.pdf
-%% figures/inelposition_sum_tcinrdb2.pdf
-%% 
-%% figures/inelposition_sum_tct5inrd.pdf
-%% 
-
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Positions of inelastic interactions as given by SixTrack within the collimator jaws.
-  \label{inelHLtct5in}}
-\end{figure}
-
-
-
-\begin{figure}[!htb]
+\begin{figure}
 \begin{center}
 \includegraphics[width=0.495\textwidth]{figures/inelposition_sum_impacts_real_HL_TCT5IN_nomColl_haloB1.pdf}
-\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_impacts_real_tct5inb1_crabs.pdf}
-%% figures/inelposition_sum_impacts_real_4TeV_plus500Hz_TCT_B1.pdf
-%% figures/inelposition_sum_impacts_real_4TeV_plus500Hz_TCT_B2.pdf
-%% figures/inelposition_sum_impacts_real_6500GeV_minus500Hz_TCT_b1.pdf
-%% figures/inelposition_sum_impacts_real_6500GeV_plus500Hz_TCT_B1.pdf
-%% figures/inelposition_sum_impacts_real_6500GeV_plus500Hz_TCT_B2.pdf
-
-%% figures/inelposition_sum_impacts_real_HL_TCT5IN_relaxColl_HaloB1_flatthin.pdf
-%% figures/inelposition_sum_impacts_real_NewScatt_4TeV_haloB1.pdf
-%% figures/inelposition_sum_impacts_real_NewScatt_4TeV_haloB2.pdf
-
-%% figures/inelposition_sum_impacts_real_minus500Hz_4TeVB1.pdf
-%% figures/inelposition_sum_impacts_real_minus500Hz_4TeVB2.pdf
-%% figures/inelposition_sum_impacts_real_tct5inb1_crabs.pdf
-
+%%\includegraphics[width=0.495\textwidth]{figures/inelposition_sum_impacts_real_tct5inb1_crabs.pdf}
 \end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,1.){(a)}
-    \put ( 12.4,1.){(b)}
-}
-\end{picture}
-\vspace{-0.6cm}
- \caption{Positions of inelastic interactions as given by SixTrack within the collimator jaws.
+ \caption{Depth distribution of TCT hits when using the nominal collimator settings (from the LHC Design report).
   \label{inelHLtct5inNomCrab}}
 \end{figure}
+
 
 
 \subsection{Comparison of different simulation cases \label{compRun1Run2}}
