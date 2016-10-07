@@ -17,20 +17,22 @@ import cv79, cv32, cv65
 pData = [
     ("/Users/rkwee/Downloads/Density_Fill4536_2041b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]", "Fill 4536 B1"),
     ("/Users/rkwee/Downloads/Density_Fill4536_2041b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4536 B2"),
-    ("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B1"),
-    ("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B2"),
+    # ("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B1"),
+    # ("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B2"),
 #    ("/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv", "distance from IP1 [m]",  "Fill 2736 B1"),
 ]
 # # -----------------------------------------------------------------------
-cols = [kBlue-2, kYellow+9, kAzure-1, kRed+1, kMagenta-5]
-def cv83():
+cols = [kBlue-2, kYellow+9, kAzure-1, kRed+1, kMagenta-5, kYellow-2]
+def cv85():
     # ---------------------------------------------------
     rel = 'compallpint'
     rel = 'compallpress'
-    cv = TCanvas( 'cv'+ rel , 'cv'+rel , 2100, 900)
+    a,b = 1,1
+    cv = TCanvas( 'cv'+ rel , 'cv'+rel , a*2100, b*900)
+    cv.Divide(a,b)
     cv.SetLogy(1)
     cv.SetGridy(1)
-    x1, y1, x2, y2 = 0.75, 0.72, 0.88, 0.92
+    x1, y1, x2, y2 = 0.75, 0.6, 0.88, 0.94
     mlegend = TLegend( x1, y1, x2, y2)
     mlegend.SetFillColor(0)
     mlegend.SetFillStyle(0)
@@ -55,19 +57,19 @@ def cv83():
             stmp, rho_C, rho_H, rho_O = cv65.getAtomicRho(data)
             stmp2 = stmp[1:]
             s_full = stmp2[::-1]
-            pint_C, pint_H, pint_O, pint_tot = cv65.calc_pint_tot(rho_C, rho_H, rho_O)
             totalPress = [ data['H2_N2Eq'][i] +  data['CH4_N2Eq'][i] + data['CO_N2Eq'][i] + data['CO2_N2Eq'][i] for i in range(len(data['H2_N2Eq'])) ]
         else:
             data = cv79.getdata5c(pFile)
             totalPress =  cv79.getTotalPressure(data)
-            rho_H2, rho_CH4, rho_CO, rho_CO2 = cv79.getrho(data['H2_Eq']),cv79.getrho(data['CH4_Eq']),cv79.getrho(data['CO_Eq']),cv79.getrho(data['CO2_Eq'])
-            rho_H, rho_C, rho_O = cv79.getAtomicRho(rho_H2, rho_CH4, rho_CO, rho_CO2)
-            pint_H, pint_C, pint_O, pint_tot = cv79.getpint(rho_H, rho_C, rho_O)
+            pressCO = data['CO_Eq']
+            pressCO2 = data['CO2_Eq']
+            pressCH4 = data['CH4_Eq']
+            pressH2 = data['H2_Eq']
+
             s_full = data['s']
             
         s_incoming = []
         
-        pint_incoming, pint_tot_incomingbeam = [],[]
         
         # only one side, chose positive s
         s_positiveb1, s_positiveb2 = [],[]
@@ -84,23 +86,49 @@ def cv83():
         print "len(s_positiveb2)",len(s_positiveb2)
 
         if lText.count("B2"):
-            pint_tot_incomingbeam = pint_tot[len(s_positiveb2):]
-            press_tot_incomingbeam = totalPress[len(s_positiveb2):]
+            lenposb2 = len(s_positiveb2)
+            press_tot_incomingbeam = totalPress[lenposb2:]
+            pressH2_incoming = pressH2[lenposb2:]
+            pressCO_incoming = pressCO[lenposb2:]
+            pressCH4_incoming = pressCH4[lenposb2:]
+            pressCO2_incoming = pressCO2[lenposb2:]
+                        
             s_incoming = s_positiveb2[:len(s_positiveb2)-1]
         else:
-            pint_tot_incomingbeam = [p for p in pint_tot[:len(s_positiveb1)+1]]
             press_tot_incomingbeam = [p for p in totalPress[:len(s_positiveb1)+1]]
+            pressH2_incoming = pressH2[:len(s_positiveb1)+1]
+            pressCO_incoming = pressCO[:len(s_positiveb1)+1]
+            pressCH4_incoming = pressCH4[:len(s_positiveb1)+1]
+            pressCO2_incoming = pressCO2[:len(s_positiveb1)+1]
+                        
             s_incoming = s_positiveb1
             if pFile.count("LSS"):
-                pint_tot_incomingbeam = pint_tot_incomingbeam[::-1]
                 press_tot_incomingbeam = totalPress[::-1]
             
-        print "len(pint_tot_incomingbeam)", len(pint_tot_incomingbeam)
-        print "len(s_incoming)", len(s_incoming)
 
         #        print s_incoming[:100],press_tot_incomingbeam[:100]
-        #xlist, ylist, col, mstyle, lg = s_incoming,pint_tot_incomingbeam , cols[i],20+i, lText
-        xlist, ylist, col, mstyle, lg = s_incoming,press_tot_incomingbeam , cols[i],20+i, lText
+
+        xlist, ylist, col, mstyle, lg = s_incoming,press_tot_incomingbeam , cols[i],20+i, lText + 'total'
+        grs += [ makeTGraph(xlist, ylist, col, mstyle)]
+        mlegend.AddEntry(grs[-1], lg, lm)    
+        mg.Add(grs[-1])
+
+        # xlist, ylist, col, mstyle, lg = s_incoming,pressH2_incoming , cols[i]+1, 20,lText + 'H2'
+        # grs += [ makeTGraph(xlist, ylist, col, mstyle)]
+        # mlegend.AddEntry(grs[-1], lg, lm)    
+        # mg.Add(grs[-1])
+
+        # xlist, ylist, col, mstyle, lg = s_incoming,pressCH4_incoming , cols[i]+2, 20,lText + 'CH4'
+        # grs += [ makeTGraph(xlist, ylist, col, mstyle)]
+        # mlegend.AddEntry(grs[-1], lg, lm)    
+        # mg.Add(grs[-1])
+
+        # xlist, ylist, col, mstyle, lg = s_incoming,pressCO2_incoming , cols[i]+2, 20,lText + 'CO2'
+        # grs += [ makeTGraph(xlist, ylist, col, mstyle)]
+        # mlegend.AddEntry(grs[-1], lg, lm)    
+        # mg.Add(grs[-1])
+
+        xlist, ylist, col, mstyle, lg = s_incoming,pressCO_incoming , cols[i]+2, 20,lText + 'CO'
         grs += [ makeTGraph(xlist, ylist, col, mstyle)]
         mlegend.AddEntry(grs[-1], lg, lm)    
         mg.Add(grs[-1])
@@ -112,7 +140,7 @@ def cv83():
     #mg.GetYaxis().SetTitle("total interaction probability")
     mg.GetYaxis().SetTitle("total pressure [mbar]")
     #mg.GetYaxis().SetRangeUser(5e-18,4e-10)
-    mg.GetYaxis().SetRangeUser(5e-13,4e-6)
+    mg.GetYaxis().SetRangeUser(5e-15,4e-3)
     mlegend.Draw()
     lab = mylabel(42)
     lab.DrawLatex(0.42, 0.82, 'incoming beams') 
