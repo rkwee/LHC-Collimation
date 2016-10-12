@@ -19,10 +19,11 @@ def calc_pint_tot(rho_C, rho_H, rho_O):
     sigma_C = 258.e-31
     sigma_H =  37.e-31
     Trev = 2*math.pi/112450
-
-    pint_C = [sigma_C*j/Trev for j in rho_C[1:]]
-    pint_H = [sigma_H*j/Trev for j in rho_H[1:]]
-    pint_O = [sigma_O*j/Trev for j in rho_O[1:]]
+    sigma_N = 286.e-31
+    
+    pint_C = [sigma_N*rho/Trev for rho in rho_C[1:]]
+    pint_H = [sigma_N*rho/Trev for rho in rho_H[1:]]
+    pint_O = [sigma_N*rho/Trev for rho in rho_O[1:]]
 
     pint_tot = [pint_H[i] + pint_O[i] + pint_C[i] for i in range(len(pint_O))]
     return pint_tot
@@ -35,8 +36,16 @@ def cv66():
 # merge densities with coordinates
 # note, that the source routine needs fluka units, ie *cm*!
 # --------------------------------------------------------------------------------
+    energy = '4 TeV beam-gas' 
     bgfile    = '/afs/cern.ch/work/r/rkwee/HL-LHC/beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv'
+    beamintensity = 2e14
+    
+    energy = " 3.5 TeV "
+    bgfile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv"
+    beamintensity = 1.66e14
 
+    print "Using", bgfile
+    
     debug = 0
 
     data = getdata14c(bgfile)
@@ -77,6 +86,10 @@ def cv66():
             rho_O[i]  = 1.0*rho_CO
             rho_O[i] += 2.0*rho_CO2
 
+            rho_H[i]=0
+            rho_C[i]=0
+            rho_O[i]=(rho_H2*2.+rho_CH4*16.+rho_CO*28.+rho_CO2*44.)*4./(2.+16.+28.+44.)
+            
             s[i] = float(data['s'][i])
 
         except ValueError:
@@ -86,13 +99,17 @@ def cv66():
     # calculate the scaled number
 
     # unscaled inf
-    hname, nbins, xmin, xmax = 'muons', 525, 22.5, 550
+    hname, nbins, xmin, xmax = 'muons', 546, 0., 546.
+    binw = (xmax-xmin)/nbins
     hist = TH1F(hname, hname, nbins, xmin, xmax)
     hist.Sumw2()
     hist.GetXaxis().SetTitle('s [m]')
     datafile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
+    datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
+    datafile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66"
 
     bbgFile = datafile + ".root"
+
 
     rfile = TFile.Open(bbgFile, "READ")
 
@@ -115,12 +132,14 @@ def cv66():
     pint_tot = calc_pint_tot(rho_C, rho_H, rho_O)
     pint_incomingbeam = {}
 
-    for i,spos in enumerate(s): 
+    for i,spoS in enumerate(s):
+        spos = float(spoS)
         if spos < 0.: 
             z = -spos
             pint_incomingbeam[z] = pint_tot[i]
             zbin = hist_pint.FindBin(z)
             hist_pint.SetBinContent(zbin, pint_incomingbeam[z])
+
 
     # first value is for arc
     arcvalue = pint_tot[1]
@@ -129,7 +148,6 @@ def cv66():
     startarcBin = hist_pint.FindBin(startarc)
     for i in range(startarcBin, nbins-1): hist_pint.SetBinContent(i,arcvalue)
     
-    beamintensity = 2e14
     nprim = float(bbgFile.split('nprim')[-1].split('_')[0]) 
     Trev  = 2*math.pi/112450
     kT = 1.38e-23*300
@@ -139,7 +157,6 @@ def cv66():
         m = hist_flat.GetBinContent(i)
         scale = beamintensity * hist_pint.GetBinContent(i)
         hist.SetBinContent(i,scale * m)
-
 
     cv = TCanvas( 'cv', 'cv', 2100, 900)
 
@@ -165,9 +182,13 @@ def cv66():
     hist.Draw("hist")
     hist_flat.Scale(1e2)
     hist_flat.Draw("histsame")
+
     hist_pint.SetLineColor(kGreen-3)
     hist_pint.Scale(1e16)
     hist_pint.Draw("histsame")
+
+    lg, lm = "interaction probability", 'l'
+    mlegend.AddEntry(hist_pint, lg, lm)
 
     lg, lm = "interaction probability x10^{16}", 'l'
     mlegend.AddEntry(hist_pint, lg, lm)
@@ -175,18 +196,20 @@ def cv66():
     lg, lm = "#mu^{#pm} normalised to pressure profile", 'l'
     mlegend.AddEntry(hist, lg, lm)
 
-    lg, lm = "#mu^{#pm} rates/BG int. flat pressure", 'l'
-    mlegend.AddEntry(hist_flat, lg, lm)
+    # lg, lm = "#mu^{#pm} rates/BG int. flat pressure", 'l'
+    # mlegend.AddEntry(hist_flat, lg, lm)
 
     gPad.SetLogy(1)
     gPad.RedrawAxis()
 
     lab = mylabel(42)
-    lab.DrawLatex(0.45, 0.9, '4 TeV beam-gas' )
+    lab.DrawLatex(0.45, 0.9, energy)
 
     mlegend.Draw()
 
     pname = wwwpath + 'TCT/beamgas/pressure_profiles_2012/flatvsprofile.pdf'
+    pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/atomicrho2011.pdf"
+    pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/pressure2011.pdf"
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 
