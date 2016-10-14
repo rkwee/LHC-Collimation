@@ -18,14 +18,15 @@ def calc_pint_tot(rho_C, rho_H, rho_O):
     sigma_O = 316.e-31
     sigma_C = 258.e-31
     sigma_H =  37.e-31
+    sigma_tot = sigma_O + sigma_H + sigma_C
+
     Trev = 2*math.pi/112450
     sigma_N = 286.e-31
-    
-    pint_C = [sigma_N*rho/Trev for rho in rho_C[1:]]
-    pint_H = [sigma_N*rho/Trev for rho in rho_H[1:]]
-    pint_O = [sigma_N*rho/Trev for rho in rho_O[1:]]
 
-    pint_tot = [pint_H[i] + pint_O[i] + pint_C[i] for i in range(len(pint_O))]
+    # weighted mean
+    meanrho = [ (math.sqrt(rho_H[i])*sigma_H/sigma_tot + math.sqrt(rho_O[i])*sigma_O/sigma_tot + math.sqrt(rho_C[i])*sigma_C/sigma_tot)**2 for i in range(1,len(rho_O))]
+
+    pint_tot = [rho*sigma_N/Trev for rho in meanrho]
     return pint_tot
 
 def cv66():
@@ -54,7 +55,7 @@ def cv66():
     print 'number of s values', nb_s
 
     # atomic densities
-    rho_C, rho_H, rho_O = [0 for i in range(nb_s)],[0 for i in range(nb_s)],[0 for i in range(nb_s)]
+    rho_A, rho_C, rho_H, rho_O = [0 for i in range(nb_s)],[0 for i in range(nb_s)],[0 for i in range(nb_s)],[0 for i in range(nb_s)]
     s = [-9999 for i in range(nb_s)]
 
     cf = 1.
@@ -86,9 +87,9 @@ def cv66():
             rho_O[i]  = 1.0*rho_CO
             rho_O[i] += 2.0*rho_CO2
 
-            rho_H[i]=0
-            rho_C[i]=0
-            rho_O[i]=(rho_H2*2.+rho_CH4*16.+rho_CO*28.+rho_CO2*44.)*4./(2.+16.+28.+44.)
+            # rho_H[i]=0
+            # rho_C[i]=0
+            rho_A[i]=(rho_H2*2.+rho_CH4*16.+rho_CO*28.+rho_CO2*44.)*4./(2.+16.+28.+44.)
             
             s[i] = float(data['s'][i])
 
@@ -99,7 +100,7 @@ def cv66():
     # calculate the scaled number
 
     # unscaled inf
-    hname, nbins, xmin, xmax = 'muons', 546, 0., 546.
+    hname, nbins, xmin, xmax = 'muons', 262, 22.6, 546.6
     binw = (xmax-xmin)/nbins
     hist = TH1F(hname, hname, nbins, xmin, xmax)
     hist.Sumw2()
@@ -110,7 +111,7 @@ def cv66():
 
     bbgFile = datafile + ".root"
 
-
+    print "Using", bbgFile
     rfile = TFile.Open(bbgFile, "READ")
 
     hists = []
@@ -123,14 +124,27 @@ def cv66():
     hname = 'muons_flatpressure'
     hist_flat = hist.Clone(hname)
     hist_pint = hist.Clone("pint")
+    hist_pint_re = hist.Clone("pint_re")
     var = "z_interact*0.01"
     cuts = "(particle == 10 || particle == 11) && energy_ke > 0.02"
     print "INFO: applying", cuts, "to", var, "in", hname
-    mt.Project(hname, var, cuts)
+    if debug: mt.Project(hname, var, cuts)
 
+    # divide by binwith
+    for i in range(nbins+1):
+        cont = hist_flat.GetBinContent(i)
+        hist_flat.SetBinContent(i,cont/binw)
+        err = hist_flat.GetBinError(i)
+        hist_flat.SetBinError(i,err/binw)
+
+    Trev = 2*math.pi/112450
+    sigma_N = 286.e-31
+
+    pint_tot_re = [sigma_N/Trev * rho for rho in rho_A]
     # create histogram with same axis for pint 
     pint_tot = calc_pint_tot(rho_C, rho_H, rho_O)
     pint_incomingbeam = {}
+
 
     for i,spoS in enumerate(s):
         spos = float(spoS)
@@ -139,27 +153,36 @@ def cv66():
             pint_incomingbeam[z] = pint_tot[i]
             zbin = hist_pint.FindBin(z)
             hist_pint.SetBinContent(zbin, pint_incomingbeam[z])
-
+            hist_pint_re.SetBinContent(zbin, pint_tot_re[i])
 
     # first value is for arc
     arcvalue = pint_tot[1]
 
     startarc = 260.
     startarcBin = hist_pint.FindBin(startarc)
-    for i in range(startarcBin, nbins-1): hist_pint.SetBinContent(i,arcvalue)
+    #for i in range(startarcBin, nbins-1): hist_pint.SetBinContent(i,arcvalue)
+
+    print "Integral", hist_pint.Integral()
+    print "Integral re", hist_pint_re.Integral()
+    print "ratio hist_pint_re.Integral()/hist_pint.Integral()", hist_pint_re.Integral()/hist_pint.Integral()
+    for bin in range(1,10):
+        ratio = hist_pint_re.GetBinContent(bin)/hist_pint.GetBinContent(bin)
+        print "pint_re/pint", ratio
     
     nprim = float(bbgFile.split('nprim')[-1].split('_')[0]) 
-    Trev  = 2*math.pi/112450
-    kT = 1.38e-23*300
-
+    Mk = nprim/nbins
     # compute normalisation fct for each bin
-    for i in range(nbins):
+    for i in range(1,nbins+1):
         m = hist_flat.GetBinContent(i)
-        scale = beamintensity * hist_pint.GetBinContent(i)
+        scale = 1e2 * beamintensity * hist_pint.GetBinContent(i) * binw / Mk
         hist.SetBinContent(i,scale * m)
-
-    cv = TCanvas( 'cv', 'cv', 2100, 900)
-
+        if i>5 and i<10:
+            pass
+            print "s, m, scale, binw,beamintensity, hist_pint.GetBinContent(i), Mk", hist_pint.GetBinLowEdge(i), m, scale, binw,beamintensity, hist_pint.GetBinContent(i), Mk
+            print "scale * m", hist.GetBinContent(i)
+            
+    cv = TCanvas( 'cv', 'cv', 1600, 900)
+    cv.SetGridy(1)
     x1, y1, x2, y2 = 0.57, 0.65, 0.9, 0.88
     mlegend = TLegend( x1, y1, x2, y2)
     mlegend.SetFillColor(0)
@@ -170,34 +193,37 @@ def cv66():
     mlegend.SetBorderSize(0)
 
     ytitle = "arbitrary units"
-    YurMin, YurMax = 2e2, 9e6
-    hist.GetYaxis().SetRangeUser(YurMin,YurMax)
+    YurMin, YurMax = 9, 9e6
+    #hist.GetYaxis().SetRangeUser(YurMin,YurMax)
     hist.SetMarkerColor(kRed)
     hist.SetLineColor(kRed)
-    hist.GetYaxis().SetTitle(ytitle)
-    XurMin,XurMax = 0.,545.
+    #hist.GetYaxis().SetTitle(ytitle)
+    XurMin,XurMax = 22.6,546.
     hist.GetXaxis().SetRangeUser(XurMin,XurMax)
-    YurMin, YurMax = 2e2, 9e6
     hist.GetYaxis().SetRangeUser(YurMin,YurMax)
     hist.Draw("hist")
-    hist_flat.Scale(1e2)
+    hist_flat.Scale(1./nprim)
     hist_flat.Draw("histsame")
 
     hist_pint.SetLineColor(kGreen-3)
-    hist_pint.Scale(1e16)
-    hist_pint.Draw("histsame")
+    hist_pint.Draw("hist")
+    hist_pint_re.Draw("histsame")
 
-    lg, lm = "interaction probability", 'l'
-    mlegend.AddEntry(hist_pint, lg, lm)
+    ztest = 28.
+    print "at ",ztest,": have pint = ",hist_pint.GetBinContent(hist_pint.FindBin(ztest)),
+    print "at ",ztest,": have flat = ",hist_flat.GetBinContent(hist_flat.FindBin(ztest)),
+    print "at ",ztest,": have norm = ",hist.GetBinContent(hist.FindBin(ztest)),
+    #hist_pint.GetYaxis().SetTitle("interaction probability [1/m/s]")
+    #hist_pint.Draw("histsame")
 
-    lg, lm = "interaction probability x10^{16}", 'l'
-    mlegend.AddEntry(hist_pint, lg, lm)
+    # lg, lm = "interaction probability x10^{16} [1/m/s]", 'l'
+    # mlegend.AddEntry(hist_pint, lg, lm)
 
     lg, lm = "#mu^{#pm} normalised to pressure profile", 'l'
-    mlegend.AddEntry(hist, lg, lm)
+    #mlegend.AddEntry(hist, lg, lm)
 
-    # lg, lm = "#mu^{#pm} rates/BG int. flat pressure", 'l'
-    # mlegend.AddEntry(hist_flat, lg, lm)
+    lg, lm = "#mu^{#pm} rates/m/BG int. flat pressure", 'l'
+    #mlegend.AddEntry(hist_flat, lg, lm)
 
     gPad.SetLogy(1)
     gPad.RedrawAxis()
@@ -208,8 +234,8 @@ def cv66():
     mlegend.Draw()
 
     pname = wwwpath + 'TCT/beamgas/pressure_profiles_2012/flatvsprofile.pdf'
-    pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/atomicrho2011.pdf"
-    pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/pressure2011.pdf"
+    pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/muonsrates2011.pdf"
+    pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/xcheck2011.pdf"
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 

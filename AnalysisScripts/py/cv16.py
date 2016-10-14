@@ -30,8 +30,8 @@ def cv16():
     norm4TeVB2newHalo = 1380 * 1.4e11/360000 * (1179.0/59198135 +967/56887051.)/2.  
     # IR5: (1893.0 + 135)/(59198135 +56887051) = 1.75e-5, >>> 1893.0/59198135 +135/56887051. = 3.435e-05
 
-    norm6500GeVB1 = 2748 * 1.2e11/360000 *0.5*(739./53731448 +(312+273.)/52806720) # 
-    norm6500GeVB2 = 2748 * 1.2e11/360000 *0.5*(779./43692659+773./52962459.) # new
+    norm6500GeVB1 = 2748 * 1.2e11/360000 *0.5*(739./53731448 +(312+273.)/52806720) # 1.24e-5
+    norm6500GeVB2 = 2748 * 1.2e11/360000 *0.5*(779./43692659+773./52962459.) # new 1.62e-5
 
     # python /afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/AnalysisScripts/py/collsummary.py -f 6.5TeV_vHaloB2_h5/coll_summary_6.5TeV_vHaloB2_h5.dat -c TCT*R5
     # IR5 B1: h:( 53754939.0 protons on IR7 primaries, 346.0 protons on TCT*L5.B1), v(52838656.0 on primaries IR7,  408.0 protons on TCTL5)
@@ -212,7 +212,8 @@ def cv16():
     normTCT5LOUTb1 = HLinitialFlux * 0.5*(9024.0/54609869.0 + 3071.0/52175081.0)# 0.00011205218641475149 #12091./(63828643+61405975) # 9.7e-5
     normTCT5LOUTb2 = HLinitialFlux * 0.5*(9936.0/40392116.0 + 11898.0/53157089.0)# 0.0002349078766943835 ### 21822/(47196776+63051589) # 2e-4
     normTCT5INb1 = HLinitialFlux * 0.5*(9712.0/54532193.0 + 3366.0/52154816.0) # 0.00012131762826402283
-    normTCT5INb2 = HLinitialFlux * 0.5 * (9948.0/40401333.0 + 6064.0/26614313.0)# 0.00023703841175749932 # 11172./(47203328+63096910) # 1e-4 sum of all tcts over protons lost on primary for h and v separately
+    normTCT5INb2 = HLinitialFlux * 0.5 * (9948.0/40401333.0 + 12028.0/53199970.0)# 0.0002361599262 # 11172./(47203328+63096910) # 1e-4 sum of all tcts over protons lost on primary for h and v separately
+
 
     # nominal cases
     normTCT5INb1nom = HLinitialFlux * 0.5*(32557.0/52836357.0 + 15813.0/50278617.0)#(15813.0/61193703 + 32557.0/63640747) # 7.7e-4
@@ -377,12 +378,15 @@ def cv16():
     # fNum = projectpath + 'HL1.0/FL_HL_TCT5IN_nomCollSett_haloB1/results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root'
     # fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
     # subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/perTCThit/'
-    # lTextNum = 'nominal'
-    # lTextDenom = 'retracted'
-    # normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
-    # normDenom, normNum, yrel = 1., 1., '/TCT hit'
-    # tagDenom,tagNum =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
-    # dColor, nColor = kMagenta-2, kBlue-2
+    subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compNomRetrCollSett/"
+    fNum = thispath + "results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root"
+    fDenom = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
+    lTextNum = 'nominal'
+    lTextDenom = 'retracted'
+    normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
+    #    normDenom, normNum, yrel = 1., 1., '/TCT hit'
+    tagDenom,tagNum =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
+    dColor, nColor = kMagenta-2, kBlue-2
 
     # fNum =  '/afs/cern.ch/project/lhc_mib/crabcfb1/runs_usrbin/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_nprim4269100_30.root'
     # fDenom = '/afs/cern.ch/project/lhc_mib/tct_simulations/FlukaRuns/runs_modTAN/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_modTAN_nprim1390500_30.root'

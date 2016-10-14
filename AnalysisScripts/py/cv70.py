@@ -14,25 +14,13 @@ from fillTTree_dict import generate_sDict
 # get function to read the data if 14 columns are present 
 from cv32 import getdata14c
 from helpers import makeTGraph, mylabel, wwwpath
+import cv66 
 # --------------------------------------------------------------------------------
 # calc total interaction probability
 
-def calc_pint_tot(rho_C, rho_H, rho_O):
-    # 3.5 TeV inel cross-sections proton-atom from paper
-    sigma_O = 316.e-31
-    sigma_C = 258.e-31
-    sigma_H =  37.e-31
-    Trev = 2*math.pi/112450
-
-    pint_C = [sigma_C*j/Trev for j in rho_C[1:]]
-    pint_H = [sigma_H*j/Trev for j in rho_H[1:]]
-    pint_O = [sigma_O*j/Trev for j in rho_O[1:]]
-
-    pint_tot = [pint_H[i] + pint_O[i] + pint_C[i] for i in range(len(pint_O))]
-    return pint_tot
 
 def resultFileBG(k,rel):
-    n = os.path.join(os.path.dirname(k),"results_pressure2012_"+rel+k.split('/')[-1])
+    n = os.path.join(os.path.dirname(k),"results_pressure2011_"+rel+k.split('/')[-1])
     return  n
 
 def cv70():
@@ -44,6 +32,9 @@ def cv70():
 # note, that the source routine needs fluka units, ie *cm*!
 # --------------------------------------------------------------------------------
     bgfile    = '/afs/cern.ch/work/r/rkwee/HL-LHC/beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv'
+
+    energy = " 3.5 TeV "
+    bgfile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv"
 
     debug = 0
 
@@ -57,9 +48,9 @@ def cv70():
     s = [-9999 for i in range(nb_s)]
 
     cf = 1.
-    #for i in [1, 100, 300,500]:
+
     for i in range(1,nb_s):
-        # get the data, convert to cm3
+        # get the data
         try:
             if debug:
                 print 'i = ', i
@@ -93,18 +84,24 @@ def cv70():
     # --
 
     datafile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
-    bbgFile = datafile + ".root"
-    print "Opening", bbgFile
+    beamintensity = 2e14    
     tag = '_BG_4TeV_20MeV_bs'
-    norm = float(bbgFile.split('nprim')[-1].split('_')[0])
+
+    datafile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66"
+    beamintensity = 1.66e14    
+    tag = "_BG_3p5TeV_20MeV"
+
+    bbgFile = datafile + ".root"    
+    print "Opening", bbgFile
+    
+    nprim = float(bbgFile.split('nprim')[-1].split('_')[0])
     rfile = TFile.Open(bbgFile, "READ")
     tBBG = rfile.Get("particle")
     yrel = ''
     print tBBG
-    sDict = generate_sDict(tag, norm, tBBG, yrel)
+    sDict = generate_sDict(tag, nprim, tBBG, yrel)
 
     # -- small version of fillTTree
-    beamintensity = 2e14    
     Trev  = 2*math.pi/112450
     kT = 1.38e-23*300
 
@@ -121,7 +118,7 @@ def cv70():
         if skey.count("Sel"): continue
         elif skey.count("Neg"): continue
         elif skey.count("Pos"): continue
-        elif skey.count("Z"): continue
+        #elif skey.count("Z"): continue
         elif skey.count("Neu_"): continue
         elif skey.count("Char"): continue
         elif skey.count("Plus") or skey.count("Minus"): continue
@@ -129,7 +126,7 @@ def cv70():
         elif skey.count("Pio") or skey.count("Kao"): continue
 
         # for testing
-        # if not skey.startswith("Rad"): continue
+        if not skey.startswith("OrigZMuon"): continue
 
         sk += [skey]
         
@@ -165,6 +162,11 @@ def cv70():
             xaxis = [xmin+i*binwidth for i in range(xnbins+1)]
             var = '(TMath::ATan2(y,x))'
             if skey.count("En"): energyweight = "energy_ke * "
+        elif hname.startswith("OrigZ"):
+            binwidth = (xmax-xmin)/xnbins
+            xaxis = [xmin+i*binwidth for i in range(xnbins+1)]
+            var = 'z_interact*0.01'
+            xtitle = "s [m]"
 
         if not particleTypes[0].count('ll'):
             pcuts = [ 'particle ==' + p for p in particleTypes  ]
@@ -172,7 +174,7 @@ def cv70():
             cuts += ['('+ pcut + ')']
 
         # -- y axis, weigths
-        ynbins, ymin, ymax =  523, 22.5, 550
+        ynbins, ymin, ymax =  546,0,546.
         twoDhist = TH2F(skey, skey, xnbins, array('d', xaxis), ynbins, ymin, ymax)
 
         hname_flat = skey + '_flat'
@@ -194,10 +196,10 @@ def cv70():
         # -- create histogram with same axis for pint 
         if cnt == 1:
             hist_pint = twoDhist.ProjectionY("pint")
-            pint_tot = calc_pint_tot(rho_C, rho_H, rho_O)
+            pint_tot = cv66.calc_pint_tot(rho_C, rho_H, rho_O)
             pint_incomingbeam = {}
 
-            for i,spos in enumerate(s): 
+            for i,spos in enumerate(s):
                 if spos < 0.: 
                     z = -spos
                     pint_incomingbeam[z] = pint_tot[i]

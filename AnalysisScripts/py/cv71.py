@@ -1,7 +1,10 @@
 #!/usr/bin/python
 #
 # reads histograms with reweights
-# Sept 16
+# compares flat and reweighted as function of z
+# complete rewrite. for earlier functionality use cv81
+# 
+# Oct 16
 #
 # R Kwee, 2016
 # 
@@ -9,9 +12,6 @@
 import ROOT, sys, glob, os, math, helpers
 from ROOT import *
 from array import array
-# get function to read the data if 14 columns are present 
-from cv32 import getdata14c
-import cv16
 from helpers import makeTGraph, mylabel, wwwpath
 from fillTTree_dict import generate_sDict
 # --------------------------------------------------------------------------------
@@ -42,30 +42,41 @@ def doRad(hist,nbins):
 
 # --------------------------------------------------------------------------------
 def resultFileBG(k,rel):
-    n = os.path.join(os.path.dirname(k),"results_pressure2012_"+rel+k.split('/')[-1])
+    n = os.path.join(os.path.dirname(k),"results_pressure2015_"+rel+k.split('/')[-1])
     return  n
 # --------------------------------------------------------------------------------
 def cv71():
 
+    energy = "4 TeV"
     datafile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
-    bbgFile = datafile + ".root"
+    datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
     tag = '_BG_4TeV_20MeV_bs'
+    beamintensity = 2e14
+    bgcl = kAzure-3
+    bgcl = kPink-3
+    
 
+    energy = "6.5 TeV"
+    datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67'
+    tag = '_BG_6500GeV_flat_20MeV_bs' #!! MMMeV NOT GeV
+    bgcl = kYellow-2
+    beamintensity = 2.29e14 ## https://acc-stats.web.cern.ch/acc-stats/#lhc/fill-details 4536, ring 1.
+    
+    bbgFile = datafile + ".root"
     print "Opening", bbgFile
     norm = float(bbgFile.split('nprim')[-1].split('_')[0])
     rfile = TFile.Open(bbgFile, "READ")
     tBBG = rfile.Get("particle")
     yrel = ''
-    print tBBG
     sDict = generate_sDict(tag, norm, tBBG, yrel)
 
-    # -- small version of plotSpectra
-    beamintensity = 2e14 
+    # -- small version of plotSpectra    
     Trev  = 2*math.pi/112450
     kT = 1.38e-23*300
 
     # rootfile with results
     rfoutname = resultFileBG(bbgFile,'')
+    print "Opening", "."*30,bbgFile
     rf = TFile.Open(rfoutname, "READ")
 
     for i,skey in enumerate(sDict.keys()):
@@ -80,9 +91,16 @@ def cv71():
         elif skey.split(tag)[0].endswith("0") or skey.count("XY"): continue
         elif skey.count("Pio") or skey.count("Kao"): continue
 
-        cv = TCanvas(skey+ 'cv',skey+ 'cv', 1400, 900)
+        # # FOR DEBUGGING
+        elif not skey.count("N"): continue
 
+        doLeft = 0
+        if skey.count("Phi"): doLeft = 1
+        cv = TCanvas(skey+ 'cv',skey+ 'cv', 1400, 900)
+        # right corner
         x1, y1, x2, y2 = 0.7, 0.75, 0.9, 0.88
+        if doLeft:
+            x1, y1, x2, y2 = 0.2, 0.75, 0.5, 0.88
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)
         mlegend.SetFillStyle(0)
@@ -96,62 +114,77 @@ def cv71():
         twoDhist_flat = rf.Get(twoDhname_flat)
         twoDhist_reweighted = rf.Get(twoDhname_reweighted)
 
-        hist_flat = twoDhist_flat.ProjectionX(skey + "makeit1d_flat")
-        hist_reweighted = twoDhist_reweighted.ProjectionX(skey + "makeit1d_reweighted")
+        print twoDhist_flat, skey
+        hist_flat = twoDhist_flat.ProjectionY(skey + "makeit1d_flat")
+        hist_reweighted = twoDhist_reweighted.ProjectionY(skey + "makeit1d_reweighted")
         nbins = hist_reweighted.GetNbinsX()
 
         XurMin,XurMax = -1,-1.
+        YurMin,YurMax = -1,-1.
         doLogx, doLogy = 0, 0
         if skey.count("Ekin"):
             hist_flat = doEkin(hist_flat,nbins)
             hist_reweighted = doEkin(hist_reweighted,nbins)
             doLogx, doLogy = 1,1
+            YurMin,YurMax = 1e-5,8e-1
         elif skey.count("Phi"):
             hist_flat = doPhi(hist_flat,nbins)
             hist_reweighted = doPhi(hist_reweighted,nbins)
             doLogx, doLogy = 0,1
+            YurMin,YurMax = 1e-3,2e-1
         elif skey.count("Rad"):
             hist_flat = doRad(hist_flat,nbins)
             hist_reweighted = doRad(hist_reweighted,nbins)
             hist_flat = helpers.doRebin(hist_flat,3)
             hist_reweighted = helpers.doRebin(hist_reweighted,3)
             doLogx, doLogy = 0,1
-            XurMin,XurMax = 0, 600.
+            YurMin,YurMax = 1e-12,1.2
+            #XurMin,XurMax = 0, 600.
             
         hname = skey
         xtitle = sDict[hname][9]
         ytitle = sDict[hname][10] + ' a.u.'
 
-        hist_flat.Scale(1./hist_flat.Integral())
+        #hist_flat.Scale(1./hist_flat.Integral())
+        #hist_reweighted.Scale(1./hist_reweighted.Integral())
+        xtitle = 'z [m]'
         hist_flat.GetXaxis().SetTitle(xtitle)
-        hist_flat.GetYaxis().SetTitle(ytitle)
+        hist_reweighted.GetXaxis().SetTitle(xtitle)
+
+        hist_flat.GetYaxis().SetRangeUser(YurMin,YurMax)
+        hist_reweighted.GetYaxis().SetRangeUser(YurMin,YurMax)
 
         if XurMin != -1:
             hist_flat.GetXaxis().SetRangeUser(XurMin, XurMax)
 
-        hist_flat.Draw("")
         lg, lm = "flat", 'l'
         mlegend.AddEntry(hist_flat, lg, lm)
+        #        hist_flat.SetLineStyle(2)
 
-        hist_reweighted.SetLineColor(kPink-3)
-        hist_reweighted.SetMarkerColor(kPink-3)
-        hist_reweighted.Scale(1./hist_reweighted.Integral())
+        hist_reweighted.SetLineColor(bgcl)
+        hist_reweighted.SetMarkerColor(bgcl)
+        hist_reweighted.SetMarkerStyle(20)
+
         hist_reweighted.GetYaxis().SetTitle(ytitle)
-        hist_reweighted.Draw("hsame")
-        lg, lm = "reweighted", 'l'
+        hist_reweighted.Draw("hp")
+        hist_flat.Draw("histsame")
+        lg, lm = "reweighted", 'lp'
         mlegend.AddEntry(hist_reweighted, lg, lm)
 
-        cv.SetLogx(doLogx)
+        cv.SetLogx(0)
         cv.SetLogy(doLogy)
         gPad.RedrawAxis()
 
         lab = mylabel(42)
-        lab.DrawLatex(0.2, 0.9, '4 TeV beam-gas' )
+        lab.DrawLatex(0.41, 0.955, energy+' beam-gas' )
         lab.DrawLatex(0.5, 0.82, sDict[hname][6] )
 
         mlegend.Draw()
 
-        pname = wwwpath + 'TCT/4TeV/beamgas/fluka/bs/reweighted/'+skey+'.pdf'
-        print('Saving file as ' + pname ) 
+        pname = wwwpath + 'TCT/6.5TeV/beamgas/fluka/bs/reweighted/'+skey+'.pdf'
+        pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/cv71_' + skey + '.pdf'
+        if energy.count("4 TeV"):
+            pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/cv71_' + skey + '.pdf'
+        print('Saving file as ' + pname) 
         cv.Print(pname)
 
