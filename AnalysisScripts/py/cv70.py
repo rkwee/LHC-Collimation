@@ -14,13 +14,10 @@ from fillTTree_dict import generate_sDict
 # get function to read the data if 14 columns are present 
 from cv32 import getdata14c
 from helpers import makeTGraph, mylabel, wwwpath
-import cv66 
+import cv65, cv66
 # --------------------------------------------------------------------------------
-# calc total interaction probability
-
-
 def resultFileBG(k,rel):
-    n = os.path.join(os.path.dirname(k),"results_pressure2011_"+rel+k.split('/')[-1])
+    n = os.path.join(os.path.dirname(k),"results_pressure2012_"+rel+k.split('/')[-1])
     return  n
 
 def cv70():
@@ -31,65 +28,28 @@ def cv70():
 # merge densities with coordinates
 # note, that the source routine needs fluka units, ie *cm*!
 # --------------------------------------------------------------------------------
-    bgfile    = '/afs/cern.ch/work/r/rkwee/HL-LHC/beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv'
-
     energy = " 3.5 TeV "
     bgfile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv"
 
-    debug = 0
-
+    energy = "4 TeV"
+    bgfile    = '/afs/cern.ch/work/r/rkwee/HL-LHC/beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv'
+    bgfile    = '/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv'
+    
     data = getdata14c(bgfile)
     print 'data keys are',data.keys()
     nb_s = len(data['s'])
     print 'number of s values', nb_s
 
-    # atomic densities
-    rho_C, rho_H, rho_O = [0 for i in range(nb_s)],[0 for i in range(nb_s)],[0 for i in range(nb_s)]
-    s = [-9999 for i in range(nb_s)]
-
-    cf = 1.
-
-    for i in range(1,nb_s):
-        # get the data
-        try:
-            if debug:
-                print 'i = ', i
-                print "data['rho_H2'][i]", data['rho_H2'][i]
-                print "data['rho_CH4'][i]", data['rho_CH4'][i]
-                print "data['rho_CO'][i]", data['rho_CO'][i]
-                print "data['rho_CO2'][i]", data['rho_CO2'][i]
-
-            rho_H2   = cf * float(data['rho_H2'][i])
-            rho_CH4  = cf * float(data['rho_CH4'][i])
-            rho_CO   = cf * float(data['rho_CO'][i])
-            rho_CO2  = cf * float(data['rho_CO2'][i])
-
-            # compute atomic rhos
-
-            rho_H[i]  = 2.0*rho_H2
-            rho_H[i] += 4.0*rho_CH4
-
-            rho_C[i]  = 1.0*rho_CH4
-            rho_C[i] += 1.0*rho_CO
-            rho_C[i] += 1.0*rho_CO2
-
-            rho_O[i]  = 1.0*rho_CO
-            rho_O[i] += 2.0*rho_CO2
-
-            s[i] = float(data['s'][i])
-
-        except ValueError:
-            continue
-
     # --
-
     datafile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
+    datafile = thispath + 'ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
     beamintensity = 2e14    
     tag = '_BG_4TeV_20MeV_bs'
 
     datafile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66"
     beamintensity = 1.66e14    
     tag = "_BG_3p5TeV_20MeV"
+
 
     bbgFile = datafile + ".root"    
     print "Opening", bbgFile
@@ -102,7 +62,7 @@ def cv70():
     sDict = generate_sDict(tag, nprim, tBBG, yrel)
 
     # -- small version of fillTTree
-    Trev  = 2*math.pi/112450
+    Trev  = 1./11245
     kT = 1.38e-23*300
 
     # rootfile with results
@@ -118,7 +78,7 @@ def cv70():
         if skey.count("Sel"): continue
         elif skey.count("Neg"): continue
         elif skey.count("Pos"): continue
-        #elif skey.count("Z"): continue
+        elif skey.count("Z"): continue
         elif skey.count("Neu_"): continue
         elif skey.count("Char"): continue
         elif skey.count("Plus") or skey.count("Minus"): continue
@@ -126,7 +86,7 @@ def cv70():
         elif skey.count("Pio") or skey.count("Kao"): continue
 
         # for testing
-        if not skey.startswith("OrigZMuon"): continue
+        #if not skey.startswith("OrigZMuon"): continue
 
         sk += [skey]
         
@@ -196,10 +156,12 @@ def cv70():
         # -- create histogram with same axis for pint 
         if cnt == 1:
             hist_pint = twoDhist.ProjectionY("pint")
+            s, rho_C, rho_H, rho_O = cv65.getAtomicRho(data)
             pint_tot = cv66.calc_pint_tot(rho_C, rho_H, rho_O)
             pint_incomingbeam = {}
 
             for i,spos in enumerate(s):
+                
                 if spos < 0.: 
                     z = -spos
                     pint_incomingbeam[z] = pint_tot[i]
@@ -225,21 +187,10 @@ def cv70():
         hists_reweighted += [twoDhist_reweighted]
         rHists += [skey]
 
-    #     hcolor = sDict[skey][7]
-    #     hists[-1].SetLineColor(hcolor)
-    #     hists[-1].SetLineWidth(3)
-
-    #     if not i: 
-    #         if   type(hists[-1]) == TH1F: hists[-1].Draw("HIST")
-    #         hists[-1].SetMarkerColor(hcolor)
-    #         hists[-1].Draw("P")
-    #     else:
-    #         if   type(hists[-1]) == TH1F: hists[-1].Draw("HISTSAME")
-        
-        # writing two d hists
         hists_flat[-1].Write()
         hists_reweighted[-1].Write()
 
+    hist_pint.Write()
     rfOUTile.Close()
     print 'wrote ','.'*20, rfoutname
     
