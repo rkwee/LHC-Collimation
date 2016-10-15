@@ -14,7 +14,7 @@ from helpers import makeTGraph, mylabel, wwwpath
 # --------------------------------------------------------------------------------
 # calc total interaction probability
 
-def calc_pint_tot(rho_C, rho_H, rho_O):
+def calc_pint_tot(energy, rho_C, rho_H, rho_O):
     # 3.5 TeV inel cross-sections proton-atom from paper
     sigma_O = 316.e-31
     sigma_C = 258.e-31
@@ -39,13 +39,17 @@ def cv66():
 # merge densities with coordinates
 # note, that the source routine needs fluka units, ie *cm*!
 # --------------------------------------------------------------------------------
-    energy = '4 TeV beam-gas' 
-    bgfile    = '/afs/cern.ch/work/r/rkwee/HL-LHC/beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv'
-    beamintensity = 2e14
-    
-    energy = " 3.5 TeV "
-    bgfile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv"
-    beamintensity = 1.66e14
+
+    do4TeV = 0 # means 3.5 is off
+    if do4TeV:
+        energy = '4 TeV' 
+        bgfile    = '/afs/cern.ch/work/r/rkwee/HL-LHC/beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv'
+        bgfile    = '/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv'
+        beamintensity = 2e14
+    else:
+        energy = " 3.5 TeV "
+        bgfile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv"
+        beamintensity = 1.66e14
 
     print "Using", bgfile
     
@@ -61,14 +65,14 @@ def cv66():
     # calculate the scaled number
 
     # unscaled inf
-    hname, nbins, xmin, xmax = 'muons', 262, 22.6, 546.6
+    hname, nbins, xmin, xmax = 'muons', 2*262, 22.6, 546.6
     binw = (xmax-xmin)/nbins
     hist = TH1F(hname, hname, nbins, xmin, xmax)
     hist.Sumw2()
     hist.GetXaxis().SetTitle('s [m]')
     datafile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
     datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
-    datafile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66"
+    if not do4TeV: datafile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66"
 
     bbgFile = datafile + ".root"
 
@@ -99,11 +103,10 @@ def cv66():
         hist_flat.SetBinError(i,err/binw)
 
     Trev = 1./11245.0
-    sigma_N = 286.e-31
-
+    
     #    pint_tot_re = [sigma_N/Trev * rho for rho in rho_A]
     # create histogram with same axis for pint 
-    pint_tot = calc_pint_tot(rho_C, rho_H, rho_O)
+    pint_tot = calc_pint_tot(energy,rho_C, rho_H, rho_O)
     pint_incomingbeam = {}
 
     for i,spoS in enumerate(s):
@@ -122,12 +125,12 @@ def cv66():
     startarcBin = hist_pint.FindBin(startarc)
     for i in range(startarcBin, nbins-1): hist_pint.SetBinContent(i,arcvalue)
 
-    print "Integral", hist_pint.Integral()
-    print "Integral re", hist_pint_re.Integral()
-    print "ratio hist_pint_re.Integral()/hist_pint.Integral()", hist_pint_re.Integral()/hist_pint.Integral()
-    for bin in range(1,10):
-        ratio = hist_pint_re.GetBinContent(bin)/hist_pint.GetBinContent(bin)
-        print "pint_re/pint", ratio
+    #print "Integral", hist_pint.Integral()
+    #print "Integral re", hist_pint_re.Integral()
+    #print "ratio hist_pint_re.Integral()/hist_pint.Integral()", hist_pint_re.Integral()/hist_pint.Integral()
+    #for bin in range(1,10):
+    #   ratio = hist_pint_re.GetBinContent(bin)/hist_pint.GetBinContent(bin)
+    #   print "pint_re/pint", ratio
     
     nprim = float(bbgFile.split('nprim')[-1].split('_')[0]) 
     Mk = nprim/nbins
@@ -136,7 +139,7 @@ def cv66():
         m = hist_flat.GetBinContent(i)
         scale = 1e2*beamintensity * hist_pint.GetBinContent(i) * binw / Mk
         hist.SetBinContent(i,scale * m)
-        if i>5 and i<10:
+        if i>5 and i<10 and debug:
             pass
             print "s, m, scale, binw,beamintensity, hist_pint.GetBinContent(i), Mk", hist_pint.GetBinLowEdge(i), m, scale, binw,beamintensity, hist_pint.GetBinContent(i), Mk
             print "scale * m", hist.GetBinContent(i)
@@ -166,15 +169,16 @@ def cv66():
     hist_flat.Draw("histsame")
 
     hist_pint.SetLineColor(kGreen-3)
-    hist_pint.Draw("histsame")
+    hist_pint.Draw("hist")
     #hist_pint_re.Draw("histsame")
+    if debug:
+        ztest = 28.
+        print "at ",ztest,": have pint = ",hist_pint.GetBinContent(hist_pint.FindBin(ztest)),
+        print "at ",ztest,": have flat = ",hist_flat.GetBinContent(hist_flat.FindBin(ztest)),
+        print "at ",ztest,": have norm = ",hist.GetBinContent(hist.FindBin(ztest)),
+        #hist_pint.GetYaxis().SetTitle("interaction probability [1/m/s]")
 
-    ztest = 28.
-    print "at ",ztest,": have pint = ",hist_pint.GetBinContent(hist_pint.FindBin(ztest)),
-    print "at ",ztest,": have flat = ",hist_flat.GetBinContent(hist_flat.FindBin(ztest)),
-    print "at ",ztest,": have norm = ",hist.GetBinContent(hist.FindBin(ztest)),
-    #hist_pint.GetYaxis().SetTitle("interaction probability [1/m/s]")
-    hist_pint.Scale(1e16)
+        hist_pint.Scale(1e16)
     hist_pint.Draw("histsame")
 
     lg, lm = "interaction probability x10^{16} [1/s/m]", 'l'
@@ -195,8 +199,8 @@ def cv66():
     mlegend.Draw()
 
     pname = wwwpath + 'TCT/beamgas/pressure_profiles_2012/flatvsprofile.pdf'
-    pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/muonsrates2011.pdf"
-    pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/xcheck2011/pint2011.pdf"
+    pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/muonsrates.pdf"
+    if not do4TeV: pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/xcheck2011/pint2011.pdf"
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 
