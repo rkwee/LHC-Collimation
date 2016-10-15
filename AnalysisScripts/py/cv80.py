@@ -38,7 +38,7 @@ def cv80():
 
     # -- small version of fillTTree
     beamintensity = 2.29e14 ## https://acc-stats.web.cern.ch/acc-stats/#lhc/fill-details 4536, ring 1.
-    Trev  = 2*math.pi/112450
+    Trev  = 1./11245
     kT = 1.38e-23*300
 
     # rootfile with results

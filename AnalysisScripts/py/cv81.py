@@ -43,16 +43,22 @@ def resultFileBG(k,rel):
     return  n
 # --------------------------------------------------------------------------------
 def cv81():
-
+    # 2011
+    energy = "3.5 TeV"
+    datafile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66"
+    beamintensity = 1.66e14    
+    tag = "_BG_3p5TeV_20MeV"
+    bgcl = kAzure-3
+  
+    # # 2012
     energy = "4 TeV"
     datafile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
     datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
     tag = '_BG_4TeV_20MeV_bs'
     beamintensity = 2e14
-    bgcl = kAzure-3
     bgcl = kPink-3
-    
 
+    # 2015
     energy = "6.5 TeV"
     datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67'
     tag = '_BG_6500GeV_flat_20MeV_bs' #!! MMMeV NOT GeV
@@ -68,7 +74,7 @@ def cv81():
     sDict = generate_sDict(tag, norm, tBBG, yrel)
 
     # -- small version of plotSpectra    
-    Trev  = 2*math.pi/112450
+    Trev  = 1./11245
     kT = 1.38e-23*300
 
     # rootfile with results
@@ -182,6 +188,8 @@ def cv81():
         pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/cv81_' + skey + '.pdf'
         if energy.count("4 TeV"):
             pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/cv81_' + skey + '.pdf'
+        elif energy.count("3.5 TeV"):
+            pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/xcheck2011/cv81_' + skey + '.pdf'
         print('Saving file as ' + pname) 
         cv.Print(pname)
 

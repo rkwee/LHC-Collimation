@@ -19,7 +19,7 @@ def calc_pint_tot(rho_C, rho_H, rho_O):
     sigma_O = 318.e-31
     sigma_C = 260.e-31
     sigma_H =  37.e-31
-    Trev = 2*math.pi/112450
+    Trev = 1./11245
 
     pint_C = [sigma_C*j/Trev for j in rho_C[1:]]
     pint_H = [sigma_H*j/Trev for j in rho_H[1:]]
@@ -144,7 +144,7 @@ def cv65():
     mlegend.Draw()
 
     pname = wwwpath + 'TCT/beamgas/pressure_profiles_2012/pint.pdf'
-    pname = 'cv75_pint.pdf'
+    pname = 'cv65_pint.pdf'
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 
