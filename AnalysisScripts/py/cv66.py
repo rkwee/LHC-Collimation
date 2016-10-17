@@ -15,15 +15,24 @@ from helpers import makeTGraph, mylabel, wwwpath
 # calc total interaction probability
 
 def calc_pint_tot(energy, rho_C, rho_H, rho_O):
-    # 3.5 TeV inel cross-sections proton-atom from paper
-    sigma_O = 316.e-31
-    sigma_C = 258.e-31
-    sigma_H =  37.e-31
 
     if energy.count("4 TeV"):
         sigma_O = 318.e-31
         sigma_C = 260.e-31
         sigma_H =  37.e-31
+        print "Using 4 TeV cross-sections"
+    elif energy.count("6.5 TeV"):
+        # 6.5 TeV inel cross-sections scaled from paper
+        sigma_O = 329.e-31
+        sigma_C = 269.e-31
+        sigma_H = 38.4e-31
+        print "Using 6.5 TeV cross-sections"
+    else:
+        # 3.5 TeV inel cross-sections proton-atom from paper
+        sigma_O = 316.e-31
+        sigma_C = 258.e-31
+        sigma_H =  37.e-31
+        print "Using 3.5 TeV cross-sections"
         
     Trev = 1./11245.
     

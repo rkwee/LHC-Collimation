@@ -14,10 +14,10 @@ from fillTTree_dict import generate_sDict
 # get function to read the data if 14 columns are present 
 from cv32 import getdata14c
 from helpers import makeTGraph, mylabel, wwwpath
-import cv65, cv66
+import cv65, cv66, cv79
 # --------------------------------------------------------------------------------
 def resultFileBG(k,rel):
-    n = os.path.join(os.path.dirname(k),"results_pressure2011_"+rel+k.split('/')[-1])
+    n = os.path.join(os.path.dirname(k),"results_pressure"+rel+"_"+k.split('/')[-1])
     return  n
 
 def cv70():
@@ -29,29 +29,42 @@ def cv70():
 # note, that the source routine needs fluka units, ie *cm*!
 # --------------------------------------------------------------------------------
     debug  = 0
-    do4TeV = 1 # 1 means 3.5 TeV is off
-
-    energy = " 3.5 TeV "
-    bgfile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv"
-    datafile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66"
-    beamintensity = 1.66e14    
-    tag = "_BG_3p5TeV_20MeV"
-
+    do4TeV = 0 # 1 means 3.5 TeV is off
+    do6p5  = 1 #
+    
     if do4TeV:
+        year = "2012"
         energy = "4 TeV"
-        bgfile    = '/afs/cern.ch/work/r/rkwee/HL-LHC/beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv'
-        bgfile    = '/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv'
+        pressFile = '/afs/cern.ch/work/r/rkwee/HL-LHC/beam-gas-sixtrack/pressure_profiles_2012/LSS1_B1_Fill2736_Final.csv'
+        pressFile = '/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv'
 
-        datafile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
-        datafile = thispath + 'ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67'
+        bbgFile = '/afs/cern.ch/project/lhc_mib/valBG4TeV/ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
+        bbgFile = thispath + 'ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
         beamintensity = 2e14    
         tag = '_BG_4TeV_20MeV_bs'
+        data = getdata14c(bbgFile)
+        startarc = 260.
+    elif do6p5:
+        year = "2015"
+        energy = "6.5 TeV"
+        bbgFile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
+        pressFile = "/Users/rkwee/Downloads/Density_Fill4536_2041b_26158.8832-500_B1_withECLOUD.txt"
+        beamintensity = 2.29e14 ## https://acc-stats.web.cern.ch/acc-stats/#lhc/fill-details 4536, ring 1.
+        tag = '_BG_6500GeV_flat_20MeV_bs' #!! MMMeV
+        data = cv79.getdata5c(bbgFile)
+        startarc = 493.59
+    else:
+        year = "2011"
+        energy = " 3.5 TeV "
+        pressFile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/LSS1_B1_fill_2028-sync_rad_and_ecloud.csv"
+        bbgFile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66.root"
+        beamintensity = 1.66e14    
+        tag = "_BG_3p5TeV_20MeV"
+        data = getdata14c(bbgFile)
+        startarc = 260.
 
-
-    data = getdata14c(bgfile)
+        
     print 'data keys are',data.keys()
-
-    bbgFile = datafile + ".root"    
     print "Opening", bbgFile
     
     nprim = float(bbgFile.split('nprim')[-1].split('_')[0])
@@ -66,7 +79,7 @@ def cv70():
     kT = 1.38e-23*300
 
     # rootfile with results
-    rfoutname = resultFileBG(bbgFile,'')
+    rfoutname = resultFileBG(bbgFile,year)
     
     print 'writing ','.'*33, rfoutname
     rfOUTile = TFile.Open(rfoutname, "RECREATE")
@@ -86,7 +99,7 @@ def cv70():
         elif skey.count("Pio") or skey.count("Kao"): continue
 
         # for testing
-        ###if not skey.startswith("OrigZMuon"): continue
+        if not skey.startswith("OrigZMuon"): continue
 
         sk += [skey]
         
@@ -169,9 +182,15 @@ def cv70():
             hist_pint = twoDhist.ProjectionY("pint")
             #hist_pint = twoDhist.Clone("pint")## 1d test case
 
-            
-            s, rho_C, rho_H, rho_O = cv65.getAtomicRho(data)
-            pint_tot = cv66.calc_pint_tot(energy,rho_C, rho_H, rho_O)
+            if do6p5:
+                data = cv79.getdata5c(pressFile)
+                rho_H2, rho_CH4, rho_CO, rho_CO2 = cv79.getrho(data['H2_Eq']),cv79.getrho(data['CH4_Eq']),cv79.getrho(data['CO_Eq']),cv79.getrho(data['CO2_Eq'])
+                rho_H, rho_C, rho_O = cv79.getAtomicRho(rho_H2, rho_CH4, rho_CO, rho_CO2)
+                s = data['s']
+            else:
+                s, rho_C, rho_H, rho_O = cv65.getAtomicRho(data)
+                
+            pint_tot = cv66.calc_pint_tot(energy,rho_C, rho_H, rho_O)                
             pint_incomingbeam = {}
 
             for i,spoS in enumerate(s):
@@ -185,7 +204,6 @@ def cv70():
             # first value is for arc
             arcvalue = pint_tot[1]
 
-            startarc = 260.
             startarcBin = hist_pint.FindBin(startarc)
             for i in range(startarcBin, ynbins-1): hist_pint.SetBinContent(i,arcvalue)    
 
