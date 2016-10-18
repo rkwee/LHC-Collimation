@@ -29,8 +29,8 @@ def cv70():
 # note, that the source routine needs fluka units, ie *cm*!
 # --------------------------------------------------------------------------------
     debug  = 0
-    do4TeV = 0 # 1 means 3.5 TeV is off
-    do6p5  = 1 #
+    do4TeV = 1 # 
+    do6p5  = 0 #
     
     if do4TeV:
         year = "2012"
@@ -42,7 +42,7 @@ def cv70():
         bbgFile = thispath + 'ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
         beamintensity = 2e14    
         tag = '_BG_4TeV_20MeV_bs'
-        data = getdata14c(bbgFile)
+        data = getdata14c(pressFile)
         startarc = 260.
     elif do6p5:
         year = "2015"
@@ -51,8 +51,8 @@ def cv70():
         pressFile = "/Users/rkwee/Downloads/Density_Fill4536_2041b_26158.8832-500_B1_withECLOUD.txt"
         beamintensity = 2.29e14 ## https://acc-stats.web.cern.ch/acc-stats/#lhc/fill-details 4536, ring 1.
         tag = '_BG_6500GeV_flat_20MeV_bs' #!! MMMeV
-        data = cv79.getdata5c(bbgFile)
-        startarc = 493.59
+        data = cv79.getdata5c(pressFile)
+        startarc = 493.6
     else:
         year = "2011"
         energy = " 3.5 TeV "
@@ -60,7 +60,7 @@ def cv70():
         bbgFile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66.root"
         beamintensity = 1.66e14    
         tag = "_BG_3p5TeV_20MeV"
-        data = getdata14c(bbgFile)
+        data = getdata14c(pressFile)
         startarc = 260.
 
         
@@ -99,7 +99,7 @@ def cv70():
         elif skey.count("Pio") or skey.count("Kao"): continue
 
         # for testing
-        if not skey.startswith("OrigZMuon"): continue
+        #if not skey.startswith("OrigZMuon"): continue
 
         sk += [skey]
         
@@ -128,19 +128,19 @@ def cv70():
 
         elif hname.startswith("Rad"):
             binwidth = xmax/xnbins
-            xaxis = [i*binwidth for i in range(xnbins)]
+            xaxis = [i*binwidth for i in range(xnbins+1)]
             var = '(TMath::Sqrt(x*x + y*y))'
             if skey.count("En"): energyweight = "energy_ke * "
 
         elif hname.startswith("Phi"):
             binwidth = (xmax-xmin)/xnbins
-            xaxis = [xmin+i*binwidth for i in range(xnbins)]
+            xaxis = [xmin+i*binwidth for i in range(xnbins+1)]
             var = '(TMath::ATan2(y,x))'
             if skey.count("En"): energyweight = "energy_ke * "
 
         elif hname.startswith("OrigZ"):
             binwidth = cf*(xmax-xmin)/xnbins
-            xaxis = [cf*xmin+i*binwidth for i in range(xnbins)]
+            xaxis = [cf*xmin+i*binwidth for i in range(xnbins+1)]
             var = 'z_interact*0.01'
             xtitle = "s [m]"
 
@@ -150,11 +150,11 @@ def cv70():
             cuts += ['('+ pcut + ')']
 
         # -- y axis = z-position
-        ynbins, ymin, ymax = 2*262, 22.6, 546.6 # MUST TAKE FULL RANGE
-        twoDhist = TH2F(skey, skey, xnbins-1, array('d', xaxis), ynbins, ymin, ymax)
+        ynbins, ymin, ymax = 524, 22.6, 546.6 # MUST TAKE FULL RANGE
+        twoDhist = TH2F(skey, skey, xnbins, array('d', xaxis), ynbins, ymin, ymax)
 
         binw = (ymax-ymin)/ynbins
-        print xaxis[:10], len(xaxis), array('d', xaxis)[:10]
+        if debug: print xaxis[:10], xaxis[-5:], len(xaxis), array('d', xaxis)[:10]
         
         hname_flat = skey + '_flat'
         twoDhist_flat = twoDhist.Clone(hname_flat)
@@ -205,31 +205,23 @@ def cv70():
             arcvalue = pint_tot[1]
 
             startarcBin = hist_pint.FindBin(startarc)
-            for i in range(startarcBin, ynbins-1): hist_pint.SetBinContent(i,arcvalue)    
+            print "setting arc pressure in bin", startarcBin, hist_pint.GetBinLowEdge(startarcBin),hist_pint.GetNbinsX()#, hist_pint.GetBinLowEgde(hist_pint.GetNbinsX()+1), 
+            for i in range(startarcBin, ynbins+1): hist_pint.SetBinContent(i,arcvalue)    
 
             # --
 
-        # print "2twoDhist_flat.GetEntries()", twoDhist_flat.GetEntries(), ynbins, xnbins
-        # for j in range(1,ynbins+1):
-        #     for i in range(1,xnbins+1):
-        #         m = twoDhist_flat.GetBinContent(i,j)
-        #         print "xbin", i, "ybin", j, "bincontent", m
-        
         # compute re-weights for each bin
         Mk = nprim/ynbins # number of primary interactions per zbin on yaxis
         for j in range(1,ynbins+1):
             scale = 1e2 * beamintensity * hist_pint.GetBinContent(j) * binw/Mk            
             for i in range(1,xnbins+1):
                 m = twoDhist_flat.GetBinContent(i,j)
-                # print "m", m
-                # if j<10 and i==j:
-                #     print "s, m, scale, binw,beamintensity, hist_pint.GetBinContent(i), Mk", hist_pint.GetBinLowEdge(j), m, scale, binw,beamintensity, hist_pint.GetBinContent(j), Mk                    
                 twoDhist_reweighted.SetBinContent(i,j,scale * m)
 
         hists_flat += [twoDhist_flat]          
         hists_reweighted += [twoDhist_reweighted]
         rHists += [skey]
-
+        print hists_flat[-1].GetNbinsX()
         hists_flat[-1].Write() 
         hists_reweighted[-1].Write()
     hist_pint.GetXaxis().SetTitle("s [m]")
