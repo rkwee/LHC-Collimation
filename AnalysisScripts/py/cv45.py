@@ -39,20 +39,23 @@ def cv45():
         # [cpath + 'BGAS10.dat', 2,1, kBlack, 6, 'input final BEAMGAS', '_yBGAS10', 'y cm'], # 0x 1y 2z 3u 4v 
         # [cpath + 'BGAS10.dat', 2,0, kBlack, 6, 'input final BEAMGAS', '_xBGAS10', 'x cm'], # 0x 1y 2z 3u 4v 
         # [cpath + 'BGAS.dat', 2,1, kBlack, 6, 'input final BEAMGAS', '_yBGAS', 'y cm'], # 0x 1y 2z 3u 4v repls
-        [cpath + 'awked_downselected_fort.89.10.cv53', 2,1, kBlack, 6, 'input flukaBEAMGAS 6.5 TeV', '_yBGAS', 'y cm'], # 0x 1y 2z 3u 4v repls
-        # [cpath + 'awked_downselected_fort.89.10.cv53', 2,0, kBlack, 6, 'input final BEAMGAS 6.5 TeV', '_xBGAS', 'x cm'], # 0x 1y 2z 3u 4v repls
+        #[cpath + 'awked_downselected_fort.89.10.cv53', 2,1, kBlack, 6, 'y-orbit at 6.5 TeV', '_yBGAS', 'y [cm]'], # 0x 1y 2z 3u 4v repls
+        [cpath + 'awked_downselected_fort.89.10.cv53', 2,0, kBlack, 6, 'x-orbit at 6.5 TeV', '_xBGAS', 'x [cm]'], # 0x 1y 2z 3u 4v repls
 
        ]
-
+    energy = "6.5 TeV"
     rel = ''
     ytitle = ''
 
-    XurMin, XurMax = 5,57000
-    XurMin, XurMax = -1, -1
+    XurMin, XurMax = 150.,250. # zoom into badly increased beamsize region
 
-    YurMin, YurMax = -0.02,0.03
-    YurMin, YurMax = -0.02, 0.7
-    YurMin, YurMax = -1,-1
+    XurMin, XurMax = 20,80
+    #XurMin, XurMax = -1, -1
+
+    YurMin, YurMax = -10.5,-9.2 # zoom into badly increased beamsize region
+    YurMin, YurMax = -0.5, 0.5
+    #YurMin, YurMax = -0.02, 0.7
+    #YurMin, YurMax = -1,-1
 
     cv = TCanvas( 'cv', 'cv', 1000, 600)
 
@@ -75,21 +78,25 @@ def cv45():
         print 'opening', fn
         [S,Y] = helpers.getListFromColumn([Xindex,Yindex], fn)
         xList, yList = S,Y 
-        gr += [ makeTGraph(xList, yList, color, mStyle) ]
+        xinmeter = [x*0.01 for x in xList]
+        gr += [ makeTGraph(xinmeter, yList, color, mStyle) ]
         mlegend.AddEntry(gr[-1], lg, lm) 
         mg.Add(gr[-1])
 
     mg.Draw("a"+lm)
     mg.GetYaxis().SetTitle(ytitle)
-    mg.GetXaxis().SetTitle('s [cm]')
+    mg.GetXaxis().SetTitle('s [m]')
     if XurMin != -1:
         mg.GetXaxis().SetRangeUser(XurMin,XurMax)
-
+        rel += 'ZoomX'
     if YurMin != -1:
         mg.GetYaxis().SetRangeUser(YurMin,YurMax)
-        rel += 'Zoom'
+        rel += 'ZoomY'
 
-    mlegend.Draw()
+    #mlegend.Draw()
+    lab = mylabel(42)
+    lab.DrawLatex(0.45, 0.955,lg)
+
     cpath = '/afs/cern.ch/user/r/rkwee/public/www/HL-LHC/TCT/6.5TeV/beamgas/'
     pname = cpath + 'inputFluka6500GeV'+rel+'.root'
     pname = cpath + 'inputFluka6500GeV'+rel+'.pdf'
@@ -97,6 +104,9 @@ def cv45():
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 
+    pname = cpath + 'inputFluka6500GeV'+rel+'.png'
+    print('Saving file as ' + pname ) 
+    cv.Print(pname)
 # ----------------------------------------------------------------------------
 
 
