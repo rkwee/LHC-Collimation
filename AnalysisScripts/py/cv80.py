@@ -54,7 +54,7 @@ def cv80():
         if skey.count("Sel"): continue
         elif skey.count("Neg"): continue
         elif skey.count("Pos"): continue
-        elif skey.count("Z"): continue
+        elif skey.count("Z") and not skey.startswith("OrigZ"): continue
         elif skey.count("Neu_"): continue
         elif skey.count("Char"): continue
         elif skey.count("Plus") or skey.count("Minus"): continue
@@ -83,19 +83,26 @@ def cv80():
         var = ''
         energyweight = ''
         cuts = [' energy_ke > 0.02 ']
+        cf = 0.01
         if skey.startswith("Ekin"):
             xaxis = getXLogAxis(xnbins, xmin, xmax)
             var = "energy_ke"        
 
         elif hname.startswith("Rad"):
             binwidth = xmax/xnbins
-            xaxis = [i*binwidth for i in range(xnbins+1)]
+            xaxis = [i*binwidth for i in range(xnbins)]
             var = '(TMath::Sqrt(x*x + y*y))'
             if skey.count("En"): energyweight = "energy_ke * "
 
+        elif hname.startswith("OrigZ"):
+            binwidth = cf*(xmax-xmin)/xnbins
+            xaxis = [cf*xmin+i*binwidth for i in range(xnbins)]
+            var = 'z_interact*0.01'
+            xtitle = "s [m]"
+
         elif hname.startswith("Phi"):
             binwidth = (xmax-xmin)/xnbins
-            xaxis = [xmin+i*binwidth for i in range(xnbins+1)]
+            xaxis = [xmin+i*binwidth for i in range(xnbins)]
             var = '(TMath::ATan2(y,x))'
             if skey.count("En"): energyweight = "energy_ke * "
 
@@ -105,8 +112,8 @@ def cv80():
             cuts += ['('+ pcut + ')']
 
         # -- y axis, weigths
-        ynbins, ymin, ymax =  523, 22.5, 550
-        twoDhist = TH2F(skey, skey, xnbins, array('d', xaxis), ynbins, ymin, ymax)
+        ynbins, ymin, ymax = 2*262, 22.6, 546.6 # MUST TAKE FULL RANGE
+        twoDhist = TH2F(skey, skey, xnbins-1, array('d', xaxis), ynbins, ymin, ymax)
 
         hname_flat = skey + '_flat'
         twoDhist_flat = twoDhist.Clone(hname_flat)

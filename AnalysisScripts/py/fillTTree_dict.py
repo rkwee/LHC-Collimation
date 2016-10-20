@@ -313,14 +313,15 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'OrigXZMuonsE100'+tag:[ ['10', '11'], norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} E_{kin} > 100 GeV', kWhite, '100.','z [cm]','x [cm]', 240, -120, 120, ], 
  'OrigYZMuonsE100'+tag:[ ['10', '11'], norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} E_{kin} > 100 GeV', kWhite, '100.','z [cm]','y [cm]', 240, -120, 120, ], 
 
-'OrigZPhotons'+tag:[ ['7'],  norm,262, 2260., 54660, tBBG, '#gamma ', kPink-3, '-9999','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
-'OrigZPhotE100'+tag:[ ['7'],  norm, 262, 2260., 54660, tBBG, '#gamma E > 100 GeV ', kRed, 'E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
-'OrigZProtons'+tag:[ ['1'],  norm,262, 2260., 54660, tBBG, 'p ', kGreen, '-9999','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
-'OrigZPrE100'+tag:[ ['1'],  norm, 262, 2260., 54660, tBBG, 'p E > 100 GeV ', kCyan, 'E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
-'OrigZMuon'+tag:[ ['10', '11'],  norm,262, 2260., 54660, tBBG, '#mu^{#pm} ', kBlue-2, '-9999','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
-'OrigZMuE100'+tag:[ ['10', '11'],  norm, 262, 2260., 54660, tBBG, '#mu^{#pm} E > 100 GeV ', kBlue+2, 'E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
- 'OrigZMuRt1E100'+tag:[ ['11','10'], norm, 262, 2260., 54660., tBBG, '#mu^{#pm} r < 1 m, E > 100 GeV',kMagenta+1,'r < 100. : E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
- 'OrigZMuRgt1E100'+tag:[ ['11','10'], norm, 262, 2260., 54660., tBBG, '#mu^{#pm} r > 1 m & E > 100 GeV',kBlue+1,'r > 100. : E > 100.','z [cm]','particles/cm^{2}'+yrel, -9999, -9999, -9999, ],
+'OrigZPhotons'+tag:[ ['7'],  norm,524, 2260., 54660., tBBG, '#gamma ', kPink-3, '-9999','z [cm]','particles/cm'+yrel, -9999, -9999, -9999, ],
+'OrigZAll'+tag:[ ['all'],  norm,524, 2260., 54660., tBBG, 'all ', kPink-3, '-9999','z [cm]','particles/cm'+yrel, -9999, -9999, -9999, ],
+'OrigZPhotE100'+tag:[ ['7'],  norm, 524, 2260., 54660., tBBG, '#gamma E > 100 GeV ', kRed, 'E > 100.','z [cm]','particles/cm'+yrel, -9999, -9999, -9999, ],
+'OrigZProtons'+tag:[ ['1'],  norm,524, 2260., 54660., tBBG, 'p ', kGreen, '-9999','z [cm]','particles/cm'+yrel, -9999, -9999, -9999, ],
+'OrigZPrE100'+tag:[ ['1'],  norm, 524, 2260., 54660., tBBG, 'p E > 100 GeV ', kCyan, 'E > 100.','z [cm]','particles/cm'+yrel, -9999, -9999, -9999, ],
+'OrigZMuon'+tag:[ ['10', '11'],  norm,524, 2260., 54660., tBBG, '#mu^{#pm} ', kBlue-2, '-9999','z [cm]','particles/cm'+yrel, -9999, -9999, -9999, ],
+'OrigZMuE100'+tag:[ ['10', '11'],  norm, 524, 2260., 54660., tBBG, '#mu^{#pm} E > 100 GeV ', kBlue+2, 'E > 100.','z [cm]','particles/cm'+yrel, -9999, -9999, -9999, ],
+ 'OrigZMuRt1E100'+tag:[ ['11','10'], norm, 524, 2260., 54660., tBBG, '#mu^{#pm} r < 1 m, E > 100 GeV',kMagenta+1,'r < 100. : E > 100.','z [cm]','particles/cm'+yrel, -9999, -9999, -9999, ],
+ 'OrigZMuRgt1E100'+tag:[ ['11','10'], norm, 524, 2260., 54660., tBBG, '#mu^{#pm} r > 1 m & E > 100 GeV',kBlue+1,'r > 100. : E > 100.','z [cm]','particles/cm'+yrel, -9999, -9999, -9999, ],
  }
 
     return sDict_gen

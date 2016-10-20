@@ -1,9 +1,7 @@
 #!/usr/bin/python
 #
-# reweights by pressure profile 6.5 TeV
-# write rootfile with 2d histos flat and reweighted
-# from 4 TeV version cv70
-
+# complete rewrite to plot per TCT hit
+# 
 # Oct 16
 #
 # R Kwee, 2016
@@ -23,11 +21,11 @@ def resultFileBG(k,rel):
     return  n
 # --------------------------------------------------------------------------------
 def cv86():
-    datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30'
+    datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b2_exp_20MeV_nprim6466000_30'
     tag  = '_BH_HL_tct5inrdB2_20MeV'
 
-    datafile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30'
-    tag =  '_BH_HL_tct5otrdB2_20MeV'
+    # datafile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30'
+    # tag =  '_BH_HL_tct5otrdB2_20MeV'
 
     bbgFile = datafile + ".root"
     print "Opening", bbgFile
@@ -172,11 +170,12 @@ def cv86():
 
         hist4.SetLineColor(kTeal+3)
         hist5.SetLineColor(kRed+3)
+        hist4.GetYaxis().SetTitle("normalised to number of primaries")
         hist4.Draw("hist")
         hist5.Draw("histsame")
 
-        mlegend.AddEntry(hist4, "with cut on TCT4, nentries:" + str(round(entries4,4)), "l")
-        mlegend.AddEntry(hist5, "with cut on TCT5, nentries:" + str(round(entries5,4)), "l")
+        mlegend.AddEntry(hist4, "origin in TCT4, nentries:" + str(round(entries4,4)), "l")
+        mlegend.AddEntry(hist5, "origin in TCT5, nentries:" + str(round(entries5,4)), "l")
         mlegend.Draw()
         
         lab = mylabel(42)

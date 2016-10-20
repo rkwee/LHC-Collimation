@@ -12,28 +12,6 @@ from ROOT import *
 from cv32 import getdata14c
 from helpers import makeTGraph, mylabel, wwwpath
 # --------------------------------------------------------------------------------
-# calc total interaction probability
-sigma_N = 286.e-31
-Trev = 2*math.pi/112450
-def calc_pint_tot(rho_C, rho_H, rho_O):
-    # 3.5 TeV inel cross-sections proton-atom from paper
-    sigma_O = 316.e-31
-    sigma_C = 258.e-31
-    sigma_H =  37.e-31
-
-    # # 4 TeV inel cross sections scaled up
-    # sigma_O = 318.e-31
-    # sigma_C = 260.e-31
-    # sigma_H = 37.1e-31
-
-    
-    pint_C = [sigma_N*j/Trev for j in rho_C[1:]]
-    pint_H = [sigma_N*j/Trev for j in rho_H[1:]]
-    pint_O = [sigma_N*j/Trev for j in rho_O[1:]]
-
-    pint_tot = [pint_H[i] + pint_O[i] + pint_C[i] for i in range(len(pint_O))]
-    return pint_tot
-
 def cv67():
 # --------------------------------------------------------------------------------
 # density profile is given in the following format:
