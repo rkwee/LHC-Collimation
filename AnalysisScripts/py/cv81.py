@@ -9,7 +9,7 @@
 import ROOT, sys, glob, os, math, helpers
 from ROOT import *
 from array import array
-from helpers import makeTGraph, mylabel, wwwpath
+from helpers import makeTGraph, mylabel, wwwpath, thispath
 from fillTTree_dict import generate_sDict
 import cv70
 # --------------------------------------------------------------------------------
@@ -40,8 +40,8 @@ def doRad(hist,nbins):
 # --------------------------------------------------------------------------------
 def cv81():
 
-    do4TeV = 0 # 
-    do6p5  = 1 #
+    do4TeV = 1 # 
+    do6p5  = 0 #
     
     if do4TeV:
         year = "2012"
@@ -160,7 +160,6 @@ def cv81():
             hist_flat = helpers.doRebin(hist_flat,3)
             hist_reweighted = helpers.doRebin(hist_reweighted,3)
             doLogx, doLogy = 0,1
-            #YurMin,YurMax = 1e-12,1.2
             legendunit = sDict[hname][10]
             #XurMin,XurMax = 0, 600.
         elif skey.count("OrigZ"):
@@ -171,6 +170,7 @@ def cv81():
             hist_flat.Scale(1./rbf)
             hist_reweighted.Rebin(rbf)
             hist_reweighted.Scale(1./rbf)
+            YurMin,YurMax = 1e-1,6e7
             legendunit = "/m"
             doLogx, doLogy = 0,1
             xtitle = "s [m]"
