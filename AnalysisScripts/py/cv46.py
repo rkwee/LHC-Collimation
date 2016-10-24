@@ -11,14 +11,10 @@ from helpers import wwwpath, length_LHC, mylabel, gitpath, length_LHC
 from array import array
 # -----------------------------------------------------------------------------------
 
-def getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx):
-    small_xp =  math.sqrt(emittance_geo/betx) * big_xp - math.sqrt(emittance_geo)*alfx*big_x/math.sqrt(betx)
-    return small_xp
-
 def cv46():
 
     # number of randomly produced values per s location
-    N = 1000
+    N = 500
     doWrite = 1
 
     energy = "6.5TeV"
@@ -26,19 +22,19 @@ def cv46():
     betaStar = 0.8
 
     # out
-    energy = "4TeV"
-    gamma_rel = 4e3/0.938
-    betaStar = 0.6
+    # energy = "4TeV"
+    # gamma_rel = 4e3/0.938
+    # betaStar = 0.6
 
     pointsName = ['IP1']
 
     # canvas
-    a,b = 2,1#len(pointsName)+1
-    cv = TCanvas( 'cv', 'cv', a*600, b*600)
-    cv.Divide(a,b)
-    cv.SetRightMargin(0.3)
-    cv.SetLeftMargin(0.2)
-    cv.SetTopMargin(0.15)
+    # a,b = 2,1#len(pointsName)+1
+    # cv = TCanvas( 'cv', 'cv', a*600, b*600)
+    # cv.Divide(a,b)
+    # cv.SetRightMargin(0.3)
+    # cv.SetLeftMargin(0.2)
+    # cv.SetTopMargin(0.15)
 
     emittance_norm = 3.5e-6
 
@@ -88,8 +84,8 @@ def cv46():
         #foutname = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/INIC6p5.dat'
         #  foutname = '/afs/cern.ch/project/lhc_mib/beamsize/6500GeV_beamsize/checkTrajectory6500GeV/orbitDump/INIC6p5.dat'
         # foutname = '/afs/cern.ch/project/lhc_mib/valBG4TeV/inicon/INIC4TeV.dat'
-        foutname = '/afs/cern.ch/project/lhc_mib/bgChecks3/INIC6500GeV.dat'
-        foutname = '/afs/cern.ch/project/lhc_mib/bgChecks3/INIC4TeV_fout.dat'
+        foutname = '/afs/cern.ch/project/lhc_mib/4TeVBGnoBS/INIC6500GeV_repfix.dat'
+        # foutname = '/afs/cern.ch/project/lhc_mib/bgChecks3/INIC4TeV_fout.dat'
 
         if doWrite:
             fot = open(foutname, 'w')
@@ -99,121 +95,121 @@ def cv46():
             # histogram 
             big_x  = gauss1.GetRandom()
             big_xp = gauss2.GetRandom()
-            small_xp_fout = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
-            small_x_fout  = big_x*sigx 
-            hx[-1].Fill(small_x_fout,small_xp_fout)
-            cx_fout = small_xp_fout
-
-            # 3 contour lines
-            phi = 2*random.random()*math.pi
-            big_x  = math.cos(phi)
-            big_xp = math.sin(phi)
-            small_xp = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
+            small_xp = math.sqrt(emittance_geo/betx) * big_xp
             small_x  = big_x*sigx 
-            c_x1[-1].SetPoint(i+1,small_x,small_xp)
+            lineINICON2 = str(small_xp)
+            lineINICON1  = str(100.*small_x)
 
-            big_x  = 2*math.cos(phi)
-            big_xp = 2*math.sin(phi)
-            small_xp = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
-            small_x  = big_x*sigx 
-            c_x2[-1].SetPoint(i+1,small_x,small_xp)
+            # # 3 contour lines
+            # phi = 2*random.random()*math.pi
+            # big_x  = math.cos(phi)
+            # big_xp = math.sin(phi)
+            # small_xp = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
+            # small_x  = big_x*sigx 
+            # c_x1[-1].SetPoint(i+1,small_x,small_xp)
 
-            big_x  = 3*math.cos(phi)
-            big_xp = 3*math.sin(phi)
-            small_xp = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
-            small_x  = big_x*sigx 
-            c_x3[-1].SetPoint(i+1,small_x,small_xp)
+            # big_x  = 2*math.cos(phi)
+            # big_xp = 2*math.sin(phi)
+            # small_xp = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
+            # small_x  = big_x*sigx 
+            # c_x2[-1].SetPoint(i+1,small_x,small_xp)
+
+            # big_x  = 3*math.cos(phi)
+            # big_xp = 3*math.sin(phi)
+            # small_xp = getsmall_xp(emittance_geo,betx,big_x,big_xp,alfx)
+            # small_x  = big_x*sigx 
+            # c_x3[-1].SetPoint(i+1,small_x,small_xp)
 
             big_y  = gauss3.GetRandom()
             big_yp = gauss4.GetRandom()
-            small_yp_fout = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
-            small_y_fout  = sigy * big_y
-            hy[-1].Fill(small_y_fout,small_yp_fout)
+            small_yp = math.sqrt(emittance_geo/bety) * big_yp
+            small_y  = sigy * big_y
+#            hy[-1].Fill(small_y_fout,small_yp_fout)
 
             # consider also crossing angle 
-            cy_fout = small_yp_fout + 145.e-6
+            cy_fout = small_yp + 145.e-6
 
-            hxIP.Fill(100.*small_x_fout, 100.*small_y_fout)
+
 
             # write out format for INICON.dat that is input for source_no_interactions_no_random_part.f
             # convert to fluka units, ie m in cm
-            lineINICON = str(100.*small_x_fout) + ' ' + str(100.*small_y_fout) + ' ' + ' 0.0 ' + str(cx_fout) + ' ' + str(cy_fout) + ' 0.0   0.0 \n'
+            lineINICON = lineINICON1 + ' ' + str(100.*small_y) + ' ' + ' 0.0 ' + lineINICON2 + ' ' + str(cy_fout) + ' 0.0  \n'
             line = str(i+1) + ' ' + lineINICON
             if doWrite: fot.write(lineINICON)
 
-            phi = 2*random.random()*math.pi
-            big_y  = math.cos(phi)
-            big_yp = math.sin(phi)
-            small_yp = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
-            small_y  = big_y*sigy 
-            c_y1[-1].SetPoint(i+1,small_y,small_yp)
+            # phi = 2*random.random()*math.pi
+            # big_y  = math.cos(phi)
+            # big_yp = math.sin(phi)
+            # small_yp = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
+            # small_y  = big_y*sigy 
+            # c_y1[-1].SetPoint(i+1,small_y,small_yp)
 
-            big_y  = 2*math.cos(phi)
-            big_yp = 2*math.sin(phi)
-            small_yp = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
-            small_y  = big_y*sigy
-            c_y2[-1].SetPoint(i+1,small_y,small_yp)
+            # big_y  = 2*math.cos(phi)
+            # big_yp = 2*math.sin(phi)
+            # small_yp = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
+            # small_y  = big_y*sigy
+            # c_y2[-1].SetPoint(i+1,small_y,small_yp)
 
-            big_y  = 3*math.cos(phi)
-            big_yp = 3*math.sin(phi)
-            small_yp = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
-            small_y  = big_y*sigy 
-            c_y3[-1].SetPoint(i+1,small_y,small_yp)
+            # big_y  = 3*math.cos(phi)
+            # big_yp = 3*math.sin(phi)
+            # small_yp = getsmall_xp(emittance_geo,bety,big_y,big_yp,alfy)
+            # small_y  = big_y*sigy 
+            # c_y3[-1].SetPoint(i+1,small_y,small_yp)
 
 
         print 'wrote', foutname
-        cStyle = 6
-        xtitle, ytitle = 'x [m]', "x' [rad]"
-        hx[-1].GetXaxis().SetRangeUser(-0.15e-3,0.15e-3)
-        hx[-1].GetYaxis().SetRangeUser(-0.15e-3,0.15e-3)
-        hx[-1].GetXaxis().SetLabelSize(0.03)
-        hx[-1].GetYaxis().SetLabelSize(0.03)
-        hx[-1].GetZaxis().SetLabelSize(0.03)
-        hx[-1].GetXaxis().SetTitle(xtitle)
-        hx[-1].GetYaxis().SetTitle(ytitle)
-        c_x1[-1].SetMarkerSize(0.3)
-        c_x1[-1].SetMarkerColor(kRed+2)
-        c_x2[-1].SetMarkerSize(0.3)
-        c_x2[-1].SetMarkerColor(kRed)
-        c_x3[-1].SetMarkerSize(0.3)
-        c_x3[-1].SetMarkerColor(kRed-7)
-        c_x1[-1].SetMarkerStyle(cStyle)
-        c_x2[-1].SetMarkerStyle(cStyle)
-        c_x3[-1].SetMarkerStyle(cStyle)
-        xtitle, ytitle = 'y [m]', "y' [rad]"
-        hy[-1].GetXaxis().SetRangeUser(-0.15e-3,0.15e-3)
-        hy[-1].GetYaxis().SetRangeUser(-0.15e-3,0.15e-3)
-        hy[-1].GetXaxis().SetLabelSize(0.03)
-        hy[-1].GetYaxis().SetLabelSize(0.03)
-        hy[-1].GetZaxis().SetLabelSize(0.03)
-        hy[-1].GetXaxis().SetTitle(xtitle)
-        hy[-1].GetYaxis().SetTitle(ytitle)
-        c_y1[-1].SetMarkerSize(0.3)
-        c_y1[-1].SetMarkerColor(kGreen+2)
-        c_y1[-1].SetMarkerStyle(cStyle)
-        c_y2[-1].SetMarkerSize(0.3)
-        c_y2[-1].SetMarkerStyle(cStyle)
-        c_y2[-1].SetMarkerColor(kGreen+1)
-        c_y3[-1].SetMarkerSize(0.3)
-        c_y3[-1].SetMarkerStyle(cStyle)
-        c_y3[-1].SetMarkerColor(kGreen-10)
-        xtitle, ytitle = '#sigma_{x}', "#sigma_{y}"
-        m,n = j*2-1,j*2
-        print m,n
+        # cStyle = 6
+        # xtitle, ytitle = 'x [m]', "x' [rad]"
+        # hx[-1].GetXaxis().SetRangeUser(-0.15e-3,0.15e-3)
+        # hx[-1].GetYaxis().SetRangeUser(-0.15e-3,0.15e-3)
+        # hx[-1].GetXaxis().SetLabelSize(0.03)
+        # hx[-1].GetYaxis().SetLabelSize(0.03)
+        # hx[-1].GetZaxis().SetLabelSize(0.03)
+        # hx[-1].GetXaxis().SetTitle(xtitle)
+        # hx[-1].GetYaxis().SetTitle(ytitle)
+        # c_x1[-1].SetMarkerSize(0.3)
+        # c_x1[-1].SetMarkerColor(kRed+2)
+        # c_x2[-1].SetMarkerSize(0.3)
+        # c_x2[-1].SetMarkerColor(kRed)
+        # c_x3[-1].SetMarkerSize(0.3)
+        # c_x3[-1].SetMarkerColor(kRed-7)
+        # c_x1[-1].SetMarkerStyle(cStyle)
+        # c_x2[-1].SetMarkerStyle(cStyle)
+        # c_x3[-1].SetMarkerStyle(cStyle)
+        # xtitle, ytitle = 'y [m]', "y' [rad]"
+        # hy[-1].GetXaxis().SetRangeUser(-0.15e-3,0.15e-3)
+        # hy[-1].GetYaxis().SetRangeUser(-0.15e-3,0.15e-3)
+        # hy[-1].GetXaxis().SetLabelSize(0.03)
+        # hy[-1].GetYaxis().SetLabelSize(0.03)
+        # hy[-1].GetZaxis().SetLabelSize(0.03)
+        # hy[-1].GetXaxis().SetTitle(xtitle)
+        # hy[-1].GetYaxis().SetTitle(ytitle)
+        # c_y1[-1].SetMarkerSize(0.3)
+        # c_y1[-1].SetMarkerColor(kGreen+2)
+        # c_y1[-1].SetMarkerStyle(cStyle)
+        # c_y2[-1].SetMarkerSize(0.3)
+        # c_y2[-1].SetMarkerStyle(cStyle)
+        # c_y2[-1].SetMarkerColor(kGreen+1)
+        # c_y3[-1].SetMarkerSize(0.3)
+        # c_y3[-1].SetMarkerStyle(cStyle)
+        # c_y3[-1].SetMarkerColor(kGreen-10)
+        # xtitle, ytitle = '#sigma_{x}', "#sigma_{y}"
+        # m,n = j*2-1,j*2
+        # print m,n
 
-        lab = mylabel(42)
-        cv.cd(m)
-        hx[-1].Draw('colz')
-        c_x1[-1].Draw("SAMEP")
-        c_x2[-1].Draw("SAMEP")
-        c_x3[-1].Draw("SAMEP")
-        lab.DrawLatex(0.45, 0.86, name + ' ('+s+')')
+        # lab = mylabel(42)
+        # cv.cd(m)
+        # hx[-1].Draw('colz')
+        # c_x1[-1].Draw("SAMEP")
+        # c_x2[-1].Draw("SAMEP")
+        # c_x3[-1].Draw("SAMEP")
+        # lab.DrawLatex(0.45, 0.86, name + ' ('+s+')')
 
-        cv.cd(n)
-        hy[-1].Draw('colz')
-        c_y1[-1].Draw("SAMEP")
-        c_y2[-1].Draw("SAMEP")
-        c_y3[-1].Draw("SAMEP")
+        # cv.cd(n)
+        # hy[-1].Draw('colz')
+        # c_y1[-1].Draw("SAMEP")
+        # c_y2[-1].Draw("SAMEP")
+        # c_y3[-1].Draw("SAMEP")
 
         # cv.cd(n+1)
         # hxIP.GetXaxis().SetLabelSize(0.02)
@@ -223,10 +219,11 @@ def cv46():
     rel = 'gauss' 
     pname  = wwwpath
     subfolder = 'TCT/'+energy+'/beamgas/'
-    pname += subfolder + 'IP1_'+rel+'_'+energy+'bgCheck3.pdf'
+    #pname += subfolder + 'IP1_'+rel+'_'+energy+'bgCheck3.pdf'
 
-    print('Saving file as ' + pname ) 
-    cv.SaveAs(pname)
+
+    #print('Saving file as ' + pname ) 
+    #cv.SaveAs(pname)
         
 # ----------------------------------------------------------------------------
 
