@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 # complete rewrite to plot per TCT hit
-# 
+# extract transfer functions tct to interface plane
 # Oct 16
 #
 # R Kwee, 2016
@@ -22,6 +22,7 @@ def resultFileBG(k,rel):
 # --------------------------------------------------------------------------------
 def cv86():
     datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b2_exp_20MeV_nprim6466000_30'
+    datafile = projectpath + 'HL1.0/FL_TCT5In_retractedSett_B2_fixstats/hilumi_ir1_hybrid_b2_exp_20MeV_nprim4101500_30'
     tag  = '_BH_HL_tct5inrdB2_20MeV'
 
     # datafile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30'
@@ -102,7 +103,7 @@ def cv86():
         hname5 = skey + "tct5"
         hist5 = TH1F(hname5, hname5, xnbins, array('d', xaxis))
 
-
+        histControl = hist5.Clone("controlhist")
         tct5Cut = "(z_interact > 211.79e2 && z_interact <= 212.79e2) ||  (z_interact <= 214.79e2 && z_interact > 213.79e2)"
         tct4Cut = "(z_interact > 132.6e2 && z_interact <= 133.6e2) ||  (z_interact > 130.97e2 && z_interact <= 131.97e2)"
         tct4a = 130.97e2
@@ -115,20 +116,22 @@ def cv86():
         tct5d = tct5c+1e2
 
 
-        tct4Cut = "((z_interact >= "+str(tct4a)+" && z_interact <= "+str(tct4b)+" ) || (z_interact > "+str(tct4c)+" && z_interact <= "+str(tct4d)+"))"
-        tct5Cut = "((z_interact >= "+str(tct5a)+" && z_interact <= "+str(tct5b)+" ) || (z_interact > "+str(tct5c)+" && z_interact <= "+str(tct5d)+"))"
+        tct4Cut = "((z_interact > "+str(tct4a)+" && z_interact <= "+str(tct4b)+" ) || (z_interact > "+str(tct4c)+" && z_interact <= "+str(tct4d)+"))"
+        tct5Cut = "((z_interact > "+str(tct5a)+" && z_interact <= "+str(tct5b)+" ) || (z_interact > "+str(tct5c)+" && z_interact <= "+str(tct5d)+"))"
+        nprim4 = 6678+83
+        nprim5 = 14914+304
         
         cuts = [ enCut, tct4Cut ]        
         cuts = "weight * "+energyweight+"("+" && ".join(cuts) + ") "
         print "INFO: applying", cuts, "to", var, "in", hname4
         mt.Project(hname4, var, cuts)
-        entries4 =hist4.GetEntries()/nprim
-        print "entries  ",entries4
+        entries4 =hist4.GetEntries()/nprim4
+        print "entries  ",entries4, hist4.GetEntries()
         cuts = [ enCut, tct5Cut ]        
         cuts = "weight * "+energyweight+"("+" && ".join(cuts) + ") "
         print "INFO: applying", cuts, "to", var, "in", hname5
         mt.Project(hname5, var, cuts)
-        entries5 = hist5.GetEntries()/nprim
+        entries5 = hist5.GetEntries()/nprim5
         int5 = hist5.Integral()
         print "entries  ",entries5, int5
 
@@ -145,8 +148,8 @@ def cv86():
 
 
         # normalised to nprim
-        hist4.Scale(1./nprim)
-        hist5.Scale(1./nprim)
+        hist4.Scale(1./nprim4)
+        hist5.Scale(1./nprim5)
         # --
 
         cv = TCanvas(skey+ 'cv',skey+ 'cv', 1400, 900)
@@ -206,4 +209,5 @@ def cv86():
             l.DrawLine(s,YurMin,s,YurMax)
         
         pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/checkB2.pdf"
+        pname = projectpath + "HL1.0/checkB2.png"
         cv.SaveAs(pname)

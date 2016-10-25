@@ -40,18 +40,21 @@ def getStatErrFromTProf(mt, varComp,ynbins, ymin, ymax):
 def cv75():
 
     # twiss file
-    # tf = pymadx.Tfs("/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/4TeV/beamgas/twiss_4tev_b1.data")
-    energy = "4TeV"
-    gamma_rel = 4e3/0.938
-    betaStar = 0.6
-    # tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/1cm/twiss_lhcb1_med_new_thin_800_1cm.tfs')
 
-    #tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/twiss_lhcb1_med_new_thin_800.tfs')
-    tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/background_2015_80cm/twiss_b2_80cm.tfs')
-    gamma_rel = 6.5e3/0.938
-    energy = '6.5TeV'
-    betaStar = 0.8
+    do4TeV = 0
+    if do4TeV:
+        tf = pymadx.Tfs("/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/4TeV/beamgas/twiss_b4.data.thin")
+        energy = "4TeV"
+        gamma_rel = 4e3/0.938
+        betaStar = 0.6
 
+    else:
+        tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/twiss_lhcb1_med_new_thin_800.tfs')
+        gamma_rel = 6.5e3/0.938
+        energy = '6.5TeV'
+        betaStar = 0.8
+        
+    print energy, "."*45
     BETX = tf.GetColumn('BETX')
     BETY = tf.GetColumn('BETY')
     S    = tf.GetColumn('S')
@@ -77,17 +80,22 @@ def cv75():
     S_shifted.sort()
 
     XurMin, XurMax = 0,548.
-    XurMin, XurMax = 0,5.
-    rel = '_compsigma2_IR1Right_' + energy
+    #XurMin, XurMax = 0,5.
+    rel = '_compsigma_IR1Right_' + energy
 
     lShift = 0.0
     # -----------------------------------------------
     # fluka part from cv74
 
-#    filename = projectpath + 'HaloRun2/valBG4TeV2/oneFileAllTraj.dat.89.root'
-#    filename = projectpath + 'HaloRun2/valBG4TeV2/traj_fort.89.10.root'
+    # full sample at 4 TeV
+    #filename = projectpath + 'HaloRun2/valBG4TeV2/oneFileAllTraj.dat.89.root'
+    
+    filename = projectpath + 'HaloRun2/valBG4TeV2/traj_fort.89.10.root' # as used in fluka simulations
+    filename = projectpath + '4TeVBGnoBS/createTrajectories6p5_checkfix/runs_fix/ir1_6500GeV_b1_20MeV_orbitDumpINICON_89.root' # fixed version of inicons
+    filename = projectpath + '4TeVBGnoBS/createTrajectories6p5_checkrepfix/run_repfix/ir1_6500GeV_b1_20MeV_orbitDumpINICON_89.root' # fixed version of inicons
+    # sufficient trajectories at 6.5 TeV
+    #if not do4TeV:   filename = '/afs/cern.ch/project/lhc_mib/HaloRun2/valBG4TeV2/400Traj.fort.89.root'
 
-    filename = '/afs/cern.ch/project/lhc_mib/HaloRun2/valBG4TeV2/400Traj.fort.89.root'
     print "Opening", filename
     rf = TFile.Open(filename)
     mt = rf.Get("particle")
@@ -117,38 +125,55 @@ def cv75():
 
     mg = TMultiGraph()
     # marker in legend
-    lm = 'lp'
+    lm = 'l'
 
     emittance_norm = 3.5e-6
     emittance_geo = emittance_norm/gamma_rel
 
-    SIGX = [math.sqrt(betax * emittance_geo)*100 for betax in BETX]
-    SIGY = [math.sqrt(betay * emittance_geo)*100 for betay in BETY]
+    SIGX = [math.sqrt(betax * emittance_geo) for betax in BETX]
+    SIGY = [math.sqrt(betay * emittance_geo) for betay in BETY]
 
-    xList, yList, color, mStyle, lg = S_shifted, SIGX, kGreen-1, 22, '#sigma_{x} from Twiss'
+    SIGMAX = [s*1000. for s in SIGX]
+    xList, yList, color, mStyle, lg = S_shifted, SIGMAX, kGreen-1, 22, '#sigma_{x} from Twiss'
     g0 = makeTGraph(xList, yList, color, mStyle)
     mlegend.AddEntry(g0, lg, lm)    
     mg.Add(g0)
 
     print '-'*11, lg
+    SIGMAY = [s*1000 for s in SIGY]
     xList, yList, color, mStyle, lg = S_shifted, SIGY, kGreen-2, 20, '#sigma_{y} from Twiss'
     g1 = makeTGraph(xList, yList, color, mStyle)
     mlegend.AddEntry(g1, lg, lm)    
     mg.Add(g1)
-    ytitle = 'beam size [cm]'
+    ytitle = 'beam size [mm]'
     print '-'*11, lg
     print len(S_shifted)
-    
-    xList, yList, color, mStyle, lg = srange_meter, SIGYflu, kGreen+1, 21, '#sigma_{y} from fluka'
-    g1 = makeTGraph(xList, yList, color, mStyle)
-    mlegend.AddEntry(g1, lg, lm) 
-    mg.Add(g1)
+
+    SIGYfluka = [s*10 for s in SIGYflu]
+    xList, yList, color, mStyle, lg = srange_meter, SIGYfluka, kGreen+1, 21, '#sigma_{y} from fluka'
+    g2 = makeTGraph(xList, yList, color, mStyle)
+    mlegend.AddEntry(g2, lg, lm) 
+    mg.Add(g2)
     print '-'*11, lg
-    xList, yList, color, mStyle, lg = srange_meter, SIGXflu, kBlue+1, 27, "#sigma_{x} from fluka"
+
+    SIGXfluka = [s*10 for s in SIGXflu]
+    xList, yList, color, mStyle, lg = srange_meter, SIGXfluka, kBlue+1, 27, "#sigma_{x} from fluka"
     g3 = makeTGraph(xList, yList, color, mStyle)
     mlegend.AddEntry(g3, lg, lm) 
     mg.Add(g3)
     print '-'*11, lg
+    sigxflu_x,sigxtwi_x, sigxflu_y,sigxtwi_y = ROOT.Double(), ROOT.Double(),ROOT.Double(),ROOT.Double()
+    collectNp = []
+    for i in range(20,len(SIGYflu)):
+        g3.GetPoint(i,sigxflu_x, sigxflu_y)
+        g1.GetPoint(i,sigxtwi_x,sigxtwi_y)
+        ratiosigx = 0.
+        if sigxtwi_x: ratiosigx = sigxflu_y/sigxtwi_y
+        newEmittance = emittance_norm * math.sqrt(ratiosigx)
+        collectNp += [math.sqrt(ratiosigx)]
+        print "New emittance", newEmittance, " dev:", collectNp[-1], "at ", srange_meter[i], "sigxflu", sigxflu_y, "sigxtwi", sigxtwi_y
+
+    print "max deviation", max(collectNp), "at ", collectNp.index(max(collectNp)), 
 
     mg.Draw("a"+lm)
 
@@ -177,7 +202,7 @@ def cv75():
     mlegend.Draw()
     pname  = wwwpath
     subfolder = 'TCT/'+energy+'/beamgas/'
-    pname += subfolder + 'twiss_b1'+rel+'.png'
+    pname += subfolder + 'from_twiss_b1'+rel+'.png'
 
     print('Saving file as ' + pname ) 
     cv.Print(pname)
