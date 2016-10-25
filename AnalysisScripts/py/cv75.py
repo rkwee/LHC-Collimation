@@ -156,7 +156,7 @@ def cv75():
     mg.Add(g2)
     print '-'*11, lg
 
-    SIGXfluka = [s*10 for s in SIGXflu]
+    SIGXfluka = [s*10. for s in SIGXflu]
     xList, yList, color, mStyle, lg = srange_meter, SIGXfluka, kBlue+1, 27, "#sigma_{x} from fluka"
     g3 = makeTGraph(xList, yList, color, mStyle)
     mlegend.AddEntry(g3, lg, lm) 
@@ -168,9 +168,9 @@ def cv75():
         g3.GetPoint(i,sigxflu_x, sigxflu_y)
         g1.GetPoint(i,sigxtwi_x,sigxtwi_y)
         ratiosigx = 0.
-        if sigxtwi_x: ratiosigx = sigxflu_y/sigxtwi_y
-        newEmittance = emittance_norm * math.sqrt(ratiosigx)
-        collectNp += [math.sqrt(ratiosigx)]
+        if sigxtwi_y: ratiosigx = sigxflu_y**2/sigxtwi_y**2
+        newEmittance = emittance_norm * ratiosigx
+        collectNp += [ratiosigx]
         print "New emittance", newEmittance, " dev:", collectNp[-1], "at ", srange_meter[i], "sigxflu", sigxflu_y, "sigxtwi", sigxtwi_y
 
     print "max deviation", max(collectNp), "at ", collectNp.index(max(collectNp)), 
