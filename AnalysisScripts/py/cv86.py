@@ -2,6 +2,7 @@
 #
 # complete rewrite to plot per TCT hit
 # extract transfer functions tct to interface plane
+#
 # Oct 16
 #
 # R Kwee, 2016
@@ -16,19 +17,15 @@ from helpers import makeTGraph, mylabel, wwwpath, thispath
 import cv79
 from cv79 import pData
 # --------------------------------------------------------------------------------
-def resultFileBG(k,rel):
-    n = os.path.join(os.path.dirname(k),"results_pressure2015_"+rel+k.split('/')[-1])
-    return  n
-# --------------------------------------------------------------------------------
 def cv86():
     datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b2_exp_20MeV_nprim6466000_30'
-    datafile = projectpath + 'HL1.0/FL_TCT5In_retractedSett_B2_fixstats/hilumi_ir1_hybrid_b2_exp_20MeV_nprim4101500_30'
+    bbgFile = projectpath + 'HL1.0/FL_TCT5In_retracted_rdB2_fixgaps/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
     tag  = '_BH_HL_tct5inrdB2_20MeV'
 
-    # datafile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30'
-    # tag =  '_BH_HL_tct5otrdB2_20MeV'
+    bbgFile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
+    tag =  '_BH_HL_tct5otrdB2_20MeV'
 
-    bbgFile = datafile + ".root"
+
     print "Opening", bbgFile
 
     nprim = float(bbgFile.split('nprim')[-1].split('_')[0])
@@ -118,22 +115,40 @@ def cv86():
 
         tct4Cut = "((z_interact > "+str(tct4a)+" && z_interact <= "+str(tct4b)+" ) || (z_interact > "+str(tct4c)+" && z_interact <= "+str(tct4d)+"))"
         tct5Cut = "((z_interact > "+str(tct5a)+" && z_interact <= "+str(tct5b)+" ) || (z_interact > "+str(tct5c)+" && z_interact <= "+str(tct5d)+"))"
-        nprim4 = 6678+83
-        nprim5 = 14914+304
+        n4 = (6678+83.)
+        n5 = (14914+304.)
+        sumn4n5 = n4+n5
+
+        #nprim4 = 7./22*nprim
+        #nprim5 = 15./22*nprim
+        nprim4 = n4/sumn4n5*nprim
+        nprim5= n5/sumn4n5*nprim
         
         cuts = [ enCut, tct4Cut ]        
         cuts = "weight * "+energyweight+"("+" && ".join(cuts) + ") "
         print "INFO: applying", cuts, "to", var, "in", hname4
         mt.Project(hname4, var, cuts)
-        entries4 =hist4.GetEntries()/nprim4
-        print "entries  ",entries4, hist4.GetEntries()
+        if nprim4: entries4 =hist4.GetEntries()/nprim4
+        print "numbers at the interface plane 7*2.11 ", n4*entries4
+
+        print "entries  ", hist4.GetEntries(), nprim4
         cuts = [ enCut, tct5Cut ]        
         cuts = "weight * "+energyweight+"("+" && ".join(cuts) + ") "
         print "INFO: applying", cuts, "to", var, "in", hname5
         mt.Project(hname5, var, cuts)
         entries5 = hist5.GetEntries()/nprim5
+      
+        print "numbers at the interface plane 15*0.05 ", n5*entries5
+
+        print "summe", n4*entries4+n5*entries5
+        print "summe", sumn4n5
+        print "ratio", (n4*entries4+n5*entries5)/sumn4n5
+
+        print "entries getentries ",entries5, hist5.GetEntries()
+
+
         int5 = hist5.Integral()
-        print "entries  ",entries5, int5
+        print "entries int ",entries5, int5
 
         # This loop changes the Get.Entries() value by number of bins!!
         for bin in range(1,nbins+1):
@@ -146,11 +161,6 @@ def cv86():
             bcenter = hist5.GetXaxis().GetBinCenterLog(bin)
             hist5.SetBinContent(bin,bcenter*content/width)
 
-
-        # normalised to nprim
-        hist4.Scale(1./nprim4)
-        hist5.Scale(1./nprim5)
-        # --
 
         cv = TCanvas(skey+ 'cv',skey+ 'cv', 1400, 900)
         cv.SetLogx(1)
@@ -173,12 +183,12 @@ def cv86():
 
         hist4.SetLineColor(kTeal+3)
         hist5.SetLineColor(kRed+3)
-        hist4.GetYaxis().SetTitle("normalised to number of primaries")
+        hist4.GetYaxis().SetTitle("entries")
         hist4.Draw("hist")
         hist5.Draw("histsame")
 
-        mlegend.AddEntry(hist4, "origin in TCT4, nentries:" + str(round(entries4,4)), "l")
-        mlegend.AddEntry(hist5, "origin in TCT5, nentries:" + str(round(entries5,4)), "l")
+        mlegend.AddEntry(hist4, "origin in TCT4, entries4:" + str(round(entries4,4)), "l")
+        mlegend.AddEntry(hist5, "origin in TCT5, entries5:" + str(round(entries5,4)), "l")
         mlegend.Draw()
         
         lab = mylabel(42)
@@ -208,6 +218,6 @@ def cv86():
             s = tct5d
             l.DrawLine(s,YurMin,s,YurMax)
         
-        pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/checkB2.pdf"
+        pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/checkB2.png"
         pname = projectpath + "HL1.0/checkB2.png"
         cv.SaveAs(pname)
