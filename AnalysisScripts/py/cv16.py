@@ -277,18 +277,18 @@ def cv16():
     # dColor, nColor = kPink, kBlue+2
 
 
-    # fNum = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root"
-    # fDenom = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim4101500_30.root" # TCT5s in B2
-    # subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compINOUTB2_retracted/perTCThit/"
-    # # fNum = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5LOUT_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
-    # # fDenom = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30.root'
-    # # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINOUTB2/perTCThit/'
-    # lTextNum = 'TCT4 only'
-    # lTextDenom = 'TCT5 in'
-    # # normDenom, normNum, yrel = 1./normTCT5INb2, 1./normTCT5LOUTb2, '/s'
-    # normDenom, normNum, yrel = 1., 1., '/TCT hit'
-    # tagNum, tagDenom = '_BH_HL_tct5otrdB2_20MeV', '_BH_HL_tct5inrdB2_20MeV'
-    # dColor, nColor = kGreen-2, kMagenta+1
+    fNum = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root"
+    fDenom = thispath + "FL_TCT5In_retracted_rdB2_fixgaps/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root"
+    subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compINOUTB2_retracted/perTCThit/"
+    # fNum = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5LOUT_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
+    # fDenom = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30.root'
+    # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINOUTB2/perTCThit/'
+    lTextNum = 'TCT4 only'
+    lTextDenom = 'TCT5 in'
+    # normDenom, normNum, yrel = 1./normTCT5INb2, 1./normTCT5LOUTb2, '/s'
+    normDenom, normNum, yrel = 1., 1., '/TCT hit'
+    tagNum, tagDenom = '_BH_HL_tct5otrdB2_20MeV', '_BH_HL_tct5inrdB2_20MeV'
+    dColor, nColor = kGreen-2, kMagenta+1
 
 
     # fDenom = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
@@ -425,6 +425,10 @@ def cv16():
     tBBG = TFile.Open(bbgFile).Get(treeName)
     sDict = generate_sDict(tag, norm, tBBG, yrel)
 
+    nprimN = norm
+    nprimD = float(fDenom.split('nprim')[-1].split('_')[0])
+
+    print nprimN, nprimD, "nprimN, nprimD", ".."
     if not os.path.exists(subfolder):
         print 'making dir',  subfolder
         os.mkdir(subfolder)
@@ -450,7 +454,7 @@ def cv16():
         #if skey.count('Z'): continue
 
         # testing
-        if not skey.count('RadEn'): continue
+        #if not skey.count('EkinAll'): continue
         goLeft = 0
         if skey.count("Phi"): goLeft = 1
 
@@ -558,11 +562,16 @@ def cv16():
             histDenom = histDenom.ProjectionX()
 
         
-        integralNum = histNum.Integral()
-        integralDenom = histDenom.Integral()
-        if integralDenom: ratioInts = integralNum/integralDenom
-
-        print "integralNum, integralDenom", integralNum, integralDenom
+        entriesN = histNum.GetEntries()
+        entriesD = histDenom.GetEntries()
+        integralNum = histNum.Integral() #0
+        integralDenom = histDenom.Integral() #0
+        if integralDenom: ratioIntegrals = integralNum/integralDenom
+        # for b in range(histNum.GetNbinsX()):
+        #     integralNum+=histNum.GetBinContent(b+1)*histNum.GetBinWidth(b+1)
+        #     integralDenom+=histDenom.GetBinContent(b+1)*histDenom.GetBinWidth(b+1)
+        
+        print "integralNum, integralDenom", integralNum, integralDenom,integralNum/integralDenom
         print "histNum.GetNbinsX(), histDenom.GetNbinsX()", histNum.GetNbinsX(), histDenom.GetNbinsX()
 
         if hnameNum.count('Rad'):
@@ -647,7 +656,7 @@ def cv16():
 
         hnameRatio = 'ratio'+hnameNum
         hRatio = histNum.Clone(hnameRatio)
-
+        
         hRatio.Divide(histNum, histDenom, 1, 1)
         hRatio.SetLineStyle(1)
         hRatio.SetLineWidth(2)
@@ -655,6 +664,12 @@ def cv16():
         hRatio.SetMarkerColor(rCol)
         hRatio.SetMarkerStyle(22)
         hRatio.SetMarkerSize(msize)
+        hRatioInt=0
+        hWidth=0
+        for b in range(histNum.GetNbinsX()):
+            hRatioInt+=hRatio.GetBinContent(b+1)*hRatio.GetBinWidth(b+1)
+            hWidth+=hRatio.GetBinWidth(b+1)
+        #print hRatioInt/hWidth
 
         l = TLine()
         l.SetLineWidth(1)
@@ -676,9 +691,9 @@ def cv16():
         hRatio.GetYaxis().SetTitleSize(0.08)
         hRatio.GetXaxis().SetTitleSize(0.1)
         hRatio.Draw()
-        ratiorounded = hRatio.Integral()/hRatio.GetXaxis().GetNbins()
-        ratiorounded = str(round(ratiorounded,2))
-        print 'integral ratio', ratiorounded
+
+        ratiorounded = str(round(ratioIntegrals,2))
+        print ' ratio of integrals', ratiorounded
         hRatio.GetYaxis().SetTitle('ratio ' + lTextNum + '/' + lTextDenom + " ")
 
         if hRatio.GetMinimum() < 1.:

@@ -14,16 +14,20 @@ from array import array
 from fillTTree import *
 from fillTTree_dict import generate_sDict
 from helpers import makeTGraph, mylabel, wwwpath, thispath
-import cv79
+import cv84
 from cv79 import pData
 # --------------------------------------------------------------------------------
 def cv86():
-    datafile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b2_exp_20MeV_nprim6466000_30'
-    bbgFile = projectpath + 'HL1.0/FL_TCT5In_retracted_rdB2_fixgaps/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
+    bbgFile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/FL_TCT5In_retracted_rdB2_fixgaps/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
+    #bbgFile = projectpath + 'HL1.0/FL_TCT5In_retracted_rdB2_fixgaps/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
     tag  = '_BH_HL_tct5inrdB2_20MeV'
-
-    bbgFile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
-    tag =  '_BH_HL_tct5otrdB2_20MeV'
+    cname = "checkB2tct5in"
+    
+    doTCT4only = 1
+    if doTCT4only:
+        cname = "checkB2tct4only"
+        bbgFile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
+        tag =  '_BH_HL_tct5otrdB2_20MeV'
 
 
     print "Opening", bbgFile
@@ -100,7 +104,8 @@ def cv86():
         hname5 = skey + "tct5"
         hist5 = TH1F(hname5, hname5, xnbins, array('d', xaxis))
 
-        histControl = hist5.Clone("controlhist")
+        hnameControl = "histControl"
+        histControl = hist5.Clone(hnameControl)
         tct5Cut = "(z_interact > 211.79e2 && z_interact <= 212.79e2) ||  (z_interact <= 214.79e2 && z_interact > 213.79e2)"
         tct4Cut = "(z_interact > 132.6e2 && z_interact <= 133.6e2) ||  (z_interact > 130.97e2 && z_interact <= 131.97e2)"
         tct4a = 130.97e2
@@ -115,41 +120,57 @@ def cv86():
 
         tct4Cut = "((z_interact > "+str(tct4a)+" && z_interact <= "+str(tct4b)+" ) || (z_interact > "+str(tct4c)+" && z_interact <= "+str(tct4d)+"))"
         tct5Cut = "((z_interact > "+str(tct5a)+" && z_interact <= "+str(tct5b)+" ) || (z_interact > "+str(tct5c)+" && z_interact <= "+str(tct5d)+"))"
+
         n4 = (6678+83.)
         n5 = (14914+304.)
         sumn4n5 = n4+n5
 
         #nprim4 = 7./22*nprim
-        #nprim5 = 15./22*nprim
         nprim4 = n4/sumn4n5*nprim
         nprim5= n5/sumn4n5*nprim
+        if doTCT4only:nprim5 = 22./22*nprim        
+
         
         cuts = [ enCut, tct4Cut ]        
         cuts = "weight * "+energyweight+"("+" && ".join(cuts) + ") "
         print "INFO: applying", cuts, "to", var, "in", hname4
         mt.Project(hname4, var, cuts)
-        if nprim4: entries4 =hist4.GetEntries()/nprim4
-        print "numbers at the interface plane 7*2.11 ", n4*entries4
+        hist4 = cv84.doEkin(hist4,hist4.GetNbinsX())
+        entries4 =hist4.Integral()/nprim4
+        
 
         print "entries  ", hist4.GetEntries(), nprim4
         cuts = [ enCut, tct5Cut ]        
         cuts = "weight * "+energyweight+"("+" && ".join(cuts) + ") "
         print "INFO: applying", cuts, "to", var, "in", hname5
         mt.Project(hname5, var, cuts)
-        entries5 = hist5.GetEntries()/nprim5
-      
-        print "numbers at the interface plane 15*0.05 ", n5*entries5
+        hist5 = cv84.doEkin(hist5, hist5.GetNbinsX())
+        entries5 = hist5.Integral()/nprim5
 
-        print "summe", n4*entries4+n5*entries5
-        print "summe", sumn4n5
-        print "ratio", (n4*entries4+n5*entries5)/sumn4n5
+        if doTCT4only:
+            print "INFO: applying", encut, "to", var, "in", hname5
+            print "overwriting previous histogram!!!!!"
+            mt.Project(hname5, var ,encut)
+            hist5 = cv84.doEkin(hist5,hist5.GetNbinsX())
+            entries5 = hist5.Integral()/nprim5
 
+        else:
+            print "summe", n4*entries4+n5*entries5
+            print "summe", sumn4n5
+            print "ratio", (n4*entries4+n5*entries5)/sumn4n5
+            
         print "entries getentries ",entries5, hist5.GetEntries()
 
 
-        int5 = hist5.Integral()
-        print "entries int ",entries5, int5
+        print "INFO: applying", cuts, "to", var, "in", hnameControl
+        mt.Project(hnameControl, var, encut)
+        histControl = cv84.doEkin(histControl,histControl.GetNbinsX())
+        entriesCont = histControl.Integral()
 
+        print "entries controlhist ",histControl.Integral()
+        print "Is the sum of tct4 and 5 the same as in control hist? If tct4only case this number doesnt make sense.", \
+            hist4.Integral(),hist5.Integral(), hist4.Integral()+hist5.Integral()
+        
         # This loop changes the Get.Entries() value by number of bins!!
         for bin in range(1,nbins+1):
             content = hist4.GetBinContent(bin)
@@ -160,7 +181,6 @@ def cv86():
             width   = hist5.GetBinWidth(bin)
             bcenter = hist5.GetXaxis().GetBinCenterLog(bin)
             hist5.SetBinContent(bin,bcenter*content/width)
-
 
         cv = TCanvas(skey+ 'cv',skey+ 'cv', 1400, 900)
         cv.SetLogx(1)
@@ -218,6 +238,7 @@ def cv86():
             s = tct5d
             l.DrawLine(s,YurMin,s,YurMax)
         
-        pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/checkB2.png"
         pname = projectpath + "HL1.0/checkB2.png"
+        pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/"+cname+".png"
+        pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/"+cname+".png"
         cv.SaveAs(pname)
