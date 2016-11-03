@@ -132,14 +132,18 @@ hDict_HL_BGac = { # hkey = pname; #0 list of hists #1 legend x1 #2 y1 #3 x2 #4 y
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#lText = 'offmom +500Hz 6.5 TeV' 
+#lText = 'offmom +500Hz 6.5 TeV'
+
 
 scaleFactor = 1.
 if tag_BH_4TeV.count('20GeV'): scaleFactor = 0.1
 
 tag = tag_BH_4TeV
 Beam, beam, beamn = getBeam(tag)
+lText = 'offmom -500Hz 4 TeV'
+lText = 'offmom +500Hz 4 TeV'
 lText = 'beamhalo 4 TeV ' + Beam
+
 
 # tag = tag_BH_3p5TeV
 # Beam, beam, beamn = getBeam(tag)
@@ -164,7 +168,7 @@ hDict_BH_4TeV = {
 
     'RadNMuons' + tag: [ ['RadNMuonsEAll', 'RadNMuonsE20', 'RadNMuonsE100','RadNMuonsE500'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,600.,-1,-1, 1, lText, 0.2,0.9, -1,-1, ],
     'RadEnChar' + tag: [ ['RadEnNeg', 'RadEnPos', 'RadEnNeu','RadEnNeutrons','RadEnPhotons'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,600.,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
-    'RadEnDist' + tag:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.72, 0.65, 0.98, 0.9, 0,1, 0,600,1e-8,2, 0, lText, 0.2,0.9, -1,-1, ],
+    'RadEnDist' + tag:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.72, 0.65, 0.98, 0.9, 0,1, 0,600,1e-9,2, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiNDist' + tag: [ ['PhiNAll', 'PhiNMuons','PhiNNeutrons','PhiNProtons','PhiNPhotons', 'PhiNElecPosi', 'PhiNPionsChar', 'PhiNKaonsChar'],0.72, 0.74, 0.98, 0.92, 0,1, 3.14,3.01,1e-5,1e1, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiNMu' + tag: [ ['PhiNMuons','PhiNMuR10','PhiNMuR50','PhiNMuR100','PhiNMuR200','PhiNMuR300','PhiNMuR400','PhiNMuR500','PhiNMuR1000'],0.4, 0.64, 0.7, 0.92, 0,1, 3.14,3.01,1e-5,1, 1, lText, 0.2,0.9, -1,-1, ], 
     'PhiEnDist' + tag:[ [ 'PhiEnAll', 'PhiEnMuons', 'PhiEnNeutrons', 'PhiEnProtons', 'PhiEnPhotons', 'PhiEnElecPosi', 'PhiEnPions','PhiEnKaons'],0.72, 0.7, 0.98, 0.9, 0,1, 3.14,3.01,1e-3,1e2, 0, lText, 0.2,0.9, -1,-1, ],
@@ -200,9 +204,9 @@ tag = tag_BG_3p5TeV
 # tag = tag_BG_4TeV
 # if tag.count('bs'): lText = '4 TeV BG with beamsize'
 
-#lText = 'beamgas 6.5 TeV'
-#tag = tag_BG_6p5TeV
-#if tag.count('bs'): lText = '6.5 TeV BG with beamsize'
+lText = 'beamgas 6.5 TeV'
+tag = tag_BG_6p5TeV
+if tag.count('bs'): lText = '6.5 TeV BG with beamsize'
 
 hDict_BG_4TeV = { 
 
@@ -223,7 +227,7 @@ hDict_BG_4TeV = {
 
     'RadNMuons' + tag: [ ['RadNMuonsEAll', 'RadNMuonsE20', 'RadNMuonsE100', 'RadNMuonsE500'],0.52, 0.72, 0.95, 0.88, 0,1, 0.,600.,5e-11,2e-5, 1, lText, 0.25,0.9, -1,-1, ],
     'RadEnChar' + tag: [ ['RadEnNeg', 'RadEnPos', 'RadEnNeu','RadEnNeutrons','RadEnProtons'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,1190.,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
-    'RadEnDist' + tag:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.65, 0.65, 0.98, 0.9, 0,1, 0,600,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'RadEnDist' + tag:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.65, 0.65, 0.98, 0.9, 0,1, 0,600,1e-9,2, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiNDist' + tag: [ ['PhiNAll', 'PhiNMuons','PhiNNeutrons','PhiNProtons','PhiNPhotons', 'PhiNElecPosi', 'PhiNPionsChar', 'PhiNKaonsChar'],0.72, 0.74, 0.98, 0.92, 0,1, 3.14,3.01,3e-3,100, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiEnChar' + tag: [ ['PhiEnNeg', 'PhiEnPos', 'PhiEnNeu','PhiEnNeutrons','PhiEnPhotons'],0.52, 0.75, 0.98, 0.9, 0,1, -1,-1.,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'PhiNMu' + tag: [ ['PhiNMuons','PhiNMuR10','PhiNMuR50','PhiNMuR100','PhiNMuR200','PhiNMuR300','PhiNMuR400','PhiNMuR500','PhiNMuR1000'],0.4, 0.64, 0.7, 0.92, 0,1, 3.14,3.01,-1,-1, 1, lText, 0.2,0.9, -1,-1, ], 
@@ -469,7 +473,7 @@ hDict_BH_6p5TeV = {
 
     'RadNMuons' + tag: [ ['RadNMuonsEAll', 'RadNMuonsE20', 'RadNMuonsE100','RadNMuonsE500'],0.52, 0.75, 0.98, 0.9, 0,1, 0.,600.,-1,-1, 1, lText, 0.2,0.955, -1,-1, ],
     'RadEnChar' + tag: [ ['RadEnNeg', 'RadEnPos', 'RadEnNeu','RadEnNeutrons','RadEnPhotons'],0.6, 0.7, 0.9, 0.9, 0,1, 0.,600.,-1,-1, 0, lText, 0.2,0.955, -1,-1, ],
-    'RadEnDist' + tag:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.65, 0.65, 0.98, 0.9, 0,1, 0,600,1e-5,1, 0, lText, 0.2,0.955, -1,-1, ],
+    'RadEnDist' + tag:[ ['RadEnAll', 'RadEnMuons', 'RadEnNeutrons', 'RadEnProtons', 'RadEnPhotons', 'RadEnElecPosi', 'RadEnPions','RadEnKaons'],0.65, 0.65, 0.98, 0.9, 0,1, 0,600,1e-9,1, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiNDist' + tag: [ ['PhiNAll', 'PhiNMuons','PhiNNeutrons','PhiNProtons','PhiNPhotons', 'PhiNElecPosi', 'PhiNPionsChar', 'PhiNKaonsChar'],0.65, 0.74, 0.98, 0.92, 0,1, -1,-1,1e-5,1e1, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiEnChar' + tag: [ ['PhiEnNeg', 'PhiEnPos', 'PhiEnNeu','PhiEnNeutrons','PhiEnPhotons', 'PhiEnProtons'],0.52, 0.75, 0.98, 0.9, 0,1, -1,-1.,1e-3,1e2, 0, lText, 0.2,0.955, -1,-1, ],
     'PhiNMu' + tag: [ ['PhiNMuons','PhiNMuR10','PhiNMuR50','PhiNMuR100','PhiNMuR200','PhiNMuR300','PhiNMuR400','PhiNMuR500','PhiNMuR1000'],0.4, 0.64, 0.7, 0.92, 0,1, -1,-1,1e-5,1, 1, lText, 0.2,0.955, -1,-1, ], 

@@ -18,7 +18,7 @@ def calc_pint_tot(rho_C, rho_H, rho_O):
     # updated to 4 TeV 
     sigma_O = 318.e-31
     sigma_C = 260.e-31
-    sigma_H =  37.e-31
+    sigma_H =  37.1e-31
     Trev = 1./11245
 
     pint_C = [sigma_C*j/Trev for j in rho_C[1:]]
@@ -139,12 +139,12 @@ def cv65():
 
     mg.SetTitle("pressure profiles")
     mg.GetXaxis().SetTitle('distance to IP1 [m]')
-    mg.GetYaxis().SetTitle('p_{int}')#"density #rho [atoms/m^{3}]")
-    mg.GetYaxis().SetRangeUser(8e-17,9e-11)
+    mg.GetYaxis().SetTitle('interaction probability [1/proton/m/s]')#"density #rho [atoms/m^{3}]")
+    mg.GetYaxis().SetRangeUser(7e-17,9e-11)
     mlegend.Draw()
 
     pname = wwwpath + 'TCT/beamgas/pressure_profiles_2012/pint.pdf'
-    pname = 'cv65_pint.pdf'
+    pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/cv65_pint.pdf"
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 

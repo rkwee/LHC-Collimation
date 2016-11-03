@@ -31,7 +31,7 @@ def cv78():
     # IR5 B2: h:( 43718962.0 IR7,  302.0 protons ), v(53000835.0, 106.0 protons. )
     # 0.5 * (302.0/43718962.0 + 106.0/53000835.0) = 4.4538612500709768e-06
 
-    do4TeV,do6500GeV = 1,0
+    do4TeV,do6500GeV = 0,1
     # ------------------------------------------------------------------------
     if do4TeV:
 
@@ -40,18 +40,17 @@ def cv78():
         f1 = '/afs/cern.ch/project/lhc_mib/valBG4TeV/results_pressure2012_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
         f2 =  projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
         f3 =  projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
-        f4 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVplusB2/results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
-        f5 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVminusB2/results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
+        # f4 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVplusB2/results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
+        #f5 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVminusB2/results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
 
         # local
-        thispath = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/'
         f1 = thispath + 'results_pressure2012_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
         f2 = thispath + 'results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
         f3 = thispath + 'results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
-        f4 = thispath + 'results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
-        f5 = thispath + 'results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
+        #f4 = thispath + 'results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
+        #f5 = thispath + 'results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
 
-        filenames = [f1,f2,f3,f4,f5]
+        filenames = [f1,f2,f3]
 
         subfolder = wwwpath + 'TCT/4TeV/compAllBKG/normalised/'
 
@@ -104,7 +103,7 @@ def cv78():
         if skey.count("Sel"): continue
         elif skey.count("Neg"): continue
         elif skey.count("Pos"): continue
-        elif skey.count("Z"): continue
+        elif skey.count("Z") : continue
         elif skey.count("Neu_"): continue
         elif skey.count("Char"): continue
         elif skey.count("Plus") or skey.count("Minus"): continue
@@ -199,9 +198,9 @@ def cv78():
 
             if hnames[i].count("Phi"):
                 XurMin, XurMax = -3.14, 3.01
-                YurMin, YurMax = 1e-5*max(Ymax), max(Ymax)*1e4
+                YurMin, YurMax = 1e-1*max(Ymax), max(Ymax)*1e4
                 if hnames[i].count("En"):
-                    YurMin, YurMax = 1e-7*max(Ymax), max(Ymax)*5e4
+                    YurMin, YurMax = 1e-5*max(Ymax), max(Ymax)*5e4
                     
             elif hnames[i].count("Ekin"):
                 YurMin, YurMax = 1e-2,8e10
@@ -209,9 +208,9 @@ def cv78():
 
             elif hnames[i].count("Rad"):
                 XurMin, XurMax = 0.,600.
-                YurMin, YurMax = 1e-5,1e10
+                YurMin, YurMax = 1e-3,1e10
                 if  hnames[i].count("All"):
-                    YurMin, YurMax = 1e-5,1e12
+                    YurMin, YurMax = 1e-4,1e12
 
             if XurMin != -1:
                 hists[i].GetXaxis().SetRangeUser(XurMin,XurMax)

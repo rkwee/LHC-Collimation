@@ -22,7 +22,7 @@ def getpint(rho_H,rho_C,rho_O):
     sigma_O = 329.e-31
     sigma_C = 269.e-31
     sigma_H = 38.4e-31
-    Trev = 2*math.pi/112450
+    Trev = 1./11245
 
     pint_C = [sigma_C*j/Trev for j in rho_C]
     pint_H = [sigma_H*j/Trev for j in rho_H]
@@ -112,7 +112,7 @@ def cv79():
         
         cv = TCanvas( 'cv' +rel+ lText, 'cv'+rel + lText, 2100, 900)
         cv.SetLogy(1)
-        cv.SetGridy(1)
+        #cv.SetGridy(1)
         x1, y1, x2, y2 = 0.8, 0.65, 0.9, 0.9
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)
@@ -151,7 +151,6 @@ def cv79():
         g3 = makeTGraph(xlist, ylist, col, mstyle)
         mlegend.AddEntry(g3, lg, lm)    
         mg.Add(g3)
-     
 
         mg.Draw("al")
 
@@ -173,7 +172,7 @@ def cv79():
         rel = 'rho'
         cv = TCanvas( 'cvrho'+ lText , 'cvrho'+ lText , 2100, 900)
         cv.SetLogy(1)
-        cv.SetGridy(1)
+        #cv.SetGridy(1)
         x1, y1, x2, y2 = 0.8, 0.65, 0.9, 0.9
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)
@@ -233,7 +232,7 @@ def cv79():
         rel = 'rho'
         cv = TCanvas( 'cvrho'+ lText , 'cvrho'+ lText , 2100, 900)
         cv.SetLogy(1)
-        cv.SetGridy(1)
+        #cv.SetGridy(1)
         x1, y1, x2, y2 = 0.8, 0.65, 0.9, 0.9
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)
@@ -297,7 +296,7 @@ def cv79():
         rel = 'atomicrho'
         cv = TCanvas( 'cv'+ rel+lText , 'cv'+rel+ lText , 2100, 900)
         cv.SetLogy(1)
-        cv.SetGridy(1)
+        #cv.SetGridy(1)
         x1, y1, x2, y2 = 0.8, 0.7, 0.9, 0.9
         mlegend = TLegend( x1, y1, x2, y2)
         mlegend.SetFillColor(0)

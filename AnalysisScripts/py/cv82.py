@@ -24,8 +24,8 @@ def cv82():
     # ---------------------------------------------------
     rel = 'allpinttot'
     cv = TCanvas( 'cv'+ rel , 'cv'+rel , 2100, 900)
-    cv.SetLogy(1)
-    cv.SetGridy(1)
+    cv.SetLogy(0)
+    cv.SetGridy(0)
     x1, y1, x2, y2 = 0.75, 0.72, 0.88, 0.92
     mlegend = TLegend( x1, y1, x2, y2)
     mlegend.SetFillColor(0)

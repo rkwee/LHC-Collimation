@@ -16,7 +16,7 @@ from plotSpectra_dict import hDict_BH_4TeV,hDict_HL_BGac, hDict_HL_BH, hDict_HL_
 zmin, zmax = 2260., 14960. # HL v1.0
 zmin, zmax = 2260., 21460. # HL v1.hybrid
 # to disable the zcut have zOn > zmax
-zOn = 3e4
+zOn = 3e9
 # ---------------------------------------------------------------------------------
 def plotSpectra(bbgFile, tag, doComp):
 
@@ -58,11 +58,11 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/HL/nominalSettings/comp/'
         if debug: print "Using HL comp format", '.'*10
 
-    elif rfname.count('BH_4TeV_settings_from_TWISS'): 
+    elif rfname.count('BH_4TeV_settings_from_TWISS') or rfname.count("500Hz"): 
         hDict = hDict_BH_4TeV
-        subfolder= 'TCT/4TeV/tctimpacts/oldScatt/'+Beam+'/' + EnCutOff + '/'
+        subfolder= 'TCT/4TeV/ttimpacts/oldScatt/'+Beam+'/' + EnCutOff + '/'
         subfolder= 'TCT/4TeV/tctimpacts/newScatt/'+Beam+'/' + EnCutOff + '/'
-        # subfolder= 'TCT/4TeV/tctimpacts/newScatt/offmin500Hz/'+Beam+'/' + EnCutOff + '/'
+        subfolder= 'TCT/4TeV/tctimpacts/newScatt/offmin500Hz/'+Beam+'/' + EnCutOff + '/'
         if debug: print "Using 4 TeV dict", '.'*10
 
     elif rfname.count('off') and rfname.count('6500'):
@@ -92,7 +92,7 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/3p5TeV/' + beam + '/'
         if debug: print "Using 4 TeV format", '.'*10
 
-    elif rfname.count('HL') and not rfname.count('Comp') and not rfname.count('crab'):
+    elif rfname.count('HL') and not rfname.count('Comp') and not rfname.count('crab'):# and not rfname.count('HL-LHC'):
         hDict = hDict_HL_BH_hybrid
         if tag.count('nom'): 
             subfolder= 'TCT/HL/nominalColl/2015/halo/'
@@ -150,7 +150,8 @@ def plotSpectra(bbgFile, tag, doComp):
     for hkey in hDict.keys():
       
         try:
-            pname = wwwpath + subfolder + hkey 
+            pname = wwwpath + subfolder + hkey
+
             print "Plotting ...", hkey
             hists = []
             cv = TCanvas( 'cv'+hkey, 'cv'+hkey, 1200, 900)

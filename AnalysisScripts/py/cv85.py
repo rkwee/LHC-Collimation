@@ -17,8 +17,8 @@ import cv79, cv32, cv65
 pData = [
     ("/Users/rkwee/Downloads/Density_Fill4536_2041b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]", "Fill 4536 B1"),
     ("/Users/rkwee/Downloads/Density_Fill4536_2041b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4536 B2"),
-    # ("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B1"),
-    # ("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B2"),
+    #("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B1"),
+    #("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B2"),
 #    ("/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv", "distance from IP1 [m]",  "Fill 2736 B1"),
 ]
 # # -----------------------------------------------------------------------
@@ -26,12 +26,12 @@ cols = [kBlue-2, kYellow+9, kAzure-1, kRed+1, kMagenta-5, kYellow-2]
 def cv85():
     # ---------------------------------------------------
     rel = 'compallpint'
-    rel = 'compallpress'
+    # rel = 'compallpress'
     a,b = 1,1
     cv = TCanvas( 'cv'+ rel , 'cv'+rel , a*2100, b*900)
     cv.Divide(a,b)
-    cv.SetLogy(1)
-    cv.SetGridy(1)
+    cv.SetLogy(0)
+    cv.SetGridy(0)
     x1, y1, x2, y2 = 0.75, 0.6, 0.88, 0.94
     mlegend = TLegend( x1, y1, x2, y2)
     mlegend.SetFillColor(0)

@@ -17,9 +17,9 @@ import cv79, cv32, cv65
 pData = [
     ("/Users/rkwee/Downloads/Density_Fill4536_2041b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]", "Fill 4536 B1"),
     ("/Users/rkwee/Downloads/Density_Fill4536_2041b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4536 B2"),
-    ("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B1"),
-    ("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B2"),
-#    ("/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv", "distance from IP1 [m]",  "Fill 2736 B1"),
+   # ("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B1"),
+   # ("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B2"),
+    ("/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv", "distance from IP1 [m]",  "Fill 2736 B1"),
 ]
 # # -----------------------------------------------------------------------
 cols = [kBlue-2, kYellow+9, kAzure-1, kRed+1, kMagenta-5]
@@ -99,8 +99,8 @@ def cv83():
         print "len(s_incoming)", len(s_incoming)
 
         #        print s_incoming[:100],press_tot_incomingbeam[:100]
-        #xlist, ylist, col, mstyle, lg = s_incoming,pint_tot_incomingbeam , cols[i],20+i, lText
-        xlist, ylist, col, mstyle, lg = s_incoming,press_tot_incomingbeam , cols[i],20+i, lText
+        xlist, ylist, col, mstyle, lg = s_incoming,pint_tot_incomingbeam , cols[i],20+i, lText
+        #xlist, ylist, col, mstyle, lg = s_incoming,press_tot_incomingbeam , cols[i],20+i, lText
         grs += [ makeTGraph(xlist, ylist, col, mstyle)]
         mlegend.AddEntry(grs[-1], lg, lm)    
         mg.Add(grs[-1])
