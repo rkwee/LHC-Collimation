@@ -23,7 +23,7 @@ def cv87():
 
     lTexts = ['3.5 TeV', '4 TeV', '6.5 TeV']
     tags   = ['_BG_3p5TeV_20MeV_reweighted', '_BG_4TeV_20MeV_bs_reweighted','_BG_6500GeV_flat_20MeV_bs_reweighted']
-    cols   = [kAzure-2, kPink-3, kYellow-2]
+    cols   = [kAzure+3, kPink-3, kYellow-2]
     mars   = [ 33, 20, 22 ]
     dOpt   = [ 'h', 'hsame', 'hsame']
 
@@ -60,7 +60,7 @@ def cv87():
         elif skey.count("Pio") or skey.count("Kao"): continue
 
         # # for testing
-        elif not skey.count('OrigZMuon'): continue
+        elif not skey.count('OrigZM'): continue
                
         cv = TCanvas( 'cv'+skey, 'cv'+skey,  10, 10, 1200, 900 )     
 
@@ -166,7 +166,7 @@ def cv87():
             cv.SetLogy(doLogy)
             mlegend.AddEntry(hists[i], lTexts[i], "lp")
 
-            YurMin, YurMax = 1e-2,1e7
+            YurMin, YurMax = 1e-2,1e9
             if XurMin != -1:
                 hist_reweighted.GetXaxis().SetRangeUser(XurMin,XurMax)
 
