@@ -69,31 +69,51 @@ def doRebin(hist,rbf):
     else:
         print "rebinning", hist.GetName()
 
-        
+
+
+    # step0
+    print "step0: before any modifications"
+
     # take out normalisation by binarea
     nbins = hist.GetNbinsX()
     print "rebinning ", hist.GetName(), "with ", nbins 
-    for bin in range(1,nbins+1):
-        binArea = math.pi*(hist.GetBinLowEdge(bin+1)**2 -hist.GetBinLowEdge(bin)**2)
-        hist_rebinned.SetBinContent(bin,hist.GetBinContent(bin) * binArea)
-        hist_rebinned.SetBinError(bin,hist.GetBinError(bin) * binArea)
+    for b in range(1,nbins+1):
+        binArea = math.pi*(hist.GetBinLowEdge(b+1)**2 -hist.GetBinLowEdge(b)**2)
+        hist_rebinned.SetBinContent(b,hist.GetBinContent(b) * binArea)
+        hist_rebinned.SetBinError(b,hist.GetBinError(b) * binArea)
+
+    # step1
+    print "step1: after taking out normalisation by binarea"
+
 
     # rebin
     hist_rebinned.Rebin(rbf)
 
+
+    print "step2: after root rebin function and rbf =", rbf
+    # step2
+
+    
     # take back in normalisation by new binarea
     nbins = hist_rebinned.GetNbinsX()
     print "rebinned ", hist_rebinned.GetName(), ". new nbin= ", nbins 
-    for bin in range(1,nbins+1):
-        binArea = math.pi*(hist_rebinned.GetBinLowEdge(bin+1)**2 -hist_rebinned.GetBinLowEdge(bin)**2)
-        hist_rebinned.SetBinContent(bin,hist.GetBinContent(bin)/binArea)
-        hist_rebinned.SetBinError(bin,hist.GetBinError(bin)/binArea)
+    for b in range(1,nbins+1):
+        binArea = math.pi*(hist_rebinned.GetBinLowEdge(b+1)**2 -hist_rebinned.GetBinLowEdge(b)**2)
+        hist_rebinned.SetBinContent(b,hist_rebinned.GetBinContent(b)/binArea)
+        hist_rebinned.SetBinError(b,hist_rebinned.GetBinError(b)/binArea)
 
-    # re-scale as bin content is already normalised independent of binning!
-    hist_rebinned.Scale(1./rbf)
 
+    # step3
+    print "step3: after taking back in new normalisation by binarea"
     
+    # leaving it as a true histogram, do not re-scale!
+    # hist_rebinned.Scale(1./rbf)
+
+
+    # step4
+    #print "step4: after rescaling by", 1./rbf
     return hist_rebinned
+
 # --------------------------------------------------------------------------------
 def mylabel(font):
 
