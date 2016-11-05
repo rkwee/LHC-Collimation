@@ -1,6 +1,6 @@
 \section{Simulation Results for LHC's Run I and Run II\label{run1run2}}
 
-The two background sources as previously described were investigated for several run scenarios. During Run I, the LHC was operated with two beam energies, 3.5 TeV in 2010--11 and 4~TeV in 2012\footnote{A detailed overview of parameters in Run I can be found in~\cite{parametersRun1}}. While the 3.5~TeV background data has been presented in~\cite{nimPaperRod}, we focus on new developments made since that paper and use these improvements for 4 TeV and Run II simulation cases. Beam-halo simulations consider now a crossing angle in the simulation as it has been present in the machine. Another improvement concerns beam-gas simulations for which the transverse beam size is taken into account to have the simulations closer to reality. 
+The two background sources as previously described were investigated for several run scenarios. During Run I, the LHC was operated with two beam energies, 3.5 TeV in 2010--11 and 4~TeV in 2012\footnote{A detailed overview of parameters in Run I can be found in~\cite{parametersRun1}}. While the 3.5~TeV background data has been presented in~\cite{nimPaperRod}, we focus on new developments made since that paper and use these improvements for 4 TeV and Run II simulation cases. Beam-halo simulations consider now a crossing angle in the simulation as it has been present in the machine. Another improvement concerns beam-gas simulations for which the transverse beam size is taken into account to have them somewhat more realistic.
 
 \subsection{Run I: 4 TeV Beam-Halo}
 
@@ -23,7 +23,7 @@ Beam-halo induced showers on the tertiary collimators depend on the initial dist
   \label{inel4TeV}}
 \end{figure}
 
-General, characteristic distributions of B1 halo induced showers per TCT hit are shown in Fig.~\ref{dist4TeVB1}. The energy spectrum of all types of charged and neutral particle species is shown in Fig.~\ref{dist4TeVB1}~(a). We note the peak at beam energy of the protons arising from single diffractive dissociations, these are almost unperturbed beam particles loosing very little energy only. One can also see that in the 10 to around 500 GeV regime muons are the most dominant particle species, at low energy there are overwhelmingly many photons, followed by electrons. The azimuthal distribution of their energy as Fig.~\ref{dist4TeVB1}~(b) is dominated by protons which is clear from the single diffractive part. The energy of muons peak in the horizontal plane. The transverse radial distribtion shows that only muons reach out and most of the energy is confined to r~=~150~cm.  
+General, characteristic distributions of B1 halo induced showers per TCT hit are shown in Fig.~\ref{dist4TeVB1}. The energy spectrum of all types of charged and neutral particle species is shown in Fig.~\ref{dist4TeVB1}~(a). We note the peak at beam energy of the protons arising from single diffractive dissociations, emerging from such an interaction slightly off-energy and with an off-momentum. One can also see that in the 10 to around 500 GeV regime muons are the most dominant particle species, at low energy there are overwhelmingly many photons, followed by electrons. The azimuthal distribution of their energy as Fig.~\ref{dist4TeVB1}~(b) is dominated by protons which is clear from the single diffractive part. The energy of muons peak in the horizontal plane. The transverse radial distribtion shows that only muons reach out and most of the energy is confined to r~=~150~cm.  
 \begin{figure}%[!htb]
 \begin{center}
 \includegraphics[width=0.49\textwidth]{figures/4TeV/haloB1_20MeV/Ekin_BH_4TeV_B1_20MeV.pdf}
@@ -91,8 +91,7 @@ Characteristic distributions induced by beam-gas interactions are shown in Fig.~
 One immediate difference one notices is there is on average a factor 10 or more particles and energy produced by a beam-gas interaction than by a TCT interaction. One can clearly see that comparing the energy of protons at small radii, essentially the first bin of Fig.~\ref{dist4TeVB1}~(d) and Fig.~\ref{dist4TeVBGbs}~(d).
 
 
-
-\begin{figure}[!htb]
+\begin{figure}%[!htb]
 \begin{center}
 \includegraphics[width=0.49\textwidth]{figures/4TeV/bs_20MeV/Ekin_BG_4TeV_20MeV_bs.pdf}
 \includegraphics[width=0.49\textwidth]{figures/4TeV/bs_20MeV/PhiEnDist_BG_4TeV_20MeV_bs.pdf}
@@ -113,7 +112,7 @@ One immediate difference one notices is there is on average a factor 10 or more 
   \label{dist4TeVBGbs}}
 \end{figure}
 % --------------------------------------------------------------------------------------------
-\subsubsection{Comparison to previous technique}
+\subsection{Comparison to previous techniques}
 
 We compare the simulations the two techniques, with and without beam size. Comparisons are made in Fig.~\ref{bsRatioPhiAll} showing $\phi$ distributions of all particles and their energy. One can see that the distributions are smoother with the new technique. Especially the peaks at $\pm \frac{\pi}{2}$ in the energy plot show clearly there is a re-distribution to the ``shoulders''.
 
@@ -121,7 +120,7 @@ As the energy in $\phi$ is almost shaped by protons, we show protons and muons a
 
 We investigate different z-sections to study if there is a difference where we know that the beam size is rather large. This is compared in Fig.~\ref{bsZ2} and Fig.~\ref{bsZ} for all particles and muons.
 
-We can conclude that this new technique has a slight effect only, thus neglecting the beam size does not alter any previous results.%and we can exclude that this technique is a source
+We can conclude that this new technique has a slight effect only, thus neglecting the beam size does not have a relevant impact.%and we can exclude that this technique is a source
 
 \begin{figure}%[!htb]
 \begin{center}
@@ -189,7 +188,7 @@ We can conclude that this new technique has a slight effect only, thus neglectin
 %%   \label{bsRatioPhiEnMu}}
 %% \end{figure}
  
-\subsubsection{Effect of the crossing angle}
+\paragraph{Effect of the crossing angle}
 
 We can study the crossing angle effect on background in IR1 using the 3.5~TeV simulation data of~\cite{nimPaperRod}, thus halo and beam-gas induced, without any crossing angle included in the simulations and the 4 TeV halo data with a crossing angle of 290~$\mu$rad. For this comparison, we show the distributions at the interface plane per TCT hit. 
 
@@ -234,75 +233,101 @@ In contrast, the beam-halo data in Fig.~\ref{xingCompBH1} and Fig.~\ref{xingComp
 \end{figure}
 
 
-%% \subsubsection{Re-normalising beam gas events with pressure profile}
+\subsection{Run I: Renormalisation of beam gas events with pressure profile}
 
-%% The gas densities of 2012 runs is shown in Fig.~\ref{pressure2012} for IR1 in the long straight section (LSS1) based on measurements during LHC fill 2736 and interpolated between vacuum gauges using VASCO (VAcuum Simulation COde). The most dominant molecules were simulated, H$_2$, CH$_4$, CO, CO$_2$. These molecules are decomposed to the total atomic component the interaction probability as function of the location is shown on the bottom of Fig.~\ref{pressure2012}.
+\begin{table}
+   \centering
+   \caption{LHC fill 2736 Run I (2012)~\cite{refAccStats}}
+   \begin{tabular}{l||c}
+       \hline
+       beam energy  & 4~TeV \\
+       Fill start time (local Geneva time) & 16/06/2012 18:22\\
+       Stable beam start time (local Geneva time) & 16/06/2012 20:10\\
+       Stable beam duration [hh:mm] & 17:29\\
+       bunch intensity ring 1& 2.029$\times 10^{14}$ protons\\
+       bunch intensity ring 2& 1.995$\times 10^{14}$ protons\\
+       number of bunches & 1374 \\
+       \hline
+   \end{tabular}
+   \label{tab:fillRunI}
+\end{table}
 
-%% The interaction probability per gas species $i$ and per seconds is given by 
-%% \begin{equation} \label{eq2}
-%% p_{\mathrm{int},i} = \sigma_{i} \cdot \rho_{i}(s) \cdot \frac{1}{T_{\mathrm{rev}}}
-%% \end{equation}
-%% with $\sigma_i$ the cross-section of the atom, $T_{\mathrm{rev}}$ the revolution period of the beam. We used the inelastic cross-sections for H, C and O as indicated in Ref.~\cite{nimPaperRod} as they are approximately similar to those at 4~TeV.
+The information of the original inelastic proton interaction of each particle at the interface plane was kept in order to attribute weights according to a typical pressure map. For 2012, the simulations of the gas densities are based on gauge data recorded in LHC fill 2736 and were performed using VASCO (VAcuum Simulation COde)~\cite{refVascoCode,nimPaperRod}. The pressures were simulated up to the long straight section of IR1 (LSS1) for the most dominant molecules, H$_2$, CH$_4$, CO, CO$_2$. Partial pressure euqivalents expressed in molcular densities are shown in the top of Fig.~\ref{pressure2012} and are decomposed into atomic components at the bottom of that figure to show the interaction probability as function of the location using the inelastic cross-sections for H, C and O as indicated in Tab.~\ref{tab:atomicXsections} for a 4 TeV beam.
 
-%% To obtain the normalisation per bin we applied the same method as it has been done for 3.5~TeV \cite{nimPaperRod}, scaling with the beam intensity and the total interaction probability. The beam-intensity in the LHC fill 2736 was about $2.04 \times 10^{14}$ for B1 and $2.07 \times 10^{14}$ for B2. The method is shown in the top plot of Fig.~\ref{normed}, in green the total interaction probability up to the arc (the pressure has been extended to the arc by taking closest value as constant), in black the number of muons per beam-gas interaction and in red the multiplication of both scaled to the maximum beam intensity of that fill. One can see the result is mainly shaped by the pressure map. The bottom plot shows again the number of muons per second together with high energy muons. 
+As described in the previous section, the weights are calculated using Eq.~\ref{eq3}. The total number of protons is given by the maximum beam-intensity in LHC fill 2736 which was about $2.04 \times 10^{14}$ for B1 and $2.07 \times 10^{14}$ for B2. The method is shown in Fig.~\ref{fig:method}: in green the total interaction probability rate up to the arc (the pressure has been extended to the arc by taking closest value as constant), in black the number of muons per beam-gas interaction and in red the multiplication of both scaled to the maximum beam intensity of that fill. One can see the result is mainly shaped by the pressure map, apart from the part in the arc (beyond s~=~260~m) where the shape comes from the shower simulations. 
 
-%% In Fig.~\ref{reweighted1} we compare the distributions without re-scaling to a profile which corresponds to a flat profile and reweighted according to the pressure shown in Fig.~\ref{pressure2012}. The y-axis is in a.u.\footnote{we also kept the label of the type of distribution}.
+We compare in detail how the distributions change when normalising from a pressure that corresponds to a flat to a non-flat profile. As a function in $s$ we show where particles are created in Fig.~\ref{fig:OrigZ}. To be able to compare better, the distributions corresponding to a flat profile are scaled up by seven orders of magnitude to match the scale of the rate of what is shown on the y-axis, in Fig.~\ref{fig:cv81EkinPhiEn4TeV} it is the particle counts per energy bin, the energy in $\phi$, transverse radial distributions and the energy of that for all particles and for muons. The following figure, Fig.~\ref{fig:cv81ProtNeut4TeV}, shows the same observables but for protons and neutrons.
 
-%% \begin{figure}[!htb]
-%% \begin{center}
-%%   \includegraphics[width=0.75\textwidth]{figures/4TeV/LSS1_B1_Fill2736_Finala_pressure.pdf}
-%%   \includegraphics[width=0.75\textwidth]{figures/4TeV/pint.pdf}
-%% \end{center}
-%% \vspace{-0.6cm}
-%%  \caption{Gas densities in LSS1 shown for the most common molecules (top) and split into atomic components to indicate the interaction probability (bottom).
-%%   \label{pressure2012}}
-%% \end{figure}
+We can observe that the integrated distributions at the interface plane change only slightly. As one can see from the distributions in Fig.~\ref{fig:OrigZ4TeV}, the shapes changes are mainly driven by the pressure in the long straight section (up to 260~m). Note that in the shown $\phi-$distributions the y-scale comprises only two orders of magnitude while in the others five and up to 17 orders of magnitude are shown.
 
-%% \begin{figure}[!htb]
-%% \begin{center}
-%%   \includegraphics[width=0.95\textwidth]{figures/4TeV/flatvsprofile.pdf}
-%%   \includegraphics[width=0.95\textwidth]{figures/4TeV/reweighted/muonrates.pdf}
-%% \end{center}
-%% \vspace{-0.6cm}
-%%  \caption{Origin of muon production normalised to the pressure shown in Fig.~\ref{pressure2012}. of all energies (black line) and muons with an energy above 100 GeV (filled red).
-%%   \label{normed}}
-%% \end{figure}
+\begin{figure}%[!htb]
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{figures/4TeV/LSS1_B1_Fill2736_Finala_pressure.pdf}
+  \includegraphics[width=0.75\textwidth]{figures/4TeV/reweighted/cv65_pint.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Gas densities in LSS1 shown for the most common molecules (top) and split into atomic components to indicate the interaction probability (bottom).
+  \label{pressure2012}}
+\end{figure}
 
-
-%% \begin{figure}
-%% \begin{center}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_EkinAll_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_EkinMuons_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_PhiEnAll_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_PhiEnMuons_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadNAll_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadNMuons_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadEnAll_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadEnMuons_BG_4TeV_20MeV_bs}
-%% \end{center}
-%% \vspace{-0.6cm}
-%%  \caption{The distributions are normalised to 1 to better compare the shapes for all particles (left) and muons (right).
-%%   \label{reweighted1}} 
-%% \end{figure}
+\begin{figure}%[!htb]
+\begin{center}
+  \includegraphics[width=0.95\textwidth]{figures/4TeV/reweighted/muons2012.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Origin of muon production normalised to the pressure shown in Fig.~\ref{pressure2012}. 
+  \label{normed}}
+\end{figure}
 
 
-%% \begin{figure}
-%% \begin{center}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_EkinProtons_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_EkinNeutrons_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_PhiEnProtons_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_PhiEnNeutrons_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadNProtons_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadNNeutrons_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadEnProtons_BG_4TeV_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadEnNeutrons_BG_4TeV_20MeV_bs}
-%% \end{center}
-%% \vspace{-0.6cm}
-%%  \caption{The distributions are normalised to 1 to better compare the shapes for all particles (left) and muons (right).
-%%    \label{reweighted2}}
-%%  \end{figure}
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{figures/4TeV/reweighted/cv81_OrigZAll_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.75\textwidth]{figures/4TeV/reweighted/cv81_OrigZMuon_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.75\textwidth]{figures/4TeV/reweighted/cv81_OrigZProtons_BG_4TeV_20MeV_bs}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Origin of all particles (top), muons (middle) and protons (bottom) production along s, in black before and in pink after re-normalising to the 2012 pressure profile. The spike in the top plot at s~=~520~m is due to local photon production.
+  \label{fig:OrigZ4TeV}}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_EkinAll_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_EkinMuons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_PhiEnAll_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_PhiEnMuons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadNAll_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadNMuons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadEnAll_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadEnMuons_BG_4TeV_20MeV_bs}
+\end{center}
+\vspace{-0.6cm}
+ \caption{From top to bottom for all particles (left) and muons (right): energy spectrum, energy in $\phi$, transverse radius $r$, and energy in $r$ before reweightening (black) and reweighted to pressure profile. The black curve are scaled up to better compare the shapes. 
+  \label{fig:cv81EkinPhiEn4TeV}} 
+\end{figure}
+
+
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_EkinProtons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_EkinNeutrons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_PhiEnProtons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_PhiEnNeutrons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadNProtons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadNNeutrons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadEnProtons_BG_4TeV_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadEnNeutrons_BG_4TeV_20MeV_bs}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Similar as previous figure but for protons (left) and neutrons (right): energy spectrum, energy in $\phi$, transverse radius $r$, and energy in $r$ before reweightening (black) and reweighted to pressure profile. The black curve are scaled up to better compare the shapes. 
+   \label{fig:cv81ProtNeut4TeV}}
+\end{figure}
+\newpage
 % --------------------------------------------------------------------------------------------
 \subsection{Run I: Off-momentum induced showers at 4 TeV}
+
+Similar to IR7 leakage losses, the IR3 leakage losses are loaded onto the TCTs in the \fluka~geometry and simulate inelastic interactions of protons with the collimator material on that positions. The depths distributions show a clear difference to those leaking from IR7: First, we note the full contribution comes from B2, there is only a negligable fraction of B1 protons hitting the TCTs in IR1. Vice versa for IR5, almost nothing ends up on the TCTs in IR5 from B2 and contributions from IR3 leakage is due to B1 only. See also leakage factors in Tab.~\ref{tab:IR3leakageFactors} for both IRs, IR1 and IR5 per beam.
 
 \begin{figure}
 \begin{center}
@@ -329,7 +354,7 @@ In contrast, the beam-halo data in Fig.~\ref{xingCompBH1} and Fig.~\ref{xingComp
   \label{offmom4TeV}}
 \end{figure}
 
-\begin{figure}[!htb]
+\begin{figure}%[!htb]
 \begin{center}
   \includegraphics[width=0.49\textwidth]{figures/4TeV/offmom/20MeV/Ekin_offplus500Hz_4TeV_B2_20MeV.pdf}
   \includegraphics[width=0.49\textwidth]{figures/4TeV/offmom/20MeV/PhiEnDist_offplus500Hz_4TeV_B2_20MeV.pdf}
@@ -342,51 +367,38 @@ In contrast, the beam-halo data in Fig.~\ref{xingCompBH1} and Fig.~\ref{xingComp
 \end{figure}
 
 
-\begin{figure}[!htb]
+\begin{figure}%[!htb]
 \begin{center}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioEkinAll.pdf}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioEkinMuons.pdf}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioEkinProtons.pdf}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioEkinNeutrons.pdf}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioEkinPhotons.pdf}
+  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioEkinElecPosi.pdf}
 \end{center}
 \vspace{-0.6cm}
  \caption{Off-momentum particles generated by a positive frequency shift induce particle distributions.
   \label{compPM_ekin}}
 \end{figure}
 
-\begin{figure}[!htb]
+\begin{figure}%[!htb]
 \begin{center}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiEnAll.pdf}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiEnProtons.pdf}
-  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiEnNeutrons.pdf}
   \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiEnMuons.pdf}
-  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiNMuR500.pdf}
-  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioPhiEnMuR500.pdf}
+  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnAll.pdf}
+  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnProtons.pdf}
+  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnMuons.pdf}
 \end{center}
 \vspace{-0.6cm}
  \caption{Off-momentum particles generated by a positive frequency shift induce particle distributions.
   \label{compPM_phien}}
 \end{figure}
-
-\begin{figure}[!htb]
-\begin{center}
-  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnAll.pdf}
-  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnMuons.pdf}
-  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnProtons.pdf}
-  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnPhotons.pdf}
-  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnNeutrons.pdf}
-  \includegraphics[width=0.30\textwidth]{figures/4TeV/offmom/comppm500Hz/ratioRadEnMuons.pdf}
-\end{center}
-\vspace{-0.6cm}
- \caption{Off-momentum particles generated by a positive frequency shift induce particle distributions.
-  \label{compPM_raden}}
-\end{figure}
-
+\newpage
 % --------------------------------------------------------------------------------------------
 \subsection{Run II: 6.5 TeV Beam-Halo}
 
-The same method is used as in the 4 TeV simulations changing to the Run II 2015 scenario, with $\beta^* = 80$~cm, see also Tab.~\ref{paramsRun12}. The input distributions are shown for B1 and B2 in Fig.~\ref{inel6.5}. One can already see that the B1 depth distribution in the TCTV is much shallower than at 4~TeV in Fig.~\ref{inel4TeV} most of the hits are in the very first bin. This is very likely due to the different collimator settings and optics. Characteristic distributions are shown in Fig.~\ref{dist6500GeVB2}, and a comparison to B1 distributions are in Fig.~\ref{compBHB1B2run2}. One can see that in contrast to 4 TeV data, B1 produces more shower particles and energy than B2. A detailed discussion on the comparison to 4~TeV beam-halo results is shown in Sec.~\ref{compRunI+II}.
+The same method is used as in the 4 TeV simulations changing to the Run II 2015 scenario, with $\beta^* = 80$~cm, see also Tab.~\ref{paramsRun12}. The input distributions are shown for B1 and B2 in Fig.~\ref{inel6.5}. One can already see that the B1 depth distribution in the TCTV is much shallower than at 4~TeV in Fig.~\ref{inel4TeV} most of the hits are in the very first bin. This is very likely due to the different collimator settings and optics. Characteristic distributions are shown in Fig.~\ref{dist6500GeVB2}, and a comparison to B1 distributions are in Fig.~\ref{compBHB1B2run2}. One can see that in contrast to 4 TeV data, B1 produces more shower particles and energy than B2. 
 
 
 \begin{figure}[!htb]
@@ -406,7 +418,7 @@ The same method is used as in the 4 TeV simulations changing to the Run II 2015 
 \end{figure}
 
 
-\begin{figure}[!htb]
+\begin{figure}%[!htb]
 \begin{center}
 \includegraphics[width=0.49\textwidth]{figures/BH_run2/b2/Ekin_BH_6500GeV_haloB2_20MeV.pdf}
 \includegraphics[width=0.49\textwidth]{figures/BH_run2/b2/PhiEnDist_BH_6500GeV_haloB2_20MeV.pdf}
@@ -430,7 +442,7 @@ The same method is used as in the 4 TeV simulations changing to the Run II 2015 
 \end{figure}
 
 
-\begin{figure}[!htb]
+\begin{figure}%[!htb]
 \begin{center}
   \includegraphics[width=0.411\textwidth]{figures/BH_run2/perTCThit/ratioEkinAll.pdf}
   \includegraphics[width=0.411\textwidth]{figures/BH_run2/perTCThit/ratioPhiEnAll.pdf}
@@ -456,7 +468,7 @@ The same method is used as in the 4 TeV simulations changing to the Run II 2015 
 
 This case has been simulated with the same method as for Run I scenario, using the extension of the beam size. The beam optics and collimator settings were different in the 2015 Run II, as detailed in Tab.~\ref{paramsRun12}. Characteristic distributions are shown in Fig.~\ref{bg6500}.
 
-\begin{figure}[!htb]
+\begin{figure}%[!htb]
 \begin{center}
   \includegraphics[width=0.49\textwidth]{figures/6500GeV/20MeV/Ekin_BG_6500GeV_flat_20MeV_bs.pdf}
   \includegraphics[width=0.49\textwidth]{figures/6500GeV/20MeV/PhiEnDist_BG_6500GeV_flat_20MeV_bs.pdf}
@@ -468,45 +480,83 @@ This case has been simulated with the same method as for Run I scenario, using t
   \label{bg6500}}
 \end{figure}
 
+\subsubsection{Run II: Renormalisation of beam gas events with pressure profile}
 
-%% \begin{figure}
-%% \begin{center}
-%%   \includegraphics[width=0.75\textwidth]{figures/6500GeV/reweighted/Density_Fill4536_2041b_26158_B1_withECLOUD_rho.pdf}
-%%   \includegraphics[width=0.75\textwidth]{figures/6500GeV/reweighted/pint_compallpint.pdf}
-%% \end{center}
-%% \vspace{-0.6cm}
-%%  \caption{Gas densities up to the arc for the most common molecules (top) and split into atomic components to indicate the interaction probability (bottom).
-%%   \label{pressure2015}}
-%% \end{figure}
+Similar to Run I in 2012, the four LHC experiments agreed on a LHC fill number where typical conditions for physics data taking were present. This fill, number 4536, was used by the LHC Vacuum group to simulate the pressure map. Fill details are summed up in Tab.~\ref{tab:fillRunII}. 
 
-%% %% \begin{figure}
-%% %% \begin{center}
-%% %%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_EkinAll_BG_6500GeV_flat_20MeV_bs}
-%% %%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_EkinMuons_BG_6500GeV_flat_20MeV_bs}
-%% %%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_PhiEnAll_BG_6500GeV_flat_20MeV_bs}
-%% %%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_PhiEnMuons_BG_6500GeV_flat_20MeV_bs}
-%% %%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNAll_BG_6500GeV_flat_20MeV_bs}
-%% %%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNMuons_BG_6500GeV_flat_20MeV_bs}
-%% %%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnAll_BG_6500GeV_flat_20MeV_bs}
-%% %%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnMuons_BG_6500GeV_flat_20MeV_bs}
-%% %% \end{center}
-%% %% \vspace{-0.6cm}
-%% %%  \caption{The distributions are normalised to 1 to better compare the shapes for all particles (left) and muons (right).
-%% %%   \label{reweighted2}}
-%% %% \end{figure}
+\begin{table}
+   \centering
+   \caption{LHC fill 4536 Run II (2015)~\cite{refAccStats}}
+   \begin{tabular}{l||c}
+       \hline
+       beam energy  & 6.5~TeV \\
+       Fill start time (local Geneva time) & 26/10/2015 02:59\\
+       Stable beam start time (local Geneva time) & 26/10/2015 10:26\\
+       Stable beam duration [hh:mm] & 01:04\\
+       bunch intensity ring 1& 2.2899$\times 10^{14}$ protons\\
+       bunch intensity ring 2& 2.2137$\times 10^{14}$ protons\\
+       number of bunches & 2041 \\
+       \hline
+   \end{tabular}
+   \label{tab:fillRunII}
+\end{table}
 
-%% \begin{figure}
-%% \begin{center}
-%%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_EkinProtons_BG_6500GeV_flat_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_EkinNeutrons_BG_6500GeV_flat_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_PhiEnProtons_BG_6500GeV_flat_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_PhiEnNeutrons_BG_6500GeV_flat_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNProtons_BG_6500GeV_flat_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNNeutrons_BG_6500GeV_flat_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnProtons_BG_6500GeV_flat_20MeV_bs}
-%%   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnNeutrons_BG_6500GeV_flat_20MeV_bs}
-%% \end{center}
-%% \vspace{-0.6cm}
-%%  \caption{The distributions are normalised to 1 to better compare the shapes for protons (left) and neutrons (right).
-%%   \label{reweighted2}} 
-%% \end{figure}
+\paragraph{\textit{Pressure Map Simulations}}
+In previous years (in particular for 3.5~TeV and 4~TeV runs data), the code to simulate the pressure map, VASCO, was used. For Run II in 2015, pressures were simulated with an improved version of that code, nevertheless keeping the original algorithms. The code has been re-implemented in \textsc{Python} and modifications were made to automise pressure simulations\footnote{This work done by J.~Sopoušek} including the describtion of photon desorption (determined by SynRad) and electron cloud effects (as determined in PyECLOUD). 
+
+\paragraph{\textit{Reweighted Results using 2015 pressure}}
+
+The pressure simulation data based on Fill 4536 is shown in top of Fig.~\ref{pressure2015} for each gas type, while the bottom figure shows the interaction probability per second as in Eq.~\ref{eq2} and what is used to reweight the distributions at the interface plane.
+
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{figures/6500GeV/reweighted/Density_Fill4536_2041b_26158_B1_withECLOUD_rho.pdf}
+  \includegraphics[width=0.75\textwidth]{figures/6500GeV/reweighted/pint_compallpint.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Gas densities up to the arc for the most common molecules (top) and split into atomic components to indicate the interaction probability (bottom).
+  \label{pressure2015}}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_EkinAll_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_EkinMuons_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_PhiEnAll_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_PhiEnMuons_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNAll_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNMuons_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnAll_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnMuons_BG_6500GeV_flat_20MeV_bs}
+\end{center}
+\vspace{-0.6cm}
+ \caption{The distributions are normalised to 1 to better compare the shapes for all particles (left) and muons (right).
+  \label{fig:EkinPhiEn6p5}}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_EkinProtons_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_EkinNeutrons_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_PhiEnProtons_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_PhiEnNeutrons_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNProtons_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNNeutrons_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnProtons_BG_6500GeV_flat_20MeV_bs}
+  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnNeutrons_BG_6500GeV_flat_20MeV_bs}
+\end{center}
+\vspace{-0.6cm}
+ \caption{The distributions are normalised to 1 to better compare the shapes for protons (left) and neutrons (right).
+  \label{fig:ProtNeut6p5}} 
+\end{figure}
+
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{figures/6500GeV/reweighted/cv81_OrigZAll_BG_6500GeV_flat_20MeV_bs.pdf}
+  \includegraphics[width=0.75\textwidth]{figures/6500GeV/reweighted/cv81_OrigZMuon_BG_6500GeV_flat_20MeV_bs.pdf}
+  \includegraphics[width=0.75\textwidth]{figures/6500GeV/reweighted/cv81_OrigZProtons_BG_6500GeV_flat_20MeV_bs.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Origin of all particles (top), muons (middle) and protons (bottom) production along s, in black before and in pink after re-normalising to the 2015 pressure profile. 
+  \label{fig:OrigZ6p5}}
+\end{figure}

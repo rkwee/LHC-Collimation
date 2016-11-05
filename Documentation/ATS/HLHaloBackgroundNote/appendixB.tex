@@ -1,0 +1,117 @@
+\begin{table}
+   \centering
+   \caption{TCP-to-TCT conversions for IR7 TCPs and IR1/IR5 TCTs averaged over simulation h+v case.}
+
+   \begin{tabular}{c|cc|cc}
+
+       & hB1 & vB1 & hB2 & vB2\\ \hline       
+       & \multicolumn{4}{c}{4 TeV} \\   %\cline{2-5}%\hline
+       TCPs in IR7 & 50807535 & 53036514 & 49207325 & 46222723 \\
+       TCTs in IR1 & 622 & 930 & 1179 & 967 \\
+       ICTs in IR5 & 958 & 626 & 1893 & 135 \\ %
+       IR7 to IR1  & \multicolumn{2}{c|}{1.49 $\times 10^{-5}$} & \multicolumn{2}{c}{1.85 $\times 10^{-5}$ } \\
+       IR7 to IR5  & \multicolumn{2}{c|}{4.82 $\times 10^{-6}$} & \multicolumn{2}{c}{1.72 $\times 10^{-5}$ } \\
+       \hline
+       & \multicolumn{4}{c}{6.5 TeV} \\      
+       %     total losses & 62515929 & 62692523 &
+       %     peak loss in IR7 & 5.18402e+07 & 
+       TCPs in IR7 & 53731448 & 52806720 & 43692659 & 52962459 \\
+       TCTs in IR1 & 739 & 585 & 779 & 773 \\
+       TCTs in IR5 & 346 & 408 & 302 & 106 \\% \cline{2-5}
+       IR7 to IR1 &  \multicolumn{2}{c|}{1.24 $\times 10^{-5}$} &  \multicolumn{2}{c}{1.62 $\times 10^{-5}$ } \\
+       IR7 to IR5 &  \multicolumn{2}{c|}{7.08 $\times 10^{-6}$} &  \multicolumn{2}{c}{4.46 $\times 10^{-6}$ } \\
+       \hline       
+       & \multicolumn{4}{c}{HL nominal settings, TCT5s in, round beam}  \\ %see lhc_mib/HL1.0/factors
+       
+       TCPs in IR7 & 52836357 & 50278617 & & \\
+       TCTs in IR1 & 32557 &15813 & & \\
+       TCTs in IR5 & 7500 & 3154   & & \\
+       IR7 to IR1  &  \multicolumn{2}{c|}{ 4.65 $\times 10^{-4}$ }& &   \\ 
+       IR7 to IR5  &  \multicolumn{2}{c|}{ 1.02 $\times 10^{-4}$} & &  \\ 
+       \hline
+       & \multicolumn{4}{c}{ HL \twosigmaret~settings, TCT5s in, round beam }  \\
+       TCPs in IR7 & 54532193 & 52154816 & 40401333 & 53199970 \\
+       TCTs in IR1 & 9712 & 3366 & 9948 &  12028\\
+       TCTs in IR5 & 1506 & 1122 & 473  & 95 \\
+       IR7 to IR1  &  \multicolumn{2}{c|}{ 1.52 $\times 10^{-4}$ } &  \multicolumn{2}{c} { 2.3 $\times 10^{-4}$} \\
+       IR7 to IR5 & \multicolumn{2}{c|}{ 3.49 $\times 10^{-5}$} & \multicolumn{2}{c} {5.85 $\times 10^{-6}$ } \\
+       \hline
+       & \multicolumn{4}{c}{ HL \twosigmaret~settings, TCT5s out, round beam }  \\
+       TCPs in IR7 & 54609869 & 52175081 & 40392116 & 53157089 \\
+       TCTs in IR1 & 9024 & 3071 & 9936 & 11898 \\
+       TCTs in IR5 & 1408 & 1024 & 368 & 70 \\
+       IR7 to IR1  &  \multicolumn{2}{c|}{ 1.1 $\times 10^{-4}$ } &  \multicolumn{2}{c} { 2.3 $\times 10^{-4}$} \\
+       \hline
+       & \multicolumn{4}{c}{ HL \twosigmaret~settings, TCT5s in, flat beam }  \\
+       TCPs in IR7 & 35831038 & 5052849 &  &  \\
+       TCTs in IR1 & 7814 & 306 & & \\
+       TCTs in IR5 & 660 & 75 & \\
+       IR7 to IR1  & \multicolumn{2}{c|}{1.09 $\times 10^{-4}$ } &  \\
+       IR7 to IR5 & \multicolumn{2}{c|}{9.20 $\times 10^{-6}$} & \\
+
+       %% HL retracted settings, flat beam  & B1 \\       
+       %% IR1 & 1.39 $\times 10^{-4}$ & \\ % B1 : .5*(7814.0/35831038.0 + 306.0/5052849.0)
+       %% IR5 & 1.66 $\times 10^{-5}$ & \\ % B1 : .5*(660.0/35831038.0 + 75.0/5052849.0)
+       \hline
+   \end{tabular}
+   \label{leakageFactorsIR7}
+\end{table}
+
+
+\subsection{IR3 to TCT conversion factors in off-momentum simulations}
+\begin{table}[!h]
+   \centering
+   \caption{Leakage from IR3 primary to IR1/IR5 TCTs from off-momentum simulations.}
+
+   \begin{tabular}{l|c|c}
+       \hline
+       4 TeV, + 500~Hz  & B1 & B2\\
+       TCP.IR3  & 6279727 & 995698  \\
+       TCTs IR1 (h+v) & 6 (6 + 0) & 11919 (695 + 11224) \\
+       TCTs IR5 (h+v) & 28304 (5387 + 22917) & 16 (14 + 2) \\
+       IR3 to IR1 & 9.5 10$^{-7}$ & 0.012 \\
+       IR3 to IR5 & 0.0045 & 1.6 10$^{-5}$ \\
+       \hline
+       4 TeV, -~500~Hz  & B1 & B2\\
+       TCP.IR3  & 1853387 & 3501844 \\
+       TCTs IR1 (h+v) & 93 (37 + 56) & 22278 (4851+17427) \\
+       TCTs IR5 (h+v) &  4735 (1746 + 2989) & 23 (22 + 1) \\
+       IR3 to IR1 & 5.0 10$^{-5}$ & 0.0063 \\
+       IR3 to IR5 & 0.0025 & 6.2 10$^{-6}$ \\
+       \hline
+
+       6.5 TeV, + 500~Hz  & B1 & B2\\
+       TCP.IR3  & 8055019 & 5648325  \\
+       TCTs IR1 (h+v) & 3 (3 + 0) & 11951 (5607 + 6344) \\
+       TCTs IR5 (h+v) & 17963 (8711 + 9252) & 9 (9 + 0)\\
+       IR3 to IR1 & 3.7 10$^{-7}$ & 0.0021 \\
+       IR3 to IR5 & 0.0022 & 1.5 10$^{-6}$ \\
+       \hline
+       6.5 TeV, - 500~Hz  & B1 & B2\\
+       TCP.IR3  &  3389385 &   \\
+       TCTs IR1 (h+v) &  1 (1 + 0) &   \\
+       TCTs IR5 (h+v) &  7642 (4337 + 3305) &  \\
+       IR3 to IR1 &  2.9 10$^{-7}$ &  \\
+       IR3 to IR5 &  0.0022 &   \\
+       \hline
+
+   \end{tabular}
+   \label{tab:IR3leakageFactors}
+\end{table}
+
+%% \begin{figure}
+%% \begin{center}
+%%   \includegraphics[width=0.49\textwidth]{figures/4TeV/bs_20MeV/RadNMuons_BG_4TeV_20MeV_bs.pdf}
+%%   \includegraphics[width=0.49\textwidth]{figures/6500GeV/20MeV/RadNMuons_BG_6500GeV_flat_20MeV_bs.pdf}
+%%   \includegraphics[width=0.49\textwidth]{figures/4TeV/haloB1_20MeV/RadNMuons_BH_4TeV_B1_20MeV.pdf}
+%%   \includegraphics[width=0.49\textwidth]{figures/4TeV/haloB2_20MeV/RadNMuons_BH_4TeV_B2_20MeV.pdf}
+%%   \includegraphics[width=0.49\textwidth]{figures/4TeV/offmom/20MeV/RadNMuons_offplus500Hz_4TeV_B2_20MeV.pdf}
+%%   \includegraphics[width=0.49\textwidth]{figures/4TeV/offmom/20MeV/RadNMuons_offmin500Hz_4TeV_B2_20MeV.pdf}
+%%   \includegraphics[width=0.49\textwidth]{figures/BH_run2/b1/RadNMuons_BH_6500GeV_haloB1_20MeV.pdf}
+%%   \includegraphics[width=0.49\textwidth]{figures/BH_run2/b2/RadNMuons_BH_6500GeV_haloB2_20MeV.pdf}
+%% \end{center}
+%% \vspace{-0.6cm}
+%%  \caption{Comparison 
+%%   \label{compRadNMuonsRun12}}
+%% \end{figure}
+
