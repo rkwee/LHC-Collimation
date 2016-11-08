@@ -58,12 +58,14 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/HL/nominalSettings/comp/'
         if debug: print "Using HL comp format", '.'*10
 
-    elif rfname.count('BH_4TeV_settings_from_TWISS') or rfname.count("500Hz"): 
+    elif rfname.count('BH_4TeV_settings_from_TWISS') or rfname.count("500Hz") or rfname.count("beam-halo_3.5TeV"): 
         hDict = hDict_BH_4TeV
         subfolder= 'TCT/4TeV/ttimpacts/oldScatt/'+Beam+'/' + EnCutOff + '/'
         subfolder= 'TCT/4TeV/tctimpacts/newScatt/'+Beam+'/' + EnCutOff + '/'
-        subfolder= 'TCT/4TeV/tctimpacts/newScatt/offmin500Hz/'+Beam+'/' + EnCutOff + '/'
-        if debug: print "Using 4 TeV dict", '.'*10
+        #subfolder= 'TCT/4TeV/tctimpacts/newScatt/offmin500Hz/'+Beam+'/' + EnCutOff + '/'
+        #subfolder= 'TCT/3p5TeV/' + beam + '/'
+        if debug: print "Using 4 TeV BH format", '.'*10
+
 
     elif rfname.count('off') and rfname.count('6500'):
         hDict = hDict_BH_4TeV
@@ -78,8 +80,9 @@ def plotSpectra(bbgFile, tag, doComp):
             subfolder= 'TCT/4TeV/beamgas/fluka/RoderiksBG4TeV/'
         elif rfname.count('BG_bs_4TeV'):
             subfolder= 'TCT/4TeV/beamgas/fluka/bs/'+ EnCutOff + '/'
-        if debug: print "Using 4 TeV format", '.'*10
         yrel = '/inel.BG int.'
+    
+        if debug: print "Using 4 TeV BG dict", '.'*10
 
     elif rfname.count('BG_bs_6500GeV'):
         hDict = hDict_BG_4TeV
@@ -87,9 +90,6 @@ def plotSpectra(bbgFile, tag, doComp):
         if debug: print "Using 6.5 TeV BG format", '.'*10
         yrel = '/inel.BG int.'
 
-    elif rfname.count('beam-halo_3.5TeV'): 
-        hDict = hDict_BH_4TeV
-        subfolder= 'TCT/3p5TeV/' + beam + '/'
         if debug: print "Using 4 TeV format", '.'*10
 
     elif rfname.count('hilumi') and not rfname.count('Comp') and not rfname.count('crab'):# and not rfname.count('HL-LHC'):
@@ -152,13 +152,17 @@ def plotSpectra(bbgFile, tag, doComp):
         try:
             pname = wwwpath + subfolder + hkey
 
+            # testing
+            if not hkey.count("XYN"): continue
+
             print "Plotting ...", hkey
+            
             hists = []
             cv = TCanvas( 'cv'+hkey, 'cv'+hkey, 1200, 900)
 
             gStyle.SetPalette(1)
-            cv.SetRightMargin(0.15)
-            #cv.SetLeftMargin(-0.1)
+            cv.SetRightMargin(0.135)
+            cv.SetLeftMargin(0.1)
 
             hList = hDict[hkey][0] 
             x1, y1, x2, y2 = hDict[hkey][1],hDict[hkey][2],hDict[hkey][3],hDict[hkey][4]
@@ -212,7 +216,8 @@ def plotSpectra(bbgFile, tag, doComp):
 
                  xtitle = sDict[hname][9]
                  ytitle = sDict[hname][10]
-
+                 ztitle = ''
+                 if hkey.count("XYN"): ztitle = "particles/cm^2" + yrel
             # ....................................
             if not hists[-1] or not hists[0]:
                 continue
@@ -225,6 +230,8 @@ def plotSpectra(bbgFile, tag, doComp):
 
             if ZurMin != -1 and type(hists[0]) == TH2F: 
                 hists[0].GetZaxis().SetRangeUser(ZurMin, ZurMax)
+                hists[0].GetZaxis().SetTitleOffset(0.05)
+                hists[0].GetZaxis().SetTitle(ztitle)
 
             hists[0].GetYaxis().SetTitleSize(0.04)
             hists[0].GetYaxis().SetLabelSize(0.035)
@@ -232,6 +239,7 @@ def plotSpectra(bbgFile, tag, doComp):
             hists[0].GetXaxis().SetLabelSize(0.035)
             if type(hists[0]) == TH2F: 
                 hists[0].GetZaxis().SetLabelSize(0.035)
+                hists[0].GetZaxis().SetTitle()
 
             hists[0].GetXaxis().SetTitle(xtitle)
             hists[0].GetYaxis().SetTitle(ytitle)
