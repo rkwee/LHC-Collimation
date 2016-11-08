@@ -92,13 +92,13 @@ def plotSpectra(bbgFile, tag, doComp):
         subfolder= 'TCT/3p5TeV/' + beam + '/'
         if debug: print "Using 4 TeV format", '.'*10
 
-    elif rfname.count('HL') and not rfname.count('Comp') and not rfname.count('crab'):# and not rfname.count('HL-LHC'):
+    elif rfname.count('hilumi') and not rfname.count('Comp') and not rfname.count('crab'):# and not rfname.count('HL-LHC'):
         hDict = hDict_HL_BH_hybrid
         if tag.count('nom'): 
             subfolder= 'TCT/HL/nominalColl/2015/halo/'
         else:
             if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5otrd/'
-            elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/fullstats/'
+            elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/repeat/'
             else: 
                 print "define where to put the plots?"
                 sys.exit()

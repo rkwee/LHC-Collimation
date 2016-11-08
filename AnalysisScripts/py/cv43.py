@@ -58,22 +58,22 @@ def cv43():
     #           100,0., 20.,
     #       ],
 
-    #     [ gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LIN',\
-    #           workpath + 'runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/b2/tcinrdb2.dat.root', \
-    #           gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LIN',\
-    #           'TCT/HL/relaxedColl/newScatt/', \
-    #           'HL 7 TeV B2', 0.07, \
-    #           100,0., 20.,
-    #       ],
+        # [ gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LIN',\
+        #       workpath + 'runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/b2/tcinrdb2.dat.root', \
+        #       gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LIN',\
+        #       'TCT/HL/relaxedColl/newScatt/', \
+        #       'HL 7 TeV B2', 0.07, \
+        #       100,0., 10.,
+        #   ],
 
-    #     [ gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LOUT',\
-    #           workpath + 'runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/b2/tcotrdb2.dat.root', \
-    #           gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LOUT',\
-    #           'TCT/HL/relaxedColl/newScatt/', \
-    #           'HL 7 TeV B2', 0.07, \
-    #           100,0., 20.,
+        [ gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LOUT',\
+              workpath + 'runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/b2/tcotrdb2.dat.root', \
+              gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LOUT',\
+              'TCT/HL/relaxedColl/newScatt/', \
+              'HL 7 TeV B2', 0.07, \
+              100,0., 20.,
 
-    #       ],
+          ],
         
         # [ workpath + 'runs/6.5TeV_hHaloB1_h5/coll_summary_6.5TeV_hHaloB1_h5.dat', \
         #       gitpath + 'FlukaRoutines/6.5TeV/b1/HALOB1.dat.root', \
@@ -89,21 +89,21 @@ def cv43():
         #       100,0., 10.,
         #   ],
 
-        # # 4 TeV
-        [ projectpath + 'bgChecks2/NewScatt_4TeV_hHaloB1/coll_summary_NewScatt_4TeV_hHaloB1.dat',\
-              projectpath + 'bgChecks2/impacts_real_NewScatt_4TeV_haloB1.txt.root',\
-              gitpath + 'SixTrackConfig/4TeV/TCThaloStudies/b1/collgaps.dat',\
-              'TCT/4TeV/tctimpacts/', '4 TeV B1', 1., \
-              100,0., 20.,
-            ],
+        # # # 4 TeV
+        # [ projectpath + 'bgChecks2/NewScatt_4TeV_hHaloB1/coll_summary_NewScatt_4TeV_hHaloB1.dat',\
+        #       projectpath + 'bgChecks2/impacts_real_NewScatt_4TeV_haloB1.txt.root',\
+        #       gitpath + 'SixTrackConfig/4TeV/TCThaloStudies/b1/collgaps.dat',\
+        #       'TCT/4TeV/tctimpacts/', '4 TeV B1', 1., \
+        #       100,0., 20.,
+        #     ],
 
 
-        [ projectpath + 'bgChecks2/NewScatt_4TeV_hHaloB2/coll_summary_NewScatt_4TeV_hHaloB2.dat',\
-              projectpath + 'bgChecks2/impacts_real_NewScatt_4TeV_haloB2.txt.root',\
-              gitpath + 'SixTrackConfig/4TeV/TCThaloStudies/b2/collgaps.dat',\
-              'TCT/4TeV/tctimpacts/', '4 TeV B2', 1., \
-              100,0., 20.,
-            ],
+        # [ projectpath + 'bgChecks2/NewScatt_4TeV_hHaloB2/coll_summary_NewScatt_4TeV_hHaloB2.dat',\
+        #       projectpath + 'bgChecks2/impacts_real_NewScatt_4TeV_haloB2.txt.root',\
+        #       gitpath + 'SixTrackConfig/4TeV/TCThaloStudies/b2/collgaps.dat',\
+        #       'TCT/4TeV/tctimpacts/', '4 TeV B2', 1., \
+        #       100,0., 20.,
+        #     ],
 
         # [ workpath + 'runs/4TeV_Halo/coll_summary_TCT_4TeV_B2hHalo.dat',\
         #       workpath + 'runs/4TeV_Halo/HALO4TeVB2.dat.root',\
@@ -224,16 +224,16 @@ def cv43():
 
     # collimators
     colls = [
-         'TCTH.5L1.B1',
-         'TCTVA.5L1.B1',
          'TCTH.4L1.B1', 
          'TCTVA.4L1.B1',
+         'TCTH.5L1.B1',
+         'TCTVA.5L1.B1',
          'TCTH.4L5.B1', 
          'TCTVA.4L5.B1',
-         'TCTH.5R1.B2',
-         'TCTVA.5R1.B2',
          'TCTH.4R1.B2', 
          'TCTVA.4R1.B2',
+         'TCTH.5R1.B2',
+         'TCTVA.5R1.B2',
          'TCTH.4R5.B2', 
          'TCTVA.4R5.B2',
         ]
@@ -346,7 +346,7 @@ def cv43():
     for myset in sets:
 
         nbins, xmin, xmax = myset[6],myset[7],myset[8]
-        nbins, xmin, xmax = myset[6],myset[7],20.
+        #nbins, xmin, xmax = myset[6],myset[7],20.
         hx = []
         cfile = myset[0] 
 
