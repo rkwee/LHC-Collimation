@@ -140,8 +140,8 @@ if tag_BH_4TeV.count('20GeV'): scaleFactor = 0.1
 
 tag = tag_BH_4TeV
 Beam, beam, beamn = getBeam(tag)
-lText = 'offmom -500Hz 4 TeV'
-lText = 'offmom +500Hz 4 TeV'
+# lText = 'offmom -500Hz 4 TeV'
+# lText = 'offmom +500Hz 4 TeV'
 lText = 'beamhalo 4 TeV ' + Beam
 
 
@@ -180,14 +180,15 @@ hDict_BH_4TeV = {
     'XcoorNChar' + tag: [ ['XcoorNNeg', 'XcoorNPos', 'XcoorNNeu'],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1, 0, lText, 0.2,0.9, -1,-1, ],
     'YcoorNChar' + tag: [ ['YcoorNNeg', 'YcoorNPos', 'YcoorNNeu'],0.7, 0.75, 0.98, 0.9, 0,1, -1,-1,1e-6,1, 0, lText, 0.2,0.9, -1,-1, ],
 
-    'XYNAll' + tag         : [ ['XYNAll'],0.5, 0.92, 0.7, 1., 1,0, -30,30,-30,30, 0, lText, 0.2,0.9, 1e-8,1e-3, ],
+    'XYNAll' + tag         : [ ['XYNAll'],0.5, 0.92, 0.7, 1., 1,0, -30,30,-30,30, 0, lText, 0.2,0.9, 1e-7,1e-2, ],
     'XYNMuons' + tag       : [ ['XYNMuons'], 0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, 1e-6*scaleFactor,2e-5*scaleFactor, ],
     'XYNMuonsE10' + tag    : [ ['XYNMuonsE10'], 0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, 1e-6*scaleFactor,2e-5*scaleFactor, ],
     'XYNMuonsE500' + tag    : [ ['XYNMuonsE500'], 0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, 1e-6*scaleFactor,2e-5*scaleFactor, ],
-    'XYNPhotons' + tag     : [ ['XYNPhotons'], 0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, 5e-10,1e-3, ],
-    'XYNElecPosi' + tag    : [ ['XYNElecPosi'],0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, 1e-10,3e-5, ],
-    'XYNChar' + tag        : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -100,100,-100,100, 0, lText, 0.2,0.9, 1e-8,1e-3, ],
-    'XYNCharZoom' + tag    : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -10,10,-10.,10., 0, lText, 0.2,0.9, 1e-8,1e-3, ],
+    'XYNPhotons' + tag     : [ ['XYNPhotons'], 0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, 8e-6,2e-3, ],
+    'XYNPhotonsZoom' + tag  : [ ['XYNPhotons'], 0.5, 0.92, 0.7, 1., 1,0, -15,15,-15,15, 0, lText, 0.2,0.9, 8e-6,2e-3, ],
+    'XYNElecPosi' + tag    : [ ['XYNElecPosi'],0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, 1e-8,3e-6, ],
+    'XYNChar' + tag        : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -100,100,-100,100, 0, lText, 0.2,0.9, 2e-7,5e-3, ],
+    'XYNCharZoom' + tag    : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -15,15,-15.,15., 0, lText, 0.2,0.9, 2e-7,5e-3, ],
 
     'XYNNeutronsE' + tag   : [ ['XYNNeutronsE'] ,0.5, 0.92, 0.7, 1., 1,0, -50,50,-1,-1, 0, lText, 0.2,0.9, 1e-8,1e-4, ],
     'XYNProtonsE' + tag    : [ ['XYNProtonsE'] ,0.5, 0.92, 0.7, 1., 1,0, -50,50,-1,-1, 0, lText, 0.2,0.9, 1e-8,1e-3, ],
@@ -200,13 +201,13 @@ hDict_BH_4TeV = {
 lText = 'beamgas 3.5 TeV'
 tag = tag_BG_3p5TeV
 #
-# lText = 'beamgas 4 TeV'
-# tag = tag_BG_4TeV
-# if tag.count('bs'): lText = '4 TeV BG with beamsize'
+lText = 'beamgas 4 TeV'
+tag = tag_BG_4TeV
+if tag.count('bs'): lText = '4 TeV BG with beamsize'
 
-lText = 'beamgas 6.5 TeV'
-tag = tag_BG_6p5TeV
-if tag.count('bs'): lText = '6.5 TeV BG with beamsize'
+# lText = 'beamgas 6.5 TeV'
+# tag = tag_BG_6p5TeV
+# if tag.count('bs'): lText = '6.5 TeV BG with beamsize'
 
 hDict_BG_4TeV = { 
 
@@ -248,6 +249,21 @@ hDict_BG_4TeV = {
     'XYNMuonsE500' + tag     : [ ['XYNMuonsE500'], 0.5, 0.92, 0.7, 1., 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNPhotons' + tag       : [ ['XYNPhotons'], 0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNElecPosi' + tag      : [ ['XYNElecPosi'],0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
+    'XYNChar' + tag          : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -30,30,-30,30, 0, lText, 0.2,0.9, -1,-1, ],
+    'XYNCharZoom' + tag      : [ ['XYNChar'],0.5, 0.92, 0.7, 1., 1,0, -15,15,-15,15, 0, lText, 0.2,0.9, -1,-1, ],
+
+    'XYNProtons' + tag       : [ ['XYNProtons'], 0.5, 0.88, 0.83, 0.92, 1, 0, -30, 30, -30, 30, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
+    'XYNProtonsE10' + tag   : [ ['XYNProtonsE10'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 1e-7,1e-5, ],
+    'XYNProtonsE100' + tag   : [ ['XYNProtonsE100'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 1e-7,1e-5, ],
+    'XYNProtonsE500' + tag   : [ ['XYNProtonsE500'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 1e-7,1e-4, ],
+
+    'XYNPhotons' + tag       : [ ['XYNPhotons'], 0.75, 0.88, 0.83, 0.92, 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, -1,-1, ],
+    'XYNPhotonsE10' + tag     : [ ['XYNPhotonsE10'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
+    'XYNPhotonsE100' + tag    : [ ['XYNPhotonsE100'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
+
+    'XYNNeutrons' + tag       : [ ['XYNNeutrons'], 0.75, 0.88, 0.83, 0.92, 1,0, -1,-1,-1,-1, 0, lText, 0.2,0.96, -1,-1, ],
+    'XYNNeutronsE10' + tag     : [ ['XYNNeutronsE10'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
+    'XYNNeutronsE100' + tag    : [ ['XYNNeutronsE100'], 0.5, 0.88, 0.83, 0.92, 1, 0, -10, 10, -10, 10, 0, lText, 0.2,0.96, 6e-7,1e-4, ],
 
     'XYNNeutronsE' + tag      : [ ['XYNNeutronsE'] ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
     'XYNProtonsE' + tag       : [ ['XYNProtonsE'] ,0.5, 0.92, 0.7, 1., 0,0, -1,-1,-1,-1, 0, lText, 0.2,0.9, -1,-1, ],
