@@ -98,7 +98,7 @@ def plotSpectra(bbgFile, tag, doComp):
             subfolder= 'TCT/HL/nominalColl/2015/halo/'
         else:
             if tag.count('tct5ot'): subfolder = 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5otrd/'
-            elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/fullstats/'
+            elif tag.count('tct5in'): subfolder= 'TCT/HL/relaxedColl/newScatt/fluka/'+beam+'/tct5inrd/repeat/'
             else: 
                 print "define where to put the plots?"
                 sys.exit()
