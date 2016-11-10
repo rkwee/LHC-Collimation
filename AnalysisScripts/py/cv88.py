@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# (compare normalised RunII BG and HL Halo)
+# 
 # rebin XYN plots
 
 # Oct 16

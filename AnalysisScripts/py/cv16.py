@@ -394,15 +394,15 @@ def cv16():
     # # fNum = projectpath + 'HL1.0/FL_HL_TCT5IN_nomCollSett_haloB1/results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root'
     # # fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
     # # subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/perTCThit/'
-    # subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compNomRetrCollSett/perTCThit/"
-    # fNum = thispath + "results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root"
-    # fDenom = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
-    # lTextNum = 'nominal'
-    # lTextDenom = 'retracted'
-    # #normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
-    # normDenom, normNum, yrel = 1., 1., '/TCT hit'
-    # tagDenom,tagNum =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
-    # dColor, nColor = kMagenta-2, kBlue-2
+    subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compNomRetrCollSett/perTCThit/"
+    fDenom = thispath + "results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root"
+    fNum = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
+    lTextDenom = 'nominal'
+    lTextNum = 'retracted'
+    #normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
+    normDenom, normNum, yrel = 1., 1., '/TCT hit'
+    tagNum,tagDenom =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
+    dColor, nColor = kMagenta-2, kBlue-2
 
     # fNum =  '/afs/cern.ch/project/lhc_mib/crabcfb1/runs_usrbin/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_nprim4269100_30.root'
     # fDenom = '/afs/cern.ch/project/lhc_mib/tct_simulations/FlukaRuns/runs_modTAN/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_modTAN_nprim1390500_30.root'
@@ -665,7 +665,7 @@ def cv16():
 
         xpos, ypos = 0.356, 0.955
         if doBig:
-            fontsize = 0.095
+            fontsize = 0.09
             xpos, ypos = 0.18, 0.01955
             lab.SetTextSize(fontsize)
             

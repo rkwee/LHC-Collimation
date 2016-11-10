@@ -22,8 +22,12 @@ def cv86():
     #bbgFile = projectpath + 'HL1.0/FL_TCT5In_retracted_rdB2_fixgaps/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
     tag  = '_BH_HL_tct5inrdB2_20MeV'
     cname = "checkB2tct5in"
-    
-    doTCT4only = 1
+
+    bbgFile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
+    tag  = '_BH_HL_tct5inrdB1_20MeV'
+    cname = "checkB1tct5in"
+
+    doTCT4only = 0
     if doTCT4only:
         cname = "checkB2tct4only"
         bbgFile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
