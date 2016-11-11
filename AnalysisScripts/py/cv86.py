@@ -23,15 +23,18 @@ def cv86():
     tag  = '_BH_HL_tct5inrdB2_20MeV'
     cname = "checkB2tct5in"
 
-    bbgFile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
+    bbgFile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b1_exp_20MeV_nprim4050000_30.root"
     tag  = '_BH_HL_tct5inrdB1_20MeV'
     cname = "checkB1tct5in"
 
-    doTCT4only = 0
+    doTCT4only = 1
     if doTCT4only:
         cname = "checkB2tct4only"
         bbgFile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
         tag =  '_BH_HL_tct5otrdB2_20MeV'
+        cname = "checkB1tct4only"
+        bbgFile = thispath + 'hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'
+        tag =  '_BH_HL_tct5otrdB1_20MeV'
 
 
     print "Opening", bbgFile
@@ -125,15 +128,20 @@ def cv86():
         tct4Cut = "((z_interact > "+str(tct4a)+" && z_interact <= "+str(tct4b)+" ) || (z_interact > "+str(tct4c)+" && z_interact <= "+str(tct4d)+"))"
         tct5Cut = "((z_interact > "+str(tct5a)+" && z_interact <= "+str(tct5b)+" ) || (z_interact > "+str(tct5c)+" && z_interact <= "+str(tct5d)+"))"
 
+        # B2
         n4 = (6678+83.)
         n5 = (14914+304.)
+
+        # B1
+        n4, n5 = 2460., 10600.
         sumn4n5 = n4+n5
 
         #nprim4 = 7./22*nprim
         nprim4 = n4/sumn4n5*nprim
         nprim5= n5/sumn4n5*nprim
-        if doTCT4only:nprim5 = 22./22*nprim        
-
+        if doTCT4only:nprim5 = nprim        
+        print "nprim4", nprim4
+        print "nprim5", nprim5
         
         cuts = [ enCut, tct4Cut ]        
         cuts = "weight * "+energyweight+"("+" && ".join(cuts) + ") "
@@ -143,7 +151,7 @@ def cv86():
         entries4 =hist4.Integral()/nprim4
         
 
-        print "entries  ", hist4.GetEntries(), nprim4
+        print "entries 4 ", hist4.Integral(), nprim4
         cuts = [ enCut, tct5Cut ]        
         cuts = "weight * "+energyweight+"("+" && ".join(cuts) + ") "
         print "INFO: applying", cuts, "to", var, "in", hname5
@@ -163,8 +171,9 @@ def cv86():
             print "summe", sumn4n5
             print "ratio", (n4*entries4+n5*entries5)/sumn4n5
             
-        print "entries getentries ",entries5, hist5.GetEntries()
 
+        print "integral 4 ",hist4.Integral()
+        print "integral 5 ",hist5.Integral()
 
         print "INFO: applying", cuts, "to", var, "in", hnameControl
         mt.Project(hnameControl, var, encut)
