@@ -260,7 +260,7 @@ def cv16():
     # # fDenom = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
     # # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINOUTB1/'
     # fNum = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root"
-    # fDenom = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
+    # fDenom = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim4050000_30.root"
     # subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compINOUTB1_retracted/perTCThit/"
     # lTextNum = 'TCT4 only'
     # lTextDenom = 'TCT5 in'
@@ -273,15 +273,15 @@ def cv16():
     # fNum = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
     # fDenom = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim6466000_30.root'
     # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINB1B2/perTCThit/'
-    # subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compINB1B2_retracted/perTCThit/"
-    # fNum = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
-    # fDenom = thispath + "FL_TCT5In_retracted_rdB2_fixgaps/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root"
-    # lTextNum = 'TCT5 in, B1'
-    # lTextDenom = 'TCT5 in, B2'
-    # tagDenom, tagNum = '_BH_HL_tct5inrdB2_20MeV', '_BH_HL_tct5inrdB1_20MeV'
-    # #normDenom, normNum,yrel =  1./normTCT5INb2, 1./normTCT5INb1, "/s"
-    # normDenom, normNum,yrel =  1., 1., "/TCT hit"
-    # dColor, nColor = kPink, kBlue+2
+    subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compINB1B2_retracted/perTCThit/"    
+    fNum = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim4050000_30.root"
+    fDenom = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root"
+    lTextNum = 'TCT5 in, B1'
+    lTextDenom = 'TCT5 in, B2'
+    tagDenom, tagNum = '_BH_HL_tct5inrdB2_20MeV', '_BH_HL_tct5inrdB1_20MeV'
+    #normDenom, normNum,yrel =  1./normTCT5INb2, 1./normTCT5INb1, "/s"
+    normDenom, normNum,yrel =  1., 1., "/TCT hit"
+    dColor, nColor = kPink, kBlue+2
 
 
     # fNum = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root"
@@ -395,13 +395,13 @@ def cv16():
     # # fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
     # # subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/perTCThit/'
     # subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compNomRetrCollSett/perTCThit/"
-    # fNum = thispath + "results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root"
-    # fDenom = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
-    # lTextNum = 'nominal'
-    # lTextDenom = 'retracted'
+    # fDenom = thispath + "results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root"
+    # fNum = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
+    # lTextDenom = 'nominal'
+    # lTextNum = 'retracted'
     # #normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
     # normDenom, normNum, yrel = 1., 1., '/TCT hit'
-    # tagDenom,tagNum =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
+    # tagNum,tagDenom =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
     # dColor, nColor = kMagenta-2, kBlue-2
 
     # fNum =  '/afs/cern.ch/project/lhc_mib/crabcfb1/runs_usrbin/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_nprim4269100_30.root'
@@ -665,9 +665,9 @@ def cv16():
 
         xpos, ypos = 0.356, 0.955
         if doBig:
-            fontsize = 0.095
+            fontsize = 0.09
             xpos, ypos = 0.18, 0.01955
-            lab.SetTextSize(fontsize)
+            #lab.SetTextSize(fontsize)
             
         lab.DrawLatex(xpos, ypos, sDict[skey][6].replace("z", "s"))
         lab = mylabel(62)
@@ -706,7 +706,7 @@ def cv16():
             pass
 
         hRatio.GetXaxis().SetLabelSize(0.105)
-        hRatio.GetYaxis().SetLabelSize(0.105)
+        hRatio.GetYaxis().SetLabelSize(0.08)
         hRatio.GetYaxis().SetTitleOffset(0.8)
         hRatio.GetYaxis().SetTitleSize(0.08)
         hRatio.GetXaxis().SetTitleSize(0.1)

@@ -25,13 +25,26 @@ def cv78():
     norm6500GeVB1 = 2748 * 1.2e11/360000 *0.5*(739./53731448 +(312+273.)/52806720) # 2.1e-5
     norm6500GeVB2 = 2748 * 1.2e11/360000 *0.5*(779./43692659+773./52962459.) # 2.76e-5 take the average of H an V runs!
 
+
+    # ---- HL -
+    HLinitialFlux = 2736*2.2e11/360000 # 1.7e9
+
+    # retracted settings
+    normTCT5LOUTb1 = HLinitialFlux * 0.5*(9024.0/54609869.0 + 3071.0/52175081.0)# 0.00011205218641475149 #12091./(63828643+61405975) # 9.7e-5
+    normTCT5LOUTb2 = HLinitialFlux * 0.5*(9936.0/40392116.0 + 11898.0/53157089.0)# 0.0002349078766943835 ### 21822/(47196776+63051589) # 2e-4
+    normTCT5INb1 = HLinitialFlux * 0.5*(9712.0/54532193.0 + 3366.0/52154816.0) # 0.00012131762826402283
+    normTCT5INb2 = HLinitialFlux * 0.5 * (9948.0/40401333.0 + 12028.0/53199970.0)# 0.0002361599262 # 11172./(47203328+63096910) # 1e-4 sum of all tcts over protons lost on primary for h and v separately
+
     # python /afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/AnalysisScripts/py/collsummary.py -f 6.5TeV_vHaloB2_h5/coll_summary_6.5TeV_vHaloB2_h5.dat -c TCT*R5
     # IR5 B1: h:( 53754939.0 protons on IR7 primaries, 346.0 protons on TCT*L5.B1), v(52838656.0 on primaries IR7,  408.0 protons on TCTL5)
     # .5*( 346.0/53754939.0 + 408.0/52838656.0 ) = 7.0791187088930279e-06
     # IR5 B2: h:( 43718962.0 IR7,  302.0 protons ), v(53000835.0, 106.0 protons. )
     # 0.5 * (302.0/43718962.0 + 106.0/53000835.0) = 4.4538612500709768e-06
 
-    do4TeV,do6500GeV = 0,1
+    # steer
+    do4TeV,do6500GeV = 0,0
+    doHLcomp = 1
+    doNumbers = 0
     # ------------------------------------------------------------------------
     if do4TeV:
 
@@ -60,13 +73,13 @@ def cv78():
         mars   = [33, 20, 24, 22, 23 ]
         dOpt   = [ 'hp', 'hsame', 'hsame', 'hsame', 'hsame']
         scalf  = [ 1., norm4TeVB1newHalo, norm4TeVB2newHalo, norm4TeVoffmomPLUS500, norm4TeVoffmomMINUS500]
-
+        roundingDigit = 4
     elif do6500GeV:
 
         energy = "6.5 TeV"
         # all at 6.5 TeV # from cv69
         f1 = thispath + 'results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root'
-        f2 = thispath + 'results_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
+        f2 = thispath + 'results_ir1_BH_6500GeV_b2_20MeV_nprim3646000_30.root'
         f3 = thispath + 'results_pressure2015_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
         filenames = [f3, f1,f2]
 
@@ -78,6 +91,25 @@ def cv78():
         mars   = [ 33, 20, 24 ]
         dOpt   = [ 'hist', 'histsame', 'histsame']
         scalf  = [1., norm6500GeVB1, norm6500GeVB2]
+        roundingDigit = 3
+    elif doHLcomp:
+        roundingDigit = 3
+        energy = ""
+        f1 = thispath + 'results_pressure2015_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
+        f2 = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
+        f3 = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root"
+        tags = ["_BG_6500GeV_flat_20MeV_bs_reweighted", "_BH_HL_tct5inrdB1_20MeV", "_BH_HL_tct5inrdB2_20MeV"]
+
+        filenames = [f1,f2,f3]
+
+        lTexts = ['Run II BG', 'HL Halo B1', 'HL Halo B2']
+        cols   = [kYellow-2, kBlue-2, kRed-4]
+        mars   = [ 20, 22, 24 ]
+        dOpt   = [ 'hist', 'histsame', 'histsame']
+        scalf  = [1.,normTCT5INb1 ,normTCT5INb2 ]
+        subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HLRunII/"
+
+        
     # ------------------------------------------------------------------------
     debug = 0
     # need one file to generate sDict
@@ -111,11 +143,12 @@ def cv78():
         elif skey.count("Pio") or skey.count("Kao"): continue
 
         # # for testing
-        #        elif not skey.count('Rad'): continue
+        #elif not skey.count('PhiEn'): continue
                
         cv = TCanvas( 'cv'+skey, 'cv'+skey,  10, 10, 1200, 900 )     
-
-        x1, y1, x2, y2 = 0.65,0.73,0.95,0.93 # right corner        
+        xpos = 0.65
+        if doNumbers: xpos = 0.5
+        x1, y1, x2, y2 = xpos,0.73,0.95,0.93 # right corner        
 
         if 0:# skey.count("PhiEnAll") or skey.count("PhiEnPhot") or skey.count("PhiNAllE") or skey.count("PhiNP") or skey.count("EnPro"):
             x1, y1, x2, y2 = 0.2,0.75,0.44,0.93 # left corner
@@ -150,6 +183,8 @@ def cv78():
                 continue
 
         if debug: print "Have in hists", hists
+
+        intvals, ratios = [],[]
         for i in range(len(hists)):
 
             isLogx, isLogy = 0, 0
@@ -183,6 +218,8 @@ def cv78():
 
         # skip all histograms when one is missing        
         if not hists[0]: continue
+
+        
         hists[0].GetXaxis().SetTitle(xtitle)
         
         cv.cd()
@@ -200,8 +237,11 @@ def cv78():
                 XurMin, XurMax = -3.14, 3.01
                 YurMin, YurMax = 1e-1*max(Ymax), max(Ymax)*1e4
                 if hnames[i].count("En"):
-                    YurMin, YurMax = 1e-5*max(Ymax), max(Ymax)*5e4
-                    
+                    YurMin, YurMax = 3e3,2e10
+
+                    if not hnames[i].count("All") and not hnames[i].count("Prot"):
+                        YurMin, YurMax = 1e2,1e7
+                        
             elif hnames[i].count("Ekin"):
                 YurMin, YurMax = 1e-2,8e10
 
@@ -221,17 +261,25 @@ def cv78():
             if hists[i].GetName().endswith("reweighted"):
                 hists[i].ProjectionX().GetYaxis().SetRangeUser(YurMin,YurMax)
                 hists[i].ProjectionX().GetYaxis().SetTitle(ytitle)
+                intvals += [hists[i].ProjectionX().Integral()]
                 hists[i].ProjectionX().Draw(dOpt[i])
             else:
+                intvals += [hists[i].Integral()]
                 hists[i].GetXaxis().SetTitle(xtitle)
                 hists[i].Draw(dOpt[i])
-            mlegend.AddEntry(hists[i], lTexts[i], "lp")
 
+            ratios += [round(intvals[-1]/intvals[0], roundingDigit)]
+            print " intergral of ", hists[i].GetName(), "=", intvals[-1], ratios[-1]
+            numbers = ""
+            if doNumbers: numbers = " ("+str(ratios[i])+")"
+            mlegend.AddEntry(hists[i], lTexts[i] + numbers, "l")
+            
         mlegend.Draw()
 
+        print "  ", hname, "=", intvals[-1]
         lab = mylabel(42)
         lab.SetTextSize(0.06)
-        lab.DrawLatex(0.39, 0.855, sDict[skey][6])
+        lab.DrawLatex(0.35, 0.855, sDict[skey][6])
         nlab = mylabel(42)
         nlab.DrawLatex(0.45,0.955,energy)
 
@@ -239,9 +287,12 @@ def cv78():
         lab.SetTextSize(0.1)
 #        lab.SetTextColor(col)
 
-        pname = subfolder+hnames[i].split('_')[0]+'.pdf'
+        #pname = subfolder+hnames[i].split('_')[0]+'.pdf'
         pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/cv78_' + hnames[i].split('_')[0]+'.pdf'
         if do4TeV:
             pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/cv78_' + hnames[i].split('_')[0]+'.pdf'
-        print pname
+        elif doHLcomp:
+            pname = subfolder + "cv78_" +hnames[i].split('_')[0]+".pdf"
+            pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HLRunII/cv78_' + hnames[i].split('_')[0]+'.pdf'     
+            print pname
         cv.SaveAs(pname)

@@ -142,7 +142,7 @@ def cv35():
     cv.SetGridx(1)
     cv.SetGridy(1)
     cv.SetLogy(1)
-    hist_ir1_tct5in.GetYaxis().SetTitle('loss per primary')
+    hist_ir1_tct5in.GetYaxis().SetTitle('loss per hit on IR7 TCPs')
     hist_ir1_tct5in.GetYaxis().SetRangeUser(YurMin, YurMax)
     hist_ir1_tct5in.Draw('p')
     hist_ir1_tct5in_hB1.Draw('psame')
@@ -175,6 +175,8 @@ def cv35():
 
     pname = wwwpath
     pname += 'TCT/HL/relaxedColl/newScatt/fluka/compTCT5LINOUT_roundthin_B1_'+thisIR+'.pdf'
+
+    pname = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compTCT5LINOUT_roundthin_B1_'+thisIR+'.pdf'
 
 
     #cv.SaveAs(pname)

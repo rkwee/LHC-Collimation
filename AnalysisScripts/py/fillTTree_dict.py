@@ -272,11 +272,12 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  
  'XYNAll'+tag:[ ['all'],norm, 1200, -120, 120, tBBG, 'all', kWhite, '-9999','x [cm]','y [cm]', 1200, -120, 120, ],
  'XYNAllE100'+tag:[ ['all'],norm, 1200, -120, 120, tBBG, 'all E > 100 GeV', kWhite, '100.','x [cm]','y [cm]', 1200, -120, 120, ],
- 'XYNPhotons'+tag:[ ['7'], norm, 1200, -120, 120, tBBG, '#gamma', kWhite, '-9999','x [cm]','y [cm]', 1200, -120, 120, ],
  'XYNElecPosi'+tag:[ ['3','4'], norm, 1200, -120, 120, tBBG, 'e^{#pm}', kWhite, '-9999','x [cm]','y [cm]', 1200, -120, 120, ],
  'XYNMuons'+tag:[ ['10', '11'], norm, 1200, -120, 120, tBBG, '#mu^{#pm} ', kWhite, '-9999','x [cm]','y [cm]', 1200, -120, 120, ],
- 'XYNChar'+tag:[ ['11','3','14','16','1','10','4','15','13'], norm, 960, -120, 120, tBBG, 'p,K^{#pm},e^{#pm},#mu^{#pm},#pi^{#pm} ', kWhite, '-9999','x [cm]','y [cm]', 1200, -120, 120, ],
- 
+ 'XYNChar'+tag:[ ['11','3','14','16','1','10','4','15','13'], norm, 1200, -120, 120, tBBG, 'p,K^{#pm},e^{#pm},#mu^{#pm},#pi^{#pm} ', kWhite, '-9999','x [cm]','y [cm]', 1200, -120, 120, ],
+ 'XYNPhotons'+tag:[ ['7'], norm, 1200, -120, 120, tBBG, '#gamma', kWhite, '-9999','x [cm]','y [cm]', 1200, -120, 120, ],
+ 'XYNNeutrons'+tag:[ ['8'], norm, 1200, -120, 120, tBBG, 'neutrons E_{kin} > 1 GeV', kWhite, '-9999','x [cm]','y [cm]', 1200, -120, 120, ],
+        
  'XYNElecPosiE'+tag:[ ['3','4'], norm, 1200, -120, 120, tBBG, 'e^{#pm} 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 1200, -120, 120, ],
  'XYNPhotonsE'+tag:[ ['7'], norm, 1200, -120, 120, tBBG, '#gamma 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 1200, -120, 120, ],
  'XYNNeutronsE'+tag:[ ['8'], norm, 1200, -120, 120, tBBG, 'neutrons 10 GeV < E_{kin} < 150 GeV',kWhite, '10.:150.','x [cm]','y [cm]', 1200, -120, 120, ],
@@ -303,7 +304,9 @@ def generate_sDict( tag, norm, tBBG, yrel ):
  'XYNMuonsE10'+tag:[ ['10', '11'], norm, 1200, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 10 GeV', kWhite, '10.','x [cm]','y [cm]', 1200, -120, 120, ], 
  'XYNMuonsE100'+tag:[ ['10', '11'], norm, 1200, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 100 GeV', kWhite, '100.','x [cm]','y [cm]', 1200, -120, 120, ], 
  'XYNMuonsE500'+tag:[ ['10', '11'], norm, 1200, -120, 120, tBBG, '#mu^{#pm} E_{kin} > 500 GeV', kWhite, '500.','x [cm]','y [cm]', 1200, -120, 120, ], 
- 
+
+'XYEnMuons'+tag:[ ['10', '11'], norm, 1200, -120, 120, tBBG, '#mu^{#pm}', kWhite, '-9999','x [cm]','y [cm]', 1200, -120, 120, ],
+
  'OrigXYMuon'+tag:[ ['10', '11'],  norm, 1200, -120, 120, tBBG, '#mu^{#pm} ', kWhite, '-9999','x [cm]','y [cm]', 1200, -120, 120, ],
  'OrigXZMuon'+tag:[ ['10', '11'],  norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} ', kWhite, '-9999','z [cm]','x [cm]', 240, -120, 120, ],
  'ProfOrigXZMuon'+tag:[ ['10', '11'],  norm, 386, 2260.0, 21560.0, tBBG, '#mu^{#pm} ', kBlue-3, '-9999','z [cm]','x [cm]', 240, -120, 120, ],

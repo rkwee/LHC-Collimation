@@ -161,8 +161,8 @@ def plotSpectra(bbgFile, tag, doComp):
             cv = TCanvas( 'cv'+hkey, 'cv'+hkey, 1200, 900)
 
             gStyle.SetPalette(1)
-            cv.SetRightMargin(0.135)
-            cv.SetLeftMargin(0.1)
+            cv.SetRightMargin(0.15)
+            #cv.SetLeftMargin(-0.1)
 
             hList = hDict[hkey][0] 
             x1, y1, x2, y2 = hDict[hkey][1],hDict[hkey][2],hDict[hkey][3],hDict[hkey][4]
