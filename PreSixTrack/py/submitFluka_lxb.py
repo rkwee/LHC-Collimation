@@ -72,17 +72,17 @@ cList += [['fl_6.5TeV_offmomPlusB2_20MeV',   [gitpath + '6.5TeV/','autoRotExe_du
 
 cList += [['fluka_HL_TCT_haloB2', [sourcepath + 'HL_TCT_7TeV/fluka/'  ,'exe_tct_impacts_myexe_new/mynew.exe', '*fort.*','RANDOMIZ         1.0  9875214.','']]]
 cList += [['fl_HL_TCT5LOUT_rdB1', [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/'  ,'withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tct5otrd']]]
-cList += [['fl_HL_TCT5IN_rdB1',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tct5inrd']]]
+cList += [['fl_HL_TCT5IN_rdB1_rep',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','noStup/noStupShowHits.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tct5inrd']]]
 cList += [['fl_HL_TCT5IN_rdB2',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tcinrdb2']]]
-cList += [['fl_HL_TCT5IN_rdB2_rep',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','noStuprf/noStup.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tcinrdb2']]] # repeaat
+cList += [['fl_HL_TCT5IN_rdB2_rep',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','noStup/noStupShowHits.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tcinrdb2']]] # repeaat
 cList += [['fl_HL_TCT5LOUT_rdB2',    [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','tcotrdb2']]]
 cList += [['fluka_6.5TeV_haloB1_20MeV', [gitpath + '6.5TeV/','hybridHL.exe', '*fort.30', 'RANDOMIZ       1.0  9875214.', 'HALOB1']]]
 cList += [['fluka_6.5TeV_haloB2_20MeV', [gitpath + '6.5TeV/','hybridHL.exe', '*fort.30 *fort.*6*', 'RANDOMIZ       1.0  9875214.', 'HALOB2']]]
-cList += [['fl_HL_crabf_B1',            [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','CRBF']]]
-cList += [['fl_HL_TCT5IN_nomColl_rdB1', [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','withStuprf/hybridHL.exe', '*fort.30','RANDOMIZ         1.0  1822551.','HALB1NOM']]]
+cList += [['fl_HL_crabf_B1_rep',  [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','noStup_u31/noStupShowHits.exe', '*fort.31','RANDOMIZ         1.0  1822551.','CRBF']]]
+cList += [['fl_HL_TCT5IN_nomColl_rdB1', [sourcepath + 'HL_TCT_7TeV/fluka/hybrid/','noStup_u31/noStupShowHits.exe', '*fort.31','RANDOMIZ         1.0  1822551.','HALB1NOM']]]
 cList += [['fl_4TeV_BGcreateTrj_20MeV',  [gitpath + '4TeV/','beamgas/sourceINICON/ini1.exe', '*fort.89','RANDOMIZ         1.0  9875214.','ICON*']]]
 cList += [['fl_6.5TeV_BGcreateTrj_20MeV_OUT',[projectpath + 'beamgas/6500GeV_beamsize/inicon1/','ini.exe', '*fort.89','RANDOMIZ       1.0  9875214.','']]]
-cList += [['fl_6.5TeV_BGcreateTrj_20MeV',[projectpath + 'bgChecks3/icons/','ini.exe', '*fort.89','RANDOMIZ       1.0  9875214.','']]]
+cList += [['fl_6.5TeV_BGcreateTrj_20MeV',[projectpath + '4TeVBGnoBS/createTrajectories6p5_checkrepfix/inicons/','ini.exe', '*fort.89','RANDOMIZ       1.0  9875214.','']]]
 cList += [['fl_4TeV_BG_20MeV',    [gitpath + '4TeV/','beamgas/sourceBeamGasCorr/bg_4TeV.exe', '*fort.67 *fort.91','RANDOMIZ         1.0  9875214.','BGASA']]] # correction was in the writing out
 cList += [['fl_4TeV_BG_20GeV',    [gitpath + '4TeV/','beamgas/sourceBeamGasCorr/bg_4TeV.exe', '*fort.67 *fort.91','RANDOMIZ         1.0  9875214.','BGASA']]] 
 cList += [['fl_6.5TeV_BG_20MeV', [gitpath + '6.5TeV/','beamgas/sourceBG/BG.exe', '*fort.67 *fort.91','RANDOMIZ         1.0  9875214.','BGASB']]] 
@@ -125,7 +125,7 @@ afsRunMain = myStdOut.split()[0] + '/'
 
 crabfolder  = ''
 if ckey.count('crab'): 
-    afsRunMain  = "/afs/cern.ch/project/lhc_mib/tct_simulations/FlukaRuns/"
+    afsRunMain  = "/afs/cern.ch/project/lhc_mib/crabcfb1/"
     crabfolder  = 'crabcf/'
 
 if ckey.count('4TeV') and ckey.count('createTr'): 
@@ -136,7 +136,7 @@ elif ckey.count('4TeV') and ckey.count('BG_'):
 elif ckey.count('6.5TeV'):
     if ckey.count('createTr'): 
         afsRunMain  = "/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/inicon1/"
-        afsRunMain  = "/afs/cern.ch/project/lhc_mib/bgChecks3/icons/"
+        afsRunMain  = "/afs/cern.ch/project/lhc_mib/4TeVBGnoBS/createTrajectories6p5_checkrepfix/"
     elif  ckey.count('BG_'): 
         afsRunMain  = "/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/"
 
@@ -235,8 +235,8 @@ elif ckey.count("6.5TeV"):
     elif ckey.count('createTr'):
         inpFile  = source_dir + 'ir1_6500GeV_'+beam+'_'+enCut+'_orbitDumpINICON.inp'
         haloData = ''
-        for i in range(1,101):
-            inputFiles += [source_dir +'icon'+str(i)+'.dat']
+        for i in range(1,501): # no 0 generated, use this number for local tests
+            inputFiles += [source_dir +'ICON'+str(i)+'.dat']
     else:
         haloData = ''
 
@@ -258,7 +258,7 @@ elif ckey.count("HL"):
     magfile1    = source_dir + 'MBXF.dat'
     magfile2    = source_dir + 'MQXFv3.dat'
     magfile3    = source_dir + 'MQYana.dat'
-    #    inpFile     = source_dir + beam + '/' + crabfolder + 'hilumi_ir1'+beam+'_exp_20MeV_nominalCollSett.inp'
+    #inpFile     = source_dir + beam + '/' + crabfolder + 'hilumi_ir1'+beam+'_exp_20MeV_nominalCollSett.inp'
 
     inpFile     = source_dir + beam + '/' + crabfolder + 'hilumi_ir1_hybrid_'+beam+'_exp_20MeV.inp'
     inputFiles  = [haloData,magfile1,magfile2,magfile3, inpFile, flukaExe]
