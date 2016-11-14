@@ -23,17 +23,21 @@ tag_BH_3p5TeV = "_BH_3p5TeV_B1_20MeV"
 tag_BG_3p5TeV = "_BG_3p5TeV_20MeV"
 
 tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
-tag_BH_4TeV = '_offmin500Hz_4TeV_B2_20MeV'
-tag_BH_4TeV = '_offplus500Hz_4TeV_B2_20MeV'
-#tag_BH_4TeV = '_BH_4TeV_B2_20MeV'
+tag_BH_4TeV = '_BH_4TeV_B2_20MeV'
+#tag_BH_4TeV = '_BH_4TeV_B1_20MeV'
+#tag_BH_4TeV = '_offmin500Hz_4TeV_B2_20MeV'
+#tag_BH_4TeV = '_offplus500Hz_4TeV_B2_20MeV'
 #tag_BH_4TeV = '_BH_4TeV_B2_20GeV'
 #tag_BH_4TeV = '_BH_4TeV_B2_20GeV_from20MeV'
 
 tag_BG_4TeV = '_BG_4TeV_20MeV'
+tag_BG_4TeV = '_BG_4TeV_20MeV_bs'
 
 tag_BH_7TeV = '_BH_HL_tct5inrdB1_nomCollSett_20MeV'
-#tag_BH_7TeV = '_BH_HL_tct5inrdB1_20MeV'
-#tag_BH_7TeV = '_BH_HL_tct5otrdB2_20MeV'
+tag_BH_7TeV = '_BH_HL_tct5inrdB1_20MeV'
+tag_BH_7TeV = '_BH_HL_tct5otrdB2_20MeV'
+tag_BH_7TeV = '_BH_HL_tct5otrdB1_20MeV'
+tag_BH_7TeV = '_BH_HL_tct5inrdB2_20MeV'
 
 tag_crab_HL = '_crabcf_tct5inrdb1_20MeV'
 #tag_crab_HL = '_crabcf_tct5inrdb1_modTAN_20MeV'

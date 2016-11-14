@@ -72,11 +72,13 @@ def do1dLogHisto(sDict, mt, hname, xaxis, particleTypes):
     if debug: print 'INFO: Have ', hist.GetEntries(), ' entries in', hname
 
     # This second loop changes the Get.Entries() value by number of bins!!
-    for bin in range(1,nbins+1):
-        content = hist.GetBinContent(bin)
-        width   = hist.GetBinWidth(bin)
-        bcenter = hist.GetXaxis().GetBinCenterLog(bin)
-        hist.SetBinContent(bin,bcenter*content/width)
+    for b in range(1,nbins+1):
+        content = hist.GetBinContent(b)
+        width   = hist.GetBinWidth(b)
+        bcenter = hist.GetXaxis().GetBinCenterLog(b)
+        errorst = hist.GetBinError(b)
+        hist.SetBinContent(b,bcenter*content/width)
+        hist.SetBinError(b,bcenter*errorst/width)
 
     return hist
 # ---------------------------------------------------------------------------------
