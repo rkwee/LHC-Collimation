@@ -488,7 +488,7 @@ def doOrigYZHisto(sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, parti
 
     return hist
 # ---------------------------------------------------------------------------------
-def do2dScatHisto(var, sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes):
+def do2dScatHisto(var, hType, sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes):
 
     hist = TH2F(hname, hname, nbins, xmin, xmax, ynbins, ymin, ymax)
     cuts = []
@@ -521,8 +521,15 @@ def do2dScatHisto(var, sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, 
       pcut  = '||'.join(pcuts)
       cuts += ['('+ pcut + ')']
 
-    if cuts: cut = 'weight * (' + ' && '.join(cuts) + ')'
-    else: cut = 'weight'
+    if hType=="XYN":
+        if cuts: cut = 'weight * (' + ' && '.join(cuts) + ')'
+        else: cut = 'weight'
+    elif hType == "XYEn":
+        if cuts: cut = 'energy_ke * weight * (' + ' && '.join(cuts) + ')'
+        else: cut = 'energy_ke * weight'
+    else:
+        print "ERROR define what histogram type: multiplicity or energy! "
+        sys.exit()
 
     if debug: print 'INFO: will apply a cut of ', cut, 'to', hname
     mt.Project(hname, var, cut)
@@ -615,7 +622,11 @@ def getHistogram(sDict, skey, mt):
 
     elif hname.startswith("XYN"):        
         var = 'y:x'
-        hist  = do2dScatHisto(var,sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes) 
+        hist  = do2dScatHisto(var,"XYN",sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes) 
+
+    elif hname.startswith("XYEn"):        
+        var = 'y:x'
+        hist  = do2dScatHisto(var,"XYEn",sDict, mt, hname, nbins, xmin, xmax, ynbins, ymin, ymax, particleTypes) 
 
     return hist
 # ---------------------------------------------------------------------------------
@@ -665,7 +676,7 @@ def fillHistos(bbgFile, tag, doComp):
        cnt += 1
 
 
-       # shorten!!
+       # shorten for testing, useful for large size files and new functionality!!
        # if skey.count('RadNMuons_'): pass
        # elif skey.count('RadNNeutrons_'): pass
        # else: continue
