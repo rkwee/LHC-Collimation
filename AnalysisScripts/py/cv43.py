@@ -18,21 +18,21 @@ def cv43():
 
     sets = [
 
-    # # flat beam HL
-    #     [gitpath  + "SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b1/collgaps.dat.TCT5LIN",\
-    #          workpath + "runs/HL_TCT5INOUT_relSett/impacts_real_HL_TCT5IN_relaxColl_HaloB1_flatthin.txt.root", \
-    #          workpath + "runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin/run_test/collgaps.dat",\
-    #          'TCT/HL/relaxedColl/newScatt/', 'HL flat B1 ', 1., \
-    #          100,0., 20.,
-    #         ],
+    # flat beam HL
+        [gitpath  + "SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b1/collgaps.dat.TCT5LIN",\
+             workpath + "runs/HL_TCT5INOUT_relSett/impacts_real_HL_TCT5IN_relaxColl_HaloB1_flatthin.txt.root", \
+             workpath + "runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin/run_test/collgaps.dat",\
+             'TCT/HL/relaxedColl/newScatt/', 'HL flat B1 ', 1., \
+             100,0., 20.,
+            ],
 
-    #     # nomCollSett HL
-    #     [ projectpath + 'HL1.0/H5_HL_nomSett_hHalo_b1/coll_summary_H5_HL_nomSett_hHalo_b1.dat',\
-    #           projectpath + 'HL1.0/impacts_real_HL_TCT5IN_nomColl_haloB1.txt.root',\
-    #           projectpath + 'HL1.0/test/run_00002/collgaps.dat',\
-    #           'TCT/HL/nominalColl/2015/', 'HL nominal coll.', 1.,
-    #           100,0., 20.,
-    #         ],
+        # # nomCollSett HL
+        # [ projectpath + 'HL1.0/H5_HL_nomSett_hHalo_b1/coll_summary_H5_HL_nomSett_hHalo_b1.dat',\
+        #       projectpath + 'HL1.0/impacts_real_HL_TCT5IN_nomColl_haloB1.txt.root',\
+        #       gitpath+ 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_nominalCollSettings/b1/collgaps.dat.TCT5IN',\
+        #       'TCT/HL/nominalColl/2015/', 'HL nominal coll.', 1.,
+        #       100,0., 20.,
+        #     ],
 
     #     [ workpath + "runs/H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin.dat", \
     #           workpath + 'runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/b1/tct5inrd.dat.root', \
@@ -42,38 +42,38 @@ def cv43():
     #           100,0., 20.,
     #       ],
 
-    #    [ workpath + "runs/H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin.dat", \
-    #           workpath + 'runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/b1/tct5inrd.dat.root', \
-    #           gitpath  + "SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b1/collgaps.dat.TCT5LIN",\
-    #           'TCT/HL/relaxedColl/newScatt/', \
-    #           'HL 7 TeV B1', 0.1, \
-    #           100,0., 20.,
-    #       ],
+       # [ workpath + "runs/H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin.dat", \
+       #        workpath + 'runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/b1/tct5inrd.dat.root', \
+       #        gitpath  + "SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b1/collgaps.dat.TCT5LIN",\
+       #        'TCT/HL/relaxedColl/newScatt/', \
+       #        'HL 7 TeV B1', 0.1, \
+       #        100,0., 20.,
+       #    ],
 
-    #     [ workpath + "runs/H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin.dat", \
-    #           workpath + 'runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/b1/tct5otrd.dat.root', \
-    #           gitpath  + "SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b1/collgaps.dat.TCT5LOFF",\
-    #           'TCT/HL/relaxedColl/newScatt/', \
-    #           'HL 7 TeV B1', 0.07, \
-    #           100,0., 20.,
-    #       ],
+       #  [ workpath + "runs/H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin/coll_summary_H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin.dat", \
+       #        workpath + 'runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/b1/tct5otrd.dat.root', \
+       #        gitpath  + "SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b1/collgaps.dat.TCT5LOFF",\
+       #        'TCT/HL/relaxedColl/newScatt/', \
+       #        'HL 7 TeV B1', 0.07, \
+       #        100,0., 20.,
+       #    ],
 
         # [ gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LIN',\
         #       workpath + 'runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/b2/tcinrdb2.dat.root', \
         #       gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LIN',\
         #       'TCT/HL/relaxedColl/newScatt/', \
         #       'HL 7 TeV B2', 0.07, \
-        #       100,0., 10.,
+        #       100,0., 20.,
         #   ],
 
-        [ gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LOUT',\
-              workpath + 'runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/b2/tcotrdb2.dat.root', \
-              gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LOUT',\
-              'TCT/HL/relaxedColl/newScatt/', \
-              'HL 7 TeV B2', 0.07, \
-              100,0., 20.,
+        # [ gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LOUT',\
+        #       workpath + 'runs/sourcedirs/HL_TCT_7TeV/fluka/hybrid/b2/tcotrdb2.dat.root', \
+        #       gitpath + 'SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b2/collgaps.dat.TCT5LOUT',\
+        #       'TCT/HL/relaxedColl/newScatt/', \
+        #       'HL 7 TeV B2', 0.07, \
+        #       100,0., 20.,
 
-          ],
+        #   ],
         
         # [ workpath + 'runs/6.5TeV_hHaloB1_h5/coll_summary_6.5TeV_hHaloB1_h5.dat', \
         #       gitpath + 'FlukaRoutines/6.5TeV/b1/HALOB1.dat.root', \

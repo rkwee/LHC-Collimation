@@ -12,13 +12,16 @@ from array import array
 # -----------------------------------------------------------------------------------
 def cv39():
 
+    gamma_rel = 4.e3/0.938
+    energy = '4TeV'
+
     # twiss file
     # tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/twiss_lhcb1_med_new_thin_800.tfs')
     # tf = pymadx.Tfs('/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/MED800/B1/1cm/twiss_lhcb1_med_new_thin_800_1cm.tfs')
-    tf = pymadx.Tfs("/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/4TeV/beamgas/twiss_4tev_b1.data")
+    # tf = pymadx.Tfs("/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/4TeV/beamgas/twiss_4tev_b1.data")
+    tf = pymadx.Tfs("/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/SixTrackConfig/6.5TeV/background_2015_80cm/MADX_2015/twiss_b2.tfs")
     gamma_rel = 6.5e3/0.938
-    gamma_rel = 4.e3/0.938
-    energy = '4TeV'
+    energy = "6.5TeV"
 
     BETX = tf.GetColumn('BETX')
     BETY = tf.GetColumn('BETY')
@@ -33,7 +36,7 @@ def cv39():
     IP8  = tf.GetColumnDict('S')['IP8']
 
     # no shift if val is length
-    shiftVal = length_LHC-500
+    shiftVal = length_LHC#-500
 
     cnt = 0
 
@@ -51,14 +54,14 @@ def cv39():
         #print "using", s_shifted
 
     S_shifted.sort()
-    XurMin, XurMax = length_LHC-550, length_LHC
-    rel = '_orbit_IR1Left_4TeV'
     lShift = 0.5
 
-    # XurMin, XurMax = 0,548.
+    XurMin, XurMax = 0,548.
+    XurMin, XurMax = -1,-1
+    XurMin, XurMax = length_LHC-500, length_LHC
     # rel = '_sigma_IR1Right_1cm'
-    # rel = '_sigma_IR1Right_4TeV'
-    # rel = '_orbit_IR1_4TeV'
+    # rel = '_sigma_IR1Left_'+energy
+    rel = 'from_twiss_orbit_IR1'
     # lShift = 0.0
 
     # XurMin, XurMax = IP5-300, IP5+300
@@ -79,7 +82,7 @@ def cv39():
 
     mg = TMultiGraph()
     # marker in legend
-    lm = 'lp'
+    lm = 'l'
 
     emittance_norm = 3.5e-6
     emittance_geo = emittance_norm/gamma_rel
@@ -97,12 +100,12 @@ def cv39():
     # mg.Add(g1)
     ytitle = 'beam size [m]'
 
-    # xList, yList, color, mStyle, lg = S_shifted, X, kGreen+1, 21, "x"
-    # g1 = makeTGraph(xList, yList, color, mStyle)
-    # mlegend.AddEntry(g1, lg, lm) 
-    # mg.Add(g1)
+    xList, yList, color, mStyle, lg = S_shifted, X, kGreen+1, 21, "x [m]"
+    g1 = makeTGraph(xList, yList, color, mStyle)
+    mlegend.AddEntry(g1, lg, lm) 
+    mg.Add(g1)
 
-    xList, yList, color, mStyle, lg = S_shifted, Y, kBlue-1, 20, "y"
+    xList, yList, color, mStyle, lg = S_shifted, Y, kBlue-1, 20, "y [m]"
     g2 = makeTGraph(xList, yList, color, mStyle)
     mlegend.AddEntry(g2, lg, lm) 
     mg.Add(g2)
@@ -120,17 +123,17 @@ def cv39():
     YurMin, YurMax = 0, 0.0019
     l.SetLineColor(kRed)
 
-    s = 22.6
-    l.DrawLine(s,YurMin,s,YurMax)
+    # s = 22.6
+    # l.DrawLine(s,YurMin,s,YurMax)
 
-    s = 59.
-    l.DrawLine(s,YurMin,s,YurMax)
+    # s = 59.
+    # l.DrawLine(s,YurMin,s,YurMax)
 
-    s = 153.
-    l.DrawLine(s,YurMin,s,YurMax)
+    # s = 153.
+    # l.DrawLine(s,YurMin,s,YurMax)
 
-    s = 269.
-    l.DrawLine(s,YurMin,s,YurMax)
+    # s = 269.
+    # l.DrawLine(s,YurMin,s,YurMax)
 
     mg.GetYaxis().SetTitle(ytitle)
     mg.GetXaxis().SetTitle('s [m]')
@@ -141,7 +144,15 @@ def cv39():
 
     pname  = wwwpath
     subfolder = 'TCT/'+energy+'/beamgas/'
-    pname += subfolder + 'twiss_b1'+rel+'.pdf'
+    pname += subfolder + ytitle +'_'+rel.replace(".", "p")+'.pdf'
+
+    print('Saving file as ' + pname ) 
+    cv.Print(pname)
+
+    pname  = wwwpath
+    subfolder = 'TCT/'+energy+'/beamgas/'
+    pname += subfolder + 'from_twiss_'+rel.replace(".", "p")+'.png'
+
 
     print('Saving file as ' + pname ) 
     cv.Print(pname)
