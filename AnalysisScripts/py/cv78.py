@@ -41,8 +41,10 @@ def cv78():
     # IR5 B2: h:( 43718962.0 IR7,  302.0 protons ), v(53000835.0, 106.0 protons. )
     # 0.5 * (302.0/43718962.0 + 106.0/53000835.0) = 4.4538612500709768e-06
 
+    # steer
     do4TeV,do6500GeV = 0,0
     doHLcomp = 1
+    doNumbers = 0
     # ------------------------------------------------------------------------
     if do4TeV:
 
@@ -71,7 +73,7 @@ def cv78():
         mars   = [33, 20, 24, 22, 23 ]
         dOpt   = [ 'hp', 'hsame', 'hsame', 'hsame', 'hsame']
         scalf  = [ 1., norm4TeVB1newHalo, norm4TeVB2newHalo, norm4TeVoffmomPLUS500, norm4TeVoffmomMINUS500]
-
+        roundingDigit = 4
     elif do6500GeV:
 
         energy = "6.5 TeV"
@@ -89,9 +91,9 @@ def cv78():
         mars   = [ 33, 20, 24 ]
         dOpt   = [ 'hist', 'histsame', 'histsame']
         scalf  = [1., norm6500GeVB1, norm6500GeVB2]
-
+        roundingDigit = 3
     elif doHLcomp:
-
+        roundingDigit = 3
         energy = ""
         f1 = thispath + 'results_pressure2015_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
         f2 = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
@@ -144,8 +146,9 @@ def cv78():
         #elif not skey.count('PhiEn'): continue
                
         cv = TCanvas( 'cv'+skey, 'cv'+skey,  10, 10, 1200, 900 )     
-
-        x1, y1, x2, y2 = 0.5,0.73,0.95,0.93 # right corner        
+        xpos = 0.65
+        if doNumbers: xpos = 0.5
+        x1, y1, x2, y2 = xpos,0.73,0.95,0.93 # right corner        
 
         if 0:# skey.count("PhiEnAll") or skey.count("PhiEnPhot") or skey.count("PhiNAllE") or skey.count("PhiNP") or skey.count("EnPro"):
             x1, y1, x2, y2 = 0.2,0.75,0.44,0.93 # left corner
@@ -234,8 +237,11 @@ def cv78():
                 XurMin, XurMax = -3.14, 3.01
                 YurMin, YurMax = 1e-1*max(Ymax), max(Ymax)*1e4
                 if hnames[i].count("En"):
-                    YurMin, YurMax = 1e-5*max(Ymax), max(Ymax)*5e4
-                    
+                    YurMin, YurMax = 3e3,2e10
+
+                    if not hnames[i].count("All") and not hnames[i].count("Prot"):
+                        YurMin, YurMax = 1e2,1e7
+                        
             elif hnames[i].count("Ekin"):
                 YurMin, YurMax = 1e-2,8e10
 
@@ -262,9 +268,11 @@ def cv78():
                 hists[i].GetXaxis().SetTitle(xtitle)
                 hists[i].Draw(dOpt[i])
 
-            ratios += [round(intvals[-1]/intvals[0], 3)]
+            ratios += [round(intvals[-1]/intvals[0], roundingDigit)]
             print " intergral of ", hists[i].GetName(), "=", intvals[-1], ratios[-1]
-            mlegend.AddEntry(hists[i], lTexts[i] + " ("+str(ratios[i])+")", "l")
+            numbers = ""
+            if doNumbers: numbers = " ("+str(ratios[i])+")"
+            mlegend.AddEntry(hists[i], lTexts[i] + numbers, "l")
             
         mlegend.Draw()
 
@@ -285,6 +293,6 @@ def cv78():
             pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/cv78_' + hnames[i].split('_')[0]+'.pdf'
         elif doHLcomp:
             pname = subfolder + "cv78_" +hnames[i].split('_')[0]+".pdf"
-        
+            pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HLRunII/cv78_' + hnames[i].split('_')[0]+'.pdf'     
             print pname
         cv.SaveAs(pname)
