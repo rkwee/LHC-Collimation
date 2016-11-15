@@ -18,24 +18,27 @@ import cv84
 from cv79 import pData
 # --------------------------------------------------------------------------------
 def cv86():
-    bbgFile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/FL_TCT5In_retracted_rdB2_fixgaps/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
-    #bbgFile = projectpath + 'HL1.0/FL_TCT5In_retracted_rdB2_fixgaps/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
-    tag  = '_BH_HL_tct5inrdB2_20MeV'
-    cname = "checkB2tct5in"
 
     bbgFile = "/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b1_exp_20MeV_nprim4050000_30.root"
     tag  = '_BH_HL_tct5inrdB1_20MeV'
     cname = "checkB1tct5in"
 
-    doTCT4only = 1
+    bbgFile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b2_exp_20MeV_nprim5924500_30.root'
+    #bbgFile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
+    #bbgFile = projectpath + 'HL1.0/FL_TCT5In_retracted_rdB2_fixgaps/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
+    tag  = '_BH_HL_tct5inrdB2_20MeV'
+    cname = "checkB2tct5in"
+
+    doTCT4only = 0
     if doTCT4only:
-        cname = "checkB2tct4only"
-        bbgFile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
-        tag =  '_BH_HL_tct5otrdB2_20MeV'
+
         cname = "checkB1tct4only"
         bbgFile = thispath + 'hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'
         tag =  '_BH_HL_tct5otrdB1_20MeV'
 
+        cname = "checkB2tct4only"
+        bbgFile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
+        tag =  '_BH_HL_tct5otrdB2_20MeV'
 
     print "Opening", bbgFile
 
@@ -61,8 +64,8 @@ def cv86():
         elif skey.count("Pio") or skey.count("Kao"): continue
 
         # for testing!!
-        if not skey.startswith("EkinAll"): continue
-
+        if not skey.startswith("EkinAll_"): continue
+        doEkinHist = 1
         sk += [skey]
         
         print "histogram ", len(sk)+1, "."*33, skey
@@ -128,15 +131,19 @@ def cv86():
         tct4Cut = "((z_interact > "+str(tct4a)+" && z_interact <= "+str(tct4b)+" ) || (z_interact > "+str(tct4c)+" && z_interact <= "+str(tct4d)+"))"
         tct5Cut = "((z_interact > "+str(tct5a)+" && z_interact <= "+str(tct5b)+" ) || (z_interact > "+str(tct5c)+" && z_interact <= "+str(tct5d)+"))"
 
+        
         # B2
-        n4 = (6678+83.)
-        n5 = (14914+304.)
+        if cname.count("B2"):
+            n4 = (6678+83.)
+            n5 = (14914+304.)
+        else:
+            
+            # B1
+            n4, n5 = 2460., 10600.
 
-        # B1
-        n4, n5 = 2460., 10600.
+            
         sumn4n5 = n4+n5
-
-        #nprim4 = 7./22*nprim
+     
         nprim4 = n4/sumn4n5*nprim
         nprim5= n5/sumn4n5*nprim
         if doTCT4only:nprim5 = nprim        
@@ -147,7 +154,8 @@ def cv86():
         cuts = "weight * "+energyweight+"("+" && ".join(cuts) + ") "
         print "INFO: applying", cuts, "to", var, "in", hname4
         mt.Project(hname4, var, cuts)
-        hist4 = cv84.doEkin(hist4,hist4.GetNbinsX())
+        if doEkinHist: hist4 = cv84.doEkin(hist4,hist4.GetNbinsX())
+        else: hist4 = cv84.doPhi(hist4,hist4.GetNbinsX())
         entries4 =hist4.Integral()/nprim4
         
 
@@ -156,14 +164,16 @@ def cv86():
         cuts = "weight * "+energyweight+"("+" && ".join(cuts) + ") "
         print "INFO: applying", cuts, "to", var, "in", hname5
         mt.Project(hname5, var, cuts)
-        hist5 = cv84.doEkin(hist5, hist5.GetNbinsX())
+        if doEkinHist: hist5 = cv84.doEkin(hist5, hist5.GetNbinsX())
+        else: hist5 = cv84.doPhi(hist5, hist5.GetNbinsX())
         entries5 = hist5.Integral()/nprim5
 
         if doTCT4only:
             print "INFO: applying", encut, "to", var, "in", hname5
             print "overwriting previous histogram!!!!!"
             mt.Project(hname5, var ,encut)
-            hist5 = cv84.doEkin(hist5,hist5.GetNbinsX())
+            if doEkinHist: hist5 = cv84.doEkin(hist5,hist5.GetNbinsX())
+            else: hist5 = cv84.doPhi(hist5,hist5.GetNbinsX())
             entries5 = hist5.Integral()/nprim5
 
         else:
@@ -172,32 +182,36 @@ def cv86():
             print "ratio", (n4*entries4+n5*entries5)/sumn4n5
             
 
+        print "GetEntries 4 ",hist4.GetEntries()
+        print "GetEntries 5 ",hist5.GetEntries()
+
+
+        hist4.Scale(1./nprim)
+        hist5.Scale(1./nprim)
         print "integral 4 ",hist4.Integral()
         print "integral 5 ",hist5.Integral()
 
+        inth4, inth5 = 0, 0
+        for i in range(1, hist4.GetNbinsX()+1):
+            inth4 += hist4.GetBinContent(i)
+            inth5 += hist5.GetBinContent(i)
+        print "inth4", inth4
+        print "inth5", inth5
+        print "inth4+5", inth4+inth5
+        
         print "INFO: applying", cuts, "to", var, "in", hnameControl
         mt.Project(hnameControl, var, encut)
-        histControl = cv84.doEkin(histControl,histControl.GetNbinsX())
+        if doEkinHist: histControl = cv84.doEkin(histControl,histControl.GetNbinsX())
+        else: histControl = cv84.doPhi(histControl,histControl.GetNbinsX())
         entriesCont = histControl.Integral()
 
         print "entries controlhist ",histControl.Integral()
         print "Is the sum of tct4 and 5 the same as in control hist? If tct4only case this number doesnt make sense.", \
             hist4.Integral(),hist5.Integral(), hist4.Integral()+hist5.Integral()
-        
-        # This loop changes the Get.Entries() value by number of bins!!
-        for bin in range(1,nbins+1):
-            content = hist4.GetBinContent(bin)
-            width   = hist4.GetBinWidth(bin)
-            bcenter = hist4.GetXaxis().GetBinCenterLog(bin)
-            hist4.SetBinContent(bin,bcenter*content/width)
-            content = hist5.GetBinContent(bin)
-            width   = hist5.GetBinWidth(bin)
-            bcenter = hist5.GetXaxis().GetBinCenterLog(bin)
-            hist5.SetBinContent(bin,bcenter*content/width)
 
         cv = TCanvas(skey+ 'cv',skey+ 'cv', 1400, 900)
-        cv.SetLogx(1)
-        cv.SetLogy(1)
+        cv.SetLogx(0)
+        cv.SetLogy(0)
         # right corner
         x1, y1, x2, y2 = 0.6, 0.75, 0.9, 0.88
         mlegend = TLegend( x1, y1, x2, y2)
@@ -210,6 +224,7 @@ def cv86():
         #XurMin, XurMax = 120.e2, 218e2
         #xtitle,ytitle = "z [cm]", "entries"
         xtitle,ytitle = "E [GeV]", "dN/dlogE/TCT hit"
+        xtitle,ytitle = "#phi [rad]", "#phi/rad//TCT hit"
         hist4.GetXaxis().SetTitle(xtitle)
         hist4.GetYaxis().SetTitle(ytitle)
         #hist5.GetXaxis().SetRangeUser(XurMin, XurMax)
