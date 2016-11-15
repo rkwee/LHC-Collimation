@@ -580,9 +580,6 @@ def cv16():
             histDenom = histDenom.ProjectionX()
 
         
-        entriesN = histNum.GetEntries()
-        entriesD = histDenom.GetEntries()
-
         print "histNum.GetNbinsX(), histDenom.GetNbinsX()", histNum.GetNbinsX(), histDenom.GetNbinsX()
 
 
@@ -676,8 +673,6 @@ def cv16():
 
         hnameRatio = 'ratio'+hnameNum
         hRatio = histNum.Clone(hnameRatio)
-        histNum.Scale(1./normNum)
-        histDenom.Scale(1./normDenom)
         
         hRatio.Divide(histNum, histDenom, 1, 1)
         hRatio.SetLineStyle(1)
