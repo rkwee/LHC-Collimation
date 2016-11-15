@@ -270,31 +270,31 @@ def cv16():
     # dColor, nColor = kPink-1, kBlue-1
     
 
-    # fNum = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
-    # fDenom = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim6466000_30.root'
-    # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINB1B2/perTCThit/'
-    subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compINB1B2_retracted/perTCThit/"    
-    fNum = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim4050000_30.root"
-    fDenom = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root"
-    lTextNum = 'TCT5 in, B1'
-    lTextDenom = 'TCT5 in, B2'
-    tagDenom, tagNum = '_BH_HL_tct5inrdB2_20MeV', '_BH_HL_tct5inrdB1_20MeV'
-    #normDenom, normNum,yrel =  1./normTCT5INb2, 1./normTCT5INb1, "/s"
-    normDenom, normNum,yrel =  1., 1., "/TCT hit"
-    dColor, nColor = kPink, kBlue+2
+    # # fNum = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
+    # # fDenom = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim6466000_30.root'
+    # # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINB1B2/perTCThit/'
+    # subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compINB1B2_retracted/perTCThit/"  
+    # fDenom = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5550000_30.root"
+    # fNum = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5924500_30.root"
+    # lTextDenom = 'TCT5 in, B1'
+    # lTextNum = 'TCT5 in, B2'
+    # tagNum, tagDenom = '_BH_HL_tct5inrdB2_20MeV', '_BH_HL_tct5inrdB1_20MeV'
+    # normNum, normDenom,yrel =  1./normTCT5INb2, 1./normTCT5INb1, "/s"
+    # normDenom, normNum,yrel =  1., 1., "/TCT hit"
+    # nColor, dColor = kPink, kBlue+2
 
 
-    # fNum = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root"
-    # fDenom = thispath + "FL_TCT5In_retracted_rdB2_fixgaps/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root"
-    # subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compINOUTB2_retracted/perTCThit/"
-    # # # fNum = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5LOUT_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'    
-    # # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINOUTB2/perTCThit/'
-    # lTextNum = 'TCT4 only'
-    # lTextDenom = 'TCT5 in'
-    # # normDenom, normNum, yrel = 1./normTCT5INb2, 1./normTCT5LOUTb2, '/s'
-    # normDenom, normNum, yrel = 1., 1., '/TCT hit'
-    # tagNum, tagDenom = '_BH_HL_tct5otrdB2_20MeV', '_BH_HL_tct5inrdB2_20MeV'
-    # dColor, nColor = kGreen-2, kMagenta+1
+    fNum = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root"
+    fDenom = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5924500_30.root"
+    subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compINOUTB2_retracted/perTCThit/"
+    # # fNum = workpath + 'runs/HL_TCT5INOUT_relSett/FL_TCT5LOUT_roundthin_B2/results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'    
+    # subfolder = wwwpath + 'TCT/HL/relaxedColl/newScatt/fluka/compINOUTB2/perTCThit/'
+    lTextNum = 'TCT4 only'
+    lTextDenom = 'TCT5 in'
+    # normDenom, normNum, yrel = 1./normTCT5INb2, 1./normTCT5LOUTb2, '/s'
+    normDenom, normNum, yrel = 1., 1., '/TCT hit'
+    tagNum, tagDenom = '_BH_HL_tct5otrdB2_20MeV', '_BH_HL_tct5inrdB2_20MeV'
+    dColor, nColor = kGreen-2, kMagenta+1
 
 
     # fDenom = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
@@ -394,13 +394,13 @@ def cv16():
     # # fNum = projectpath + 'HL1.0/FL_HL_TCT5IN_nomCollSett_haloB1/results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root'
     # # fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
     # # subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/perTCThit/'
-    # subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compNomRetrCollSett/perTCThit/"
+    # subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compNomRetrCollSett/normalised/"
     # fDenom = thispath + "results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root"
     # fNum = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
     # lTextDenom = 'nominal'
     # lTextNum = 'retracted'
-    # #normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
-    # normDenom, normNum, yrel = 1., 1., '/TCT hit'
+    # normNum, normDenom, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
+    # #normDenom, normNum, yrel = 1., 1., '/TCT hit'
     # tagNum,tagDenom =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
     # dColor, nColor = kMagenta-2, kBlue-2
 
@@ -465,7 +465,7 @@ def cv16():
         if skey.count('Sel'): continue
 
         # testing
-        #if not skey.count('Phi'): continue
+        if not skey.count('EkinAll_'): continue
         goLeft = 0
         if skey.count("Phi"): goLeft = 1
 
@@ -520,7 +520,7 @@ def cv16():
             p1.SetLogy(1)
             isLogy = 1
             XurMin, XurMax = 0.0, 1190.
-            YurMin, YurMax = scalefactorNorm*2e-12,scalefactorNorm*9e-2
+            #YurMin, YurMax = scalefactorNorm*2e-12,scalefactorNorm*9e-2
             if skey.count("reweighted"):
                 YurMin, YurMax = 2,1e9
                 if skey.count("Mu"):
@@ -535,9 +535,10 @@ def cv16():
                     YurMin, YurMax = 2e3,9e6
             
             if skey.count('PhiN'):
+                
                 p1.SetLogy(1)
                 if skey.endswith("reweighted"): YurMin, YurMax = 1e5,9e9
-            
+
         if skey.count('Zcoor'):
             p1.SetLogy(1)
             p1.SetGridx(1)
@@ -581,15 +582,6 @@ def cv16():
         
         entriesN = histNum.GetEntries()
         entriesD = histDenom.GetEntries()
-        integralNum = histNum.Integral() #0
-        integralDenom = histDenom.Integral() #0
-        if integralDenom:
-            ratioIntegrals = integralNum/integralDenom
-            print "integralNum, integralDenom", integralNum, integralDenom,integralNum/integralDenom
-        # for b in range(histNum.GetNbinsX()):
-        #     integralNum+=histNum.GetBinContent(b+1)*histNum.GetBinWidth(b+1)
-        #     integralDenom+=histDenom.GetBinContent(b+1)*histDenom.GetBinWidth(b+1)
-        
 
         print "histNum.GetNbinsX(), histDenom.GetNbinsX()", histNum.GetNbinsX(), histDenom.GetNbinsX()
 
@@ -620,6 +612,14 @@ def cv16():
         print 'normalised factors',normNum, normDenom
         histNum.Scale(1./normNum)
         histDenom.Scale(1./normDenom)
+        integralNum = histNum.Integral() #0
+        integralDenom = histDenom.Integral() #0
+        # for b in range(histNum.GetNbinsX()):
+        #     integralNum+=histNum.GetBinContent(b+1)*histNum.GetBinWidth(b+1)
+        #     integralDenom+=histDenom.GetBinContent(b+1)*histDenom.GetBinWidth(b+1)
+        if integralDenom:
+            ratioIntegrals = integralNum/integralDenom
+            print "here: integralNum, integralDenom", integralNum, integralDenom,integralNum/integralDenom
 
         ls = 0.4
         histNum.GetXaxis().SetLabelSize(ls)
@@ -676,6 +676,8 @@ def cv16():
 
         hnameRatio = 'ratio'+hnameNum
         hRatio = histNum.Clone(hnameRatio)
+        histNum.Scale(1./normNum)
+        histDenom.Scale(1./normDenom)
         
         hRatio.Divide(histNum, histDenom, 1, 1)
         hRatio.SetLineStyle(1)
@@ -686,10 +688,10 @@ def cv16():
         hRatio.SetMarkerSize(msize)
         hRatioInt=0
         hWidth=0
-        for b in range(histNum.GetNbinsX()):
-            hRatioInt+=hRatio.GetBinContent(b+1)*hRatio.GetBinWidth(b+1)
-            hWidth+=hRatio.GetBinWidth(b+1)
-        #print hRatioInt/hWidth
+        # for b in range(histNum.GetNbinsX()):
+        #     hRatioInt+=hRatio.GetBinContent(b+1)*hRatio.GetBinWidth(b+1)
+        #     hWidth+=hRatio.GetBinWidth(b+1)
+        # print "hRatioInt/hWidth",hRatioInt/hWidth
 
         l = TLine()
         l.SetLineWidth(1)
