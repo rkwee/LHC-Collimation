@@ -32,6 +32,8 @@ parser.add_option("-t", dest="tag", type="string",
                   help="put name of TCS as in collDB, otherwise ignore (tcs is any appendix to CollDB*.data<tag>")
 parser.add_option("-o", dest="opticstag", type="string",
                   help="put extension of optics tag, otherwise ignore")
+parser.add_option("-g", dest="doRun", type="int",
+                  help="1 or 0 for go! flag")
 
 (options, args) = parser.parse_args()
 
@@ -42,6 +44,7 @@ run_dir = options.run_dir
 ckey = options.ckey
 tag = options.tag
 opticstag = options.opticstag
+doRun=options.doRun
 
 #tag  = '.'+ run_dir.split('7TeVPostLS1_')[-1]
 
@@ -50,7 +53,6 @@ opticstag = options.opticstag
 #queuename='8nh'
 #npacks='50'
 doTest=0
-doRun=1
 showInfo=1
 mailOpt = '-u Regina.Kwee@gmail.com'
 # -----------------------------------------------------------
@@ -313,7 +315,7 @@ for job in newrange:
         os.system(cmd)
         if not doH5: cmd = "sleep 4"
         else: cmd = "sleep 2"
-        os.system(cmd)
+        #os.system(cmd)
 # -----------------------------------------------------------
 
 cnt = len(newrange)

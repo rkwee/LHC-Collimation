@@ -36,9 +36,9 @@ else:
 unit = options.unit
 if unit == '66' or unit == '67':
     skipN = 9
-elif  unit == '30': 
-    skipN = 8
-    print 'skipping first', skipN, 'characters of each file'
+#elif  unit == '30': 
+#    skipN = 8
+#    print 'skipping first', skipN, 'characters of each file'
 else: skipN = -9999
 beam = 'B2'
 if rundir.count('B1'): beam = 'b1'
