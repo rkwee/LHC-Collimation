@@ -20,11 +20,18 @@ def cv43():
 
     # flat beam HL
         [gitpath  + "SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b1/collgaps.dat.TCT5LIN",\
-             workpath + "runs/HL_TCT5INOUT_relSett/impacts_real_HL_TCT5IN_relaxColl_HaloB1_flatthin.txt.root", \
+             workpath + "runs/HL_TCT5INOUT_relSett/impacts_real_HL_TCT5IN_relaxColl_HaloB1_flatthin_IR5.txt.root", \
              workpath + "runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin/run_test/collgaps.dat",\
-             'TCT/HL/relaxedColl/newScatt/', 'HL flat B1 ', 1., \
+             'TCT/HL/relaxedColl/newScatt/', 'HL flat B1 IR5', 1., \
              100,0., 20.,
             ],
+
+        # [gitpath  + "SixTrackConfig/7TeV/hilumiLHC/TCThaloStudies_relaxedCollSettings/b1/collgaps.dat.TCT5LIN",\
+        #      workpath + "runs/HL_TCT5INOUT_relSett/impacts_real_HL_TCT5IN_relaxColl_HaloB1_flatthin_IR1.txt.root", \
+        #      workpath + "runs/HL_TCT5INOUT_relSett/H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin/run_test/collgaps.dat",\
+        #      'TCT/HL/relaxedColl/newScatt/', 'HL flat B1 IR1', 1., \
+        #      100,0., 20.,
+        #     ],
 
         # # nomCollSett HL
         # [ projectpath + 'HL1.0/H5_HL_nomSett_hHalo_b1/coll_summary_H5_HL_nomSett_hHalo_b1.dat',\
@@ -224,12 +231,14 @@ def cv43():
 
     # collimators
     colls = [
-         'TCTH.4L1.B1', 
-         'TCTVA.4L1.B1',
-         'TCTH.5L1.B1',
-         'TCTVA.5L1.B1',
+         # 'TCTH.4L1.B1', 
+         # 'TCTVA.4L1.B1',
+         # 'TCTH.5L1.B1',
+         # 'TCTVA.5L1.B1',
          'TCTH.4L5.B1', 
          'TCTVA.4L5.B1',
+         'TCTH.5L5.B1', 
+         'TCTVA.5L5.B1',
          'TCTH.4R1.B2', 
          'TCTVA.4R1.B2',
          'TCTH.5R1.B2',
@@ -240,16 +249,16 @@ def cv43():
 
     # for each collimator fix a color
     bCol = [
-         kBlue,
-         kCyan,
-         kCyan-2,
-         kOrange-6,
-         kRed-5,
-         kMagenta+1,
+         # kBlue,
+         # kCyan,
+         # kCyan-2,
+         #kOrange-6,
+         kAzure,
+         #kMagenta+1,
          kMagenta+2,
-         kViolet,
+         #kViolet,
          kGreen+2,
-         kOrange-2,
+         #kOrange-2,
          kRed+2,
          kGreen-2,
          kMagenta-2,
@@ -373,6 +382,7 @@ def cv43():
             print '.' * 99
             try:
                 collid = cDict[collName][0]
+                print("Found collid =", collid) 
             except KeyError:
                 print(collName, 'key not found')
                 continue
@@ -410,8 +420,10 @@ def cv43():
             hx[-1].GetXaxis().SetTitle(xtitle)
             hx[-1].GetYaxis().SetTitle(ytitle)
             subfolder, energy, ymax = myset[3], myset[4], myset[5]
-            if not energy.count("Hz") and ( collName.count("L5") or collName.count("R5") ):
-                continue
+
+            # comment out for IR5 flat
+            # if not energy.count("Hz") and ( collName.count("L5") or collName.count("R5") ):
+            #     continue
 
             subfolder = 'TCT/inelpositions/'
             doDraw(hx,subfolder,energy, ymax)
