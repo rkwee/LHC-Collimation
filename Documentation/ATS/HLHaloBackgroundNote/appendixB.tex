@@ -1,6 +1,6 @@
 \begin{table}
    \centering
-   \caption{TCP-to-TCT conversions for IR7 TCPs (\textsc{TCP.D6, TCP.C6, TCP.B6}) and IR1/IR5 TCTs averaged over simulation h+v case.}
+   \caption{Intercepted protons on IR7 TCPs (\textsc{TCP.D6, TCP.C6, TCP.B6}), IR1/5 and IR7 leakage to IR1/IR5 TCTs using Eq.~\ref{eq3}.}
 
    \begin{tabular}{c|cc|cc}
 
@@ -33,14 +33,14 @@
        TCPs in IR7 & 54532193 & 52154816 & 40401333 & 53199970 \\
        TCTs in IR1 & 9712 & 3366 & 9948 &  12028\\
        TCTs in IR5 & 1506 & 1122 & 473  & 95 \\
-       IR7 to IR1  &  \multicolumn{2}{c|}{ 1.2 $\times 10^{-4}$ } &  \multicolumn{2}{c} { 2.4 $\times 10^{-4}$} \\
+       IR7 to IR1  &  \multicolumn{2}{c|}{ 1.2 $\times 10^{-4}$ } &  \multicolumn{2}{c} { 2.36 $\times 10^{-4}$} \\
        IR7 to IR5 & \multicolumn{2}{c|}{ 2.5 $\times 10^{-5}$} & \multicolumn{2}{c} {6.8 $\times 10^{-6}$ } \\
        \hline
-       & \multicolumn{4}{c}{ HL \twosigmaret~settings, TCT5s out, round beam }  \\
+       & \multicolumn{4}{c}{ HL \twosigmaret~settings, TCT4s only, round beam }  \\
        TCPs in IR7 & 54609869 & 52175081 & 40392116 & 53157089 \\
        TCTs in IR1 & 9024 & 3071 & 9936 & 11898 \\
        TCTs in IR5 & 1408 & 1024 & 368 & 70 \\
-       IR7 to IR1  &  \multicolumn{2}{c|}{ 1.4 $\times 10^{-4}$ } &  \multicolumn{2}{c} { 2.4 $\times 10^{-4}$} \\
+       IR7 to IR1  &  \multicolumn{2}{c|}{ 1.1 $\times 10^{-4}$ } &  \multicolumn{2}{c} { 2.35 $\times 10^{-4}$} \\
        IR7 to IR5  &  \multicolumn{2}{c|}{ 2.7 $\times 10^{-5}$ } &  \multicolumn{2}{c} { 5.2 $\times 10^{-6}$} \\
        \hline
        & \multicolumn{4}{c}{ HL \twosigmaret~settings, TCT5s in, flat beam }  \\
@@ -49,6 +49,13 @@
        TCTs in IR5 & 660 & 75 & \\
        IR7 to IR1  & \multicolumn{2}{c|}{1.4 $\times 10^{-4}$ } &  \\
        IR7 to IR5 & \multicolumn{2}{c|}{1.7 $\times 10^{-5}$} & \\
+       \hline
+       & \multicolumn{4}{c}{ HL \twosigmaret~settings, TCT4s only, flat beam }  \\
+       TCPs in IR7 & 14320971 & 50517818 &  &  \\
+       TCTs in IR1 & 3035 & 3035 & & \\
+       TCTs in IR5 & 338 & 824 & \\
+       IR7 to IR1  & \multicolumn{2}{c|}{1.4 $\times 10^{-4}$ } &  \\
+       IR7 to IR5 & \multicolumn{2}{c|}{2.0 $\times 10^{-5}$} & \\
 
        %% HL retracted settings, flat beam  & B1 \\       
        %% IR1 & 1.39 $\times 10^{-4}$ & \\ % B1 : .5*(7814.0/35831038.0 + 306.0/5052849.0)
@@ -62,36 +69,36 @@
 \subsection{IR3 to TCT conversion factors in off-momentum simulations}
 \begin{table}[!h]
    \centering
-   \caption{Leakage from IR3 primary to IR1/IR5 TCTs from off-momentum simulations.}
+   \caption{Leakage from IR3 primary collimator to IR1/IR5 TCTs from off-momentum simulations. The numbers in brackets show the losses per TCT, TCTH + TCTV. }
 
    \begin{tabular}{l|c|c}
        \hline
        4 TeV, + 500~Hz  & B1 & B2\\
        TCP.IR3  & 6279727 & 995698  \\
-       TCTs IR1 (h+v) & 6 (6 + 0) & 11919 (695 + 11224) \\
-       TCTs IR5 (h+v) & 28304 (5387 + 22917) & 16 (14 + 2) \\
+       TCTs IR1 & 6 (6 + 0) & 11919 (695 + 11224) \\
+       TCTs IR5 & 28304 (5387 + 22917) & 16 (14 + 2) \\
        IR3 to IR1 & 9.5 10$^{-7}$ & 0.012 \\
        IR3 to IR5 & 0.0045 & 1.6 10$^{-5}$ \\
        \hline
        4 TeV, -~500~Hz  & B1 & B2\\
        TCP.IR3  & 1853387 & 3501844 \\
-       TCTs IR1 (h+v) & 93 (37 + 56) & 22278 (4851+17427) \\
-       TCTs IR5 (h+v) &  4735 (1746 + 2989) & 23 (22 + 1) \\
+       TCTs IR1  & 93 (37 + 56) & 22278 (4851+17427) \\
+       TCTs IR5  &  4735 (1746 + 2989) & 23 (22 + 1) \\
        IR3 to IR1 & 5.0 10$^{-5}$ & 0.0063 \\
        IR3 to IR5 & 0.0025 & 6.2 10$^{-6}$ \\
        \hline
 
        6.5 TeV, + 500~Hz  & B1 & B2\\
        TCP.IR3  & 8055019 & 5648325  \\
-       TCTs IR1 (h+v) & 3 (3 + 0) & 11951 (5607 + 6344) \\
-       TCTs IR5 (h+v) & 17963 (8711 + 9252) & 9 (9 + 0)\\
+       TCTs IR1 & 3 (3 + 0) & 11951 (5607 + 6344) \\
+       TCTs IR5 & 17963 (8711 + 9252) & 9 (9 + 0)\\
        IR3 to IR1 & 3.7 10$^{-7}$ & 0.0021 \\
        IR3 to IR5 & 0.0022 & 1.5 10$^{-6}$ \\
        \hline
        6.5 TeV, - 500~Hz  & B1 & B2\\
        TCP.IR3  &  3389385 &   \\
-       TCTs IR1 (h+v) &  1 (1 + 0) &   \\
-       TCTs IR5 (h+v) &  7642 (4337 + 3305) &  \\
+       TCTs IR1  &  1 (1 + 0) &   \\
+       TCTs IR5  &  7642 (4337 + 3305) &  \\
        IR3 to IR1 &  2.9 10$^{-7}$ &  \\
        IR3 to IR5 &  0.0022 &   \\
        \hline
