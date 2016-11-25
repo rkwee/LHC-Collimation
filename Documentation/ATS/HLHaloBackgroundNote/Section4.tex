@@ -180,7 +180,7 @@ In contrast, the beam-halo data in Fig.~\ref{xingCompBH} do not exhibit clear di
 \end{figure}
 
 
-\subsection{Run I: Renormalisation of beam gas events with pressure profile}
+\subsection{Run I: Renormalisation of beam gas events with pressure profile \label{BGreweighted4TeV}}
 
 \begin{table}
    \centering
@@ -201,7 +201,7 @@ In contrast, the beam-halo data in Fig.~\ref{xingCompBH} do not exhibit clear di
 
 The information of the original inelastic proton interaction of each particle at the interface plane was kept in order to attribute weights according to a typical pressure map. For 2012, the simulations of the gas densities are based on gauge data recorded in LHC fill 2736 and were performed using VASCO (VAcuum Stability COde)~\cite{vascoRef}. The pressures were simulated up to the long straight section of IR1 (LSS1) for the most dominant molecules, H$_2$, CH$_4$, CO, CO$_2$. Partial pressure euqivalents expressed in molcular densities are shown in the top of Fig.~\ref{pressure2012} and are decomposed into atomic components at the bottom of that figure to show the interaction probability as function of the location using the inelastic cross-sections for H, C and O as indicated in Tab.~\ref{tab:atomicXsections} for a 4 TeV beam.
 
-As described in the previous section, the weights are calculated using Eq.~\ref{eq3}. The total number of protons is given by the maximum beam-intensity in LHC fill 2736 which was about $2.04 \times 10^{14}$ for B1 and $2.07 \times 10^{14}$ for B2. The method is shown in Fig.~\ref{fig:method}: in green the total interaction probability rate up to the arc (the pressure has been extended to the arc by taking closest value as constant), in black the number of muons per beam-gas interaction and in red the multiplication of both scaled to the maximum beam intensity of that fill. One can see the result is mainly shaped by the pressure map, apart from the part in the arc (beyond s~=~260~m) where the shape comes from the shower simulations. 
+As described in the previous section, the weights are calculated using Eq.~\ref{eq3}. The total number of protons is given by the maximum beam-intensity in LHC fill 2736 which was about $2.04 \times 10^{14}$ for B1 and $2.07 \times 10^{14}$ for B2. The method is shown in Fig.~\ref{fig:method}: in green the total interaction probability rate up to the arc (the pressure has been extended to the arc by taking last value as constant), in black the number of muons per beam-gas interaction and in red the multiplication of both scaled to the maximum beam intensity of that fill. One can see the result is mainly shaped by the pressure map, apart from the part in the arc (beyond s~=~260~m) where the shape comes from the shower simulations. 
 
 We compare in detail how the distributions change when normalising from a pressure that corresponds to a flat to a non-flat profile. As a function in $s$ we show where particles are created in Fig.~\ref{fig:OrigZ}. To be able to compare better, the distributions corresponding to a flat profile are scaled up by seven orders of magnitude to match the scale of the rate of what is shown on the y-axis, in Fig.~\ref{fig:cv81EkinPhiEn4TeV} it is the particle counts per energy bin, the energy in $\phi$, transverse radial distributions and the energy of that for all particles and for muons. Another figure, Fig.~\ref{fig:cv81ProtNeut4TeV}, shows the same observables but for protons and neutrons.
 
@@ -309,8 +309,8 @@ The same method is used as in the 4 TeV simulations changing to the Run II 2015 
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=0.4\textwidth]{figures/inelposition_sum_HALOB1.pdf}
-\includegraphics[width=0.4\textwidth]{figures/inelposition_sum_HALOB2.pdf}
+\includegraphics[width=0.49\textwidth]{figures/inelposition_sum_HALOB1.pdf}
+\includegraphics[width=0.49\textwidth]{figures/inelposition_sum_HALOB2.pdf}
 \end{center}
  \caption{Depth of the inelastic interaction of the halo hits with the collimator material for B1 and B2 6.5 TeV hits.
   \label{inel6.5}}
@@ -329,8 +329,8 @@ The same method is used as in the 4 TeV simulations changing to the Run II 2015 
 
 \begin{figure}%[!htb]
 \centering
-  \includegraphics[width=0.411\textwidth]{figures/BH_run2/perTCThit/ratioEkinAll.pdf}
-  \includegraphics[width=0.411\textwidth]{figures/BH_run2/perTCThit/ratioPhiEnAll.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/BH_run2/perTCThit/ratioEkinAll.pdf}
+  \includegraphics[width=0.49\textwidth]{figures/BH_run2/perTCThit/ratioPhiEnAll.pdf}
 
  \caption{Comparison of B1/B2 halo induced distributions per TCT hit.
   \label{compBHB1B2run2}}
@@ -354,7 +354,7 @@ This case has been simulated with the same method as for the Run I scenario, usi
   \label{bg6500}}
 \end{figure}
 
-\subsubsection{Run II: Renormalisation of beam gas events with pressure profile}
+\subsection{Run II: Renormalisation of beam gas events with pressure profile}
 
 Similar to Run I in 2012, the four LHC experiments agreed on a LHC fill number where typical conditions for physics data taking were present. This fill, number 4536, was used by the LHC Vacuum group to simulate the pressure map. Fill details are summed up in Tab.~\ref{tab:fillRunII}. 
 
@@ -376,11 +376,16 @@ Similar to Run I in 2012, the four LHC experiments agreed on a LHC fill number w
 \end{table}
 
 \paragraph{\textit{Pressure Map Simulations}}
-In previous years (in particular for 3.5~TeV and 4~TeV runs data), the code to simulate the pressure map, VASCO, was used. For Run II in 2015, pressures were simulated with an improved version of the code. The code has been re-implemented in \textsc{Python} and modifications were made to automise pressure simulations\cite{christinasStudent} including the describtion of photon desorption (determined by SynRad) and electron cloud effects (as determined in PyECLOUD~\cite{giovanniPhd}). Original algorithms were kept however a few assumptions had to be made to be able to simulate pressures around the entire ring. The variety of materials and pumping speeds were simplified. However, the pressure shown in Fig.~\ref{pressure2015} is meant to be rather on the lower limit of gas densities~\cite{christinaPriv}. 
+In previous years (in particular for 3.5~TeV and 4~TeV runs data), as mentioned earlier in Sec.~\ref{BGreweighted4TeV} the code to simulate the pressure map, \textsc{VASCO}~\cite{vascoRef}, was used. For Run II in 2015, pressures were simulated with an improved version of the code. The code has been re-implemented in \textsc{Python} and modifications were made to automise pressure simulations~\cite{christinasStudent}. The describtion of photon desorption, as determined by SynRad, and electron cloud effects as determined in PyECLOUD~\cite{giovanniPhd} was included and therefore the photon and electron flux simulations should be more accurate~\cite{christinaPriv}. Original algorithms were kept however a few assumptions had to be made to be able to simulate pressures around the entire ring, in particular where no vacuum instrumentation is placed (e.g.~in the arc). The variety of materials and pumping speeds were simplified. The pressure for fill 4536 shown in Fig.~\ref{pressure2015} is supposed to be on the lower limit of pressures~\cite{christinaPriv}. 
+
+For comparison we added the total interaction rate based on the pressure map at 4~TeV. One can see there are about 1 to 2 orders of magnitude difference. This is expected as during the first long shutdown of the LHC from 2013 into 2015. Besides consolidation activities~\cite{KatyForazIpac14}, there were hardware improvements for vacuum in the long straight sections (between left Q4 to right Q4) of the experimental insertions, where NEG (Non-Evapourable-Gatter) cartridges with additional 400l/s for H$_2$ pumping speed were installed at the same places as the pressure gauges~\cite{christinaPriv}. 
+
 
 \paragraph{\textit{Reweighted Results using 2015 pressure}}
 
-The pressure simulation data based on Fill 4536 is shown in top of Fig.~\ref{pressure2015} for each gas type, while the bottom figure shows the interaction probability per second as in Eq.~\ref{eq2} and what is used to reweight the distributions at the interface plane.
+The pressure simulation data based on Fill 4536 is shown in top of Fig.~\ref{pressure2015} for each gas type, while the bottom figure shows the interaction probability per second as in Eq.~\ref{eq2} and what is used to reweight the distributions at the interface plane as decribed in Sec.~\ref{BGdescript}. As beam intensity we considered what was present in ring 1, see Tab.~\ref{tab:fillRunII}.
+
+We use muons distributions to illustrate how they change before and after reweightening. The muon production as function of $s$ and general distributions integrated in $s$  muons at the interface plane are highlighted in Fig.~\ref{fig:OrigZ6p5} and Fig.~\ref{fig:EkinPhiEn6p5} respectively. We note the profile of the muon rate in Fig.~\ref{fig:OrigZ6p5} is very close to the pressure map that was used. 
 
 \begin{figure}
 \begin{center}
@@ -388,7 +393,7 @@ The pressure simulation data based on Fill 4536 is shown in top of Fig.~\ref{pre
   \includegraphics[width=0.95\textwidth]{figures/6500GeV/reweighted/pint_compallpint.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{Gas densities up to the arc for the most common molecules (top) and split into atomic components to indicate the interaction probability (bottom).
+ \caption{Gas densities up to the arc for the most common molecules (top) and split into atomic components to indicate the interaction probability (bottom). Also the data for the 4~TeV fill is shown but without constant extension out to the arc.
   \label{pressure2015}}
 \end{figure}
 
@@ -399,22 +404,22 @@ The pressure simulation data based on Fill 4536 is shown in top of Fig.~\ref{pre
 %  \includegraphics[width=0.75\textwidth]{figures/6500GeV/reweighted/cv81_OrigZProtons_BG_6500GeV_flat_20MeV_bs.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{Origin of all particles (top), muons (middle) and protons (bottom) production along s, in black before and in pink after re-normalising to the 2015 pressure profile. 
+ \caption{Origin of muon production along s, in black before and in gold after re-normalising to the 2015 pressure profile. All particles, protons and photons are shown in the appendix in Fig.~\ref{fig:OrigZ6p52}. 
   \label{fig:OrigZ6p5}}
 \end{figure}
 
 \begin{figure}
 \begin{center}
-  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_EkinAll_BG_6500GeV_flat_20MeV_bs}
+%  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_EkinAll_BG_6500GeV_flat_20MeV_bs}
   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_EkinMuons_BG_6500GeV_flat_20MeV_bs}
-  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_PhiEnAll_BG_6500GeV_flat_20MeV_bs}
+%  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_PhiEnAll_BG_6500GeV_flat_20MeV_bs}
   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_PhiEnMuons_BG_6500GeV_flat_20MeV_bs}
   %% \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNAll_BG_6500GeV_flat_20MeV_bs}
-  %% \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNMuons_BG_6500GeV_flat_20MeV_bs}
+   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNMuons_BG_6500GeV_flat_20MeV_bs}
   %% \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnAll_BG_6500GeV_flat_20MeV_bs}
-  %% \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnMuons_BG_6500GeV_flat_20MeV_bs}
+   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnMuons_BG_6500GeV_flat_20MeV_bs}
 \end{center}
 \vspace{-0.6cm}
- \caption{The distributions are normalised to 1 to better compare the shapes for all particles (left) and muons (right).
+ \caption{Muon distributions before (black) and after (gold) reweightening with the pressure map. The same set of plots for all particles are in the appendix, in Fig.~\ref{fig:EkinPhiEn6p52}.
   \label{fig:EkinPhiEn6p5}}
 \end{figure}
