@@ -42,9 +42,9 @@ def cv78():
     # 0.5 * (302.0/43718962.0 + 106.0/53000835.0) = 4.4538612500709768e-06
 
     # steer
-    do4TeV,do6500GeV = 0,0
-    doHLcomp = 1
-    doNumbers = 0
+    do4TeV,do6500GeV = 1,0
+    doHLcomp = 0
+    doNumbers = 1
     # ------------------------------------------------------------------------
     if do4TeV:
 
@@ -73,7 +73,7 @@ def cv78():
         mars   = [33, 20, 24, 22, 23 ]
         dOpt   = [ 'hp', 'hsame', 'hsame', 'hsame', 'hsame']
         scalf  = [ 1., norm4TeVB1newHalo, norm4TeVB2newHalo, norm4TeVoffmomPLUS500, norm4TeVoffmomMINUS500]
-        roundingDigit = 4
+        roundingDigit = 3
     elif do6500GeV:
 
         energy = "6.5 TeV"
@@ -91,13 +91,14 @@ def cv78():
         mars   = [ 33, 20, 24 ]
         dOpt   = [ 'hist', 'histsame', 'histsame']
         scalf  = [1., norm6500GeVB1, norm6500GeVB2]
-        roundingDigit = 3
+        roundingDigit = 2
+
     elif doHLcomp:
         roundingDigit = 3
         energy = ""
         f1 = thispath + 'results_pressure2015_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
-        f2 = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
-        f3 = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root"
+        f2 = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5550000_30.root"
+        f3 = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5924500_30.root"
         tags = ["_BG_6500GeV_flat_20MeV_bs_reweighted", "_BH_HL_tct5inrdB1_20MeV", "_BH_HL_tct5inrdB2_20MeV"]
 
         filenames = [f1,f2,f3]
@@ -111,7 +112,7 @@ def cv78():
 
         
     # ------------------------------------------------------------------------
-    debug = 0
+    debug = 1
     # need one file to generate sDict
     bbgFile = f1
     print "Opening for sDict generation ...", bbgFile
@@ -127,8 +128,8 @@ def cv78():
     except:
         pass
     
-    rfs = [  TFile.Open(f_i) for f_i in filenames ]
-
+    rfs = [  TFile.Open(f_i) for f_i in filenames ]    
+    
     msize = 0.05
     for skey in sDict.keys():
 
@@ -143,7 +144,7 @@ def cv78():
         elif skey.count("Pio") or skey.count("Kao"): continue
 
         # # for testing
-        #elif not skey.count('PhiEn'): continue
+        if not skey.count('PhiEnMu'): continue
                
         cv = TCanvas( 'cv'+skey, 'cv'+skey,  10, 10, 1200, 900 )     
         xpos = 0.65
@@ -205,7 +206,7 @@ def cv78():
                 hists[i].SetMarkerColor(cols[i])
                 #hists[i].GetXaxis().SetLabelSize(0.2))
                 # To scale get min max value from all histograms first before drawing
-
+                print ".."*22,hists[i].GetEntries(), "."*22, hists[i].GetName()
                 if isLogy:
                     Ymax += [ hists[i].GetMaximum() ]
                     Ymin += [ hists[i].GetBinContent(10) ]
@@ -252,20 +253,23 @@ def cv78():
                 if  hnames[i].count("All"):
                     YurMin, YurMax = 1e-4,1e12
 
-            if XurMin != -1:
-                hists[i].GetXaxis().SetRangeUser(XurMin,XurMax)
-
-            if YurMin != -1:                
-                hists[i].GetYaxis().SetRangeUser(YurMin,YurMax)
-
             if hists[i].GetName().endswith("reweighted"):
                 hists[i].ProjectionX().GetYaxis().SetRangeUser(YurMin,YurMax)
                 hists[i].ProjectionX().GetYaxis().SetTitle(ytitle)
                 intvals += [hists[i].ProjectionX().Integral()]
                 hists[i].ProjectionX().Draw(dOpt[i])
+                if XurMin != -1:                    
+                    hists[i].ProjectionX().GetXaxis().SetRangeUser(XurMin,XurMax)
             else:
                 intvals += [hists[i].Integral()]
                 hists[i].GetXaxis().SetTitle(xtitle)
+
+                if XurMin != -1:
+                    hists[i].GetXaxis().SetRangeUser(XurMin,XurMax)
+
+                if YurMin != -1:                
+                    hists[i].GetYaxis().SetRangeUser(YurMin,YurMax)
+
                 hists[i].Draw(dOpt[i])
 
             ratios += [round(intvals[-1]/intvals[0], roundingDigit)]

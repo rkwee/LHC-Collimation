@@ -152,8 +152,9 @@ def plotSpectra(bbgFile, tag, doComp):
         try:
             pname = wwwpath + subfolder + hkey
 
-            # testing
-            if not hkey.count("XYN"): continue
+            #testing
+            if not hkey.count("XYNM"): continue
+
 
             print "Plotting ...", hkey
             
@@ -201,6 +202,12 @@ def plotSpectra(bbgFile, tag, doComp):
                  if norm != 1.: print 'had been normalised by ', norm
                  #hists[-1].Scale(1./norm)
                  leg = "l"
+
+                 xtitle = sDict[hname][9].replace("z", "s")
+                 ytitle = sDict[hname][10]
+                 ztitle = ''
+                 if hkey.count("XYN"): ztitle = "particles/cm^{2}" + yrel
+                 
                  if not i: 
                      if   type(hists[-1]) == TH1F: hists[-1].Draw("HIST")
                      elif type(hists[-1]) == TH2F: hists[-1].Draw("COLZ")
@@ -214,10 +221,6 @@ def plotSpectra(bbgFile, tag, doComp):
                  prettyName = sDict[hname][6]
                  mlegend.AddEntry(hists[-1],prettyName, leg)
 
-                 xtitle = sDict[hname][9]
-                 ytitle = sDict[hname][10]
-                 ztitle = ''
-                 if hkey.count("XYN"): ztitle = "particles/cm^2" + yrel
             # ....................................
             if not hists[-1] or not hists[0]:
                 continue
@@ -239,11 +242,11 @@ def plotSpectra(bbgFile, tag, doComp):
             hists[0].GetXaxis().SetLabelSize(0.035)
             if type(hists[0]) == TH2F: 
                 hists[0].GetZaxis().SetLabelSize(0.035)
-                hists[0].GetZaxis().SetTitle()
+                hists[0].GetZaxis().SetTitle(ztitle)
 
             hists[0].GetXaxis().SetTitle(xtitle)
             hists[0].GetYaxis().SetTitle(ytitle)
-
+        
             mlegend.Draw()
             lab = mylabel(62)
             lab.DrawLatex(lx,ly,lText)

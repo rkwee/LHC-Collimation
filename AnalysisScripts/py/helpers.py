@@ -43,7 +43,7 @@ tag_crab_HL = '_crabcf_tct5inrdb1_20MeV'
 #tag_crab_HL = '_crabcf_tct5inrdb1_modTAN_20MeV'
 
 tag_BH_6p5TeV = '_BH_6500GeV_haloB1_20MeV'
-tag_BH_6p5TeV = '_BH_6500GeV_haloB2_20MeV'
+#tag_BH_6p5TeV = '_BH_6500GeV_haloB2_20MeV'
 tag_BG_6p5TeV = '_BG_6500GeV_flat_20GeV_bs'
 # ................................................................................................
 # -- ALSO SET ENERGY CUT

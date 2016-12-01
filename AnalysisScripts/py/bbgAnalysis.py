@@ -29,7 +29,7 @@ if __name__ == "__main__":
     SetAtlasStyle()
 
     # ---------------------
-    TTreeFileName = createTTree.ctree(datafile)
+    #TTreeFileName = createTTree.ctree(datafile)
     TTreeFileName = datafile + ".root"
     #TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'        
     # TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
@@ -57,11 +57,12 @@ if __name__ == "__main__":
     # for comparisons plot change in plotSpectra
     # ---------------------
     # define tag in helpers!
-    tag = tag_BH_4TeV
-    tag = tag_BG_6p5TeV
-    #tag = tag_BH_7TeV
+    #tag = tag_BH_3p5TeV
+    # tag = tag_BG_4TeV
+    #tag = tag_BH_6p5TeV
+    tag = tag_BH_7TeV
     #tag = tag_crab_HL
-
+    #tag = tag_BG_6p5TeV
     doComp = 0
     #fillTTree.fillHistos(TTreeFileName, tag, doComp)
-    #plotSpectra.plotSpectra(TTreeFileName, tag, doComp)
+    plotSpectra.plotSpectra(TTreeFileName, tag, doComp)
