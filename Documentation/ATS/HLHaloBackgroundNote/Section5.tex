@@ -61,7 +61,7 @@ We analysed what improvement can be expected using the final collimator layout (
 
 Each IR has a tertiary collimator pair, a horizontal and vertical TCT, in cell 4 on the side of the incoming beam with a protective role. Firstly they provide local protection against regular losses but also in case of abnormal losses as asynchronous beam dump. As in HL-LHC the triplet will be exchanged with one that has much larger apertures for higher $\beta^*$ reach, possible bottlenecks emerge at other locations. Triplet apertures become similar with those of Q4 and Q5 in cell 5, requiring some additional protection. This could be provided by an additional pair of collimators, TCT5s, with a vertical and horizontal TCT located just in front of Q5 and having exactly the same design as the TCT4s.
 
-We evaluate these different cases in terms of halo background and are interested in how the load changes of the TCT4s when the TCT5s are included. The baseline collimator layout contains the TCT4s and TCT5s. A TCTV and TCTH pair is positioned at 131~m and 211~m, this may change in future a by a few meters due to lack of sufficient space at positions of TCT4s.
+We evaluate these different cases in terms of halo background and are interested in how the load changes of the TCT4s when the TCT5s are included. The baseline collimator HL layout contains the TCT4s and TCT5s. A TCTV and TCTH pair is positioned at 131~m and 211~m, this may change in future a by a few meters due to lack of sufficient space at positions of TCT4s.
 
 \begin{figure}%[!htb]
 \begin{center}
@@ -75,25 +75,27 @@ We evaluate these different cases in terms of halo background and are interested
   \label{inelHLtctsInOut}}
 \end{figure}
 
-We compare the starting conditions in Fig.~\ref{inelHLtctsInOut} for the cases ``TCT4s only'', when no TCT5s were considered, and ``TCT5s in'', TCT4s and TCT5s were both included for B1 and B2. One notices that for both beams in ``TCT4s only'' inelastic interactions start at much deeper positions. The bulk load is taken by the TCTHs that comes first on the incoming beam. Globally, there are slightly more losses from B1, about 8~\%, for the case ``TCT5s in'' which can seen when comparing the leakage factors $1.2 \times 10^{-4}$ and $1.1 \times 10^{-4}$. For B2, there are negligably more losses in the case TCT5s are deployed as well and the leakage factor is in both cases around $2.4 \times 10^{-4}$ in IR1.\\
+We compare the starting conditions in Fig.~\ref{inelHLtctsInOut} for the cases ``TCT4s only'', when no TCT5s were considered, and ``TCT5s in'', TCT4s and TCT5s were both included for B1 and B2. One notices that for both beams in ``TCT4s only'' inelastic interactions start at much deeper positions. The bulk load is taken by the TCTHs that comes first on the incoming beam. Overall, there are slightly more losses in IR1 from B1, about 8~\%, for the case ``TCT5s in'' which can seen when comparing the leakage factors $1.2 \times 10^{-4}$ and $1.1 \times 10^{-4}$. For B2, there are negligably more losses in the case TCT5s are deployed as well and the leakage factor is in both cases around $2.4 \times 10^{-4}$ in IR1.\\
 
 Assuming that TCT4s produce more halo backgound than the TCT5s merely due to their nearer location to the interface plane, we look at how the load on the TCT4s change for the two cases. This is listed in Tab.~\ref{tab:compLosses} for B1 and B2, IR1 and IR5. The ratio indicates by how much the intercepted losses would decrease and one can see, in all cases and improvement can be expected in the case TCT5s are included, for B1 more than for B2.
 
 
-We show characteristic particle distributions and spectra at the interface plane for the case ``TCT5s~in'' for B2 in Fig.~\ref{tct5inrdb2retr} and the origin of muons along $z$ for different energies in Fig.~\ref{OrigMuon} for B1. \\
+We show characteristic particle distributions and spectra at the interface plane for the case ``TCT5s~in'' for B2 in Fig.~\ref{tct5inrdb2retr} and more in the appendix in Fig.~\ref{tct5inrdb2retr2}.
 
-We compare in more detail the two cases with the distributions for all particles (left) and muons (right) at the interface plane in Fig.~\ref{fig:compInOutB1} for B1 and Fig.~\ref{fig:compInOutB2} for B2. The number written in the ratio plot is the ratio of the integral of the two distributions and indicates by how much the respective quantity is changed. The distributions are normalised by the number of simulated interaction in the TCTs (per TCT hit) and bin width. For both beams the energy spectrum, the azimuthal distribution $\phi$ and the energy in $\phi$ are shown.
+ %The number written in the ratio plot is the ratio of the integral of the two distributions and indicates by how much the respective quantity is changed. The distributions are normalised by the number of simulated interaction in the TCTs (per TCT hit) and bin width. For both beams the energy spectrum and the azimuthal distribution of the energy in $\phi$ are shown.
 
-We notice from the ratio plots that the shapes are quite different for B1. This is not the case for B2, there they look rather similar. This is entirely due to the initial distribution of inelastic interactions (convoluted of course with the geometry but this is the same for both beams).
+%We notice from the ratio plots that the shapes are quite different for B1. This is not the case for B2, there they look rather similar. This is entirely due to the initial distribution of inelastic interactions (convoluted of course with the geometry but this is the same for both beams).
 
-One can expect about a factor 2 less particles, and about 50~\% less muons from B1. For B2, the particles fluxes go down by 20~\%, muons by 40~\%. Given the leakage from B2 is about twice as much as from B1, e.g.~for the case ``TCT5s~in'' it is $2.36~\times 10^{-4}$ compared to $1.1 \times 10^{-4}$ (see Tab.~\ref{leakageFactorsIR7}), even this small gain in B2 per TCT hit becomes twice as relevant in absolute terms. 
 
-We can conclude there will be a positive effect for IR1 reducing halo-induced background if the additional collimator pair is installed. Also IR5 will benefit from backround reduction, as Tab.~\ref{tab:compLosses} shows even much more than IR1. However the IR7 leakage is generally smaller to IR5 than to IR1, factor 4 to 5 less for the two cases for B1 and significantly factor 35 and 46 for B2, again for the two cases respectively.
+We compare in more detail the two cases at the interface plane with supporting figures in the appendix, in Fig.~\ref{fig:compInOutB1_perTCThit} and Fig.~\ref{fig:compInOutB2}. When normalised per TCT hit, one can expect about a factor 2 less particles, and about 50~\% less muons from B1 if additional tertiaries are in place. For B2, the particles fluxes go down by 20~\%, muons by 40~\%. Given the leakage from B2 is about twice as much as from B1, e.g.~for the case ``TCT5s~in'' it is $2.36~\times 10^{-4}$ compared to $1.1 \times 10^{-4}$ (see Tab.~\ref{leakageFactorsIR7}), even this small gain in B2 per TCT hit becomes twice as relevant in absolute terms.
 
+Also IR5 will benefit from backround reduction, as Tab.~\ref{tab:compLosses} shows even much more than IR1. Much higher reduction factors are obtained for IR5. However the IR7 leakage is generally smaller to IR5 than to IR1 for both beams, so the background reduction in IR5 recieves less weight. It is a factor 4 to 5 less in B1 for the two cases. There is for B2 a significant factor of 46 and 35, again for the two cases $in$ and $out$, respectively.
+
+We can conclude there will be a positive effect for reducing halo-induced background if the additional collimator pair is installed for both IRs, IR1 and IR5.
+Overall gain in IR1 of the two cases is shown in Fig.~\ref{fig:compInOutB1} for particle multiplicities and energy in both beams. The rate from B1 of particles can be reduced by factor 1.8 and the energy by 24~\%. The gain from B2 is less as we saw due to the conversion factors which were very similar.
 
 \begin{table}%[hbt]
    \centering
-   %\vspace{-0.7cm}
    \caption{B1 and B2 losses on TCT4s  normalised on the sum of IR7 primaries and averaged over h and v simulations for the two cases (TCT5s \textit{in} and TCT4s \textit{only}) and load reduction factor on TCT4s (ratio).}
    \begin{tabular}{l|c|c|c}
        \hline
@@ -116,8 +118,8 @@ We can conclude there will be a positive effect for IR1 reducing halo-induced ba
 \begin{center}
 \includegraphics[width=0.495\textwidth]{figures/HL/tct5inrd/Ekin_BH_HL_tct5inrdB2_20MeV.pdf}
 \includegraphics[width=0.495\textwidth]{figures/HL/tct5inrd/PhiEnDist_BH_HL_tct5inrdB2_20MeV.pdf}
-\includegraphics[width=0.495\textwidth]{figures/HL/tct5inrd/RadNDist_BH_HL_tct5inrdB2_20MeV.pdf}
-\includegraphics[width=0.495\textwidth]{figures/HL/tct5inrd/RadEnDist_BH_HL_tct5inrdB2_20MeV.pdf}
+%\includegraphics[width=0.495\textwidth]{figures/HL/tct5inrd/RadNDist_BH_HL_tct5inrdB2_20MeV.pdf}
+%\includegraphics[width=0.495\textwidth]{figures/HL/tct5inrd/RadEnDist_BH_HL_tct5inrdB2_20MeV.pdf}
 \end{center}
 \vspace{-0.6cm}
  \caption{B2 induced particle distributions at the interface plane.}
@@ -125,51 +127,16 @@ We can conclude there will be a positive effect for IR1 reducing halo-induced ba
 \end{figure}
 
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.495\textwidth]{figures/OrigYZMuons_BH_HL_tct5otrdB1_20MeV}
-\includegraphics[width=0.495\textwidth]{figures/OrigYZMuonsE100_BH_HL_tct5otrdB1_20MeV}
-\includegraphics[width=0.495\textwidth]{figures/OrigYZMuons_BH_HL_tct5inrdB1_20MeV}
-\includegraphics[width=0.495\textwidth]{figures/OrigYZMuonsE100_BH_HL_tct5inrdB1_20MeV}
-\end{center}
-\vspace{-0.6cm}
- \caption{Origin of muons for all energies (left) and with an energy above 100~GeV (right) in the y-z plane for the two cases (left, right) for B1.
-  \label{OrigMuon}}
-\end{figure}
-
 
 \begin{figure}
 \centering
-\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioEkinAll}
-\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioEkinMuons}
-\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioPhiNAll}
-\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioPhiNMuons}
-\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioPhiEnAll}
-\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB1_retracted/perTCThit/ratioPhiEnMuons}
- \caption{Distributions of all particles (left) and muons (right) and their energy in the two cases, TCT4s only and TCT5s in, for B1.
+\includegraphics[width=0.44\textwidth]{figures/HL/compINOUTB1_retracted/normalised/ratioEkinAll}
+\includegraphics[width=0.44\textwidth]{figures/HL/compINOUTB1_retracted/normalised/ratioPhiEnAll}
+\includegraphics[width=0.44\textwidth]{figures/HL/compINOUTB2_retracted/normalised/ratioEkinAll}
+\includegraphics[width=0.44\textwidth]{figures/HL/compINOUTB2_retracted/normalised/ratioPhiEnAll}
+\caption{Rates of all particles and their energy in the two cases, TCT4s only and TCT5s in, for B1 (top) and B2 (bottom). Distribution per TCT hit are in the appendix in Fig.~\ref{fig:compINOUTB1_pertcthit}.
   \label{fig:compInOutB1}}
 \end{figure}
-
-
-
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB2_retracted/perTCThit/ratioEkinAll}
-\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB2_retracted/perTCThit/ratioEkinMuons}
-\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB2_retracted/perTCThit/ratioPhiNAll}
-\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB2_retracted/perTCThit/ratioPhiNMuons}
-\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB2_retracted/perTCThit/ratioPhiEnAll}
-\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB2_retracted/perTCThit/ratioPhiEnMuons}
-%\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB2_retracted/perTCThit/ratioRadEnAll}
-%\includegraphics[width=0.4\textwidth]{figures/HL/compINOUTB2_retracted/perTCThit/ratioRadEnMuons}
-\end{center}
-\vspace{-0.6cm}
- \caption{Azimuthal distribution of all particles and muons (top) and their energy (bottom).
-  \label{fig:compInOutB2}}
-\end{figure}
-
-
 % ------------------------------------------------------------------------------------------
 %% \subsection{Comparison of B1 and B2 induced showers with TCT5s in}
 
