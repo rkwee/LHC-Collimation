@@ -40,8 +40,8 @@ def doRad(hist,nbins):
 # --------------------------------------------------------------------------------
 def cv81():
 
-    do4TeV = 1 # 
-    do6p5  = 0 #
+    do4TeV = 0 # 
+    do6p5  = 1 #
     
     if do4TeV:
         year = "2012"
@@ -54,6 +54,7 @@ def cv81():
         beamintensity = 2e14    
         tag = '_BG_4TeV_20MeV_bs'
         bgcl = kPink-3
+        subfolder = wwwpath + 'TCT/4TeV/beamgas/fluka/reweighted/'
     elif do6p5:
         year = "2015"
         energy = "6.5 TeV"
@@ -62,6 +63,7 @@ def cv81():
         beamintensity = 2.29e14 ## https://acc-stats.web.cern.ch/acc-stats/#lhc/fill-details 4536, ring 1.
         tag = '_BG_6500GeV_flat_20MeV_bs' #!! MMMeV
         bgcl = kYellow+2
+        subfolder = wwwpath + 'TCT/6.5TeV/beamgas/fluka/reweighted/'
     else:
         year = "2011"
         energy = " 3.5 TeV "
@@ -100,8 +102,8 @@ def cv81():
         elif skey.split(tag)[0].endswith("0") or skey.count("XY"): continue
         elif skey.count("Pio") or skey.count("Kao"): continue
 
-        # # FOR DEBUGGING
-        #        elif not skey.count("OrigZAl"): continue
+        # # FOR DEBUGGING/testing
+        elif not skey.count("EkinMuons"): continue
 
         doLeft = 0
         if skey.count("Phi"): doLeft = 1
@@ -146,19 +148,22 @@ def cv81():
             hist_reweighted = doEkin(hist_reweighted,nbins)
             doLogx, doLogy = 1,1
             YurMin,YurMax = 5e2,8e8
+            if skey.count("Muons"):
+                YurMin,YurMax = 5e2,8e6
+            legendunit = sDict[hname][10]
         elif skey.count("Phi"):
             hist_flat = doNormalBinw(hist_flat,nbins)
             hist_reweighted = doNormalBinw(hist_reweighted,nbins)
             doLogx, doLogy = 0,1
             legendunit = sDict[hname][10]
-            if skey.count("En") and not skey.count("Mu"):YurMin,YurMax = 3e7,8e9
-            elif skey.count("Mu") and not skey.count("En"):YurMin,YurMax = 3e4,5e5
+            if skey.count("En") and not skey.count("Mu"):YurMin,YurMax = -1,-1#3e7,8e9
+            elif skey.count("Mu") and not skey.count("En"):YurMin,YurMax = 3e4,5e4
             else: YurMin,YurMax = 1e5,6e8
         elif skey.count("Rad"):
             hist_flat = doRad(hist_flat,nbins)
             hist_reweighted = doRad(hist_reweighted,nbins)
-            hist_flat = helpers.doRebin(hist_flat,3)
-            hist_reweighted = helpers.doRebin(hist_reweighted,3)
+            hist_flat = helpers.doRebin(hist_flat,6)
+            hist_reweighted = helpers.doRebin(hist_reweighted,6)
             doLogx, doLogy = 0,1
             legendunit = sDict[hname][10]
             #XurMin,XurMax = 0, 600.
@@ -214,8 +219,10 @@ def cv81():
 
         pname = wwwpath + 'TCT/6.5TeV/beamgas/fluka/bs/reweighted/'+skey+'.pdf'
         pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/cv81_' + skey + '.pdf'
+        pname = subfolder + 'cv81_' + skey + '.pdf'
         if energy.count("4 TeV"):
             pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/cv81_' + skey + '.pdf'
+            #pname = subfolder + 'cv81_' + skey + '.pdf'
         elif energy.count("3.5 TeV"):
             pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/xcheck2011/cv81_' + skey + '.pdf'
         print('Saving file as ' + pname) 
