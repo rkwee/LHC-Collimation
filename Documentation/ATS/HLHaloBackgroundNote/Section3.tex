@@ -23,13 +23,13 @@ The simulation is performed in two steps: First, we use SixTrack for particle tr
 
 The beam halo is usually simulated in horizontal (h) and vertical (v) distributions, these are flat in one plane and Gaussian in the other (for more information see also~\cite{chiarasThesis}). When a collimator is hit, a built-in, recently updated Monte-Carlo model~\cite{claudiasThesis} decides on the physics process. Protons continue in the lattice until they dissociate in an inelastic interaction with the collimator material or (in a post-processing step) are lost on the aperture. As a result, loss locations around the ring can be identified and protons absorbed by the TCTs serve in second step as seeds in \fluka. Particle interaction and transport are calculated in \fluka~within matter for a user-defined geometry. It uses modern physics models and experimental data as available by the Particle Data Group~\cite{pdg}. The geometry was built up to 546~m of the right side of IR1 for the present LHC machine, for HL-LHC scenarios the geometry\footnote{We use the \fluka~model from 2013.} reaches up the tertiary collimators of around 215~m including the long straight section of IR1 (LSS1).
 
-When halo protons interact with the jaw material of the TCTH or TCTV shower particles are created and stream towards the experiment. Every particle passing an imaginary (x,y)-plane at 22.6~m away from the IP, essentially between the triplet magnets and the TAS, is recorded and written out. The left plot of Fig.~\ref{tctHits} shows part of the \fluka~geometry and in green the hits in an horizontal collimator TCTH.4L1 with absorbed protons from an horizontal and vertical halo distribution. On the right of Fig.~\ref{tctHits} one can see how deep these positions are with respect to the jaw surface shown for the collimator pair of IR1. This depth distribution is shown here as an example, but we can note that the shallower the distribution is, the more of the created shower is not confined and contributes to background at the interface plane.
+When halo protons interact with the jaw material of the TCTH or TCTV shower particles are created and stream towards the experiment. We apply a electron, photon production and hadron, muon, neutrino transportation cut of 20~MeV. Every particle which makes it to an imaginary (x,y)-plane at 22.6~m away from the IP, essentially between the triplet magnets and the TAS, is recorded and written out. The left plot of Fig.~\ref{tctHits} shows part of the \fluka~geometry and in green the hits in an horizontal collimator TCTH.4L1 with absorbed protons from an horizontal and vertical halo distribution. On the right of Fig.~\ref{tctHits} one can see how deep these positions are with respect to the jaw surface shown for the collimator pair of IR1. This depth distribution is shown here as an example, but we can note that the shallower the distribution is, the more of the created shower is not confined and contributes to background at the interface plane.
 
 \subsubsection{Rate normalisation}
 
 %\subsection{IR7 TCP to TCT conversion factors in beam-halo simulations}
 
-We normalised the distributions at the interface plane by the initial proton intensity that was present in the machine for a given scenario and by the IR7 TCP-to-TCT conversion factor which is throughout this note the number of halo protons on IR7 TCPs over the number of leaked protons on the TCTs in an IR. In order to give equal weight to horizontal and vertical halo simulations, the hits per simulation case are summed and then averaged. This approach takes into account sum of all the three IR7 primaries collimators, TCP.D6, TCP.C6, TCP.B6 for a horizontally, vertically aligned and skew collimator. This is closer to the measurement technique where losses are usually normalised to the peak loss measured with the beam loss monitors\footnote{There are more than 3000 BLMs installed in the LHC, their primary purpose is to provide a beam abort in case of need.}. Instead of using the purely theoretical value, the sum of all losses anywhere in the ring. We include also a time $\tau$ to indicate stable beam operation assuming 100 hours of beam life time. Throughout this note the normalisation was done using Eq.~\ref{eqNormHalo} with $h$ and $v$ representing the horizontal and vertical halo simulations, $N$ is the number of intercepted protons and the subscripts indicate the collimator. 
+We normalised the distributions at the interface plane by the initial proton intensity that was present in the machine for a given scenario and by the IR7 TCP-to-TCT conversion factor which is throughout this report the number of halo protons on IR7 TCPs (sum on TCP.D6, TCP.C6 and TCP.B6 for a horizontally, vertically aligned and skew collimator). In order to give equal weight to horizontal and vertical halo simulations, the hits per simulation case are summed and then averaged. This is closer to the measurement technique where losses are usually normalised to the peak loss measured with the beam loss monitor\footnote{There are more than 3000 BLMs installed in the LHC, their primary purpose is to provide a beam abort in case of need.} that is attached to the collimator. To estimate a loss rate, we include also a time $\tau$ to indicate stable beam operation assuming 100 hours of beam life time. Throughout this note the normalisation was done using Eq.~\ref{eqNormHalo} with $h$ and $v$ representing the horizontal and vertical halo simulations, $N$ is the number of intercepted protons and the subscripts indicate the collimator. The content of the square brackets, the leakage numbers, is listed in Tab.~\ref{leakageFactorsIR7} for various simulation cases.
 
 \begin{equation} \label{eqNormHalo}
 R = \frac{N_{\mathrm{bunch}} \cdot I_{\mathrm{bunch}}}{\tau_{\mathrm{stable \, beam}}} \times \Bigg[ \frac{1}{2} \cdot \Big( \frac{N_{\mathrm{TCTV}} + N_{\mathrm{TCTH}}}{N_{\mathrm{TCP.IR7}}}\Big)_{\mathrm{h}} + \Big( \frac{N_{\mathrm{TCTV}} + N_{\mathrm{TCTH}}}{N_{\mathrm{TCP.IR7}}} \Big)_{\mathrm{v}}  \Bigg]
@@ -72,7 +72,7 @@ R = \frac{N_{\mathrm{bunch}} \cdot I_{\mathrm{bunch}}}{\tau_{\mathrm{stable \, b
   \includegraphics[width=0.4\textwidth]{figures/6500GeV/inelposition_sum_HALOB1.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{View in the (x,z)-plane of hits in TCTH from the Run~II halo simulation case zoomed into the inner collimator parts. The hits are all contained within the collimator jaws and were obtained by SixTrack and transformed to the positions of the TCT in the \fluka~coordinates.
+ \caption{View in the (x,z)-plane of hits in TCTH from an Run~II halo simulation case zoomed into the inner collimator parts. The hits are all contained within the collimator jaws and were obtained by SixTrack and transformed to the positions of the TCT in the \fluka~coordinates.
   \label{tctHits}}
 \end{figure}
 
@@ -80,9 +80,9 @@ R = \frac{N_{\mathrm{bunch}} \cdot I_{\mathrm{bunch}}}{\tau_{\mathrm{stable \, b
 \subsection{Beam-Gas simulations \label{BGdescript}}
 
 We simulate local beam-gas interactions in a \fluka~geometry up to $s$ = 546.6~m of IR1. Inelastic proton-nitrogen interactions are uniformly sampled all along $s$ and these positions used to be on the ideal orbit of the beam trajectory. We introduced a new way of sampling taking into account the transverse expansion of the beam which is described in detail further below.
-Like for the beam-halo simulations, information of each shower particle reaching the virtual interface plane at 22.6~m is recorded.
+Like for the beam-halo simulations, information of each shower particle with energy above 20~MeV and reaching the virtual interface plane at 22.6~m is recorded.
 
-In \fluka, inelastic interactions were sampled uniformly from certain positions. If one has a non-flat pressure profile, one can either reweight at run-time or in a subsequent step if one keeps the information of the initial s-position of the interacting proton of each particle at the interface plane. The advantage of the second method is that distributions can be easily re-normalised to another pressure profile. For earlier simulations, as performed for beam-gas studies in an HL-LHC scenario~\cite{kweeIpac14}, this functionality was not in place, however the normalisation for studies shown here were all done in a sub-sequent step. In both simulation cases, beam-gas in Run~I (2012) and Run~II (2015), nitrogen was chosen as collision partner of the beam proton in the simulations as the measured pressures are calibrated against nitrogen and given in nitrogen equivalent.
+In \fluka, inelastic interactions were sampled uniformly from certain positions on the ideal orbit. If one has a non-flat pressure profile, one can either reweight at run-time or in a subsequent step if one keeps the information of the initial s-position of the interacting proton of each particle at the interface plane. The advantage of the second method is that distributions can be easily re-normalised to another pressure profile. We have used both methods, including at run-time the pressure map in the simulation in an HL-LHC scenario~\cite{kweeIpac14}, and , however the normalisation for studies shown here were all done in a sub-sequent step. In both simulation cases, beam-gas in Run~I (2012) and Run~II (2015), nitrogen was chosen as collision partner of the beam proton in the simulations as the measured pressures are calibrated against nitrogen and given in nitrogen equivalent.
 
 \begin{table}
    \centering
@@ -119,7 +119,7 @@ with the total rate of interaction probabilities of each atom $i$ at the positio
 and the length $\Delta s_{j}$ over which the interaction probability is valid.
 
 \subsection{New simulation techniques}
-Previous studies as in Ref.~\cite{nimPaperRod} used methods relaying on approximations of either of the beam or on its trajectory. One approximation is that the transverse beam size was neglected. In particular, just before the triplet the beamsize is very large and addtional interactions in that location could contribute to shower particles at the interface plane. Another improvement in the simulations is the inclusion of the crossing-angle which was present right from start-up of the LHC.
+Previous studies as in Ref.~\cite{nimPaperRod} used methods relaying on approximations of either of the beam or on its trajectory. One approximation is that the transverse beam size was neglected. In particular, at the entrance of the triplet the beamsize is very large, see as example beam sizes in Fig.~\ref{twissfileBS}, and addtional interactions in that location could contribute to shower particles at the interface plane. Another improvement in the simulations is the inclusion of the crossing angle which was present right from start-up of the LHC.
 
 \subsubsection{Setup to include the beam size}
 To test the effect of the beam size, two cases were simulated in \fluka, with exactly the same setup for the 2012 Run I scenario, see Tab.~\ref{paramsRun12}, but using a different input file for positions at which beam-gas interactions are sampled.
@@ -139,18 +139,18 @@ The new input file was created by dumping positions of the trajectory with diffe
  
 \begin{equation} \label{eq1}
   \begin{split}
-x = & \, \sqrt{\beta \epsilon} \cdot X \\
+x = & \, \sqrt{\beta \epsilon_{geo}} \cdot X \\
 x' = & \sqrt{\frac{\epsilon_{geo}}{\beta}} \, \big( X' - \alpha X \big)
   \end{split}
 \end{equation}
 
-with $\epsilon$ being the geometric emittance, $\alpha, \beta$ and $\gamma$ the usual twiss parameters from the definition of the emittance as conservative in $\epsilon = \gamma x^2 + \beta x'^2 + 2 \alpha x x'$, and $X$ and $X'$ satisfying the circle equation, $X^2 + X'^2 = 1$. 
+with $\epsilon$ being the geometric emittance, $\alpha, \beta$ and $\gamma$ the usual twiss parameters from the definition of the emittance as conservative in $\epsilon_{geo} = \gamma x^2 + \beta x'^2 + 2 \alpha x x'$, and $X$ and $X'$ satisfying the circle equation, $X^2 + X'^2 = 1$. 
 
 
 \begin{figure}%[!htb]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{figures/IP1_gauss.pdf}
-\includegraphics[width=0.9\textwidth]{figures/twiss_gauss.pdf}
+%\includegraphics[width=0.9\textwidth]{figures/twiss_gauss.pdf}
 \end{center}
 %% \begin{picture} (0.,0.)
 %% \setlength{\unitlength}{1.0cm}
@@ -161,7 +161,7 @@ with $\epsilon$ being the geometric emittance, $\alpha, \beta$ and $\gamma$ the 
 %%     \put ( 12.4,1.){(d)}}
 %% \end{picture}
 \vspace{-0.6cm}
- \caption{Matched phase space coordinates at IP1 in x and y (top) and at an example position (bottom, here TCTH). The rings indicate in $\sigma$ the gaussian distribution.
+ \caption{Matched phase space coordinates at IP1 in x and y. The rings indicate in $\sigma$ the gaussian distribution.
   \label{ip1_gauss}}
 \end{figure}
 
@@ -184,10 +184,10 @@ The motivation to introduce a crossing angle in the machine is to avoid parasiti
 In all simulations from 4~TeV onwards, it was possible in \fluka~to consider such a crossing angle.
 
 \subsection{Off-momentum particles simulations}
-Particles with slightly larger or smaller energy with respect to the nominal value follow a different path inside the LHC ring. If the orbit deviation is large enough the particle might be lost in the aperture. To avoid these losses a momentum collimation section is installed in IR3. In this section the dispersion function is large to force particles with some energy deviation to deviate from the nominal orbit. At this location collimators intercept these particles. The nominal collimator cut intercepts particles with energy deviations above $\delta p/p = 1.6\cdot 10^{-3}$.
+Particles with slightly larger or smaller energy with respect to the nominal value follow a different path inside the LHC ring. If the orbit deviation is large enough the particle might be lost in the aperture. To avoid these losses a momentum collimation section is installed in IR3. In this section the dispersion function is large to force particles with some energy deviation to deviate from the nominal orbit. At this location collimators intercept these particles. The nominal collimator cut intercepts particles with energy deviations above $\delta p/p = 1.6\cdot 10^{-3}$ for the Run~II case in 2015.
 
 To evaluate the efficiency of the momentum cleaning section in the actual machine off-momentum loss maps are acquired. During the acquisition an RF frequency trim is applied. This trim increases or decreases the beam energy until it reaches the collimator cut. Usually a frequency trim of 500~Hz is applied for 15 seconds. Neverheless, at around 200 Hz the full beam is already scraped by the momentum collimator. SixTrack simulations reproduce exactly this mechanism in such a way we can evaluate the impact of off-momentum particle in the collimation system. Such simulations have become available only recently and it uses a new module in SixTrack which enables a turn-by-turn parameter change to the beam~\cite{KyrreIpac2015}. In contrast to halo cleaning simulations, in momentum cleaning the full beam is simulated for several thousands turns for two, a positive and negative, frequency shifts. More on how these simulations are done is described in Ref.~\cite{HectorsPaper}. 
-We use the IR1 tct-impacts of the off-momentum cleaning simulations as seeds in \fluka~and present here for the first time shower simulations of IR3 leakage to IR1. 
+We use the IR1 tct-impacts of the off-momentum cleaning simulations as seeds in \fluka~and present here for the first time shower simulations of IR3 leakage to IR1 at 4~TeV. 
 
 \subsection{Run I and Run II simulation cases}
 For Run I and II, real physics configurations of the LHC were used for most of the $pp$ physics runs in 2012 and 2015. At 4~TeV in 2012, the optics were for a $\beta^* = 60$ cm and TCT collimator settings in IR1/IR5 TCTs were set to 9~$\sigma$~\cite{parametersRun1}. For Run II, the optics changed to $\beta^* = 80$~cm which was used in the machine throughout 2015 for proton-proton collisions and IR1/IR5 collimators were set to 13.7~$\sigma$. For both runs, a vertical crossing angle of $290~\mu$m was taken into account in the simulations. More simulation and run parameters can be found in Tab.~\ref{paramsRun12} and the results are shown in Sec.~\ref{run1run2}. 
@@ -213,7 +213,7 @@ For Run I and II, real physics configurations of the LHC were used for most of t
 
 \subsection{HL-LHC simulation cases}
 
-Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC and variants and to estimate quantitatively any advantages in terms of background with different collimator layouts. An alternative set of collimator openings, so called \twosigmaret~settings, was prepared based on experience with the machine and is listed in Tab.~\ref{HLcollSettings}. In particular, the aim was to quantify the effect of additional tertiary collimators, TCT5s, for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in \fluka~at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in \fluka~a production and transportation cut-off at 20 MeV. We used \textit{Achromatic Telescopic Squeeze} (ATS) optics~\cite{ATSref} version HLLHCv1.0 for round beams which has $\beta^* = 15~$cm at IP1/5~\cite{opticsWebRef}. Note, the \fluka~geometry contained layout updates of v1.1, but v1.0 collimator settings were used assuming the uncertainties from the version differences are negligable compared to other sources of uncertainty e.g.~unknown final geometries. Section~\ref{hllhcResults} is dedicated to HL simulation studies.
+Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC and variants and to estimate quantitatively any advantages in terms of background with different collimator layouts. An alternative set of collimator openings, so called \twosigmaret~settings, was prepared \cite{bruce14_n1_ap_meas} based on experience with the machine and is listed in Tab.~\ref{HLcollSettings}. In particular, the aim was to quantify the effect of additional tertiary collimators, TCT5s, for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in \fluka~at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in \fluka~again the same production and transportation energy cut of 20 MeV. We used \textit{Achromatic Telescopic Squeeze} (ATS) optics~\cite{ATSref} version HLLHCv1.0 for round beams which has $\beta^* = 15~$cm at IP1/5~\cite{opticsWebRef}. Note, the \fluka~geometry contained layout updates of v1.1, but v1.0 collimator settings were used assuming the uncertainties from the version differences are negligable compared to other sources of uncertainty e.g.~unknown final geometries. Section~\ref{hllhcResults} is dedicated to HL simulation studies.
 
 \begin{figure}%[!htb]
 \begin{center}

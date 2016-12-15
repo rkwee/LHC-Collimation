@@ -1,23 +1,23 @@
 \section{Additional plots for Run I and II simulations\label{run1run2app}}
-
+\clearpage
 \subsection{Halo distributions in Run I}
 
-\begin{figure}%[!htb]
+\begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=0.49\textwidth]{figures/4TeV/haloB1_20MeV/PhiNDist_BH_4TeV_B1_20MeV.pdf}
+
 \includegraphics[width=0.49\textwidth]{figures/4TeV/haloB1_20MeV/RadNDist_BH_4TeV_B1_20MeV.pdf}
 \includegraphics[width=0.49\textwidth]{figures/4TeV/haloB1_20MeV/RadEnDist_BH_4TeV_B1_20MeV.pdf}
-\includegraphics[width=0.49\textwidth]{figures/4TeV/haloB1_20MeV/XYNMuons_BH_4TeV_B1_20MeV.pdf}
+
 \end{center}
 \vspace{-0.6cm}
  \caption{Halo Beam 1 distributions at the interface plane. 
-  \label{dist4TeVB1}}
+  \label{dist4TeVB12}}
 \end{figure}
 
 \begin{figure}%[!htb]
 \begin{center}
 %\includegraphics[width=0.4\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioEkinMuons.pdf}
-\includegraphics[width=0.4\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioPhiEnAll.pdf}
+%\includegraphics[width=0.4\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioPhiEnAll.pdf}
 \includegraphics[width=0.4\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioPhiEnMuons.pdf}
 \includegraphics[width=0.4\textwidth]{figures/4TeV/compB1B2/perTCThit/ratioPhiEnProtons.pdf}
 \end{center}
@@ -34,11 +34,40 @@
 \end{center}
 \vspace{-0.6cm}
  \caption{Beam-gas induced background shown per BG interaction (flat pressure).
-  \label{dist4TeVBGbs}}
+  \label{dist4TeVBGbs2}}
 \end{figure}
 
+% ------------------------------------
+% comp Run1 
 
+\begin{figure}
+\begin{center}
+  \includegraphics[width=0.41\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/perBGint_bs/ratioPhiEnAll.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/perBGint_bs/ratioPhiEnPhotons.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/perBGint_bs/ratioPhiEnMuons.pdf}
+  \includegraphics[width=0.41\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/perBGint_bs/ratioPhiEnMuE100.pdf}
+\end{center}
+\vspace{-0.6cm}
+ \caption{Run I beam-gas data: Same conclusions as from Fig.~\ref{xingCompBG2}. Clear effect of crossing angle as also when comparing to the beam-gas data with beamsize (bs) (top) and no influence on muons (middle). Since the TCTs were at 11.8~$\sigma$ at 3.5~TeV and 9~$\sigma$ comparison of BG from before the TCTs may tell also about the influence of TCT settings on beam-gas. The bottom plots show there is no significant influence.
+  \label{xingCompBG2}}
+\end{figure}
 
+% ------------------------------------
+% crossing angle comparison
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.41\textwidth]{figures/compBHB1_3p5vs4TeV/ratioPhiEnAll.pdf}
+    \includegraphics[width=0.41\textwidth]{figures/compBHB1_3p5vs4TeV/ratioPhiEnPhotons.pdf}
+
+  %% \includegraphics[width=0.41\textwidth]{figures/4TeV/compB2_3p5vs4TeV/ratioPhiEnAll.pdf}
+  %% \includegraphics[width=0.41\textwidth]{figures/4TeV/compB2_3p5vs4TeV/ratioPhiEnPhotons.pdf}
+  %% \includegraphics[width=0.41\textwidth]{figures/4TeV/compB2_3p5vs4TeV/ratioPhiEnMuMinus.pdf}
+  %% \includegraphics[width=0.41\textwidth]{figures/4TeV/compB2_3p5vs4TeV/ratioPhiEnMuPlus.pdf}
+\end{center}
+\vspace{-0.6cm}
+\caption{B2 beam halo data without significant sign of a crossing-angle effect.
+  \label{xingCompBHB2}}
+\end{figure}
 
 \begin{figure}%[!htb]
 \begin{center}
@@ -107,7 +136,20 @@
 % beamgas before and after reweightening
 
 
+%% \begin{figure}
+%%   \centering
+%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/compBGflat/ratioEkinAll.pdf}
+%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/compBGflat/ratioEkinMuons.pdf}
+%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/compBGflat/ratioPhiEnAll.pdf}
+%%   \includegraphics[width=0.45\textwidth]{figures/4TeV/compBGflat/ratioPhiEnMuons.pdf}
+%%   \caption{Same as Fig.~\ref{fig:cv81EkinPhiEn4TeV} but with ratio at the bottom. Note the color change.
+%%     \label{fig:cv16EkinPhiEn4TeV}}
+%% \end{figure}
+   
+
+
 \begin{figure}
+  
 \begin{center}
   \includegraphics[width=0.75\textwidth]{figures/4TeV/reweighted/cv81_OrigZMuon_BG_4TeV_20MeV_bs}
   \includegraphics[width=0.75\textwidth]{figures/4TeV/reweighted/cv81_OrigZPhotons_BG_4TeV_20MeV_bs}
@@ -120,17 +162,17 @@
 
 \begin{figure}
 \begin{center}
-  %% \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_EkinAll_BG_4TeV_20MeV_bs}
+   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_EkinAll_BG_4TeV_20MeV_bs}
   %% \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_EkinMuons_BG_4TeV_20MeV_bs}
-  %% \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_PhiEnAll_BG_4TeV_20MeV_bs}
+   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_PhiEnAll_BG_4TeV_20MeV_bs}
   %% \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_PhiEnMuons_BG_4TeV_20MeV_bs}
   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadNAll_BG_4TeV_20MeV_bs}
-  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadNMuons_BG_4TeV_20MeV_bs}
+%%  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadNMuons_BG_4TeV_20MeV_bs}
   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadEnAll_BG_4TeV_20MeV_bs}
-  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadEnMuons_BG_4TeV_20MeV_bs}
+%%  \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadEnMuons_BG_4TeV_20MeV_bs}
 \end{center}
 \vspace{-0.6cm}
- \caption{From top to bottom for all particles (left) and muons (right): transverse radius $r$ and energy in $r$ before reweightening (black) and reweighted to pressure profile (pink). The black curve are scaled up to better compare the shapes. 
+ \caption{Same type of distributions as in Fig.~\ref{fig:cv81EkinPhiEn4TeV}, showing then here for all particles. They follow the same trend of muons. the transverse radius $r$ (top) and the energy in $r$ (bottom). 
   \label{fig:cv81EkinPhiEn4TeV2}} 
 \end{figure}
 
@@ -147,7 +189,7 @@
   \includegraphics[width=0.45\textwidth]{figures/4TeV/reweighted/cv81_RadEnNeutrons_BG_4TeV_20MeV_bs}
 \end{center}
 \vspace{-0.6cm}
- \caption{Similar as previous figure but for protons (left) and neutrons (right): energy spectrum, energy in $\phi$, transverse radius $r$, and energy in $r$ before reweightening (black) and reweighted to pressure profile. The black curve are scaled up to better compare the shapes. 
+ \caption{Same observables as in Fig.~\ref{fig:cv81EkinPhiEn4TeV} but for protons (left) and neutrons (right): energy spectrum, energy in $\phi$, transverse radius $r$, and energy in $r$ before reweightening (black) and reweighted to pressure profile. The black curve are scaled up to better compare the shapes. Very similar shapes before and after reweightening.
    \label{fig:cv81ProtNeut4TeV}}
 \end{figure}
 
@@ -229,7 +271,7 @@ The first two rows highlight multiplicity and energy in $\phi$, and the last two
   \label{compBHB1B2run2}}
 \end{figure}
 
-\newpage
+\clearpage
 
 \begin{figure}%[!htb]
 \begin{center}
@@ -246,7 +288,6 @@ The first two rows highlight multiplicity and energy in $\phi$, and the last two
 \begin{figure}
 \begin{center}
   \includegraphics[width=0.75\textwidth]{figures/6500GeV/reweighted/cv81_OrigZAll_BG_6500GeV_flat_20MeV_bs.pdf}
-%  \includegraphics[width=0.75\textwidth]{figures/6500GeV/reweighted/cv81_OrigZMuon_BG_6500GeV_flat_20MeV_bs.pdf}
   \includegraphics[width=0.75\textwidth]{figures/6500GeV/reweighted/cv81_OrigZProtons_BG_6500GeV_flat_20MeV_bs.pdf}
   \includegraphics[width=0.75\textwidth]{figures/6500GeV/reweighted/cv81_OrigZPhotons_BG_6500GeV_flat_20MeV_bs.pdf}
 \end{center}
@@ -261,9 +302,7 @@ The first two rows highlight multiplicity and energy in $\phi$, and the last two
   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_EkinAll_BG_6500GeV_flat_20MeV_bs}
   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_PhiEnAll_BG_6500GeV_flat_20MeV_bs}
   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNAll_BG_6500GeV_flat_20MeV_bs}
-%  \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadNMuons_BG_6500GeV_flat_20MeV_bs}
   \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnAll_BG_6500GeV_flat_20MeV_bs}
- % \includegraphics[width=0.45\textwidth]{figures/6500GeV/reweighted/cv81_RadEnMuons_BG_6500GeV_flat_20MeV_bs}
 \end{center}
 \vspace{-0.6cm}
  \caption{The distributions 
@@ -289,6 +328,5 @@ The first two rows highlight multiplicity and energy in $\phi$, and the last two
 \end{figure}
 
 % ----------------------------------
-\newpage
 \clearpage
 
