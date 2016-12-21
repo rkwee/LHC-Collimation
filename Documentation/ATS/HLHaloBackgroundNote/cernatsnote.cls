@@ -57,7 +57,7 @@
                 colorlinks=true}
 
 \RequirePackage[english]{isodate}        %%% gives dates in non-American format
-%\cleanlookdateon %% this is for the english option of isodate
+\cleanlookdateon %% this is for the english option of isodate
 
 %% not sure how this interacts with a4paper option to article class
 %% may not be quite the right thing to do
@@ -150,7 +150,7 @@
     \setlength{\parindent}{0pt}
     \begin{tabular}[t]{@{}p{0.45\textwidth}}
       {
-        \protect{\includegraphics[width=20mm]{cernlogo.pdf} }
+        \protect{\includegraphics[width=20mm]{cernlogo} }
         }
     \end{tabular}
     \hfill
