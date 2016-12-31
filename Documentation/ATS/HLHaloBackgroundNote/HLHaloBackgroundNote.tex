@@ -30,16 +30,16 @@
 % ?)
 \setmarginsrb{22mm}{10mm}{20mm}{10mm}{12pt}{11mm}{0pt}{11mm}
 %
-\title{Background Simulation Studies for Run I, Run II and HL-LHC}
+\title{Machine-induced Background Simulation Studies for LHC Run~I, Run~II and HL-LHC}
 %
-\author{R.~Kwee-Hinzmann, R.~Bruce, F.~Cerutti,~L.~S.~Esposito, S.~M.~Gibson, A.~Lechner, H.~Garcia-Morales}
+\author{R.~Kwee-Hinzmann, G.~Bregliozzi, R.~Bruce, F.~Cerutti,~L.~S.~Esposito, S.~M.~Gibson, A.~Lechner, H.~Garcia Morales, C.~Yin Vallgren}
 %
 \date{\today}
 \email{\small{Regina.Kwee@rhul.ac.uk}}
 %
 \makeindex
 %
-\documentlabel{CERN-ACC-Note-2016-XXX PERF}\keywords{halo background, beam-gas, SixTrack, FLUKA, HL-LHC, TCT5, collimation, cleaning efficiency, IR3 leakage, IR7 leakage, off-momentum, ATLAS, CMS}
+\documentlabel{CERN-ACC-Note-2017-XXX PERF}\keywords{halo background, beam-gas, SixTrack, FLUKA, HL-LHC, TCT5, collimation, cleaning efficiency, IR3 leakage, IR7 leakage, off-momentum, ATLAS, CMS}
 %
 % End of preamble and beginning of text.
 \begin{document}
@@ -56,9 +56,9 @@
 % ----------------------------------------------------------------------------------------------
 \begin{abstract}
 %
-  The study of machine induced background to the experiments is vital for several reasons. Too much background can be an issue for operation and the tricky part is to judge when it is ``too much''. It is a complex topic as -- besides the experiments -- many of the machine groups are involved (e.g.~collimation, vacuum, RF). A detailed study of background can also help understanding the machine better to identify potential issues and complemented by dedicated machine tests. Finally such a study is relevant for the experiments to analyse the characteristica of machine background to be sure not to count it as new physics signal.
+  The study of machine-induced background to the experiments is vital for several reasons. Too much background can be an issue for operation and the difficult part is to judge when exactly it is ``too much''. It is a complex topic as experiments are directly or indirectly affected by conditions all around the LHC ring e.g.~collimation settings and vacuum quality. A detailed study of background can also help understanding the machine better to identify potential issues and complemented by dedicated machine tests. Finally such a study is relevant for the experiments to analyse the characteristica of machine background to make sure not to count it into a new physics signal.
 
-  This report summarises simulation results of three background sources, local beam-gas, halo and for the first time off-momentum (IR3) leakage. The most dominant sources, halo and beam-gas, have been systematically studied for LHC Run~I and Run~II cases, and several HL--LHC scenarios. We analyse the evolution of background of these scenarios and discuss rates expected for HL. Leakages are analysed for both ATLAS and CMS while detailed shower simulations were performed for ATLAS only in all these scenarios.
+  This report summarises simulation results of three background sources, local beam-gas, beam-halo from the betatron collimation in IR7 and for the first time beam-halo from momentum collimation in IR3. The most dominant sources, betatron halo and beam-gas, have been systematically studied for LHC Run~I and Run~II cases, and several HL--LHC scenarios. We analyse the evolution of background of these scenarios and discuss rates expected for HL. Impacts on the tertiary collimators upstream of ATLAS and CMS are analysed, while particle distributions streaming into the experimental area were estimated for ATLAS only in detailed shower simulations in all of these scenarios.
 %  This note summarises the simulation results on three background sources, local beam-gas and beam-halo (IR7) and for the first time off-momentum (IR3) leakage. They all produce particle showers at the to the experimental areas, this was simulated for the ATLAS IP. Even though shower results are shown only for the IR1 FLUKA geometry, this note contains an leakage factors from IR3 and IR7 also for CMS. The most dominant sources, halo and beam-gas, have been systematically studied for LHC Run~I and Run~II cases, and several HL--LHC scenarios. We indicate rates in all these scenarios.
   
 \end{abstract}
@@ -88,13 +88,13 @@ Giuseppe Bregliozzi and Christina Yin Vallgren
 \clearpage
 \appendix
 \newpage
+\include{appendixB} % leakageTables
+\newpage
 \include{appendixC} % run1run2app
 \clearpage
 \include{appendixC2} % run2 and HL
 \newpage
 \include{appendixD} % evolutApp
-\newpage
-\include{appendixB} % leakageTables
 \newpage
 \include{appendixA} % HLapp
 % ---------------------------------------------------------------------------------------------------------------------
