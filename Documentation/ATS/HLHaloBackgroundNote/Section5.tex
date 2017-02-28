@@ -2,32 +2,32 @@
 
 \subsection{HL-LHC simulation cases}
 
-Initial studies of beam-halo and beam-gas induced background were shown in Ref.~\cite{kweeIpac14,ipac2015_rkh}. Several cases were simulated in order to characterise the cleaning efficiency for baseline settings of HL-LHC and variants and to estimate quantitatively any advantages in terms of background with different collimator layouts. An alternative set to nominal collimator openings, so called \twosigmaret~settings, was prepared \cite{bruce14_n1_ap_meas} based on experience with the machine and is listed in Tab.~\ref{HLcollSettings}. In particular, the aim was to quantify the effect of additional tertiary collimators, TCT5s\footnote{This collimator is in a more recent version named TCT6, since it's officially in cell 6 (although upstream of Q5). We keep the old name TCT5s throughout the entire report, but we note it is the same collimator pair.}, for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in \fluka~at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in \fluka~again the same production and transportation energy cut of 20 MeV. We used \textit{Achromatic Telescopic Squeeze} (ATS) optics~\cite{ATSref} version HLLHCv1.0 for round beams which has $\beta^* = 15~$cm at IP1/5~\cite{opticsWebRef}. Note, the \fluka~geometry contained layout updates of v1.1, but v1.0 collimator settings were used assuming the uncertainties from the version differences are negligable compared to other sources of uncertainty e.g.~unknown final geometries. 
+Initial studies of beam-halo and beam-gas induced background were shown in Ref.~\cite{kweeIpac14,ipac2015_rkh}. Several cases were simulated in order to characterise the cleaning efficiency for baseline settings and variants in HL-LHC and to estimate quantitatively any advantages in terms of background with different collimator layouts. The so-called \twosigmaret~settings are the baseline collimator settings in HL-LHC, which were proposed based on operational experience \cite{bruce14_n1_ap_meas} and are shown in Tab.~\ref{HLcollSettings}. In particular, the aim was to quantify the effect of additional tertiary collimators, TCT5s\footnote{This collimator is in a more recent version named TCT6, since it's officially in cell 6 (although upstream of Q5). We keep the old name TCT5s throughout the entire report, but we note it is the same collimator pair.}, for incoming beams (B1 and B2). Inelastic interactions with beam protons are forced in \fluka~at initial conditions given by SixTrack on the TCT4s and (when included) TCT5s. These interactions generate a particle flux towards the experiment. All shower particles are recorded at the machine-detector interface plane at 22.6~m from the IP using in \fluka~as usual the production and transportation energy cut of 20 MeV. We used the baseline optics, \textit{Achromatic Telescopic Squeeze} (ATS) optics~\cite{ATSref}, of version HLLHCv1.0 for round beams which has $\beta^* = 15~$cm at IP1/5~\cite{opticsWebRef}. We also studied flat beam optics with $\beta^*_{x,y} =~7.5$~cm and $\beta^*_{y,x} =~30$~cm. Note, the \fluka~geometry contained layout updates of v1.1, but v1.0 collimator openings in mm were used assuming the uncertainties from the version differences are negligable compared to other sources of uncertainty e.g.~unknown final geometries. 
 
-\begin{figure}%[!htb]
+\begin{figure}[!htb]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{figures/IR1_layout_HL.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{Machine layout for the HL-LHC for the incoming beam in IR1 with IP1 at s = 0. Highlighted are the horizontal and vertical tertiary collimators (TCT4s) at around -131~m, the new pair of tertiaries, TCT5s, at around -213~m.
+ \caption{Machine layout for the HL-LHC for the incoming beam in IR1 with IP1 at s = 0. Highlighted are the horizontal and vertical tertiary collimators (TCT4s) at around -131~m, the new pair, TCT5s, at around -213~m.
   \label{hllhc_layout}}
 \end{figure}
 
 
  \begin{table}%[hbt]
    \centering
-   \caption{HL half-gap collimator settings calculated for a normalised emittance of $\epsilon_{\mathrm{n}}$ of 3.5~$\mu$m. Full and updated settings can be found in~\cite{collSettRef}. When included, the TCT5s had the same settings as the TCT4s.}
+   \caption{HL-LHC collimator settings in terms of normalised half-gaps calculated for a normalised emittance of $\epsilon_{\mathrm{n}}$ of 2.5~$\mu$m (3.5~$\mu$m). Full settings can be found in~\cite{collSettRef}. When included, the TCT5s had the same settings as the TCT4s. }
 
    \begin{tabular}{l|c|c}
        \hline
        collimators &        nominal settings & $2\sigma$-retracted settings\\
                    &         [$\sigma$] &  [$\sigma$]\\
        \hline
-       TCP3 & 12 (now 15) & 15 \\
-       TCSG3 & 15.6 (now 18)& 18 \\
-       TCP7 & 6 & 5.7 \\
-       TCSG7 & 7 & 7.7 \\
-       TCT4 IR1/5 & 8.3 & 10.5 \\
+       TCP7 & 8.4 (6)& 8 (5.7) \\
+       TCSG7 & 9.8 (7) & 10.8 (7.7) \\
+       TCT4 IR1/5 & 11.6 (8.3) & 14.7 (10.5) \\
+       TCP3 & 21 (15) & 21 (15) \\
+       TCSG3 & 25.2 (18) & 25.2 (18)\\
        \hline
    \end{tabular}
    \label{HLcollSettings}
@@ -35,7 +35,7 @@ Initial studies of beam-halo and beam-gas induced background were shown in Ref.~
 
 \begin{table}%[!hbt]
    \centering
-   \caption{Simulation parameters for HL-LHC normalisation for $\beta^* = 15$~cm ATS optics~\cite{ATSref}.}
+   \caption{Simulation parameters for HL-LHC normalisation for baseline ATS optics of $\beta^* = 15$~cm~\cite{ATSref}.}
    \begin{tabular}{l|c}
        \hline
        beam energy & 7 TeV \\
@@ -48,13 +48,13 @@ Initial studies of beam-halo and beam-gas induced background were shown in Ref.~
 \end{table}
 
 
-We focus on simulation results made since~\cite{kweeIpac14} for beam-halo induced background. An overview is given in Tab.~\ref{hlscenario} with two options of collimator layout (TCT5s in/out), two sets of collimator openings (nominal/\twosigmaret) and two beam optics (round/flat). For beam-gas simulations in an HL scenario we refer to Ref.~\cite{kweeIpac14}, in which the most recent available simulations were described. We have seen that the pressure usually strongly influences the beam-gas distributions at the interface plane, and obviously a very preliminary pressure map had to be used for HL-LHC. Once, a new pressure map possibly extending up to the arc will be available for a 7~TeV beam in the HL scenario and major updates of the geometry are included, we recommend an update of the beam-gas simulations. 
+We focus on simulation results made since~\cite{kweeIpac14} for beam-halo induced background. An overview is given in Tab.~\ref{hlscenario} with two options of collimator layout (TCT5s in/out), two sets of collimator openings (nominal/\twosigmaret) and two beam optics (round/flat). For beam-gas simulations in an HL-LHC scenario we refer to Ref.~\cite{kweeIpac14}, in which the most recent available simulations were described. We have seen that the pressure usually strongly influences the beam-gas distributions at the interface plane, and obviously a very preliminary pressure map had to be used for HL-LHC. Once, a new pressure map, possibly extending up to the arc, will be available for a 7~TeV beam in the HL-LHC scenario and major updates of the geometry are included, we recommend an update of the beam-gas simulations. 
 
 \subsection{Comparison of halo background with different collimator settings}
 
-The aim was to study beam losses for different collimator layouts and settings to evaluate quantitatively on halo background in IR1. Settings of the collimation system were revised as described in detail in Ref.~\cite{collSettRef} and the baseline settings for HL-LHC are the so-called \twosigmaret~settings. As one can see from Tab.~\ref{hlscenario}, the IR7 secondary collimators are retracted w.r.t.~the primary collimators by 2$\sigma$, comparing to the nominal openings of the primary collimators they are even tighter, see also Tab.~\ref{HLcollSettings}. Furthermore, the TCTs are more open in the HL-LHC baseline settings than with the nominal design report settings, in order to ensure safety in case of asynchronous beam dumps. It is anticipated that the new settings, \twosigmaret~settings will already be favorable for background.
+The aim was to study beam losses for different collimator layouts and settings to evaluate quantitatively on halo background in IR1. Settings of the collimation system were revised as described in detail in Ref.~\cite{collSettRef} and the baseline settings for HL-LHC are the so-called \twosigmaret~settings. As one can see from Tab.~\ref{hlscenario}, the IR7 secondary collimators are retracted w.r.t.~the primary collimators by 2$\sigma$, comparing to the nominal openings of the primary collimators they are even tighter, see also Tab.~\ref{HLcollSettings}. Furthermore, the TCTs are more open in the HL-LHC baseline settings than with the nominal design report settings, in order to ensure safety in case of asynchronous beam dumps. It is anticipated that the \twosigmaret~settings will already be favorable for background.
 
-We analysed what improvement can be expected using the final collimator layout (TCT5s included) and baseline \textit{achromatic squeeze} (ATS) optics~\cite{ATSref} (round beam). Comparing the produced particle distributions at the interface plane, we find that per TCT hit slightly more background is produced with the \twosigmaret~settings. The distributions in Fig.~\ref{fig:compNomRetrSett} show there number of particles (left) and the energy (right) will slightly increase with more open TCTs at IR1, about 50~\% more particles per TCT hit which produce 40~\% more energy will reach the interface plane. The reason for such an increase is if the TCTs are more open, more halo protons interact on the jaw surface and showers are less comprised in the jaws. %Showers can develop better outside the jaws and hence produce more secondaries at the interface plane.
+We analysed what improvement can be expected using the final collimator layout (TCT5s included) for round ATS optics. Comparing the produced particle distributions at the interface plane, we find that per TCT hit slightly more background is produced with the \twosigmaret~settings. The distributions in Fig.~\ref{fig:compNomRetrSett} show there number of particles (left) and the energy (right) will slightly increase with more open TCTs at IR1, about 50~\% more particles per TCT hit which produce 40~\% more energy will reach the interface plane. The reason for such an increase is if the TCTs are more open, more halo protons interact on the jaw surface and showers are less comprised in the jaws. %Showers can develop better outside the jaws and hence produce more secondaries at the interface plane.
 
 To estimate the total rate of particles crossing the interface plane, one has to consider also the efficiency of the collimation system for which we compute the IR7 leakage towards the experimental IRs (listed in Tab.~\ref{leakageFactorsIR7}). The leakage to IR1 is in the case of nominal settings, $4.7 \times 10^{-4}$, three times as large as in the \twosigmaret~settings, being then only $1.2 \times 10^{-4}$. Already deploying the \twosigmaret~settings will lead to less leakage and thereby less halo-induced background in IR1 of about a factor 2 to 3. Similar gain for the reduction of leakage is expected in IR5, with leakage factors of about 2.8~times smaller.
 
@@ -62,7 +62,7 @@ To estimate the total rate of particles crossing the interface plane, one has to
 
 \begin{table}%[hbt]
    \centering
-   \caption{Overview of beam-halo simulation cases performed using SixTrack and optics version HLLHC-v1.0.}\vskip2mm
+   \caption{Overview of beam-halo simulation cases performed using SixTrack and optics version HLLHC-v1.0. Baseline in HL-LHC are \twosigmaret~settings, TCT5s in, round beam optics.}\vskip-2mm
    \begin{tabular}{|l|l|l|l|}
        \hline
        collimator settings & TCT5s & beam halo & optics \\
@@ -98,7 +98,7 @@ To estimate the total rate of particles crossing the interface plane, one has to
 \includegraphics[width=0.43\textwidth]{figures/HL/compNomRetrCollSett/perTCThit/ratioPhiEnAll.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{Comparison of halo-induced background distributions at the interface plane with nominal and \twosigmaret~collimator settings, for normalisation to rates, see Fig.~\ref{fig:compNomRetrSett2}.
+ \caption{Comparison of betatron halo induced background distributions at the interface plane in IR1 with nominal and \twosigmaret~collimator settings in HL-LHC round beam optics. For normalisation to rates, see Fig.~\ref{fig:compNomRetrSett2}.
   \label{fig:compNomRetrSett}}
 \end{figure}
 
@@ -107,9 +107,9 @@ To estimate the total rate of particles crossing the interface plane, one has to
 
 \subsection{Effect of an additional TCT pair on halo background in IR1}
 
-Each IR has a tertiary collimator pair, a horizontal and vertical TCT, in cell 4 on the side of the incoming beam with a protective role. Firstly they provide local protection against regular losses but also in case of abnormal losses as asynchronous beam dump. As in HL-LHC the triplet will be exchanged with one that has much larger apertures for higher $\beta^*$ reach, possible bottlenecks emerge at other locations. Triplet apertures become similar with those of Q4, requiring some additional protection. This could be provided by an additional pair of collimators, TCT5s\footnote{This collimator is in a more recent version named TCT6, since it's officially in cell 6 (although upstream of Q5). We keep the old name TCT5s throughout the entire report, but we note it is the same collimator pair.}, with a vertical and horizontal TCT located just in front of Q5 and having exactly the same design as the TCT4s.
+Each IR has a tertiary collimator pair, a horizontal and vertical TCT, in cell 4 (TCT4s at 131~m) on the side of the incoming beam with a protective role. They provide local protection against regular losses but also abnormal losses such as asynchronous beam dump. As the whole IR including the triplet will be exchanged in HL-LHC to deploy ATS optics, which require larger apertures for higher $\beta^*$ reach, possible bottlenecks emerge at other locations, such as at Q4, and additional protection is required. This could be provided by an additional pair of collimators, TCT5s\footnote{We stress, this collimator pair is in a more recent version named TCT6, since it's officially in cell 6 (although upstream of Q5). We keep the old name TCT5s throughout the entire report, but we note it is the same collimator pair.}, with a vertical and horizontal TCT located just in front of Q5 (at 213~m) and having exactly the same design as the TCT4s. The TCT5s are included in the baseline of HL-LHC collimator layout.
 
-We evaluate these different cases in terms of halo background and are interested in how the load changes of the TCT4s when the TCT5s are included. The baseline collimator HL layout contains the TCT4s and TCT5s. A TCTV and TCTH pair is positioned at 131~m and 211~m, this may change in future a by a few meters due to lack of sufficient space at positions of the TCT4s.
+We evaluate these different cases, TCT5s in/out, in terms of halo background and are interested in how the load of the TCT4s changes when TCT5s are included.  
 
 \begin{figure}%[!htb]
 \begin{center}
@@ -119,35 +119,36 @@ We evaluate these different cases in terms of halo background and are interested
 \includegraphics[width=0.495\textwidth]{figures/inelposition_sum_tcinrdb2.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{Location of inelastic interactions within the collimator jaws as simulated with SixTrack for the cases ``TCT4s only'' (top) and ``TCT5s in'' (bottom) for B1 (left) and B2 (right) using \twosigmaret~settings. The numbers in the top right corner is the number of absorbed protons in the respective collimator from about 64 million simulated primaries (in all cases).
+ \caption{Positions of inelastic interactions from surface within the collimator jaws from h+v SixTrack simulations of the cases ``TCT4s only'' (top) and ``TCT5s in'' (bottom) for B1 (left) and B2 (right) using \twosigmaret~settings. The numbers in the top right corner is the number of absorbed protons in the respective collimator from about 64 million simulated primaries (in all cases).
   \label{inelHLtctsInOut}}
 \end{figure}
 
-We compare the starting conditions in Fig.~\ref{inelHLtctsInOut} for the cases ``TCT4s only'', when no TCT5s were considered, and ``TCT5s in'', when TCT4s and TCT5s were both included, for B1 and B2. One notices that for both beams in ``TCT4s only'' inelastic interactions start at much deeper positions. The bulk load is taken by the TCTHs that comes first on the incoming beam. Overall, there are slightly more losses in IR1 from B1, about 8~\%, for the case ``TCT5s in'' which can seen when comparing the leakage factors $1.2 \times 10^{-4}$ and $1.1 \times 10^{-4}$. For B2, there are negligably more losses in the case TCT5s are deployed as well and the leakage factor is in both cases around $2.4 \times 10^{-4}$ in IR1.\\
+We compare the TCT starting conditions from SixTrack in Fig.~\ref{inelHLtctsInOut} for the cases ``TCT4s only'', when no TCT5s were considered, and ``TCT5s in'', when TCT4s and TCT5s were both included, for B1 and B2. One notices that for both beams in ``TCT4s only'' inelastic interactions start at much deeper positions. The bulk load is taken by the TCTHs that comes first on the incoming beam. For B1, there are about 20~\% of total TCT losses on the TCT4s and 80~\% on the TCT5s. For B2, the share is 30~\% to 70~\% for TCT4s and TCT5s.
 
-Assuming that TCT4s produce more halo backgound than the TCT5s merely due to their nearer location to the interface plane, we look at how the load on the TCT4s change for the two cases. This is listed in Tab.~\ref{tab:compLosses} for B1 and B2, IR1 and IR5. The ratio indicates by how much the intercepted losses would decrease and one can see, generally an improvement can be expected in the case TCT5s are included, for B1 more than for B2.
+Overall, there are slightly more losses for the case ``TCT5s in'', about 8~\%, in IR1 from B1, and the corresponding IR7 leakage factors are $1.2 \times 10^{-4}$ and $1.1 \times 10^{-4}$. For B2, there are negligably more losses in the case TCT5s are deployed as well and the leakage factor is in both cases around $2.4 \times 10^{-4}$ in IR1. Full details and be found in Tab.~\ref{tab:leakageFactorsIR7}.
 
+The load on the TCT4s change for the two cases and are shown in Tab.~\ref{tab:compLosses} for B1 and B2, IR1 and IR5. The ratio indicates by how much the intercepted losses would decrease when the TCT5s are in, and one can see, a general improvement can be expected in the case the TCT5s are included, for B1 more than for B2.
 
-We show characteristic particle distributions and spectra at the interface plane for the case ``TCT5s~in'' for B2 in Fig.~\ref{tct5inrdb2retr} for both leakages onto TCT4s and TCT5s. The overall energy spectrum still shows the typical shape with the single-diffractive peak close to the beam energy and the $\phi$ distribution of energy is still roughly flat as expected.
+We analyse how these different shares of TCT losses create background at the interface plane. As example we highlight characteristic particle distributions at the interface plane in Fig.~\ref{tct5inrdb2retr} for B2 and the case ``TCT5s~in''. The overall energy spectrum shows the typical shape with the single-diffractive proton peak close to the beam energy and the $\phi$ distribution of energy is roughly flat as expected.
 
-More figures can be found in the appendix, e.g.~Fig.~\ref{tct5inrdb2retr2}.
+Depending on the distribution type one can conclude that particles reaching the interface plane have their origin to a significant fraction in the TCT4s, and the majority of particles created in the TCT5s do not reach the interface plane. For B1, a bit more than 2/3 originate from the TCT4s. For B2, the 70~\% of the losses on TCT5 produce only 5~\%~of particles at the interface plane, the rest originates from TCT4. 
 
+Particle and energy fluxes are shown for both cases in Fig.~\ref{fig:compInOut} for both beams. One can see the rate from B1 of particles can be reduced by factor 1.8 and the energy by 24~\% if the TCT5s are in. The gain from B2 is less, only 20~\% less particles and about 8~\% less energy can be expected with additional TCT5s as the numbers in the ratio plot indicate. Despite the high factors of the load reduction of the TCT4s, we note that much less halo suppression has to be anticipated at the interface plane. The reason is likely in the initial distributions, see Fig.~\ref{inelHLtctsInOut}. Apparently much of the interactions that cross the interface plane were initially created at positions from the first bins only, the other deeper inside the jaws are for halo background irrelevant. Comparing the hight of the first bin in particular of the TCTH.4 of all cases we notice, they are at a very similar level and probably crucial for background creation that also ends up at the interface plane. Possibly, it will be already beneficial if the TCT5s catch even more of the cleaning leakage, e.g.~with TCT4s more retracted with respect to the TCT5s.
+
+%Further distributions of other particle types are presented in the Appendix~\ref{run1run2app}, e.g.~Fig.~\ref{tct5inrdb2retr2}.
  %The number written in the ratio plot is the ratio of the integral of the two distributions and indicates by how much the respective quantity is changed. The distributions are normalised by the number of simulated interaction in the TCTs (per TCT hit) and bin width. For both beams the energy spectrum and the azimuthal distribution of the energy in $\phi$ are shown.
 
 %We notice from the ratio plots that the shapes are quite different for B1. This is not the case for B2, there they look rather similar. This is entirely due to the initial distribution of inelastic interactions (convoluted of course with the geometry but this is the same for both beams).
 
 
-We compare in more detail the two cases at the interface plane with supporting figures in the appendix, in Fig.~\ref{fig:compInOutB1_perTCThit} and Fig.~\ref{fig:compInOutB2}. When normalised per TCT hit (any of the collimator pair), one can expect about a factor 2 less particles, and about 50~\% less muons from B1 if additional tertiaries are in place. For B2, the particles fluxes go down with TCT5s by 20~\%, muons by 40~\%. Given the leakage from B2 is about twice as much as from B1, e.g.~for the case ``TCT5s~in'' it is $2.36~\times 10^{-4}$ compared to $1.1 \times 10^{-4}$ (see Tab.~\ref{leakageFactorsIR7}), even this small gain in B2 per TCT hit becomes twice as relevant in absolute terms.
+%We compare in more detail the two cases at the interface plane with supporting figures in the Appendix, in Fig.~\ref{fig:compInOutB1_perTCThit} and Fig.~\ref{fig:compInOutB2}. When normalised per TCT hit (any of the collimator pair), one can expect about a factor 2 less particles, and about 50~\% less muons from B1 if additional tertiaries are in place. For B2, the particles fluxes go down with TCT5s by 20~\%, muons by 40~\%. Given the leakage from B2 is about twice as much as from B1, e.g.~for the case ``TCT5s~in'' it is $2.36~\times 10^{-4}$ compared to $1.1 \times 10^{-4}$ (see Tab.~\ref{leakageFactorsIR7}), even this small gain in B2 per TCT hit becomes twice as relevant in absolute terms.
 
-Also IR5 will benefit from backround reduction with additional collimators in place in IR5, as Tab.~\ref{tab:compLosses} shows even much more than IR1. Much higher reduction factors are obtained for IR5. However the IR7 leakage is generally smaller to IR5 than to IR1 for both beams, so the background reduction in IR5 recieves less weight. It is a factor 4 to 5 less in B1 for the two cases. There is for B2 a significant factor of 46 and 35, again for the two cases $in$ and $out$, respectively.
+IR5 will also benefit from backround reduction with additional collimators in place in IR5, as Tab.~\ref{tab:compLosses} shows even much more than IR1. Much higher reduction factors are obtained for IR5. However the IR7 leakage is generally smaller to IR5 than to IR1 for both beams, so the background reduction in IR5 recieves less weight. The load on the TCT4s is a factor 30 less in B1 for the two cases. There is for B2 a significant reduction factor of 10, respectively. What the actual gain is that can be obtained at the interface plane remains to be quantified for IR5. 
 
-We quantify the effect for reducing betatron halo-induced background if the additional collimator pair is installed for both IRs, IR1 and IR5 by investigating the expected rates. Therefore, we normalised general distributions to rates assuming a stable beam operation with 100~h of beam life time, design HL-LHC parameters as in Tab.~\ref{hlscenario} and IR7 conversion factors as summarised in the appendix~\ref{leakageFactorsIR7}.
-
-We show the rates of the two cases in Fig.~\ref{fig:compInOutB1} for particle multiplicities and energy in both beams. The rate from B1 of particles can be reduced by factor 1.8 and the energy by 24~\%. The gain from B2 is less as we saw due to the conversion factors which were very similar as previously mentioned.
 
 \begin{table}%[hbt]
    \centering
-   \caption{B1 and B2 losses on TCT4s normalised on the sum of IR7 primaries and averaged over h and v simulations for the two cases, TCT5s \textit{in} and TCT4s \textit{only}, and load reduction factor on TCT4s (ratio). The load on TCT5s is not shown.} 
+   \caption{B1 and B2 losses on TCT4s from SixTrack normalised to the sum of losses on IR7 primaries and averaged over h and v simulations for the two cases, TCT5s \textit{in} and TCT4s \textit{only}, and load reduction factor on TCT4s (ratio). The load on TCT5s is not shown. For both cases, the baseline optics (round $\beta^* = 15~$cm) and baseline settings (\twosigmaret.) were used.} 
    \begin{tabular}{l|c|c|c}
        \hline
        IR & TCT5s \textit{in} &  TCT4s \textit{only} & ratio \\
@@ -172,7 +173,7 @@ We show the rates of the two cases in Fig.~\ref{fig:compInOutB1} for particle mu
 %\includegraphics[width=0.495\textwidth]{figures/HL/tct5inrd/RadEnDist_BH_HL_tct5inrdB2_20MeV.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{HL-LHC betatron halo B2 induced particle distributions at the interface plane showing the energy spectrum of the main particle species (left) and the azimuthal distribution of energy (right) per TCT hit.}
+ \caption{HL-LHC betatron halo B2 induced particle distributions at the interface plane showing the energy spectrum of the main particle species (left) and the azimuthal distribution of energy (right) per TCT hit for \twosigmaret~settings and round ATS optics.}
   \label{tct5inrdb2retr}
 \end{figure}
 
@@ -184,8 +185,8 @@ We show the rates of the two cases in Fig.~\ref{fig:compInOutB1} for particle mu
 \includegraphics[width=0.44\textwidth]{figures/HL/compINOUTB1_retracted/normalised/ratioPhiEnAll}
 \includegraphics[width=0.44\textwidth]{figures/HL/compINOUTB2_retracted/normalised/ratioEkinAll}
 \includegraphics[width=0.44\textwidth]{figures/HL/compINOUTB2_retracted/normalised/ratioPhiEnAll}
-\caption{Rates of all particles and their energy in the two HL-LHC cases, TCT4s only and TCT5s in, for B1 (top) and B2 (bottom), for betatron halo. Distributions per TCT hit are shown for B1 in Fig.~\ref{fig:compInOutB1_perTCThit}, for B2 in Fig.~\ref{fig:compInOutB2}.
-  \label{fig:compInOutB1}}
+\caption{Rates of all particles and their energy in the two HL-LHC cases, TCT4s only and TCT5s in, for B1 (top) and B2 (bottom), for betatron halo. Distributions per TCT hit are shown for B1 in Fig.~\ref{fig:compInOutB1_perTCThit}, for B2 in Fig.~\ref{fig:compInOutB2}. We used \twosigmaret~settings and round ATS optics.
+  \label{fig:compInOut}}
 \end{figure}
 % ------------------------------------------------------------------------------------------
 %% \subsection{Comparison of B1 and B2 induced showers with TCT5s in}
@@ -209,13 +210,13 @@ We show the rates of the two cases in Fig.~\ref{fig:compInOutB1} for particle mu
 %%   \label{fig:compINB1B2_3}}
 %% \end{figure}
 
-\subsection{Leakage to IR1 and IR5 TCTs with flat beam optics}
+\subsection{Leakage to IR1-- and IR5--TCTs with flat beam optics}
 
-To maintain flexibility in low-$\beta^*$ reach, e.g~in the case of crab cavity failures in the experimental IRs, flat beam optics were developed~\cite{flatOpticsRef}. While in round optics, $\beta^*$ is 15~cm in IP1/5 in the horizontal and vertical plane, it is for flat beams 7.5~cm in the horizontal plane and 30~cm in the vertical plane at IP1 (vice versa for IP5)~\cite{opticsWebRef}. 
+Flat optics, in particular in combination with long-range beam-beam compensation using a wire, is a fallback scenario to increase the geometric luminosity factor in case crab cavities would not be available~\cite{flatRef}. While in round optics, $\beta^*$ is 15~cm in IP1/5 in the horizontal and vertical plane, it is for flat beams 7.5~cm in the horizontal plane and 30~cm in the vertical plane at IP1 (vice versa for IP5)~\cite{opticsWebRef}. 
 
-We analyse the intercepted losses in IR1 and IR5 for the two cases, TCT5s~in and TCT4s~only, using flat beam optics. The IR7 leakage to the TCT4s can be reduced only marginally with additional TCT5s, from $1.5 \times 10^{-4}$ to $1.4 \times 10^{-4}$ in IR1. In IR5, losses on TCT4s can be significantly reduced from $1.3 \times 10^{-4}$ to $2.0 \times 10^{-5}$ which is roughly a factor 7. 
+We analyse the intercepted cleaning losses, as simulated with SixTrack, in IR1 and IR5 for the two cases, TCT5s~in and TCT4s~only, using flat beam optics. The IR7 leakage to the TCT4s can be reduced by about a factor 4.2 with additional TCT5s, from $1.4 \times 10^{-4}$ to $3.2 \times 10^{-5}$ in IR1. In IR5, the losses on TCT4s can be significantly reduced from $2.0 \times 10^{-5}$ to $1.3 \times 10^{-6}$ which is about a factor 15.3 less. 
 
-We conclude that for flat beam optics a similar background level can be expected for B1 with additional TCT5s in IR1, with a slight increase according to the integrated losses on the TCTs, $1.4 \times 10^{-4}$ for flat and $1.2 \times 10^{-4}$ for round beam optics. For IR5, additional TCTs will help reducing the leakage more, from $2.5 \times 10^{-5}$ with round beams to $1.7 \times 10^{-5}$ for flat beams. See Tab.~\ref{leakageFactorsIR7} for details.
+We conclude that the IR7 leakage for flat beam optics is similar to round beams optics of B1, with a slight increase according to the integrated losses on the TCTs, $1.4 \times 10^{-4}$ for flat and $1.2 \times 10^{-4}$ for round beam optics. For IR5, additional TCTs will help reducing the leakage slightly more, from $2.5 \times 10^{-5}$ with round beams to $1.7 \times 10^{-5}$ for flat beams. See Tab.~\ref{leakageFactorsIR7} for details.
 
 
 \begin{figure}%[!htb]

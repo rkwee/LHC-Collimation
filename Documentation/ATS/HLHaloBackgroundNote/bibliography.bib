@@ -1,3 +1,10 @@
+@Article{hl-lhc-prel-design,
+  Title                    = {{High-Luminosity Large Hadron Collider (HL-LHC) : Preliminary Design Report}},
+  Author                   = {G. Apollinari and I. Béjar Alonso and  O. Brüning and M. Lamont and {L. Rossi (editors)}},
+  Journal                  = {CERN-2015-005},
+  Year                     = {2015}
+}
+
 @Article{bruce14_n1_ap_meas,
   Title                    = {Parameters for {HL-LHC} aperture calculations},
   Author                   = {R. Bruce and R. de Maria and S. Fartoukh and M. Giovannozzi and S. Redaelli and R. Tomas and J. Wenninger},
@@ -35,15 +42,17 @@
   Url                      = {http://stacks.iop.org/1748-0221/8/i=07/a=P07004}
 }
 
-@article{atlasBKGPaper2012,
- author= "{{The ATLAS Collaboration}}",
- title = "{Beam-induced and cosmic-ray backgrounds observed in the {ATLAS} detector during the {LHC} 2012 proton-proton running period}",
- journal={JNIST},
- volume={XX},
- number={XX},
- year={2016},
- note={\href{http://arxiv.org/pdf/1603.09202v2.pdf}{http://arxiv.org/abs/1603.09202}}
+@Article{atlasBKGPaper2012,
+  title={{Beam-induced and cosmic-ray backgrounds observed in the ATLAS detector during the LHC 2012 proton-proton running period}},
+  Author                   = {{ATLAS Collaboration}},
+  journal={Journal of Instrumentation},
+  volume={11},
+  number={05},
+  pages={P05013},
+  url={http://stacks.iop.org/1748-0221/11/i=05/a=P05013},
+  year={2016}
 }
+
 
 @manual{K2Ref},
 author={T. Trenkler and J. Jeanneret}, 
@@ -57,26 +66,27 @@ title = {Observation of a new particle in the search for the Standard Model Higg
 journal = "Physics Letters B ",
 volume = "716",
 number = "1",
-pages = "1 - 29",
+pages = "1--29",
 year = "2012",
 note = "",
 issn = "0370-2693",
 doi = "http://dx.doi.org/10.1016/j.physletb.2012.08.020",
 url = "http://www.sciencedirect.com/science/article/pii/S037026931200857X",
-author = "ATLAS collaboration"
+author = "{ATLAS Collaboration}"
 }
 @article{Chatrchyan201230,
 title = {Observation of a new boson at a mass of 125 {GeV} with the {CMS} experiment at the {LHC} },
 journal = "Physics Letters B ",
 volume = "716",
 number = "1",
-pages = "30 - 61",
+pages = "30--61",
 year = "2012",
 issn = "0370-2693",
 doi = "http://dx.doi.org/10.1016/j.physletb.2012.08.021",
 url = "http://www.sciencedirect.com/science/article/pii/S0370269312008581",
-author = "CMS collaboration"
+author = "{CMS Collaboration}"
 }
+
 
 @inproceedings{ipac2015_rkh,
   author = {R.~Kwee-Hinzmann and others},
@@ -88,7 +98,7 @@ author = "CMS collaboration"
 }
 @inproceedings{KatyForazIpac14,
   author = {K.~Foraz and others},
-  title = {LS1 “FIRST LONG SHUTDOWN OF {LHC} AND ITS INJECTOR CHAINS” },
+  title = {{LS1} FIRST LONG SHUTDOWN OF {LHC} AND ITS INJECTOR CHAINS” },
   booktitle = {Proceedings of 5th International Particle Accelerator Conference IPAC14},
   note = {\href{http://accelconf.web.cern.ch/accelconf/IPAC2014/papers/tupro007.pdf}{TUPRO007}},
   year = {2014},
@@ -111,8 +121,8 @@ booktitle={{European Particle Accelerator Conference Proceedings}},
 year={2006}
 }
 
-@inproceedings{flatOpticsRef,
-  author = {S.~Fartoukh, A.~Valishev and D.~Shatilov},
+@inproceedings{flatRef,
+  author = {S.~Fartoukh and A.~Valishev and D.~Shatilov},
   title = {AN ALTERNATIVE HIGH LUMINOSITY {LHC} WITH FLAT OPTICS AND LONG-RANGE BEAM-BEAM COMPENSATION},
   booktitle = {Proceedings of 5th International Particle Accelerator Conference IPAC15},
   note = {\href{https://jacowfs.jlab.org/conf/y15/ipac15/prepress/TUPTY073.PDF}{TUPTY073}},
@@ -130,7 +140,12 @@ year={2006}
 
 @misc{christinasStudent,
 key={Sopousek},
-note={This work done by J.~Sopoušek.}
+note={J.~Sopoušek, private communication 2016.}
+}
+
+@misc{belenOffMom,
+key={Salvachua},
+note={B.~Salvachua, private communication 2016.}
 }
 
 @misc{scrubbingreportGianni,
@@ -168,7 +183,7 @@ note={\href{http://hilumilhc.web.cern.ch/}{HiLumi Web-page}}
 
 
 @article{pdg,
- author={K.A. Olive and others (Particle Data Group)},
+ author="K.A. Olive et al. {(Particle Data Group)}",
  title = {{Review on Particle Physics}},
  journal={Chin. Phys. C},
  volume={8},
@@ -193,14 +208,29 @@ note={\href{http://hilumilhc.web.cern.ch/}{HiLumi Web-page}}
   year = {2015}
 }       
 
+@inproceedings{iadarolaEvian2012,
+  author ={G.~Iadarola and others}, 
+  title = {Electron Cloud and Scrubbing}, 
+  booktitle = {LHC Beam Operation workshop - Evian 2012},
+  note = {\href{http://indico.cern.ch/event/211614/contributions/423744/attachments/332007/463228/Ecloud-Evian.pdf}{paper}},
+  year = {2012}
+}       
+
 @manual{collSettRef,
-author={R.Bruce and others}, 
+author={R.~Bruce and others}, 
 title={Parameters for {HL-LHC} aperture calculations}, 
 organization={CERN},
 note={\href{http://cds.cern.ch/record/1697805?ln=en}{CERN-ACC-2014-0044}},
 year=2014
 }
 
+@inproceedings{bruceEvian2015,
+  author ={R.~Bruce and S~Redaelli}, 
+  title = {2016 machine configuration: can we get to 40 cm?}, 
+  booktitle = {LHC Beam Operation workshop - Evian 2015},
+  note = {\href{http://indico.cern.ch/event/434129/contributions/1917213/attachments/1206478/1813359/evian2015_RB_paper.pdf}{paper}},
+  year = {2015}
+}       
 
 @unpublished{wherrSlides2013,
 author={W.~Herr},
@@ -212,7 +242,7 @@ year={2013}
 
 @Article{bruce11evian,
   Title                    = {{LHC $\beta^*$ reach in 2012}},
-  Author                   = {R. Bruce and R.W.~Assman},
+  Author                   = {R. Bruce and R.W.~Assmann},
   Journal                  = {Proceedings of the 2011 {LHC} beam operation workshop, Evian, France},
   Note = {\href{https://cdsweb.cern.ch/record/1451243/files/CERN-ATS-2012-083-rev.pdf}{CERN-ATS-2012-083}},
   Year                     = {2011}
@@ -288,7 +318,7 @@ year=2005
 }
 
 @phdthesis{chiarasThesis,
- author = "{Bracco, C.}",
+ author = "{C.~Bracco}",
  title  = {{Commissioning Scenarios and Tests for the LHC Collimation system}},
  school = {{\'Ecole Polytechnique F\'ed\'erale de Lausanne}},
  month  = "January",
@@ -305,7 +335,7 @@ year=2005
 }
 
 @mastersthesis{claudiasThesis,
- author = "{Tambasco, C.}",
+ author = "{C.~Tambasco}",
  title  = {{An improved scattering routine for collimation tracking studies at LHC}},
  school = {{\'Ecole Polytechnique F\'ed\'erale de Lausanne}},
  note = {\href{https://cds.cern.ch/record/1690529/files/CERN-THESIS-2014-014.pdf}{CERN-THESIS-2014-014}},
@@ -349,6 +379,6 @@ note={{\href{http://lhc-optics.web.cern.ch/lhc-optics/www/hllhc10/}{LHC Optics W
 
 @misc{refAccStats,
 key={BE-CO},
-title={Accelerator Performance and Statistics ver:1.8.8 Software by BE-CO. copyright 2014-2016 CERN},
-note={{\href{https://acc-stats.web.cern.ch/acc-stats/#lhc/fill-details}{acc-stats.web.cern.ch/acc-stats/}}}
+title={Accelerator Performance and Statistics ver:1.8.8 Software by BE-CO. copyright 2014-2016 {CERN}},
+note={\href{https://acc-stats.web.cern.ch/acc-stats/#lhc/fill-details}{website}},
 }
