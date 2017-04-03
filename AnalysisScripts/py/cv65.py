@@ -145,6 +145,8 @@ def cv65():
 
     pname = wwwpath + 'TCT/beamgas/pressure_profiles_2012/pint.pdf'
     pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/cv65_pint.pdf"
+
+    pname = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/cv65_pint_2011.pdf"
     print('Saving file as ' + pname ) 
     cv.Print(pname)
 

@@ -1,3 +1,4 @@
+
 \section{Simulation Results for LHC's Run I and Run II\label{run1run2}}
 
 \subsection{Run I and Run II simulation cases}
@@ -67,7 +68,7 @@ Comparing B1 to B2 halo induced distributions, as shown in Fig.~\ref{fig:comp4Te
 % --------------------------------------------------------------------------------------------
 \subsection{Run I: 4 TeV Beam-Gas}
 
-Characteristic distributions at the interface plane induced by beam-gas interactions are shown in Fig.~\ref{dist4TeVBGbs}. The energy spectra, Fig.~\ref{dist4TeVBGbs} (left), highlights a typcial shape for beam-gas interactions: in contrast to beam-halo showers it does not have the single diffractive peak at beam energy. Beam-gas induced protons show a much smoother increase up to beam-energy than in the halo case. It is still due to the same physics process, single diffractive dissociation, but since there is a much less localised source of interactions on the beamline as in the halo case (where the source are the TCTs) the peak is not as pronounced as for the halos.
+Characteristic distributions at the interface plane induced by beam-gas interactions are shown in Fig.~\ref{dist4TeVBGbs}. The energy spectra, Fig.~\ref{dist4TeVBGbs} (left), highlights a typcial shape for beam-gas interactions: in contrast to beam-halo showers it does not have the single diffractive peak at beam energy. Beam-gas induced protons show a much smoother increase up to beam-energy than in the halo case. It is still due to the same physics process, single diffractive dissociation, but further detailed studies are required to determine the exact reasons for the shape differences (e.g.~if the cause is in scattering partner material, tungsten or nitrogen, or how significant the contributions from other locations than the TCTs are).
 One notices an immediate difference, when also looking at the right of that figure, on average a factor 10 or more particles and energy produced by a beam-gas interaction than by a TCT interaction. Nearly 6 million primary interactions were simulated in \fluka.%One can clearly see that comparing the energy of protons at small radii, essentially the first bin of Fig.~\ref{dist4TeVB1}~(d) and Fig.~\ref{dist4TeVBGbs}~(d).
 
 
@@ -81,7 +82,7 @@ One notices an immediate difference, when also looking at the right of that figu
 % --------------------------------------------------------------------------------------------
 \subsection{Comparison to previous techniques}
 
-We compare simulations performed for Run~I at 4 TeV and at 3.5~TeV (as has been presented in Ref.~\cite{nimPaperRod}). To ease the comparison of the new simulation techniques, we also show the ratio of the two compared distributions to overcome the difference due to the slightly different beam energy. In fact, at 3.5~TeV there were several optics and collimator settings deployed which enables us to conclude about the question if the TCT settings, which were 2.8~$\sigma$ different, will have any influence on beam-gas. 
+We compare simulations performed for Run~I at 4 TeV and at 3.5~TeV (as has been presented in Ref.~\cite{nimPaperRod}). To ease the comparison of the new simulation techniques, we also show the ratio of the two compared distributions to overcome the difference due to the slightly different beam energy. In fact, at 3.5~TeV there were several optics and collimator settings deployed which enables us to conclude about the question if the TCT settings, which were 2.8~$\sigma$ different, will have any influence on beam-gas at the interface plane. 
 
 
 \subsubsection{Transverse beam size}
@@ -126,7 +127,7 @@ Looking back at Fig.~\ref{bsRatioPhiAll} one can conclude that this new techniqu
 
 We can study the crossing angle effect on background in IR1 using the 3.5~TeV simulation data for $\beta^* = 1.0~$m optics and TCTs set to $11.8~\sigma$~\cite{nimPaperRod} thus betatron halo and beam-gas induced, without any crossing angle included in the simulations. We compare the 3.5~TeV data to 4~TeV halo data with a crossing angle of 290~$\mu$rad. For this comparison, we show the distributions at the interface plane per TCT hit. 
 
-We find that the beam-gas data as shown in Fig.~\ref{xingCompBG} exhibit a clear signature of the improved simulation technique when including the crossing angle. There is a general accumulation in the upper part of the vertical plane; the beam is directed downwards but as the sampling position is still in the upper hemisphere the peak of particles is around $+ \frac{\pi}{2}$. Muon distributions are not significantly affected as other effects are more dominating the azimuthal distribution (like magnetic fields effects). 
+We find that the beam-gas data as shown in Fig.~\ref{xingCompBG} exhibit a clear signature of the improved simulation technique when including the crossing angle. There is a general accumulation in the upper part of the vertical plane; the incoming beam is directed downwards but as the sampling position is still at positive $y$, the peak of particles is around $+ \frac{\pi}{2}$. Muon distributions are not significantly affected as other effects are more dominating the azimuthal distribution (like magnetic fields effects). 
 
 In contrast, the beam-halo data in Fig.~\ref{xingCompBHB1} do not have any clear signs of crossing angle effect when comparing 3.5~TeV\footnote{TCTs were at $15~\sigma$ for $\beta^*$ optics of 3.5~m.} to 4 TeV simulations in both beams. It is likely that secondary particles with all kind of forward directions are created at the TCTs losing the initial direction of the crossing angle of the beam protons.
 
@@ -154,7 +155,7 @@ In contrast, the beam-halo data in Fig.~\ref{xingCompBHB1} do not have any clear
 
 \subsubsection{Effect of TCT settings on beam-gas}
 
-Since the TCTs were set to 11.8~$\sigma$ to accommodate the $\beta^* = 1.0~$m optics at 3.5~TeV and 9~$\sigma$ at 4~TeV for $\beta^* = 60~$cm optics, the comparison of contributions from downstream of the TCTs can give indications about the influence of TCT settings on beam-gas, Fig.~\ref{compBGrun1} shows there is no significant influence, focussing on muons in the closest s-section to the TCTs and a transverse radius between 1~m and 2~m.
+Since the TCTs were set to 11.8~$\sigma$ to accommodate the $\beta^* = 1.0~$m optics at 3.5~TeV and 9~$\sigma$ at 4~TeV for $\beta^* = 60~$cm optics, the comparison of contributions from upstream of the TCTs (147~m and further away from the IP) can give indications about the influence of TCT settings on beam-gas, Fig.~\ref{compBGrun1} shows there is no significant influence, focussing on muons in the closest s-section to the TCTs and a transverse radius between 1~m and 2~m.
 
 \begin{figure}
   \centering
@@ -321,7 +322,7 @@ We move to the Run~II 2015 scenario with $\beta^* = 80$~cm, and details are in T
 \centering
   \includegraphics[width=0.49\textwidth]{figures/BH_run2/perTCThit/ratioEkinAll.pdf}
   \includegraphics[width=0.49\textwidth]{figures/BH_run2/perTCThit/ratioPhiEnAll.pdf}
- \caption{Run~II 2015 case: Comparison of B1/B2 betatron halo induced distributions per TCT hit.
+ \caption{Run~II 2015 case: Comparison of B1/B2 betatron halo induced distributions per TCT hit. Muons are shown in the appendix in Fig.~\ref{compBHB1B2run22}.
   \label{compBHB1B2run2}}
 \end{figure}
 

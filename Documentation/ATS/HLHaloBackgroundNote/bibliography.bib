@@ -1,6 +1,6 @@
 @Article{hl-lhc-prel-design,
-  Title                    = {{High-Luminosity Large Hadron Collider (HL-LHC) : Preliminary Design Report}},
-  Author                   = {G. Apollinari and I. Béjar Alonso and  O. Brüning and M. Lamont and {L. Rossi (editors)}},
+  Title                    = {{High-Luminosity Large Hadron Collider (HL-LHC): Preliminary Design Report}},
+  Author                   = {G. Apollinari and I. B\`{e}jar Alonso and  O. Br\"uning and M. Lamont and {L. Rossi (editors)}},
   Journal                  = {CERN-2015-005},
   Year                     = {2015}
 }
@@ -174,21 +174,23 @@ note={\href{http://hilumilhc.web.cern.ch/}{HiLumi Web-page}}
 
 @techreport{LHCDesignRep,
   author = {O.~S.~Br\"uning and others},
-  title = {{LHC} design report v.1 : {T}he {LHC} main ring},
+  title = {{LHC} design report v.1: {T}he {LHC} main ring},
   institution = {CERN},
   number = {CERN-2004-003-V1},
   note = {\href{https://ab-div.web.cern.ch/ab-div/Publications/LHC-DesignReport.html}{LHC Design Report web-access}},
   year = 2004
 }
 
-
 @article{pdg,
- author="K.A. Olive et al. {(Particle Data Group)}",
- title = {{Review on Particle Physics}},
- journal={Chin. Phys. C},
- volume={8},
- number={090001},
- year={2013}
+author         = "Olive, K. A. and others",
+title          = "{Review of Particle Physics}",
+collaboration  = "Particle Data Group",
+journal        = "Chin. Phys.",
+volume         = "C38",
+year           = 2014,
+pages          = 090001,
+doi            = "10.1088/1674-1137/38/9/090001",
+SLACcitation   = "%%CITATION = CHPHD,C38,090001;%%"
 }
 
 @article{ATSref,
@@ -217,7 +219,7 @@ note={\href{http://hilumilhc.web.cern.ch/}{HiLumi Web-page}}
 }       
 
 @manual{collSettRef,
-author={R.~Bruce and others}, 
+  Author                   = {R. Bruce and R. de Maria and S. Fartoukh and M. Giovannozzi and S. Redaelli and R. Tomas and J. Wenninger},
 title={Parameters for {HL-LHC} aperture calculations}, 
 organization={CERN},
 note={\href{http://cds.cern.ch/record/1697805?ln=en}{CERN-ACC-2014-0044}},
@@ -240,9 +242,17 @@ note={{\href{https://indico.cern.ch/event/189544/contributions/1464632/attachmen
 year={2013}
 }
 
+@manual{wernerLHCreport,
+  Title                    = {{Effect of PACMAN bunches in the LHC}},
+  Author                   = {W.~Herr},
+  organisation             = {CERN},
+  Note = {\href{https://cds.cern.ch/record/314386/files/lhc-project-report-39.pdf}{LHC Project Report 39}},
+  Year                     = {1996}
+}
+
 @Article{bruce11evian,
   Title                    = {{LHC $\beta^*$ reach in 2012}},
-  Author                   = {R. Bruce and R.W.~Assmann},
+  Author                   = {R. Bruce and R.~W.~Assmann},
   Journal                  = {Proceedings of the 2011 {LHC} beam operation workshop, Evian, France},
   Note = {\href{https://cdsweb.cern.ch/record/1451243/files/CERN-ATS-2012-083-rev.pdf}{CERN-ATS-2012-083}},
   Year                     = {2011}
@@ -250,7 +260,7 @@ year={2013}
 
 @Article{bruce15_PRSTAB_betaStar,
   Title                    = {{Calculations of safe collimator settings and ${\ensuremath{\beta}}^{*}$ at the CERN Large Hadron Collider}},
-  Author                   = {Bruce, R. and Assmann, R. W. and Redaelli, S.},
+  Author                   = {R.~Bruce and R.~W. Assmann and S.~Redaelli},
   Journal                  = {Phys. Rev. ST Accel. Beams},
   Year                     = {2015},
 
@@ -326,7 +336,7 @@ year=2005
 }
 
 @phdthesis{giovanniPhd,
- author = "{Iadarola, G.}",
+ author = "{G.~Iadarola}",
  title  = {{Electron cloud studies for CERN particle accelerators and simulation code development}},
  school = {{Universita degli Studi di Napoli Federico II, Napoli, Italy}},
  month  = "March",
@@ -364,7 +374,7 @@ year={2005}
 }
 
 @article{flukaRef2,
-  Author = {T.T. Bohlen and F. Cerutti and M.P.W. Chin and A. Fass\`{o} and A. Ferrari and P.G. Ortega and A. Mairani and P.R. Sala and G. Smirnov and V. Vlachoudis},
+  Author = {T.T. B\"ohlen and F. Cerutti and M.P.W. Chin and A. Fass\`{o} and A. Ferrari and P.G. Ortega and A. Mairani and P.R. Sala and G. Smirnov and V. Vlachoudis},
 title={{FLUKA Code: Developments and Challenges for High Energy and Medical Applications}}, 
 journal={Nuclear Data Sheets},
 volume={120},
@@ -377,8 +387,9 @@ key={LHC optics webpage},
 note={{\href{http://lhc-optics.web.cern.ch/lhc-optics/www/hllhc10/}{LHC Optics Web: HL-LHCv1.0 optics}}}
 }
 
-@misc{refAccStats,
+@booklet{refAccStats,
 key={BE-CO},
-title={Accelerator Performance and Statistics ver:1.8.8 Software by BE-CO. copyright 2014-2016 {CERN}},
+title={{Accelerator Performance and Statistics ver:1.8.8}},
+howpublished={{S}oftware by {BE-CO}. copyright 2014-2016 {CERN}},
 note={\href{https://acc-stats.web.cern.ch/acc-stats/#lhc/fill-details}{website}},
 }

@@ -22,10 +22,11 @@ def cv78():
 
     norm4TeVoffmomPLUS500 = 1380*1.4e11/360000 *0.5*(11919./995698)
     norm4TeVoffmomMINUS500 = 1380*1.4e11/360000 *0.5*(22278./3501844)
-    norm6500GeVB1 = 2748 * 1.2e11/360000 *0.5*(739./53731448 +(312+273.)/52806720) # 2.1e-5
-    norm6500GeVB2 = 2748 * 1.2e11/360000 *0.5*(779./43692659+773./52962459.) # 2.76e-5 take the average of H an V runs!
+    norm6500GeVB1OLD = 2748 * 1.2e11/360000 *0.5*(739./53731448 +(312+273.)/52806720) # 2.1e-5
+    norm6500GeVB2OLD = 2748 * 1.2e11/360000 *0.5*(779./43692659+773./52962459.) # 2.76e-5 take the average of H an V runs!
 
-
+    norm6500GeVB1 = 2041 * 1.12e11/360000 *0.5*(739./53731448 +(312+273.)/52806720) 
+    norm6500GeVB2 = 2041 * 1.12e11/360000 *0.5*(779./43692659+773./52962459.) 
     # ---- HL -
     HLinitialFlux = 2736*2.2e11/360000 # 1.7e9
 
@@ -44,7 +45,7 @@ def cv78():
     # steer
     do4TeV,do6500GeV = 1,0
     doHLcomp = 0
-    doNumbers = 1
+    doNumbers = 0
     # ------------------------------------------------------------------------
     if do4TeV:
 
@@ -65,9 +66,9 @@ def cv78():
 
         filenames = [f1,f2,f3]
 
-        subfolder = wwwpath + 'TCT/4TeV/compAllBKG/normalised/'
+        subfolder = wwwpath + 'TCT/4TeV/compAllBKG/'
 
-        lTexts = ['beam-gas', 'Halo B1', 'Halo B2','+500 Hz', '-500 Hz']
+        lTexts = ['beam-gas', 'halo B1', 'halo B2','dp/p<0 (+500 Hz)', 'dp/p>0 (-500 Hz)']
         tags   = [ '_BG_4TeV_20MeV_bs_reweighted','_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV' , '_offplus500Hz_4TeV_B2_20MeV', '_offmin500Hz_4TeV_B2_20MeV']
         cols   = [kOrange-3, kBlue, kRed,kMagenta+4, kTeal+4]
         mars   = [33, 20, 24, 22, 23 ]
@@ -83,8 +84,6 @@ def cv78():
         f3 = thispath + 'results_pressure2015_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
         filenames = [f3, f1,f2]
 
-        subfolder = wwwpath + 'TCT/6.5TeV/compAllBKG/normalised/'
-
         lTexts = ['beam-gas', 'Halo B1', 'Halo B2']
         tags   = ['_BG_6500GeV_flat_20MeV_bs_reweighted','_BH_6500GeV_haloB1_20MeV','_BH_6500GeV_haloB2_20MeV']
         cols   = [kYellow-2, kAzure+9, kPink-8]
@@ -94,21 +93,30 @@ def cv78():
         roundingDigit = 2
 
     elif doHLcomp:
-        roundingDigit = 3
+        roundingDigit = 2
         energy = ""
         f1 = thispath + 'results_pressure2015_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
         f2 = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5550000_30.root"
+        f2 = thispath + "results_ir1_BH_6500GeV_b2_20MeV_nprim3646000_30.root"
         f3 = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5924500_30.root"
-        tags = ["_BG_6500GeV_flat_20MeV_bs_reweighted", "_BH_HL_tct5inrdB1_20MeV", "_BH_HL_tct5inrdB2_20MeV"]
+        f4 = thispath + "results_hilumi_ir1_fort_scaled_afterconditioning_max_nprim1_30.root"
 
-        filenames = [f1,f2,f3]
 
-        lTexts = ['Run II BG', 'HL Halo B1', 'HL Halo B2']
-        cols   = [kYellow-2, kBlue-2, kRed-4]
-        mars   = [ 20, 22, 24 ]
-        dOpt   = [ 'hist', 'histsame', 'histsame']
-        scalf  = [1.,normTCT5INb1 ,normTCT5INb2 ]
-        subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HLRunII/"
+        filenames = [f4,f3,f1,f2]
+        tags = [
+                "_BG_HL_ac_20MeV",
+                "_BH_HL_tct5inrdB2_20MeV",
+            "_BG_6500GeV_flat_20MeV_bs_reweighted",
+            "_BH_6500GeV_haloB2_20MeV",
+
+        ]        
+
+        lTexts = ['HL BG a.c.', 'HL Halo B2', 'Run II BG', 'Run II Halo B2', ]
+        cols   = [kAzure+2, kGreen-3, kYellow-2, kRed-4]
+        mars   = [ 23, 20, 22, 24 ]
+        dOpt   = [ 'hp', 'hpsame', 'hpsame', 'hpsame']
+        scalf  = [1.,normTCT5INb2,1.,norm6500GeVB2 ]
+
 
         
     # ------------------------------------------------------------------------
@@ -144,7 +152,7 @@ def cv78():
         elif skey.count("Pio") or skey.count("Kao"): continue
 
         # # for testing
-        if not skey.count('PhiEnMu'): continue
+        #if not skey.count('Muons'): continue
                
         cv = TCanvas( 'cv'+skey, 'cv'+skey,  10, 10, 1200, 900 )     
         xpos = 0.65
@@ -197,6 +205,8 @@ def cv78():
                     isLogy = 1
                     if hname.count("Ekin"): 
                         isLogx = 1
+                        #XurMin,XurMax = 0.02,8e3
+                    
 
                 hists[i].SetLineWidth(2)
                 hists[i].SetLineStyle(1)
@@ -238,13 +248,14 @@ def cv78():
                 XurMin, XurMax = -3.14, 3.01
                 YurMin, YurMax = 1e-1*max(Ymax), max(Ymax)*1e4
                 if hnames[i].count("En"):
-                    YurMin, YurMax = 3e3,2e10
+                    YurMin, YurMax = 1e2,2e11
 
-                    if not hnames[i].count("All") and not hnames[i].count("Prot"):
-                        YurMin, YurMax = 1e2,1e7
+
+                    #if not hnames[i].count("All") and not hnames[i].count("Prot"):
+                    #    YurMin, YurMax = 1e2,9e8
                         
             elif hnames[i].count("Ekin"):
-                YurMin, YurMax = 1e-2,8e10
+                YurMin, YurMax = 1e-3,2e8
 
 
             elif hnames[i].count("Rad"):
@@ -263,12 +274,13 @@ def cv78():
             else:
                 intvals += [hists[i].Integral()]
                 hists[i].GetXaxis().SetTitle(xtitle)
-
+                hists[i].GetYaxis().SetTitle(ytitle)
                 if XurMin != -1:
                     hists[i].GetXaxis().SetRangeUser(XurMin,XurMax)
 
                 if YurMin != -1:                
                     hists[i].GetYaxis().SetRangeUser(YurMin,YurMax)
+
 
                 hists[i].Draw(dOpt[i])
 
@@ -276,7 +288,7 @@ def cv78():
             print " intergral of ", hists[i].GetName(), "=", intvals[-1], ratios[-1]
             numbers = ""
             if doNumbers: numbers = " ("+str(ratios[i])+")"
-            mlegend.AddEntry(hists[i], lTexts[i] + numbers, "l")
+            mlegend.AddEntry(hists[i], lTexts[i] + numbers, "lp")
             
         mlegend.Draw()
 
@@ -291,12 +303,14 @@ def cv78():
         lab.SetTextSize(0.1)
 #        lab.SetTextColor(col)
 
-        #pname = subfolder+hnames[i].split('_')[0]+'.pdf'
-        pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/cv78_' + hnames[i].split('_')[0]+'.pdf'
+# add new folder to separate from main note
+        pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/reweighted/app/cv78_' + hnames[i].split('_')[0]+'.pdf'
         if do4TeV:
-            pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/cv78_' + hnames[i].split('_')[0]+'.pdf'
+            pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/reweighted/app/cv78_' + hnames[i].split('_')[0]+'.pdf'
         elif doHLcomp:
-            pname = subfolder + "cv78_" +hnames[i].split('_')[0]+".pdf"
-            pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HLRunII/cv78_' + hnames[i].split('_')[0]+'.pdf'     
+
+            pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HLRunII/cv78_' + hnames[i].split('_')[0]+'.pdf'
+            #subfolder = wwwpath + "TCT/HL/compHLRun2/"
+            #pname = subfolder + "cv78_" + hnames[i].split("_")[0]+".pdf"
             print pname
         cv.SaveAs(pname)

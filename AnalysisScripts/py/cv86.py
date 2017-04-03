@@ -23,11 +23,11 @@ def cv86():
     tag  = '_BH_HL_tct5inrdB1_20MeV'
     cname = "checkB1tct5in"
 
-    bbgFile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b2_exp_20MeV_nprim5924500_30.root'
-    #bbgFile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
-    #bbgFile = projectpath + 'HL1.0/FL_TCT5In_retracted_rdB2_fixgaps/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
-    tag  = '_BH_HL_tct5inrdB2_20MeV'
-    cname = "checkB2tct5in"
+    # bbgFile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b2_exp_20MeV_nprim5924500_30.root'
+    # #bbgFile = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
+    # #bbgFile = projectpath + 'HL1.0/FL_TCT5In_retracted_rdB2_fixgaps/hilumi_ir1_hybrid_b2_exp_20MeV_nprim3425000_30.root'
+    # tag  = '_BH_HL_tct5inrdB2_20MeV'
+    # cname = "checkB2tct5in"
 
     doTCT4only = 0
     if doTCT4only:
@@ -36,9 +36,9 @@ def cv86():
         bbgFile = thispath + 'hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'
         tag =  '_BH_HL_tct5otrdB1_20MeV'
 
-        cname = "checkB2tct4only"
-        bbgFile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
-        tag =  '_BH_HL_tct5otrdB2_20MeV'
+        # cname = "checkB2tct4only"
+        # bbgFile = thispath + 'hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
+        # tag =  '_BH_HL_tct5otrdB2_20MeV'
 
     print "Opening", bbgFile
 
@@ -64,6 +64,7 @@ def cv86():
         elif skey.count("Pio") or skey.count("Kao"): continue
 
         # for testing!!
+        #if not skey.startswith("PhiNAll_"): continue
         if not skey.startswith("EkinAll_"): continue
         doEkinHist = 1
         sk += [skey]
@@ -156,7 +157,7 @@ def cv86():
         mt.Project(hname4, var, cuts)
         if doEkinHist: hist4 = cv84.doEkin(hist4,hist4.GetNbinsX())
         else: hist4 = cv84.doPhi(hist4,hist4.GetNbinsX())
-        entries4 =hist4.Integral()/nprim4
+        entries4 =hist4.Integral()#/nprim4
         
 
         print "entries 4 ", hist4.Integral(), nprim4
@@ -174,7 +175,7 @@ def cv86():
             mt.Project(hname5, var ,encut)
             if doEkinHist: hist5 = cv84.doEkin(hist5,hist5.GetNbinsX())
             else: hist5 = cv84.doPhi(hist5,hist5.GetNbinsX())
-            entries5 = hist5.Integral()/nprim5
+            entries5 = hist5.Integral()#/nprim5
 
         else:
             print "summe", n4*entries4+n5*entries5
@@ -186,8 +187,8 @@ def cv86():
         print "GetEntries 5 ",hist5.GetEntries()
 
 
-        hist4.Scale(1./nprim)
-        hist5.Scale(1./nprim)
+        #hist4.Scale(1./nprim)
+        #hist5.Scale(1./nprim)
         print "integral 4 ",hist4.Integral()
         print "integral 5 ",hist5.Integral()
 

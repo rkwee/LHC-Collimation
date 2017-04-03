@@ -61,8 +61,9 @@ if __name__ == "__main__":
     # tag = tag_BG_4TeV
     #tag = tag_BH_6p5TeV
     tag = tag_BH_7TeV
+    tag = tag_BG_7TeV
     #tag = tag_crab_HL
     #tag = tag_BG_6p5TeV
     doComp = 0
-    #fillTTree.fillHistos(TTreeFileName, tag, doComp)
-    plotSpectra.plotSpectra(TTreeFileName, tag, doComp)
+    fillTTree.fillHistos(TTreeFileName, tag, doComp)
+    #plotSpectra.plotSpectra(TTreeFileName, tag, doComp)

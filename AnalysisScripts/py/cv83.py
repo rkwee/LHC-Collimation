@@ -26,10 +26,10 @@ cols = [kBlue-2, kOrange+2, kAzure-1, kRed+1, kMagenta-5]
 def cv83():
     # ---------------------------------------------------
     rel = 'compallpint'
-    #rel = 'compallpress'
+    rel = 'compallpress'
     cv = TCanvas( 'cv'+ rel , 'cv'+rel , 2100, 900)
     cv.SetLogy(1)
-    cv.SetGridy(0)
+    cv.SetGridy(1)
     x1, y1, x2, y2 = 0.75, 0.72, 0.88, 0.92
     mlegend = TLegend( x1, y1, x2, y2)
     mlegend.SetFillColor(0)
@@ -101,7 +101,7 @@ def cv83():
         print i, cols
         #        print s_incoming[:100],press_tot_incomingbeam[:100]
         xlist, ylist, col, mstyle, lg = s_incoming,pint_tot_incomingbeam , cols[i],20+i, lText
-        #xlist, ylist, col, mstyle, lg = s_incoming,press_tot_incomingbeam , cols[i],20+i, lText
+        xlist, ylist, col, mstyle, lg = s_incoming,press_tot_incomingbeam , cols[i],20+i, lText
         grs += [ makeTGraph(xlist, ylist, col, mstyle)]
         mlegend.AddEntry(grs[-1], lg, lm)    
         mg.Add(grs[-1])
@@ -111,9 +111,9 @@ def cv83():
     #mg.SetTitle("pressure profiles")
     mg.GetXaxis().SetTitle(xTitle)
     mg.GetYaxis().SetTitle("total interaction probability")
-    #mg.GetYaxis().SetTitle("total pressure [mbar]")
+    mg.GetYaxis().SetTitle("total pressure [mbar]")
     mg.GetYaxis().SetRangeUser(5e-18,4e-10)
-    #mg.GetYaxis().SetRangeUser(5e-13,4e-6)
+    mg.GetYaxis().SetRangeUser(5e-13,4e-6)
     mlegend.Draw()
     lab = mylabel(42)
     lab.DrawLatex(0.42, 0.82, 'incoming beams') 

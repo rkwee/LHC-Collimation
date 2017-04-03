@@ -109,7 +109,7 @@ def cv81():
         if skey.count("Phi"): doLeft = 1
         cv = TCanvas(skey+ 'cv',skey+ 'cv', 1400, 900)
         # right corner
-        x1, y1, x2, y2 = 0.5, 0.75, 0.9, 0.88
+        x1, y1, x2, y2 = 0.35, 0.75, 0.9, 0.88
         xpos = 0.3
         if doLeft:
             x1, y1, x2, y2 = 0.2, 0.75, 0.5, 0.88

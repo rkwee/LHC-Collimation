@@ -31,8 +31,11 @@ def cv16():
     norm4TeVB2newHalo = 1380 * 1.4e11/360000 * (1179.0/59198135 +967/56887051.)/2.  
     # IR5: (1893.0 + 135)/(59198135 +56887051) = 1.75e-5, >>> 1893.0/59198135 +135/56887051. = 3.435e-05
 
-    norm6500GeVB1 = 2748 * 1.2e11/360000 *0.5*(739./53731448 +(312+273.)/52806720) # 1.24e-5
-    norm6500GeVB2 = 2748 * 1.2e11/360000 *0.5*(779./43692659+773./52962459.) # new 1.62e-5
+    norm6500GeVB1Old = 2748 * 1.2e11/360000 *0.5*(739./53731448 +(312+273.)/52806720) # 1.24e-5
+    norm6500GeVB2Old = 2748 * 1.2e11/360000 *0.5*(779./43692659+773./52962459.) # new 1.62e-5
+
+    norm6500GeVB1 = 2041 * 1.12e11/360000 *0.5*(739./53731448 +(312+273.)/52806720) # 1.24e-5
+    norm6500GeVB2 = 2041 * 1.12e11/360000 *0.5*(779./43692659+773./52962459.) # new 1.62e-5
 
     # python /afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/AnalysisScripts/py/collsummary.py -f 6.5TeV_vHaloB2_h5/coll_summary_6.5TeV_vHaloB2_h5.dat -c TCT*R5
     # IR5 B1: h:( 53754939.0 protons on IR7 primaries, 346.0 protons on TCT*L5.B1), v(52838656.0 on primaries IR7,  408.0 protons on TCTL5)
@@ -109,12 +112,14 @@ def cv16():
     # yrel = '/s'
     # yrel = '/TCT hit'
 
-    # fNum = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
+    
 
     # fDenom = workpath + 'runs/3.5TeV/results_beam-halo_3.5TeV-R1_D1_20MeV_b2_nprim2344800_66.root'
-    # subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/'
+    # fDenom="/Users/rkwee/Documents/RHUL/work/data/3p5TeV/results_beam-halo_3.5TeV-R1_D1_20MeV_b2_nprim2344800_66.root"
+    # fNum=thispath+"results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root"
+    # subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/perTCThit/'
     # lTextNum, lTextDenom = '4 TeV w/ x-ing', '3.5 TeV w/o x-ing'
-    # #normNum, normDenom = 1./norm4TeVB2, 1./(norm3500GeVB2)
+    # # #normNum, normDenom = 1./norm4TeVB2, 1./(norm3500GeVB2)
     # normNum, normDenom = 1., 1.
     # tagDenom, tagNum = '_BH_3p5TeV_B2_20MeV', '_BH_4TeV_B2_20MeV'
     # subfolder = wwwpath + 'TCT/4TeV/compB2_3p5vs4TeV/' 
@@ -141,16 +146,28 @@ def cv16():
     
 
     # # # comparison BG 3.5 vs 4 TeV 
-    # fNum = projectpath + '4TeVBGnoBS/results_beam-gas_4TeV-IR1_to_arc_20MeV_cutoff_100M_nprim7283044_66.root' # erased, produce new....
-    # fDenom = projectpath + '4TeVBGnoBS/results_beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66.root'
+    # # fNum = projectpath + '4TeVBGnoBS/results_beam-gas_4TeV-IR1_to_arc_20MeV_cutoff_100M_nprim7283044_66.root' # erased, produce new....
+    # # fDenom = projectpath + '4TeVBGnoBS/results_beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66.root'
     # fNum = thispath + 'results_beam-gas_4TeV-IR1_to_arc_20MeV_cutoff_100M_nprim7283044_66.root' # erased, produce new....
     # fDenom = thispath + 'results_beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66.root'
     # subfolder = wwwpath + 'TCT/4TeV/compBG_3p5_vs_4TeV/'
-    # subfolder =  '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/compBG_3p5_vs_4TeV/normalised/'
+    # subfolder =  '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/compBG_3p5_vs_4TeV/perBGint/'
     # lTextDenom, lTextNum = '3.5 TeV w/o x-ing', '4 TeV w/ x-ing'
     # normDenom, normNum = 1.,1.
     # tagDenom, tagNum = '_BG_3p5TeV_20MeV', '_BG_4TeV_20MeV'
     # nColor, dColor = kOrange-1, kRed-2
+    # yrel = '/inel.BG int.'
+
+
+    # # # comparison BG 3.5 vs 4 TeV with beamsize    
+    # fNum = thispath + 'results_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
+    # fDenom = thispath + 'results_beam_gas_3.5TeV_IR1_to_arc_20MeV_100M_nprim7660649_66.root'
+    # subfolder = wwwpath + 'TCT/4TeV/compBG_3p5_vs_4TeV/'
+    # subfolder =  '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/compBG_3p5_vs_4TeV/perBGint_bs/'
+    # lTextDenom, lTextNum = '3.5 TeV w/o x-ing', '4 TeV w/x-ing + bs'
+    # normDenom, normNum = 1.,1.
+    # tagDenom, tagNum = '_BG_3p5TeV_20MeV', '_BG_4TeV_20MeV_bs'
+    # nColor, dColor = kOrange-2, kRed+1
     # yrel = '/inel.BG int.'
 
     # ------------------------------------------------------------------------
@@ -188,6 +205,25 @@ def cv16():
     # labelText = ''
     # yrel = '/s'
 
+    # # # # beamgas 4 TeV vs 4 TeV reweighted vs flat
+    # fDenom = thispath + 'results_pressure2012_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root' the flat hists are not normalised, except for binning
+    # fNum = thispath + 'results_pressure2012_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root' the flat hists are not normalised, except for binning
+    # subfolder = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/4TeV/compBGflat/'
+    # lTextDenom, lTextNum = 'reweighted [1/s]', 'flat x10^{7}'
+    # normNum, normDenom = 5925000./1e7,1.
+    # tagDenom, tagNum = '_BG_4TeV_20MeV_bs_reweighted', '_BG_4TeV_20MeV_bs_flat'
+    # nColor, dColor = kPink-3, kBlack
+    # yrel = '/a.u.'
+
+    # fDenom = thispath + 'results_pressure2015_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
+    # fNum = thispath + 'results_pressure2015_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
+    # subfolder = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/compBGflat/'
+    # lTextDenom, lTextNum = 'reweighted [1/s]', 'flat x10^{7}'
+    # normNum, normDenom = 3198000./1e7,1.
+    # tagDenom, tagNum = '_BG_6500GeV_flat_20MeV_bs_reweighted', '_BG_6500GeV_flat_20MeV_bs_flat'
+    # dColor, nColor = kYellow-3, kBlack
+    # yrel = '/a.u.'
+    
  #    # # beamgas 6.5 TeV, 20 MeV vs 6.5 TeV, 20 GeV
  # fNum = projectpath + 'bbgen/6.5TeV/runs400_20MeV/results_ir1_BG_bs_6500GeV_b1_20MeV_nprim2716000_67.root'
  #    fDenom = projectpath + 'beamgas/6500GeV_beamsize/runs10k_20GeV/results_ir1_BG_bs_6500GeV_b1_20GeV_nprim181730000_67.root'
@@ -334,28 +370,28 @@ def cv16():
     # subfolder = wwwpath + 'TCT/compBHB1_4TeV_vs_6.5TeVB1/'
 
     # ### ----- 4 TeV vs 6.5 TeV B1    
-    subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/compBHB1_4TeV_vs_6p5TeV/normalised/"
-    fNum = thispath + 'results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root'
-    fDenom = thispath + 'results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
-    lTextNum = '6.5 TeV'
-    lTextDenom = '4 TeV'
-    normDenom, normNum, yrel = 1./norm4TeVB1newHalo, 1./norm6500GeVB1, '/s'
-    #    normDenom, normNum, yrel = 1., 1., '/TCT hit'
-    tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_4TeV_B1_20MeV'
-    nColor, dColor = kOrange-3, kPink-5
+    # subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/compBHB1_4TeV_vs_6p5TeV/normalised/"
+    # fNum = thispath + 'results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root'
+    # fDenom = thispath + 'results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
+    # lTextNum = '6.5 TeV'
+    # lTextDenom = '4 TeV'
+    # normDenom, normNum, yrel = 1./norm4TeVB1newHalo, 1./norm6500GeVB1, '/s'
+    # #    normDenom, normNum, yrel = 1., 1., '/TCT hit'
+    # tagNum, tagDenom = '_BH_6500GeV_haloB1_20MeV', '_BH_4TeV_B1_20MeV'
+    # nColor, dColor = kOrange-3, kPink-5
 
 
-    # ### ----- 4 TeV vs 6.5 TeV B2
-    # # fNum = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_BH_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
-    # # fDenom = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
-    # # subfolder = wwwpath + 'TCT/compBHB2_4TeV_vs_6.5TeV/'
-    # # # ## -- fDenom = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'     # -- 4TeV are old fluka sim -- newer exist!
+    # # ### ----- 4 TeV vs 6.5 TeV B2
+    # # # fNum = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/results_BH_ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
+    # # # fDenom = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
+    # # # subfolder = wwwpath + 'TCT/compBHB2_4TeV_vs_6.5TeV/'
+    # # # # ## -- fDenom = workpath + 'runs/4TeV_Halo/results_ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'     # -- 4TeV are old fluka sim -- newer exist!
     fDenom = thispath + "results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root"
     fNum = thispath + "results_ir1_BH_6500GeV_b2_20MeV_nprim3646000_30.root"
     subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/compBHB2_4TeV_vs_6p5TeV/normalised/"
     lTextNum = '6.5 TeV'
     lTextDenom = '4 TeV'
-    normNum, normDenom, yrel = 1., 1., "/TCT hit"
+    #    normNum, normDenom, yrel = 1., 1., "/TCT hit"
     normNum, normDenom, yrel = 1./norm6500GeVB2,1./norm4TeVB2newHalo, "/s"
     tagDenom, tagNum = '_BH_4TeV_B2_20MeV','_BH_6500GeV_haloB2_20MeV'
     nColor, dColor = kOrange-3, kPink-4
@@ -395,13 +431,13 @@ def cv16():
     # # fDenom = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
     # # subfolder = wwwpath + 'TCT/HL/compNomRetrCollSett/perTCThit/'
     # subfolder = "/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/HL/compNomRetrCollSett/normalised/"
-    # fDenom = thispath + "results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root"
-    # fNum = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
-    # lTextDenom = 'nominal'
-    # lTextNum = 'retracted'
-    # normNum, normDenom, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
+    # fNum = thispath + "results_hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root"
+    # fDenom = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root"
+    # lTextNum = 'nominal'
+    # lTextDenom = 'retracted'
+    # normDenom, normNum, yrel = 1./normTCT5INb1, 1./normTCT5INb1nom, '/s'
     # #normDenom, normNum, yrel = 1., 1., '/TCT hit'
-    # tagNum,tagDenom =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
+    # tagDenom,tagNum =  '_BH_HL_tct5inrdB1_20MeV','_BH_HL_tct5inrdB1_nomCollSett_20MeV'
     # dColor, nColor = kMagenta-2, kBlue-2
 
     # fNum =  '/afs/cern.ch/project/lhc_mib/crabcfb1/runs_usrbin/results_hilumi_ir1b1_exp_20MeV_nominalCollSett_nprim4269100_30.root'
@@ -412,6 +448,18 @@ def cv16():
     # normNum, normDenom, yrel = 1., 1., '/TCT hit'
     # tagDenom, tagNum =  '_crabcfb1_modTAN', '_crabcfb1'
     # dColor, nColor = kMagenta+4, kBlue+3
+
+    # # BG ac and BG Run II reweighted
+        
+    # fDenom = thispath + 'results_hilumi_ir1_fort_scaled_afterconditioning_max_nprim1_30.root'
+    # fNum = thispath + 'results_pressure2015_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root'
+    # subfolder = wwwpath + 'TCT/HL/compBGRun2HL/'
+    # lTextDenom, lTextNum = 'HL BG a.c.', 'Run II BG'
+    # normDenom, normNum = 1.,1.
+    # tagDenom, tagNum = '_BG_HL_ac_20MeV','_BG_6500GeV_flat_20MeV_bs_reweighted'
+    # nColor, dColor = kOrange-1, kMagenta-3
+    # yrel = '/s'
+
 
     # ------------------------------------------------------------------------
 
@@ -425,7 +473,6 @@ def cv16():
     # tagNum, tagDenom =  '_offmin500Hz_4TeV_B2_20MeV', '_offplus500Hz_4TeV_B2_20MeV'
     # dColor, nColor = kMagenta+4, kBlue+3
     # ------------------------------------------------------------------------
-
 
     rCol = kPink-7
     # need one file to generate sDict
@@ -465,7 +512,7 @@ def cv16():
         if skey.count('Sel'): continue
 
         # testing
-        if not skey.count('Muons') : continue
+        # if not skey.count('EkinMuon') : continue
 
 
         
@@ -496,7 +543,9 @@ def cv16():
 
         if subfolder.count('_4TeV_vs_6p5TeV'):            
             if skey.count("Phi"):
-                YurMin, YurMax = 1.e-1*scalefactorNorm,scalefactorNorm*1.e2
+                YurMin, YurMax = 1.e-2*scalefactorNorm,scalefactorNorm*1.e2
+                if skey.count("EnMu"):
+                    YurMin, YurMax = 1.e-1*scalefactorNorm,scalefactorNorm*1.e2
                 if skey.count("NMu"):
                     YurMin, YurMax = 1.e-6*scalefactorNorm,scalefactorNorm
                     
@@ -524,7 +573,7 @@ def cv16():
             isLogy = 1
             XurMin, XurMax = 0.0, 1190.
             #YurMin, YurMax = scalefactorNorm*2e-12,scalefactorNorm*9e-2
-            if skey.count("reweighted"):
+            if skey.count("reweighted") :
                 YurMin, YurMax = 2,1e9
                 if skey.count("Mu"):
                     YurMin, YurMax = 2e-2,8e5
@@ -579,8 +628,10 @@ def cv16():
             print "WARNING : Didn't find ", hnameDenom
             continue
 
-        if histNum.GetName().endswith("reweighted"):
+        if histNum.GetName().endswith("reweighted") or histNum.GetName().endswith("_flat"):
             histNum = histNum.ProjectionX()
+
+        if histDenom.GetName().endswith("reweighted") or histDenom.GetName().endswith("_flat"):
             histDenom = histDenom.ProjectionX()
 
         
@@ -724,7 +775,7 @@ def cv16():
         lab = mylabel(42)
         lab.SetTextSize(0.1)
         lab.SetTextColor(rCol)
-        if not subfolder.count("beamsizeRatio"):lab.DrawLatex(0.195,0.88,ratiorounded)
+        if not subfolder.count("beamsizeRatio") and not subfolder.count("compBGflat"):lab.DrawLatex(0.195,0.88,ratiorounded)
 
         pname = subfolder+hnameRatio.split('_')[0]+'.pdf'
 
