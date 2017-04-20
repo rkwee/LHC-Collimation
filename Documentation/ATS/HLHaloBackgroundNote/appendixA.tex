@@ -1,14 +1,14 @@
-\section{Loss maps for IR1/IR5 tertiary collimators in HL--LHC \label{lossmapszooms}}
+\section{Simulated SixTrack lossmaps for different ATS optics, collimator layout and settings in HL--LHC\label{lossmapszooms}}
 % ---------------------------------------------------------------------------------------------------------------------
 % fullring round/flat
 
-We show here zooms of the full loss maps various simulation cases from SixTrack in HL-LHC scenarios. ATS round and flat beam optics for HL-LHC and \twosigmaret~settings per simulation case, for a horizontal and vertical halo distribution in SixTrack. First we compare the settings by looking at IR7 losses, comparing nominal and \twosigmaret~settings, then we analyse the zooms for IR1 and IR5 to evaluate the affect of additional collimators in the experimental IRs. The beam direction in all figures, IR7 zooms Fig.~\ref{IR7_zooms}, IR1 round beam 1 comparisons Fig.~\ref{IR1_roundB1}, IR5 round beam 1 comparisons in Fig.~\ref{IR5_roundB1} and IR1/IR5 for flat beam 1 in Fig.~\ref{IR1_flatB1}/\ref{IR5_flatB1}, is from left to right. 
+We show here zooms of full loss maps in various HL-LHC scenarios from SixTrack betatron cleaning simulations, with different ATS beam optics (round\footnote{$\beta^*=15~$cm} and flat\footnote{$\beta^*_{x,y} =~7.5$~cm and $\beta^*_{y,x} =~30$~cm}) and different collimator settings (design nominal and \twosigmaret~settings, see Tab.~\ref{HLcollSettings}). We focus on B1. As these simulations were primarily made for background studies as presented in Section~\ref{hllhcResults}, we investigated the small leakages into the experimental areas of ATLAS and CMS, thus we simulated about 10 times more than what is usually required if studying purely betatron cleaning performances of the collimator system. Each simulation case had roughly $640 \times 10^6$ primary particles.
 
-The two black bars at upstream of the IP are the losses on the pair of tertiary collimators (TCT4s and TCT5s), while the black bars downstream are losses on TCLs, debris collimators. These losses are normalised to total number of lost particles. One can see, IR5 losses are generally lower than in IR1, an expected feature known from Run I and II. %A more direct comparison of the losses is made in Fig.~\ref{compTCT5INOUT}. The losses are normalised to the number of simulated primary per simulation case, then the sum per collimator is shown, i.e. as example the bin of a specific TCTH is set to $\big(\frac{\mathrm{hits\,on\,TCTH}}{\#\mathrm{primary}}\big)_{\mathrm{h}} + \big(\frac{\mathrm{hits\,on\,TCTH}}{\#\mathrm{primary}}\big)_{\mathrm{v}}$. The simulation cases shown are in Fig.~\ref{compTCT5INOUT}~(a) for round, and Fig.~\ref{compTCT5INOUT}~(b) for flat beams.
+The cleaning efficiency can be studied by comparing losses in IR7 and leakages of losses into the experimental IRs, IR1 and IR5. IR7 is highlighted per simulation case in Fig.~\ref{IR7_zooms} showing on the right side the simulation results for an initial horizontal halo distribution and on the left for a vertical halo distribution, in the real world it will always be a superposition of both. As mentioned in Section~\ref{hllhcResults}, the aim was to validate the new HL-LHC layout in terms of experimental background evaluating the effect of an additional TCT pair at about 213~m away from the IP of ATLAS on the incoming beam (and same layout applies to CMS). For the IR7 cleaning performance, this additional pair does not have any influence. 
 
-A zoom into loss locations in the experimental IRs of ATLAS and CMS is also shown in Fig.~\ref{IR15_roundB1_nomSett} for nominal design collimator settings, and the beam direction is again from left to right.
+Therefore only when IR1 and IR5 zooms are shown, we compare the two simulation cases, when no additional pair was present (``TCT4s only'') and when both pairs were deployed (``TCT5s in''). For round beam optics, this comparison is made for IR1 in Fig.~\ref{IR1_roundB1}, and for IR5 in Fig.~\ref{IR5_roundB1}. Flat beam optics were used in Fig.~\ref{IR1_flatB1} showing the focus of IR1, and Fig.~\ref{IR5_flatB1} for IR5 respectively.
 
-
+For completeness we add the simulation cases when nominal design settings for round ATS beam optics were used and the additional TCT5 pair was included. This is shown in Fig.~\ref{IR15_roundB1_nomSett}.
 % IR7 zooms
 
 \begin{figure}%[!htb]
@@ -22,11 +22,10 @@ A zoom into loss locations in the experimental IRs of ATLAS and CMS is also show
 \includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin_IR7}
 \end{center}
 \vspace{-0.3cm}
- \caption{Zoom into IR7 for round with nominal (top) and \twosigmaret~settings (middle), and flat optics and \twosigmaret~settings (bottom). Horizontal beam 1 is on the left, vertical beam 1 on the right.
+ \caption{Zoom into IR7 for round with nominal (top) and \twosigmaret~settings (middle), and flat optics and \twosigmaret~settings (bottom). Horizontal beam 1 is on the left, vertical beam 1 on the right. Beam direction is from left to right.
   \label{IR7_zooms}}
 \end{figure}
 
-The view to IR7 in Fig.~\ref{IR7_zooms} shows the cleaning inefficiency, leaking protons from IR7 primaries and secondaries, is most critical in the two prominent cold region blocks. They usually serve as a benchmark region for collimator settings and optics as the maximum energy is deposited in these blocks. The maximum cold loss is at 10$^{-4}$ for \twosigmaret~round and flat beams, and a factor 2 lower with nominal settings.
 
 \begin{figure}%[!tb]
 \begin{center}
@@ -37,11 +36,11 @@ The view to IR7 in Fig.~\ref{IR7_zooms} shows the cleaning inefficiency, leaking
 \includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin_IR1}
 \end{center}
 \vspace{-0.3cm}
- \caption{Zoom into IR1 (IP1 is at 0~m) for TCT5s out (top) and TCT5s in (bottom) B1 halo using round optics. Horizontal beam 1 is on the left, vertical beam 1 on the right.
+ \caption{Zoom into IR1 (IP1 is at 0~m) for TCT5s out (top) and TCT5s in (bottom) B1 halo using round optics and the more realistic \twosigmaret~settings. Horizontal B1 is on the left, vertical beam 1 on the right. Beam direction is from left to right.
   \label{IR1_roundB1}}
 \end{figure}
 
-The losses in IR1 with and without additional TCT5s are shown in Fig.~\ref{IR1_roundB1} for the more realistic \twosigmaret~setting. 
+
 % -------------------------------------------------------------------------------------------------------------------
 
 \begin{figure}
@@ -53,7 +52,7 @@ The losses in IR1 with and without additional TCT5s are shown in Fig.~\ref{IR1_r
 \includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin_IR5}
 \end{center}
 \vspace{-0.3cm}
- \caption{Zoom into IR5 (IP5 is at 133,300~m) for TCT5s out (top) and TCT5s in (bottom) B1 halo using round optics. Horizontal beam 1 is on the left, vertical beam 1 on the right.
+ \caption{Zoom into IR5 (IP5 is at 133,300~m) for TCT5s out (top) and TCT5s in (bottom) B1 halo using round optics. Horizontal beam 1 is on the left, vertical beam 1 on the right. Beam direction is from left to right.
   \label{IR5_roundB1}}
 \end{figure}
 
@@ -75,7 +74,7 @@ The losses in IR1 with and without additional TCT5s are shown in Fig.~\ref{IR1_r
 %% }
 %% \end{picture}
 \vspace{-0.3cm}
- \caption{Zoom into IR1 (IP1 is at 0~m) for TCT5s out (top) and TCT5s in (bottom) B1 halo using flat optics. Horizontal beam 1 is on the left, vertical beam 1 on the right.
+ \caption{Zoom into IR1 (IP1 is at 0~m) for TCT5s out (top) and TCT5s in (bottom) B1 halo using flat optics. Horizontal beam 1 is on the left, vertical beam 1 on the right. Beam direction is from left to right.
   \label{IR1_flatB1}}
 \end{figure}
 
@@ -98,7 +97,7 @@ The losses in IR1 with and without additional TCT5s are shown in Fig.~\ref{IR1_r
 %% }
 %% \end{picture}
 \vspace{-0.3cm}
- \caption{Zoom into IR5 (IP5 is at 133,300~m) with TCT5s out (top) and TCT5s in (bottom) B1 halo using flat optics. Horizontal beam 1 is on the left, vertical beam 1 on the right.
+ \caption{Zoom into IR5 (IP5 is at 133,300~m) with TCT5s out (top) and TCT5s in (bottom) B1 halo using flat optics. Horizontal beam 1 is on the left, vertical beam 1 on the right. Beam direction is from left to right.
   \label{IR5_flatB1}}
 \end{figure}
 
@@ -112,7 +111,7 @@ The losses in IR1 with and without additional TCT5s are shown in Fig.~\ref{IR1_r
 \includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_nomSett_vHalo_b1_IR5}
 \end{center}
 \vspace{-0.3cm}
- \caption{Zoom into IR1 (top) and IR5 (bottom, IP5 is at 133,300~m) when the TCT5s were inserted using round optics. Horizontal beam 1 is on the left, vertical beam 1 on the right.
+ \caption{Zoom into IR1 (top) and IR5 (bottom, IP5 is at 133,300~m) when the TCT5s were inserted using round optics. Horizontal beam 1 is on the left, vertical beam 1 on the right. Beam direction is from left to right.
   \label{IR15_roundB1_nomSett}}
 \end{figure}
 
