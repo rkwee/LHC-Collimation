@@ -1,12 +1,11 @@
+\section{Simulation Results for LHC's Run~1 and Run~2\label{run1run2}}
 
-\section{Simulation Results for LHC's Run I and Run II\label{run1run2}}
-
-\subsection{Run I and Run II simulation cases}
-For Run~I and Run~II, we simulate the used $pp$ physics configurations of 2012 and 2015. At 4~TeV in 2012, the optics were for a $\beta^* = 60$ cm and TCT collimator settings in IR1/IR5 TCTs were set to 9~$\sigma$~\cite{parametersRun1}. For Run II, the energy was raised to 6.5~TeV and the optics changed to $\beta^* = 80$~cm which was used in the machine throughout 2015 for $pp$ collisions with IR1/IR5 TCTs were set to 13.7~$\sigma$. For both runs, a full vertical crossing angle of $290~\mu$m was taken into account in the simulations. More simulation and run parameters can be found in Tab.~\ref{paramsRun12}.
+\subsection{Run~1 and Run~2 simulation cases}
+For Run~1 and Run~2, we simulate the used $pp$ physics configurations of 2012 and 2015. At 4~TeV in 2012, the optics were for a $\beta^* = 60$ cm and TCT collimator settings in IR1/IR5 TCTs were set to 9~$\sigma$~\cite{parametersRun1}. For Run~2, the energy was raised to 6.5~TeV and the optics changed to $\beta^* = 80$~cm which was used in the machine throughout 2015 for $pp$ collisions with IR1/IR5 TCTs were set to 13.7~$\sigma$. For both runs, a full vertical crossing angle of $290~\mu$m was taken into account in the simulations. More simulation and run parameters can be found in Tab.~\ref{paramsRun12}.
 
 \begin{table}
    \centering
-   \caption{Run I (2012)~\cite{bruce11evian} and Run II (2015)~\cite{bruce15_PRSTAB_betaStar} simulation parameters.}
+   \caption{Run~1 (2012)~\cite{bruce11evian} and Run~2 (2015)~\cite{bruce15_PRSTAB_betaStar} simulation parameters.}
    \begin{tabular}{l||c|c}
        \hline
        beam energy & 4 TeV & 6.5~TeV \\
@@ -22,9 +21,9 @@ For Run~I and Run~II, we simulate the used $pp$ physics configurations of 2012 a
    \label{paramsRun12}
 \end{table}
 
-The two background sources as previously described were investigated for several run scenarios. During Run I, the LHC was operated with two beam energies, 3.5 TeV in 2010--11 and 4~TeV in 2012\footnote{A detailed overview of parameters in Run I can be found in~\cite{parametersRun1}.}. While simulations of machine-induced background at 3.5 TeV have been presented in~\cite{nimPaperRod}, we focus on new developments made since and use these improvements for 4 TeV and Run II simulation cases. %Beam-halo simulations consider now a crossing angle in the simulation as it has been present in the machine. For beam-gas simulations we consider now the transverse extension of the beam.
+The two background sources as previously described were investigated for several run scenarios. During Run~1, the LHC was operated with two beam energies, 3.5 TeV in 2010--11 and 4~TeV in 2012\footnote{A detailed overview of parameters in Run~1 can be found in~\cite{parametersRun1}.}. While simulations of machine-induced background at 3.5 TeV have been presented in~\cite{nimPaperRod}, we focus on new developments made since and use these improvements for 4 TeV and Run~2 simulation cases. %Beam-halo simulations consider now a crossing angle in the simulation as it has been present in the machine. For beam-gas simulations we consider now the transverse extension of the beam.
 
-\subsection{Run I: 4 TeV betatron beam-halo}
+\subsection{Run~1: 4 TeV betatron beam-halo}
 
 Beam-halo induced showers from the tertiary collimators depend on the initial distribution of the positions at which the halo-proton interacts inelastically.
 %For tungsten, the collimator material of the TCTs, one can expect that inelastic interactions close to the jaw surface produce more shower particles than those deeper inside when most of the inelastic processes is confined within the jaw thereby also the shower production.
@@ -66,7 +65,7 @@ Comparing B1 to B2 halo induced distributions, as shown in Fig.~\ref{fig:comp4Te
 
 
 % --------------------------------------------------------------------------------------------
-\subsection{Run I: 4 TeV Beam-Gas}
+\subsection{Run~1: 4 TeV Beam-Gas}
 
 Characteristic distributions at the interface plane induced by beam-gas interactions are shown in Fig.~\ref{dist4TeVBGbs}. The energy spectra, Fig.~\ref{dist4TeVBGbs} (left), highlights a typcial shape for beam-gas interactions: in contrast to beam-halo showers it does not have the single diffractive peak at beam energy. Beam-gas induced protons show a much smoother increase up to beam-energy than in the halo case. It is still due to the same physics process, single diffractive dissociation, but further detailed studies are required to determine the exact reasons for the shape differences (e.g.~if the cause is in scattering partner material, tungsten or nitrogen, or how significant the contributions from other locations than the TCTs are).
 One notices an immediate difference, when also looking at the right of that figure, on average a factor 10 or more particles and energy produced by a beam-gas interaction than by a TCT interaction. Nearly 6 million primary interactions were simulated in \fluka.%One can clearly see that comparing the energy of protons at small radii, essentially the first bin of Fig.~\ref{dist4TeVB1}~(d) and Fig.~\ref{dist4TeVBGbs}~(d).
@@ -82,11 +81,11 @@ One notices an immediate difference, when also looking at the right of that figu
 % --------------------------------------------------------------------------------------------
 \subsection{Comparison to previous techniques}
 
-We compare simulations performed for Run~I at 4 TeV and at 3.5~TeV (as has been presented in Ref.~\cite{nimPaperRod}). To ease the comparison of the new simulation techniques, we also show the ratio of the two compared distributions to overcome the difference due to the slightly different beam energy. In fact, at 3.5~TeV there were several optics and collimator settings deployed which enables us to conclude about the question if the TCT settings, which were 2.8~$\sigma$ different, will have any influence on beam-gas at the interface plane. 
+We compare simulations performed for Run~1 at 4 TeV and at 3.5~TeV (as has been presented in Ref.~\cite{nimPaperRod}). To ease the comparison of the new simulation techniques, we also show the ratio of the two compared distributions to overcome the difference due to the slightly different beam energy. In fact, at 3.5~TeV there were several optics and collimator settings deployed which enables us to conclude about the question if the TCT settings, which were 2.8~$\sigma$ different, will have any influence on beam-gas at the interface plane. 
 
 
 \subsubsection{Transverse beam size}
-To test the effect of the beam size, two cases were simulated in \fluka, with exactly the same setup for the 2012 Run I scenario, see Tab.~\ref{paramsRun12}, but using a different input file for positions at which beam-gas interactions are sampled. One file contains positions exactly on the reference orbit (``pointlike''), the other consideres transverse extensions of the real beam size. Direct comparisons are possible in this case and made in Fig.~\ref{bsRatioPhiAll}, highlighting the $\phi$ distribution of all particles and their energy. One can see there are small differences in the particle distribution (left) while the energy in $\phi$ (right) is smoother with the new technique. Especially the peaks at $\pm \frac{\pi}{2}$ in the energy plot show clearly there is a re-distribution to the ``shoulders''.
+To test the effect of the beam size, two cases were simulated in \fluka, with exactly the same setup for the 2012 Run~1 scenario, see Tab.~\ref{paramsRun12}, but using a different input file for positions at which beam-gas interactions are sampled. One file contains positions exactly on the reference orbit (``pointlike''), the other consideres transverse extensions of the real beam size. Direct comparisons are possible in this case and made in Fig.~\ref{bsRatioPhiAll}, highlighting the $\phi$ distribution of all particles and their energy. One can see there are small differences in the particle distribution (left) while the energy in $\phi$ (right) is smoother with the new technique. Especially the peaks at $\pm \frac{\pi}{2}$ in the energy plot show clearly there is a re-distribution to the ``shoulders''.
 
 %As the energy in $\phi$ is almost shaped by protons, we show protons and muons as they are the ones reaching far into the detector region. Indeed, there is almost the same picture for the azimuthal proton distributions shown in Fig.\ref{bsRatioPhiMP}. The effect is more pronounced for high energy protons as well in the same figure. On muons also in the figure, the new technique does not seem to have a significant impact at all.
 
@@ -139,7 +138,7 @@ In contrast, the beam-halo data in Fig.~\ref{xingCompBHB1} do not have any clear
   \includegraphics[width=0.41\textwidth]{figures/4TeV/compBG_3p5_vs_4TeV/ratioPhiEnMuE100.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{Run I beam-gas data: A clear effect of crossing angle is visible (top) showing accumulations of particles at around $\frac{\pi}{2}$ in the vertical plane. The distribution of muons and in particular high energy muons are not significantly affected (bottom). This is the same if the data with beamsize is used, see Fig.~\ref{xingCompBG2}.
+ \caption{Run~1 beam-gas data: A clear effect of crossing angle is visible (top) showing accumulations of particles at around $\frac{\pi}{2}$ in the vertical plane. The distribution of muons and in particular high energy muons are not significantly affected (bottom). This is the same if the data with beamsize is used, see Fig.~\ref{xingCompBG2}.
   \label{xingCompBG}}
 \end{figure}
 
@@ -165,11 +164,11 @@ Since the TCTs were set to 11.8~$\sigma$ to accommodate the $\beta^* = 1.0~$m op
   \label{compBGrun1}}
 \end{figure}
 
-\subsection{Run I: Renormalisation of beam-gas events with pressure profile \label{BGreweighted4TeV}}
+\subsection{Run~1: Renormalisation of beam-gas events with pressure profile \label{BGreweighted4TeV}}
 
 \begin{table}
    \centering
-   \caption{LHC fill 2736 Run I (2012)~\cite{refAccStats}}
+   \caption{LHC fill 2736 Run~1 (2012)~\cite{refAccStats}}
    \begin{tabular}{l||c}
        \hline
        beam energy  & 4~TeV \\
@@ -247,13 +246,13 @@ We observe how the shapes of the integrated distributions at the interface plane
 \clearpage
 \newpage
 % --------------------------------------------------------------------------------------------
-\subsection{Run I: Off-momentum halo and shower simulations at 4 TeV}
+\subsection{Run~1: Off-momentum halo and shower simulations at 4 TeV}
 
 Analogue to IR7 leakage to the experimental IRs of ATLAS and CMS, one can now investigate background contributions from IR3 off-momentum cleaning using the losses leaking to IR1 and IR5 TCTs, also expressed in TCP-to-TCT conversion factors. They are listed in Tab.~\ref{tab:IR3leakageFactors} for IR1 and IR5 for all the simulated cases.
 
 The off-momentum leakage in IR1 is almost entirely caused by B2 and in IR5 it originates from B1. This can be expected from the ring geometry considering the relative positions of IR3 and IR7 for both beams respectively: Almost all halo protons in B1 moving from IR3 towards IR1 are cleaned by IR7 on the way, as well as B2 protons moving towards IR5.
 
-We also note something interesting from Tab.~\ref{tab:IR3leakageFactors} when comparing the case ``+500~Hz'' (plus-case) with ``-500~Hz'' (minus-case): At 4~TeV, the negative fequency shift causes a leakage to IR1 of $0.012$, in the ``plus-case'' it is nearly precisely the half of it, $0.0063$. The same is true for IR5 B1: The losses are reduced from $0.045$ to $0.025$ from positive to negative frequency shift. On absolute terms these numbers appear high compared to leakage losses from IR7, e.g.~at the same Run~I scenario in Tab.~\ref{leakageFactorsIR7}. However, the primary losses in IR3 are usually much lower than in IR7.
+We also note something interesting from Tab.~\ref{tab:IR3leakageFactors} when comparing the case ``+500~Hz'' (plus-case) with ``-500~Hz'' (minus-case): At 4~TeV, the negative fequency shift causes a leakage to IR1 of $0.012$, in the ``plus-case'' it is nearly precisely the half of it, $0.0063$. The same is true for IR5 B1: The losses are reduced from $0.045$ to $0.025$ from positive to negative frequency shift. On absolute terms these numbers appear high compared to leakage losses from IR7, e.g.~at the same Run~1 scenario in Tab.~\ref{leakageFactorsIR7}. However, the primary losses in IR3 are usually much lower than in IR7.
 
 We depict in Fig.~\ref{inel4TeVOffmom} how deeply the inelastic interactions take place within the collimator jaws. These distributions show a clear difference to those leaking from IR7: First, we note the full contribution for IR1 comes from B2, there is only a negligable fraction of B1 protons hitting the TCTs. Vice versa for IR5, almost nothing ends up on the TCTs in IR5 from B2 and contributions from IR3 leakage is due to B1 only. Then we notice, the distributions go much further into the jaw compared to e.g.~Fig.~\ref{inel4TeV} for both beams in the ``minus-case'' but also for B1 in the ``plus-case''. B2 ``plus-case'' has the intercepted protons more on the surface, especially those in the TCTV go in to around 4~mm which is more similar to the betatron halo case at 4~TeV. 
 
@@ -281,7 +280,7 @@ As Fig.~\ref{compPM} shows, one can expect about 20~$\%$ more particles carrying
   \includegraphics[width=0.49\textwidth]{figures/4TeV/offmom/20MeV/PhiEnDist_offmin500Hz_4TeV_B2_20MeV.pdf}
 \end{center}
 \vspace{-0.6cm}
- \caption{B2 off-momentum halo induced particle distributions in IR1 at the interface plane for the 4~TeV scenario in Run~I.
+ \caption{B2 off-momentum halo induced particle distributions in IR1 at the interface plane for the 4~TeV scenario in Run~1.
   \label{offmom4TeV}}
 \end{figure}
 
@@ -294,9 +293,9 @@ As Fig.~\ref{compPM} shows, one can expect about 20~$\%$ more particles carrying
 \end{figure}
 
 % --------------------------------------------------------------------------------------------
-\subsection{Run II: 6.5 TeV Betatron Halo}
+\subsection{Run~2: 6.5 TeV Betatron Halo}
 
-We move to the Run~II 2015 scenario with $\beta^* = 80$~cm, and details are in Tab.~\ref{paramsRun12}, using the same method as described for Run~I at 4~TeV. The input distributions are shown for B1 and B2 in Fig.~\ref{inel6.5}. It can be seen that the B1 depth distribution in the TCTV is much shallower than at 4~TeV in Fig.~\ref{inel4TeV}. This is very likely due to the different optics and collimator settings with the TCTs being at almost 5~$\sigma$ further out. Characteristic distributions are shown in Fig.~\ref{dist6500GeVB2}, and a comparison to B1 distributions are in Fig.~\ref{compBHB1B2run2}. One can see that in contrast to 4 TeV data, B1 produces more shower particles and energy than B2 per inelastic interaction within the TCTs. 
+We move to the Run~2 2015 scenario with $\beta^* = 80$~cm, and details are in Tab.~\ref{paramsRun12}, using the same method as described for Run~1 at 4~TeV. The input distributions are shown for B1 and B2 in Fig.~\ref{inel6.5}. It can be seen that the B1 depth distribution in the TCTV is much shallower than at 4~TeV in Fig.~\ref{inel4TeV}. This is very likely due to the different optics and collimator settings with the TCTs being at almost 5~$\sigma$ further out. Characteristic distributions are shown in Fig.~\ref{dist6500GeVB2}, and a comparison to B1 distributions are in Fig.~\ref{compBHB1B2run2}. One can see that in contrast to 4 TeV data, B1 produces more shower particles and energy than B2 per inelastic interaction within the TCTs. 
 
 
 \begin{figure}[!htb]
@@ -322,19 +321,19 @@ We move to the Run~II 2015 scenario with $\beta^* = 80$~cm, and details are in T
 \centering
   \includegraphics[width=0.49\textwidth]{figures/BH_run2/perTCThit/ratioEkinAll.pdf}
   \includegraphics[width=0.49\textwidth]{figures/BH_run2/perTCThit/ratioPhiEnAll.pdf}
- \caption{Run~II 2015 case: Comparison of B1/B2 betatron halo induced distributions per TCT hit. Muons are shown in the appendix in Fig.~\ref{compBHB1B2run22}.
+ \caption{Run~2 2015 case: Comparison of B1/B2 betatron halo induced distributions per TCT hit. Muons are shown in the appendix in Fig.~\ref{compBHB1B2run22}.
   \label{compBHB1B2run2}}
 \end{figure}
 
-\subsubsection{Run II: Comparison of 2015 and 2016 IR7 leakages}
+\subsubsection{Run~2: Comparison of 2015 and 2016 IR7 leakages}
 
-We include here a discussion on IR7 betatron leakages with a scenario as used in 2016 at 6.5~TeV, where the normal physics optics had a $\beta^*$ of 40~cm and the TCTs in IR1 and IR5 were set to 9~$\sigma$~\cite{bruceEvian2015}, see also Tab.~\ref{2016leakageFactorsIR7}. No \fluka~shower simulations were performed for this scenario. When comparing IR7 leakages to e.g~to IR1 of B1 and B2 of other scenarios in Run~I, Run~II (2015) and HL-LHC as listed in Tab.~\ref{tab:leakageFactorsIR7}, we note that the Run~II 2016 leakages have increased to $10^{-4}$, the same order as in HL-LHC. In particular, B1 gives higher leakages to IR1 with $4.2 \times 10^{-4}$ than B2 and $1.2 \times 10^{-4}$, which is the only case in all other cases studied.
+We include here a discussion on IR7 betatron leakages with a scenario as used in 2016 at 6.5~TeV, where the normal physics optics had a $\beta^*$ of 40~cm and the TCTs in IR1 and IR5 were set to 9~$\sigma$~\cite{bruceEvian2015}, see also Tab.~\ref{2016leakageFactorsIR7}. No \fluka~shower simulations were performed for this scenario. When comparing IR7 leakages to e.g~to IR1 of B1 and B2 of other scenarios in Run~1, Run~2 (2015) and HL-LHC as listed in Tab.~\ref{tab:leakageFactorsIR7}, we note that the Run~2 2016 leakages have increased to $10^{-4}$, the same order as in HL-LHC. In particular, B1 gives higher leakages to IR1 with $4.2 \times 10^{-4}$ than B2 and $1.2 \times 10^{-4}$, which is the only case in all other cases studied.
 
 
 
-\subsection{Run II: 6.5 TeV Beam-Gas}
+\subsection{Run~2: 6.5 TeV Beam-Gas}
 
-This case has been simulated with the same method as for the Run~I scenario, accounting for the beam size. The beam optics and collimator settings are shown in Tab.~\ref{paramsRun12}. Characteristic distributions, the energy spectrum and the azimuthal distribution per particle type, are shown in Fig.~\ref{bg6500}. One can see, the obtained distributions at 6.5~TeV are qualitatively very similar to the ones at 4~TeV. More distributions are in the appendix in Fig.~\ref{bg65002}. 
+This case has been simulated with the same method as for the Run~1 scenario, accounting for the beam size. The beam optics and collimator settings are shown in Tab.~\ref{paramsRun12}. Characteristic distributions, the energy spectrum and the azimuthal distribution per particle type, are shown in Fig.~\ref{bg6500}. One can see, the obtained distributions at 6.5~TeV are qualitatively very similar to the ones at 4~TeV. More distributions are in the appendix in Fig.~\ref{bg65002}. 
 
 \begin{figure}%[!htb]
 \begin{center}
@@ -348,13 +347,13 @@ This case has been simulated with the same method as for the Run~I scenario, acc
   \label{bg6500}}
 \end{figure}
 
-\subsection{Run II: Renormalisation of beam gas events with pressure profile}
+\subsection{Run~2: Renormalisation of beam gas events with pressure profile}
 
-Similar to Run I in 2012, a representative fill (number 4536) was chosen and used to simulate the pressure map. Fill details are summed up in Tab.~\ref{tab:fillRunII}. We use this fill to normalise the simulated particle distributions at the interface plane to absolute rates. 
+Similar to Run~1 in 2012, a representative fill (number 4536) was chosen and used to simulate the pressure map. Fill details are summed up in Tab.~\ref{tab:fillRunII}. We use this fill to normalise the simulated particle distributions at the interface plane to absolute rates. 
 
 \begin{table}
    \centering
-   \caption{LHC fill 4536 Run II (2015)~\cite{refAccStats}}
+   \caption{LHC fill 4536 Run~2 (2015)~\cite{refAccStats}}
    \begin{tabular}{l||c}
        \hline
        beam energy  & 6.5~TeV \\
@@ -370,7 +369,7 @@ Similar to Run I in 2012, a representative fill (number 4536) was chosen and use
 \end{table}
 
 \paragraph{\textit{Pressure Map Simulations}}
-In previous years (in particular for 3.5~TeV and 4~TeV runs data), as mentioned earlier in Sec.~\ref{BGreweighted4TeV} the code to simulate the pressure map, \textsc{VASCO}~\cite{vascoRef}, was used. For Run II in 2015, pressures were simulated with an improved version of the code. The code has been re-implemented in \textsc{Python} and modifications were made to automatise pressure simulations~\cite{christinasStudent}. The describtion of photon desorption, as determined by SynRad~\cite{synradRef}, and electron cloud effects as determined in PyECLOUD~\cite{giovanniPhd} were included and therefore the photon and electron flux simulations should be more accurate. Original algorithms were kept however a few assumptions were made to be able to simulate pressures around the entire ring, in particular where no vacuum instrumentation is placed (e.g.~in the arc). The variety of materials and pumping speeds was simplified. The pressure for fill 4536 shown in Fig.~\ref{pressure2015} and is probably underestimated due to the simplifications made and represents thus a scenario on the optimistic side. 
+In previous years (in particular for 3.5~TeV and 4~TeV runs data), as mentioned earlier in Sec.~\ref{BGreweighted4TeV} the code to simulate the pressure map, \textsc{VASCO}~\cite{vascoRef}, was used. For Run~2 in 2015, pressures were simulated with an improved version of the code. The code has been re-implemented in \textsc{Python} and modifications were made to automatise pressure simulations~\cite{christinasStudent}. The describtion of photon desorption, as determined by SynRad~\cite{synradRef}, and electron cloud effects as determined in PyECLOUD~\cite{giovanniPhd} were included and therefore the photon and electron flux simulations should be more accurate. Original algorithms were kept however a few assumptions were made to be able to simulate pressures around the entire ring, in particular where no vacuum instrumentation is placed (e.g.~in the arc). The variety of materials and pumping speeds was simplified. The pressure for fill 4536 shown in Fig.~\ref{pressure2015} and is probably underestimated due to the simplifications made and represents thus a scenario on the optimistic side. 
 
 For comparison we added the total interaction rate based on the pressure map at 4~TeV. One can see that the beam-gas interaction probability per proton is 1--2 orders of magnitude lower in 2015 than in 2012. This is expected as during the first long shutdown of the LHC from 2013 into 2015, besides consolidation activities~\cite{KatyForazIpac14}, many hardware improvements for the vacuum were made. These were for vacuum in the long straight sections of the experimental insertions (between left Q4 to right Q4), where NEG (Non-Evapourable-Gatter) cartridges with additional 400l/s for H$_2$ pumping speed were installed at the same places as the pressure gauges. We also note that the peak at the TCT region that was present in 4~TeV's fill has vanished. This is very likely due to the simplification of materials made for the 2015 pressure map simulation.
 
