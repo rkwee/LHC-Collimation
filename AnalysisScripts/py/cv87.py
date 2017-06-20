@@ -158,7 +158,7 @@ def cv87():
             hist_reweighted = cv81.doNormalBinw(hist_reweighted,nbins)
             hist_reweighted.Rebin(rbf)
             hist_reweighted.Scale(1./rbf)
-            hist_reweighted.GetYaxis().SetTitle(ytitle)
+            hist_reweighted.GetYaxis().SetTitle(ytitle.replace("cm", "m"))
             hist_reweighted.Draw(dOpt[i])
             doLogx, doLogy = 0,1
             xtitle = "s [m]"
@@ -166,7 +166,7 @@ def cv87():
             cv.SetLogy(doLogy)
             mlegend.AddEntry(hists[i], lTexts[i], "lp")
 
-            YurMin, YurMax = 1e-2,1e9
+            YurMin, YurMax = 1e-2,1e7
             if XurMin != -1:
                 hist_reweighted.GetXaxis().SetRangeUser(XurMin,XurMax)
 
@@ -186,8 +186,9 @@ def cv87():
         lab.SetTextSize(0.1)
 #        lab.SetTextColor(col)
 
-#        pname = subfolder+hnames[i].split('_')[0]+'.pdf'
+#        
 
         pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/cv87_allenergies_' + hnames[i].split('_')[0]+'.pdf'
+        pname = hnames[i].split('_')[0]+'.pdf'
         print pname
         cv.SaveAs(pname)

@@ -1,6 +1,9 @@
 #!/usr/bin/python
 #
 # reweights by pressure profile
+# writes out results_pressure root _flat histograms without any normalisation
+# use cv81 to scale _flat
+#
 # Sept 16
 #
 # R Kwee, 2016

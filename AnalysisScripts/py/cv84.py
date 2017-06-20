@@ -13,11 +13,13 @@ from helpers import makeTGraph, mylabel, wwwpath
 from fillTTree_dict import generate_sDict
 # --------------------------------------------------------------------------------
 def doEkin(hist,nbins):
-    for bin in range(1,nbins+1):
-        content = hist.GetBinContent(bin)
-        width   = hist.GetBinWidth(bin)
-        bcenter = hist.GetXaxis().GetBinCenterLog(bin)
-        hist.SetBinContent(bin,bcenter*content/width)
+    for b in range(1,nbins+1):
+        content = hist.GetBinContent(b)
+        width   = hist.GetBinWidth(b)
+        errorst = hist.GetBinError(b)
+        bcenter = hist.GetXaxis().GetBinCenterLog(b)
+        hist.SetBinContent(b,bcenter*content/width)
+        hist.SetBinError(b,bcenter*errorst/width)
     return hist
 
 def doPhi(hist,nbins):

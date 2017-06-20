@@ -356,11 +356,18 @@ def cv68():
     f3 = projectpath + 'bbgen/4TeV/beamgas/results_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
     f4 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVplusB2/results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
     f5 = '/afs/cern.ch/project/lhc_mib/offmom/FL_4TeVminusB2/results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
-    filenames = [f1,f2,f3,f4,f5]
+
+    # local
+    f1 = thispath + 'results_pressure2012_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root'
+    f2 = thispath + 'results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
+    f3 = thispath + 'results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
+    f4 = thispath + 'results_ir1_offplus500Hz_4TeV_settings_from_TWISS_20MeV_b2_nprim3980000_30.root'
+    f5 = thispath + 'results_ir1_offmin500Hz4TeV_settings_from_TWISS_20MeV_b2_nprim3987000_30.root'
+
+    filenames = [f2,f3,f1,f4,f5]
 
     subfolder = wwwpath + 'TCT/4TeV/compAllBKG/'
-
-    lTexts = ['Halo B1', 'Halo B2', 'beam-gas','+500 Hz', '-500 Hz']
+    lTexts = [ 'betatron halo B1', 'betatron halo B2','beam-gas','dp/p<0 (+500 Hz)', 'dp/p>0 (-500 Hz)']
     tags   = ['_BH_4TeV_B1_20MeV', '_BH_4TeV_B2_20MeV', '_BG_4TeV_20MeV_bs' , '_offplus500Hz_4TeV_B2_20MeV', '_offmin500Hz_4TeV_B2_20MeV']
     cols   = [kBlue, kRed, kOrange-3,kMagenta+4, kTeal+4]
     mars   = [ 20, 24, 33, 22, 23 ]

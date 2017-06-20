@@ -17,27 +17,87 @@ from helpers import makeTGraph, mylabel, wwwpath, thispath
 # --------------------------------------------------------------------------------
 def cv88():
 
-    # BG
+
+    # BH b2 4 TeV
+    bbgFile = thispath + "results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root"
+    hname = "XYNMuons_BH_4TeV_B2_20MeV"
+    lText = '4 TeV Halo B2'
+    lcase  = " #mu^{#pm}"# E_{kin} > 10 GeV"
+    yrel = "/TCT hit"
+
+    # HL B1 TeV original binning is bad
+    bbgFile = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root" # TCT5s in, retracted, use old file as new one doesnt have this kind of info anymore    
+    hname = "OrigXZMuon_BH_HL_tct5inrdB1_20MeV"
+    lText = 'HL TCT5s in, rd B1, 2#sigma-retract.'
+    lcase  = " #mu^{#pm} E_{kin} > 100 GeV"
+    yrel = "/TCT int."
+
+    # BH b1 4 TeV
+    bbgFile = thispath + "results_ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root"
+    hname = "XYNMuons_BH_4TeV_B1_20MeV"
+    lText = '4 TeV Halo B1'
+    lcase  = " #mu^{#pm}"# E_{kin} > 10 GeV"
+    yrel = "/TCT hit"
+
+    # BG 4 TeV
+    bbgFile = thispath + "results_ir1_BG_bs_4TeV_20MeV_b1_nprim5925000_67.root"
+    hname = "XYNMuons_BG_4TeV_20MeV_bs" # note the tag is GeV but it is MeV
+    lText = '4 TeV BG with beamsize'
+    lcase  = " #mu^{#pm}"# E_{kin} > 10 GeV"
+    yrel = "/BG int."
+
+    # BH b1 6.5 TeV
+    bbgFile = thispath + "results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root"
+    hname = "XYNMuons_BH_6500GeV_haloB1_20MeV"
+    lText = '6.5 TeV Halo B1'
+    lcase  = " #mu^{#pm}"# E_{kin} > 10 GeV"
+    yrel = "/TCT hit"
+
+    # BG 6.5 TeV
     bbgFile = thispath + "results_ir1_BG_bs_6500GeV_b1_20MeV_nprim3198000_67.root"
     hname = "XYNMuons_BG_6500GeV_flat_20GeV_bs" # note the tag is GeV but it is MeV
     lText = '6.5 TeV BG with beamsize'
     lcase  = " #mu^{#pm}"# E_{kin} > 10 GeV"
     yrel = "/BG int."
-    # BH b1 6.5 TeV
 
-    if 1:
-        bbgFile = thispath + "results_ir1_BH_6500GeV_b1_20MeV_nprim4752000_30.root"
-        hname = "XYNMuons_BH_6500GeV_haloB1_20MeV"
-        lText = '6.5 TeV Halo B1'
-        lcase  = " #mu^{#pm}"# E_{kin} > 10 GeV"
-        yrel = "/TCT hit"
+    # HL
+    bbgFile = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5924500_30.root"
+    hname = "XYNMuons_BH_HL_tct5inrdB2_20MeV"
+    lText = "HL TCT5s in, retract. sett., B2"
+    lcase =  " #mu^{#pm}"# E_{kin} > 100 GeV"
+    yrel = "/TCT int."
     
+    bbgFile = thispath + "results_hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root"
+    hname = "XYNMuons_BH_HL_tct5otrdB2_20MeV"
+    lText = "HL TCT4s only, retract. sett., B2"
+
+    bbgFile = thispath + "results_hilumi_ir1_hybrid_b1_exp_20MeV_nprim5550000_30.root"
+    hname = "XYNMuons_BH_HL_tct5inrdB1_20MeV"
+    lText = "HL TCT5s in, retract. sett., B1"
+    lcase =  " #mu^{#pm}"# E_{kin} > 100 GeV"
+    yrel = "/TCT int."
+
+    
+    xtitle ="x [cm]"
+    ytitle ="y [cm]"
+
+#    xtitle ="s [cm]"
+#    ytitle ="x [cm]"
+
+
     print "Opening", bbgFile
     nprim = float(bbgFile.split('nprim')[-1].split('_')[0])
     rf = TFile.Open(bbgFile, "READ")
     
     rbf = 5
     hist = rf.Get(hname)
+    print hist
+    nbinsX =    hist.GetXaxis().GetNbins()
+    nbinsY =    hist.GetYaxis().GetNbins()
+
+    print("nbinsX=", nbinsX)
+    print("nbinsY=", nbinsY)
+    print("rebinning histogram in X and Y by factor", rbf)
     rebinnedX = hist.RebinX(rbf)
     rebinnedXY = rebinnedX.RebinY(rbf)
 
@@ -52,14 +112,14 @@ def cv88():
             rebinnedXY.SetBinContent(xbin,ybin,content/xwidth/ywidth)
 
             
-    cv = TCanvas("cv", "cv", 1200, 900)
+    cv = TCanvas("cv", "cv", 1100, 1000)
     gStyle.SetPalette(1)
     
     cv.SetRightMargin(0.2)
     cv.SetTopMargin(0.12)
     #cv.SetLeftMargin(-0.1)
-    rebinnedXY.GetXaxis().SetTitle("x [cm]")
-    rebinnedXY.GetYaxis().SetTitle("y [cm]")
+    rebinnedXY.GetXaxis().SetTitle(xtitle)
+    rebinnedXY.GetYaxis().SetTitle(ytitle)
     rebinnedXY.GetZaxis().SetTitleOffset(1.4)
     rebinnedXY.GetZaxis().SetTitle( "particles/cm^{2}" + yrel) 
                  

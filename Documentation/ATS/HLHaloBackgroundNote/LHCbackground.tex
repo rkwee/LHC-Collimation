@@ -1,0 +1,130 @@
+% This is cernatsreport.tex in text format, as of 17 September 2012
+% adapted from abreport.tex in text format, as of 27 March 2003.
+
+% This file gives you a basic template for writing an CERN ATS Sector report.
+
+% This file MUST be studied in conjunction with:
+%    LaTeX: A Document Preparation System  by Leslie Lamport
+%    Addison-Wesley, Reading, Massachussetts,  .
+%
+
+%------------------------------------------------------------------------
+% This is a comment since TeX ignores everything to the right of a '%'.
+% This file is much longer than it need be only because there are lots
+% of comments to explain it.
+
+% Now comes the first LaTeX command in this file.
+
+\documentclass{cernatsreport}    % Specifies the document style.
+\usepackage{vmargin,times,graphicx,amsmath,amssymb,color} % ,draftcopy use draftcopy for experiments
+\usepackage{verbatim} % to allow for verbatim and comment
+\usepackage{lineno} % to allow for linenumbers in the draft version
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{hyperref}
+\newcommand{\lumi}[1]{\ensuremath{{\mathcal{L}= 10^{#1}\,\mathrm{cm}^{-2}\,\mathrm{s}^{-1}}}}
+\newcommand{\lumiapprox}[1]{\ensuremath{{\mathcal{L} \approx 10^{#1}\,\mathrm{cm}^{-2}\,\mathrm{s}^{-1}}}}
+\newcommand{\lumif}[2]{\ensuremath{{\mathcal{L}= {#1} \times 10^{#2}\,\mathrm{cm}^{-2}\,\mathrm{s}^{-1}}}}
+\newcommand{\ifb}{\mbox{fb$^{-1}$}}%  Inverse femtobarns.
+\newcommand{\ipb}{\mbox{pb$^{-1}$}}%  Inverse picobarns.
+\newcommand{\inb}{\mbox{nb$^{-1}$}}%  Inverse nanobarns.
+\newcommand{\sph}{\mbox{$\mu$Sv/h}}%  mu Sv/h
+\newcommand{\nseu}{$N_{\mathrm{SEU}}$}
+\newcommand{\twosigmaret}{$2\sigma$-retracted}
+\newcommand{\thnf}{\ensuremath{\Phi_{\mathrm{thn}}}}
+\newcommand{\fluka}{\textsc{Fluka}}
+\newcommand{\mypercent}{\%}
+
+
+	% Now follows the "preamble" with some declarations.
+	% No text should be produced until after the \begin{document}
+
+\documentlabel{CERN-ATS-2017-XXX}       %Declares label for this document. Modify as required. 
+%\email{\small{Regina.Kwee@rhul.ac.uk}}
+%\typist{Regina.Kwee@rhul.ac.uk}     % optional command to indicate who typed the report.
+                    % This command was useful in the good old days.
+
+\title{Machine-induced Background Simulation Studies 
+  for LHC Run I, Run II and HL-LHC}
+
+\author{R.~Kwee, G.~Bregliozzi, R.~Bruce, F.~Cerutti,~L.~S.~Esposito, \\S.~M.~Gibson, A.~Lechner, H.~Garcia Morales, C. Yin Vallgren}
+%\author{R.~Kwee-Hinzmann\thanks{Royal Holloway University of London}, S.~M.~Gibson, H.~Garcia-Morales \\
+%  R.~Bruce\thanks{CERN}, F.~Cerutti,~L.~S.~Esposito, A.~Lechner
+%\author{Ren\'e Q. \AE\"o\c ca\ss\ Jr.\thanks{On leave of absence from
+
+
+\date{\today}
+
+
+
+% Now we give the text of the abstract as another declaration; this is
+% different from other LaTeX styles in which the abstract is given as
+% the abstract environment.
+\abstract{
+  The study of machine-induced background to the experiments is vital for several reasons. Too much background can be an issue for operation and the difficult part is to judge when exactly ``too much'' is attained. It is a complex topic as experiments are directly or indirectly affected by conditions all around the LHC ring e.g.~collimation settings and vacuum quality. A detailed study of background can also help understanding the machine better to identify potential issues and complemented by dedicated machine tests. Finally such a study is relevant for the experiments to analyse the characteristics of machine background to make sure not to count it into a new physics signal.
+
+  This report summarises simulation results of three background sources, local beam-gas, beam-halo from the betatron collimation in IR7 and for the first time beam-halo from momentum collimation in IR3. Two of the most dominant sources, local beam-gas and betatron halo, have been systematically studied for LHC Run~I and Run~II cases, and several HL--LHC scenarios. We analyse the evolution of background of these scenarios and discuss rates expected for HL-LHC. Impacts on the tertiary collimators upstream of ATLAS and CMS are analysed, while particle distributions streaming into the experimental area were estimated for ATLAS only in detailed shower simulations in all of these scenarios.
+
+
+% The following sort of thing can be conveniently included
+% as part of the abstract.
+% Don't leave any blank lines within the abstract declaration.
+%
+  %% \begin{center}\textsl{Run~I to HL--LHC background \\
+  %%     simulation studies}
+  %%         \end{center}
+         }  %%% this is the end of the abstract declaration
+
+% N.B. Nothing has been printed so far, we've only made declarations.
+
+
+\begin{document}           % End of preamble and beginning of text.
+
+
+\maketitle                 % Produces the title page.
+
+% Some or all of the following may be useful in a long report
+%     \tableofcontents
+%     \listoffigures
+%     \listoftables
+%     \newpage
+\tableofcontents
+\newpage
+\newpage
+
+% uncomment to also show section header
+%\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+%-------------------------------------------------------------------------------------------
+\include{Section1}
+\include{Section3}
+\include{Section4}
+\include{Section5}
+\include{Section6}
+\include{Section2}
+
+
+
+%-------------------------------------------------------------------------------------------
+%\section*{Acknowledgments}
+%
+
+%-------------------------------------------------------------------------------------------
+\clearpage
+\appendix
+\include{appendixC} % run1run2app
+\clearpage
+\include{appendixC2} % run2 and HL
+\newpage
+\include{appendixD} % evolutApp
+\newpage
+\include{appendixB} % leakageTables
+\newpage
+\include{appendixA} % HLapp: loss maps
+% ---------------------------------------------------------------------------------------------------------------------
+
+\newpage
+
+        \bibliographystyle{ieeetr-new}
+        \bibliography{bibliography}
+
+\end{document}

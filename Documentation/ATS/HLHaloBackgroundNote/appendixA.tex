@@ -1,148 +1,117 @@
-\section{Appendix A}
-
-\subsection{Loss map compendium}
-
+\section{Simulated SixTrack lossmaps for different ATS optics, collimator layout and settings in HL--LHC\label{lossmapszooms}}
 % ---------------------------------------------------------------------------------------------------------------------
 % fullring round/flat
 
+We show here zooms of full loss maps in various HL-LHC scenarios from SixTrack betatron cleaning simulations, with different ATS beam optics (round\footnote{$\beta^*=15~$cm} and flat\footnote{$\beta^*_{x,y} =~7.5$~cm and $\beta^*_{y,x} =~30$~cm}) and different collimator settings (design nominal and \twosigmaret~settings, see Tab.~\ref{HLcollSettings}). We focus on B1. As these simulations were primarily made for background studies as presented in Section~\ref{hllhcResults}, we investigated the small leakages into the experimental areas of ATLAS and CMS, thus we simulated about 10 times more than what is usually required if studying purely betatron cleaning performances of the collimator system. Each simulation case had roughly $640 \times 10^6$ primary particles.
+
+The cleaning efficiency can be studied by comparing losses in IR7 and leakages of losses into the experimental IRs, IR1 and IR5. IR7 is highlighted per simulation case in Fig.~\ref{IR7_zooms} showing on the right side the simulation results for an initial horizontal halo distribution and on the left for a vertical halo distribution, in the real world it will always be a superposition of both. As mentioned in Section~\ref{hllhcResults}, the aim was to validate the new HL-LHC layout in terms of experimental background evaluating the effect of an additional TCT pair at about 213~m away from the IP of ATLAS on the incoming beam (and same layout applies to CMS). For the IR7 cleaning performance, this additional pair does not have any influence. 
+
+Therefore only when IR1 and IR5 zooms are shown, we compare the two simulation cases, when no additional pair was present (``TCT4s only'') and when both pairs were deployed (``TCT5s in''). For round beam optics, this comparison is made for IR1 in Fig.~\ref{IR1_roundB1}, and for IR5 in Fig.~\ref{IR5_roundB1}. Flat beam optics were used in Fig.~\ref{IR1_flatB1} showing the focus of IR1, and Fig.~\ref{IR5_flatB1} for IR5 respectively.
+
+For completeness we add the simulation cases when nominal design settings for round ATS beam optics were used and the additional TCT5 pair was included. This is shown in Fig.~\ref{IR15_roundB1_nomSett}.
+% IR7 zooms
+
+\begin{figure}%[!htb]
+\begin{center}
+%\vskip-12mm
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_nomSett_hHalo_b1_IR7}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_nomSett_vHalo_b1_IR7}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin_IR7}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin_IR7}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin_IR7}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin_IR7}
+\end{center}
+\vspace{-0.3cm}
+ \caption{Zoom into IR7 for round with nominal (top) and \twosigmaret~settings (middle), and flat optics and \twosigmaret~settings (bottom). Horizontal beam 1 is on the left, vertical beam 1 on the right. Beam direction is from left to right.
+  \label{IR7_zooms}}
+\end{figure}
+
+
+\begin{figure}%[!tb]
+\begin{center}
+%\vskip-12mm
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin_IR1}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin_IR1}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin_IR1}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin_IR1}
+\end{center}
+\vspace{-0.3cm}
+ \caption{Zoom into IR1 (IP1 is at 0~m) for TCT5s out (top) and TCT5s in (bottom) B1 halo using round optics and the more realistic \twosigmaret~settings. Horizontal B1 is on the left, vertical beam 1 on the right. Beam direction is from left to right.
+  \label{IR1_roundB1}}
+\end{figure}
+
+
+% -------------------------------------------------------------------------------------------------------------------
+
 \begin{figure}
 \begin{center}
 \vskip-12mm
-\includegraphics[width=0.92\textwidth]{figures/coll_loss_H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin_fullring}
-\includegraphics[width=0.92\textwidth]{figures/coll_loss_H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin_fullring}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin_IR5}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin_IR5}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin_IR5}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin_IR5}
 \end{center}
 \vspace{-0.3cm}
- \caption{Loss maps for horizontal (top) and vertical (bottom) B1 halo using round optics with TCT4s only.
-  \label{fullring_roundB1_TCT5LOUT }}
+ \caption{Zoom into IR5 (IP5 is at 133,300~m) for TCT5s out (top) and TCT5s in (bottom) B1 halo using round optics. Horizontal beam 1 is on the left, vertical beam 1 on the right. Beam direction is from left to right.
+  \label{IR5_roundB1}}
 \end{figure}
 
 \begin{figure}
 \begin{center}
 \vskip-12mm
-\includegraphics[width=0.92\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin_fullring}
-\includegraphics[width=0.92\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin_fullring}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5LOUT_relaxColl_hHaloB1_flatthin_IR1}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5LOUT_relaxColl_vHaloB1_flatthin_IR1}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin_IR1}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin_IR1}
 \end{center}
+%% \begin{picture} (0.,0.)
+%% \setlength{\unitlength}{1.0cm}
+%% \small{
+%%     \put ( 4.,7.35){(a)}
+%%     \put ( 12.4,7.35){(b)}
+%%     \put ( 4.,1.){(c)}
+%%     \put ( 12.4,1.){(d)}
+%% }
+%% \end{picture}
 \vspace{-0.3cm}
- \caption{Loss maps for horizontal (top) and vertical (bottom) B1 halo using round optics with TCT4s and TCT5s.
-  \label{fullring_roundB1_TCT5IN}}
-\end{figure}
-
-
-\begin{figure}
-\begin{center}
-\vskip-12mm
-\includegraphics[width=0.92\textwidth]{figures/coll_loss_H5_HL_TCT5LOUT_relaxColl_hHaloB1_flatthin_fullring}
-\includegraphics[width=0.92\textwidth]{figures/coll_loss_H5_HL_TCT5LOUT_relaxColl_vHaloB1_flatthin_fullring}
-\end{center}
-\vspace{-0.3cm}
- \caption{Loss maps for horizontal (top) and vertical (bottom) B1 halo using flat optics with TCT4s only.
-  \label{fullring_flatB1_TCT5LOUT}}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\vskip-12mm
-\includegraphics[width=0.92\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin_fullring}
-\includegraphics[width=0.92\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin_fullring}
-\end{center}
-\vspace{-0.3cm}
- \caption{Loss maps for horizontal (top) and vertical (bottom) B1 halo using flat optics with TCT4s and TCT5s.
-  \label{fullring_flatB1_TCT5IN}}
-\end{figure}
-
-% ---------------------------------------------------------------------------------------------------------------------
-% zooms
-
-\begin{figure}
-\begin{center}
-\vskip-12mm
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin_IR1}
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin_IR1}
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin_IR1}
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin_IR1}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,7.35){(a)}
-    \put ( 12.4,7.35){(b)}
-    \put ( 4.,1.){(c)}
-    \put ( 12.4,1.){(d)}
-}
-\end{picture}
-\vspace{-0.3cm}
- \caption{Zoom into IR1 for horizontal (top) and vertical (bottom) B1 halo using round optics with TCT4s only and both.
-  \label{IR1_roundB1_TCT5LOUT }}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\vskip-12mm
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5LOUT_relaxColl_hHaloB1_roundthin_IR5}
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5LOUT_relaxColl_vHaloB1_roundthin_IR5}
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_roundthin_IR5}
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_roundthin_IR5}
-\end{center}
-\vspace{-0.3cm}
- \caption{Zoom into IR5 for horizontal (top) and vertical (bottom) B1 halo using round optics with TCT4s only.
-  \label{IR5_roundB1_TCT5LOUT }}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\vskip-12mm
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5LOUT_relaxColl_hHaloB1_flatthin_IR1}
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5LOUT_relaxColl_vHaloB1_flatthin_IR1}
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin_IR1}
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin_IR1}
-\end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,7.35){(a)}
-    \put ( 12.4,7.35){(b)}
-    \put ( 4.,1.){(c)}
-    \put ( 12.4,1.){(d)}
-}
-\end{picture}
-\vspace{-0.3cm}
- \caption{Zoom into IR1 for horizontal (top) and vertical (bottom) B1 halo using flat optics with TCT4s and TCT5s.
-  \label{IR1_flatB1_TCT5IN}}
+ \caption{Zoom into IR1 (IP1 is at 0~m) for TCT5s out (top) and TCT5s in (bottom) B1 halo using flat optics. Horizontal beam 1 is on the left, vertical beam 1 on the right. Beam direction is from left to right.
+  \label{IR1_flatB1}}
 \end{figure}
 
 
 \begin{figure}
 \begin{center}
 \vskip-12mm
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5LOUT_relaxColl_hHaloB1_flatthin_IR5}
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5LOUT_relaxColl_vHaloB1_flatthin_IR5}
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin_IR5}
-\includegraphics[width=0.48\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin_IR5}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5LOUT_relaxColl_hHaloB1_flatthin_IR5}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5LOUT_relaxColl_vHaloB1_flatthin_IR5}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_flatthin_IR5}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_TCT5IN_relaxColl_vHaloB1_flatthin_IR5}
 \end{center}
-\begin{picture} (0.,0.)
-\setlength{\unitlength}{1.0cm}
-\small{
-    \put ( 4.,7.35){(a)}
-    \put ( 12.4,7.35){(b)}
-    \put ( 4.,1.){(c)}
-    \put ( 12.4,1.){(d)}
-}
-\end{picture}
+%% \begin{picture} (0.,0.)
+%% \setlength{\unitlength}{1.0cm}
+%% \small{
+%%     \put ( 4.,7.35){(a)}
+%%     \put ( 12.4,7.35){(b)}
+%%     \put ( 4.,1.){(c)}
+%%     \put ( 12.4,1.){(d)}
+%% }
+%% \end{picture}
 \vspace{-0.3cm}
- \caption{Zoom into IR5 for horizontal (top) and vertical (bottom) B1 halo using flat optics with TCT4s only.
-  \label{IR5_flatB1_TCT5LOUT}}
+ \caption{Zoom into IR5 (IP5 is at 133,300~m) with TCT5s out (top) and TCT5s in (bottom) B1 halo using flat optics. Horizontal beam 1 is on the left, vertical beam 1 on the right. Beam direction is from left to right.
+  \label{IR5_flatB1}}
 \end{figure}
 
-% ---------------------------------------------------------------------------------------------------------------------
-% s-optics
 
-\begin{figure}
+\begin{figure} %[!htb]
 \begin{center}
-\vskip-12mm
-\includegraphics[width=0.92\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_sroundthin_fullring}
-\includegraphics[width=0.92\textwidth]{figures/coll_loss_H5_HL_TCT5IN_relaxColl_hHaloB1_sflatthin_fullring}
+
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_nomSett_hHalo_b1_IR1}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_nomSett_vHalo_b1_IR1}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_nomSett_hHalo_b1_IR5}
+\includegraphics[width=0.48\textwidth]{figures/lossmaps/coll_loss_H5_HL_nomSett_vHalo_b1_IR5}
 \end{center}
 \vspace{-0.3cm}
- \caption{Loss maps for horizontal B1 halo using s-round (top) and s-flat optics with TCT4s and TCT5s.
-  \label{fullring_sB1_TCT5IN}}
+ \caption{Zoom into IR1 (top) and IR5 (bottom, IP5 is at 133,300~m) when the TCT5s were inserted using round optics. Horizontal beam 1 is on the left, vertical beam 1 on the right. Beam direction is from left to right.
+  \label{IR15_roundB1_nomSett}}
 \end{figure}
+

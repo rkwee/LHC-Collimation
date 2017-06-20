@@ -15,21 +15,21 @@ import cv79, cv32, cv65
 
 ## -------------------------------------------------------------------------------
 pData = [
-    ("/Users/rkwee/Downloads/Density_Fill4536_2041b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]", "Fill 4536 B1"),
-    ("/Users/rkwee/Downloads/Density_Fill4536_2041b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4536 B2"),
-   # ("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B1"),
-   # ("/Users/rkwee/Downloads/Density_Fill4532_1824b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B2"),
-    ("/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv", "distance from IP1 [m]",  "Fill 2736 B1"),
+    ("/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/Density_Fill4536_2041b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]", "Fill 4536"),
+   # ("/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/Density_Fill4536_2041b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4536 B2"),
+   # ("/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/Density_Fill4532_1824b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B1"),
+   # ("/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/Density_Fill4532_1824b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B2"),
+    ("/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv", "distance from IP1 [m]",  "Fill 2736"),
 ]
 # # -----------------------------------------------------------------------
-cols = [kBlue-2, kYellow+9, kAzure-1, kRed+1, kMagenta-5]
+cols = [kBlue-2, kOrange+2, kAzure-1, kRed+1, kMagenta-5]
 def cv83():
     # ---------------------------------------------------
     rel = 'compallpint'
-    rel = 'compallpress'
+    #rel = 'compallpress'
     cv = TCanvas( 'cv'+ rel , 'cv'+rel , 2100, 900)
     cv.SetLogy(1)
-    cv.SetGridy(1)
+    cv.SetGridy(0)
     x1, y1, x2, y2 = 0.75, 0.72, 0.88, 0.92
     mlegend = TLegend( x1, y1, x2, y2)
     mlegend.SetFillColor(0)
@@ -46,9 +46,9 @@ def cv83():
     
     for i,( pFile, xTitle, lText) in enumerate(pData):
 
-        print "Getting data from file", pFile
-
         print  "."*33
+        print "Getting data from file", pFile
+        
         data = {}        
         if pFile.count("LSS1"):
             data = cv32.getdata14c(pFile)
@@ -56,7 +56,7 @@ def cv83():
             stmp2 = stmp[1:]
             s_full = stmp2[::-1]
             pint_C, pint_H, pint_O, pint_tot = cv65.calc_pint_tot(rho_C, rho_H, rho_O)
-            totalPress = [ data['H2_N2Eq'][i] +  data['CH4_N2Eq'][i] + data['CO_N2Eq'][i] + data['CO2_N2Eq'][i] for i in range(len(data['H2_N2Eq'])) ]
+            totalPress = [ data['H2_N2Eq'][j] +  data['CH4_N2Eq'][j] + data['CO_N2Eq'][j] + data['CO2_N2Eq'][j] for j in range(len(data['H2_N2Eq'])) ]
         else:
             data = cv79.getdata5c(pFile)
             totalPress =  cv79.getTotalPressure(data)
@@ -98,6 +98,7 @@ def cv83():
         print "len(pint_tot_incomingbeam)", len(pint_tot_incomingbeam)
         print "len(s_incoming)", len(s_incoming)
 
+        print i, cols
         #        print s_incoming[:100],press_tot_incomingbeam[:100]
         xlist, ylist, col, mstyle, lg = s_incoming,pint_tot_incomingbeam , cols[i],20+i, lText
         #xlist, ylist, col, mstyle, lg = s_incoming,press_tot_incomingbeam , cols[i],20+i, lText
@@ -106,19 +107,20 @@ def cv83():
         mg.Add(grs[-1])
 
     mg.Draw("al")
-
-    mg.SetTitle("pressure profiles")
+    Tt = TLatex()
+    Tt = "#splitline{total interaction probability rate}{[1/proton/m/s]}"
+    #mg.SetTitle("pressure profiles")
     mg.GetXaxis().SetTitle(xTitle)
-    #mg.GetYaxis().SetTitle("total interaction probability")
-    mg.GetYaxis().SetTitle("total pressure [mbar]")
-    #mg.GetYaxis().SetRangeUser(5e-18,4e-10)
-    mg.GetYaxis().SetRangeUser(5e-13,4e-6)
+    mg.GetYaxis().SetTitle(Tt)
+    #mg.GetYaxis().SetTitle("total pressure [mbar]")
+    mg.GetYaxis().SetRangeUser(5e-18,4e-10)
+    #mg.GetYaxis().SetRangeUser(5e-13,4e-6)
     mlegend.Draw()
     lab = mylabel(42)
     lab.DrawLatex(0.42, 0.82, 'incoming beams') 
 
-    pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV'
-    pname = rel+".pdf"
+    pname = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/figures/6500GeV/'
+    pname += rel+".pdf"
     print('Saving file as ' + pname )
     cv.Print(pname)
 

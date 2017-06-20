@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 #
-#
+# picture the method of pressure reweightening in z origin of muon rates 
 # R Kwee, 2016
 # 
 # ---------------------------------------------------------------------------------

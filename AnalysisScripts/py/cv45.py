@@ -15,7 +15,7 @@ def cv45():
     # current path
     cpath = workpath + 'runs/checkTrajectory6500GeV/4TeV/'
     cpath = '/afs/cern.ch/project/lhc_mib/beamgas/6500GeV_beamsize/'
-
+    cpath = thispath + 
     trakfiles = [
         # filen name, Xindex, Yindex, markerstyle, 
         # ['/afs/cern.ch/work/r/rkwee/HL-LHC/runs/checkTrajectory6500GeV/madSY_b2.dat', 0,1, kGreen+1, 21, ],

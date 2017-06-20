@@ -30,16 +30,16 @@
 % ?)
 \setmarginsrb{22mm}{10mm}{20mm}{10mm}{12pt}{11mm}{0pt}{11mm}
 %
-\title{Background Simulation Studies for Run I, Run II and HL-LHC}
+\title{Machine-induced Background Simulation Studies for LHC Run~I, Run~II and HL-LHC}
 %
-\author{R.~Kwee-Hinzmann, R.~Bruce, F.~Cerutti,~L.~S.~Esposito, S.~M.~Gibson, A.~Lechner, H.~Garcia-Morales}
+\author{R.~Kwee-Hinzmann, G.~Bregliozzi, R.~Bruce, F.~Cerutti,~L.~S.~Esposito, S.~M.~Gibson, A.~Lechner, H.~Garcia Morales, C.~Yin Vallgren}
 %
 \date{\today}
 \email{\small{Regina.Kwee@rhul.ac.uk}}
 %
 \makeindex
 %
-\documentlabel{CERN-ACC-Note-2016-XXX PERF}\keywords{halo background, beam-gas, SixTrack, FLUKA, HL-LHC, TCT5, collimation, cleaning efficiency}
+\documentlabel{CERN-ACC-Note-2017-XXX PERF}\keywords{halo background, beam-gas, SixTrack, FLUKA, HL-LHC, TCT5, collimation, cleaning efficiency, IR3 leakage, IR7 leakage, off-momentum, ATLAS, CMS}
 %
 % End of preamble and beginning of text.
 \begin{document}
@@ -56,15 +56,17 @@
 % ----------------------------------------------------------------------------------------------
 \begin{abstract}
 %
-This note summarises the simulation results on two background sources, beam-halo and local beam-gas, which induced particle showers to the experiments for several LHC and HL--LHC scenarios. %beam halo induced background at IR1 in the HL--LHC scenario using the final HL--LHC collimation layout and is essentially an extension of results presented in~\cite{thisyear}. Using the baseline optics of round beams (HLLHCv1.0), and the so-called 2$\sigma$-retracted collimator settings, SixTrack and Fluka simulations were performed to quantify the effect of the installation of additional tertiary collimators in cell 5 upstream the tertiary collimator pair that is already installed to protect the inner triplet magnets in IR1 and 5.
-%In addition other flat beam optics is compared to round optics. For completion, tracking simulation results of other ultimate optics scenarios again with the 2$\sigma$-retracted collimator settings are included.
+  The study of machine-induced background to the experiments is vital for several reasons. Too much background can be an issue for operation and the difficult part is to judge when exactly it is ``too much''. It is a complex topic as experiments are directly or indirectly affected by conditions all around the LHC ring e.g.~collimation settings and vacuum quality. A detailed study of background can also help understanding the machine better to identify potential issues and complemented by dedicated machine tests. Finally such a study is relevant for the experiments to analyse the characteristica of machine background to make sure not to count it into a new physics signal.
+
+  This report summarises simulation results of three background sources, local beam-gas, beam-halo from the betatron collimation in IR7 and for the first time beam-halo from momentum collimation in IR3. The most dominant sources, betatron halo and beam-gas, have been systematically studied for LHC Run~I and Run~II cases, and several HL--LHC scenarios. We analyse the evolution of background of these scenarios and discuss rates expected for HL. Impacts on the tertiary collimators upstream of ATLAS and CMS are analysed, while particle distributions streaming into the experimental area were estimated for ATLAS only in detailed shower simulations in all of these scenarios.
+%  This note summarises the simulation results on three background sources, local beam-gas and beam-halo (IR7) and for the first time off-momentum (IR3) leakage. They all produce particle showers at the to the experimental areas, this was simulated for the ATLAS IP. Even though shower results are shown only for the IR1 FLUKA geometry, this note contains an leakage factors from IR3 and IR7 also for CMS. The most dominant sources, halo and beam-gas, have been systematically studied for LHC Run~I and Run~II cases, and several HL--LHC scenarios. We indicate rates in all these scenarios.
+  
 \end{abstract}
 %
 % ----------------------------------------------------------------------------------------------
 
 \newpage
 \tableofcontents
-\newpage
 \newpage
 
 % uncomment to also show section header
@@ -77,31 +79,32 @@ This note summarises the simulation results on two background sources, beam-halo
 \include{Section6}
 \include{Section2}
 
-
-
 %-------------------------------------------------------------------------------------------
 \section*{Acknowledgments}
 %
-
+Giuseppe Bregliozzi and Christina Yin Vallgren
 %-------------------------------------------------------------------------------------------
 \newpage
 \clearpage
 \appendix
 \newpage
-\include{appendixA}
-% ---------------------------------------------------------------------------------------------------------------------
+\include{appendixB} % leakageTables
 \newpage
-\section{Appendix B}
-\include{appendixB}
+\include{appendixC} % run1run2app
+\clearpage
+\include{appendixC2} % run2 and HL
+\newpage
+\include{appendixD} % evolutApp
+\newpage
+\include{appendixA} % HLapp
+% ---------------------------------------------------------------------------------------------------------------------
+
 \newpage
 
         \bibliographystyle{abbrv}
         \bibliography{bibliography}
 
-%% \begin{thebibliography}{99}
-%% \bibitem{lastYear} R.~Kwee-Hinzmann et al., \textit{First Background Studies at IR1}, Proceedings IPAC14, 2014.
-
-%% \end{thebibliography}
 %
 \end{document}
 %
+
