@@ -1,4 +1,3 @@
-
 #!/usr/bin/python
 #
 # Feb, 2014, rkwee
@@ -29,7 +28,7 @@ if __name__ == "__main__":
     SetAtlasStyle()
 
     # ---------------------
-    TTreeFileName = createTTree.ctree(datafile)
+    # TTreeFileName = createTTree.ctree(datafile)
     TTreeFileName = datafile + ".root"
     #TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_b2_nprim7825000_66.root'        
     # TTreeFileName = 'data/4TeV/ir1_4TeV_settings_from_TWISS_20MeV_b2_nprim5356000_66.root'
@@ -37,15 +36,21 @@ if __name__ == "__main__":
     # TTreeFileName = 'data/4TeV/ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
 
     # TTreeFileName = workpath + 'runs/4TeV_Halo/ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim7964000_66.root'
-    #TTreeFileName = workpath + 'runs/FL_TCT5IN_roundthin/hilumi_ir1_hybrid_b1_20MeV_exp_nprim1635000_30.root'
+    # TTreeFileName = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B1/ir1_BH_4TeV_settings_from_TWISS_20MeV_b1_nprim6904000_30.root'
+    # TTreeFileName = projectpath + 'bgChecks2/FL_NewHalo_4TeV_B2/ir1_BH_4TeV_settings_from_TWISS_20MeV_b2_nprim6914000_30.root'
+    # TTreeFileName = projectpath + 'bbgen/4TeV/beamgas/ir1_BG_bs_4TeV_settings_from_TWISS_20MeV_b1_nprim5925000_67.root'
+    # # test for re-normalising the data to pressure
+    # TTreeFileName = projectpath + 'bbgen/4TeV/beamgas/ir1_BG_4TeV_settings_from_TWISS_20MeV_b1_nprim2952500_67.root'
+    # TTreeFileName = workpath + 'runs/FL_TCT5IN_roundthin/hilumi_ir1_hybrid_b1_20MeV_exp_nprim1635000_30.root'
     # TTreeFileName = workpath + 'runs/FL_TCT5IN_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
     # TTreeFileName = workpath + 'runs/FL_TCT5LOUT_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim5350000_30.root'    
     
     # TTreeFileName = workpath + 'runs/FL_TCT5IN_roundthin_B2/hilumi_ir1_hybrid_b2_exp_20MeV_nprim5315000_30.root'
     # TTreeFileName = workpath + 'runs/FL_TCT5LOUT_roundthin_B2/hilumi_ir1_hybrid_b2_exp_20MeV_nprim5001000_30.root'
 
+    #    TTreeFileName = '/afs/cern.ch/work/r/rkwee/HL-LHC/runs/HL_TCT5INOUT_relSett/FL_TCT5IN_roundthinB1_2nd/hilumi_ir1_hybrid_b1_exp_20MeV_nprim5319000_30.root'
     #TTreeFileName = workpath + 'runs/FL_6500GeV_HaloB1_20MeV/ir1_6500GeV_b1_20MeV_nprim4752000_30.root'
-    #TTreeFileName = '/afs/cern.ch/project/lhc_mib/tct_simulations/FlukaRuns/runs/hilumi_ir1b1_exp_20MeV_nominalCollSett_nprim1291000_30.root'
+    #TTreeFileName = projectpath + 'HL1.0/FL_HL_TCT5IN_nomCollSett_haloB1/hilumi_BH_ir1b1_exp_20MeV_nominalCollSett_nprim3320000_30.root'
     #TTreeFileName = workpath + 'runs/FL_6500GeV_HaloB2_20MeV/ir1_6500GeV_b2_20MeV_nprim3646000_30.root'
     #TTreeFileName = 'runBG_UVcorr/ir1_BG_4TeV_settings_from_TWISS_20MeV_b1_nprim4414500_67.root'
     #TTreeFileName = 'FL_4TeV_BG_20GeV_10k/ir1_BG_bs_4TeV_settings_from_TWISS_20GeV_b1_nprim89940000_67.root'
@@ -56,12 +61,15 @@ if __name__ == "__main__":
     #TTreeFileName = "/afs/cern.ch/project/lhc_mib/tct_simulations/FlukaRuns/runs_modTAN/hilumi_ir1b1_exp_20MeV_nominalCollSett_modTAN_nprim1390500_30.root"
     # for comparisons plot change in plotSpectra
     # ---------------------
-    # define tag in helpers!
-    tag = tag_BH_4TeV
+    # define tag in helpers and plotSpectra!
+    tag = tag_BH_3p5TeV
+    tag = tag_BG_3p5TeV
+    tag = tag_BG_4TeV
+    #tag = tag_BH_6p5TeV
     tag = tag_BG_6p5TeV
     #tag = tag_BH_7TeV
     #tag = tag_crab_HL
 
     doComp = 0
-    #fillTTree.fillHistos(TTreeFileName, tag, doComp)
+    fillTTree.fillHistos(TTreeFileName, tag, doComp)
     #plotSpectra.plotSpectra(TTreeFileName, tag, doComp)
