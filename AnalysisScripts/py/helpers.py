@@ -14,9 +14,9 @@ gitpath  = '/afs/cern.ch/work/r/rkwee/HL-LHC/LHC-Collimation/'
 projectpath = '/afs/cern.ch/project/lhc_mib/'
 #workpath = '/Users/rkwee/Documents/RHUL/work/runs/TCT/'
 #wwwpath  = '/Users/rkwee/Documents/RHUL/work/results/www/'
-gitpath  = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/'
+#gitpath  = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/'
 thispath = '/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/'
-wwwpath = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/wwwlxplus/'
+#wwwpath = '/Users/rkwee/Documents/RHUL/work/HL-LHC/LHC-Collimation/Documentation/ATS/HLHaloBackgroundNote/wwwlxplus/'
 # ------------------------------------------------------------------------------------------------
 # tags for bbG analysis *only for giving name!*
 tag_BH_3p5TeV = "_BH_3p5TeV_B1_20MeV"
@@ -34,10 +34,10 @@ tag_BG_4TeV = '_BG_4TeV_20MeV'
 tag_BG_4TeV = '_BG_4TeV_20MeV_bs'
 
 tag_BH_7TeV = '_BH_HL_tct5inrdB1_nomCollSett_20MeV'
-tag_BH_7TeV = '_BH_HL_tct5inrdB1_20MeV'
 tag_BH_7TeV = '_BH_HL_tct5otrdB2_20MeV'
 tag_BH_7TeV = '_BH_HL_tct5otrdB1_20MeV'
 tag_BH_7TeV = '_BH_HL_tct5inrdB2_20MeV'
+tag_BH_7TeV = '_BH_HL_tct5inrdB1_20MeV'
 
 tag_crab_HL = '_crabcf_tct5inrdb1_20MeV'
 #tag_crab_HL = '_crabcf_tct5inrdb1_modTAN_20MeV'
@@ -45,7 +45,8 @@ tag_crab_HL = '_crabcf_tct5inrdb1_20MeV'
 tag_BH_6p5TeV = '_BH_6500GeV_haloB1_20MeV'
 tag_BH_6p5TeV = '_BH_6500GeV_haloB2_20MeV'
 tag_BG_6p5TeV = '_BG_6500GeV_flat_20GeV_bs'
-# ................................................................................................
+tag_BG_6p5TeV = "_BG_6500GeV_press58m_20MeV"
+# ...............................................................................................
 # -- ALSO SET ENERGY CUT
 EnCut = '2.e-2'
 #EnCut = '20.'
