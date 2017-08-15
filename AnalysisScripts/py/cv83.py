@@ -15,17 +15,17 @@ import cv79, cv32, cv65, cv95
 
 ## -------------------------------------------------------------------------------
 pData = [
-    ("/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/Density_Fill4536_2041b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]", "Fill 4536"),
+    ("/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/Density_Fill4536_2041b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]", "Fill 4536 (Run 2)"),
    # ("/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/Density_Fill4536_2041b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4536 B2"),
    # ("/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/Density_Fill4532_1824b_26158.8832-500_B1_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B1"),
    # ("/Users/rkwee/Documents/RHUL/work/HL-LHC/runs/TCT/Density_Fill4532_1824b_26158.8832-500_B2_withECLOUD.txt", "distance from IP1 [m]",  "Fill 4532 B2"),
-    ("/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv", "distance from IP1 [m]",  "Fill 2736"),
+    ("/Users/rkwee/Documents/RHUL/work/data/4TeV/LSS1_B1_Fill2736_Final.csv", "distance from IP1 [m]",  "Fill 2736 (Run 1)"),
     ( "/Users/rkwee/Documents/RHUL/work/HL-LHC/HL_LHC_D2_IP_LSS1_After_Conditioning_Anton_onlydata.csv", "distance from IP1 [m]","HL-LHC a.c. high"),
     ( "/Users/rkwee/Documents/RHUL/work/HL-LHC/HL_LHC_D2_IP_LSS1_After_ConditioningLowLevel_Anton_onlydata.csv", "distance from IP1 [m]","HL-LHC a.c. low"),
 ]
 # # -----------------------------------------------------------------------
 cols = [kBlue-2, kOrange+2, kRed-1, kAzure+1, kMagenta-5]
-cols = [kGreen-8, kAzure+2, kRed-4, kMagenta]
+cols = [kGreen-6, kAzure+2, kRed-4, kMagenta]
 def cv83():
     # ---------------------------------------------------
     rel = 'compallpint'
@@ -79,7 +79,8 @@ def cv83():
             rho_H, rho_C, rho_O = cv79.getAtomicRho(rho_H2, rho_CH4, rho_CO, rho_CO2)
             pint_H, pint_C, pint_O, pint_tot = cv79.getpint(rho_H, rho_C, rho_O)
             stmp =data["s"]
-            s_full=stmp[::-1] # invert order ?
+            s_full=list(reversed(list(reversed(stmp)))) # list last element of reversed list first
+
             
         s_incoming = []
         
